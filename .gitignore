@@ -385,7 +385,7 @@ PublishScripts/
 # NuGet Symbol Packages
 *.snupkg
 # The packages folder can be ignored because of Package Restore
-## ^ it actually can't for us because Unity needs it for a different purpose
+## ^ IMPORTANT: it actually can't for us because Unity needs it for a different purpose
 ## so this is commented out
 #**/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
@@ -567,19 +567,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# VS Code files for those working on multiple tools
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
-
 # Local History for Visual Studio Code
 .history/
-
-# Built Visual Studio Code Extensions
-*.vsix
 
 # Windows Installer files from build outputs
 *.cab
