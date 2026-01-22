@@ -100,9 +100,6 @@ InitTestScene*.unity*
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
-## Make sure Unity Packages aren't gitignored by the later templates
-!/[Pp]ackages/
-
 ## JETBRAINS
 
 .idea
@@ -438,7 +435,9 @@ PublishScripts/
 # NuGet Symbol Packages
 *.snupkg
 # The packages folder can be ignored because of Package Restore
-**/[Pp]ackages/*
+## ^ it actually can't for us because Unity needs it for a different purpose
+## so this is commented out
+#**/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
