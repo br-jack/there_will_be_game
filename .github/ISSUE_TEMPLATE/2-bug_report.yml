@@ -10,6 +10,27 @@ body:
       description: A clear and concise description of what the bug is.
     validations:
       required: true
+  - type: checkboxes
+    attributes:
+      label: Which area(s) of the game (if any) does this bug concern?
+      description: Select all the parts that apply.
+      options:
+        - label: Horse
+          required: false
+        - label: Jockey (Hammer User)
+          required: false
+        - label: Enemies
+          required: false
+        - label: Gameplay
+          required: false
+        - label: Visuals
+          required: false
+        - label: Physics
+          required: false
+        - label: Sounds
+          required: false
+        - label: Unity Build
+          required: false
   - type: textarea
     attributes:
       label: To Reproduce
