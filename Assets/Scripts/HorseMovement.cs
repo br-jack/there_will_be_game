@@ -52,7 +52,7 @@ public class HorseMovement : MonoBehaviour
 
         _rb.MoveRotation(_rb.rotation * turnRotation);
 
-        Vector3 newPosition = _rb.position + transform.forward * currentSpeed * Time.fixedDeltaTime;
+        Vector3 newPosition = _rb.position + ((currentSpeed * Time.fixedDeltaTime) * transform.forward);
 
         _rb.MovePosition(newPosition);
     }
