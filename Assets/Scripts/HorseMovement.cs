@@ -12,10 +12,19 @@ public class HorseMovement : MonoBehaviour
     private float currentSpeed = 0f;
 
     private Rigidbody _rb;
+    
+    private float _throttleInput;
+    private float _turnInput;
 
     void Start() 
     {
         _rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        float throttleInput = Input.GetAxis("Vertical");
+        float turnInput = Input.GetAxis("Horizontal");
     }
 
     void FixedUpdate()  
@@ -25,12 +34,9 @@ public class HorseMovement : MonoBehaviour
 
     void HandleMovement()
     {
-        float throttleInput = Input.GetAxis("Vertical");
-        float turnInput = Input.GetAxis("Horizontal");
-
-        if (throttleInput > 0f)
+        if (_throttleInput > 0f)
         {
-            currentSpeed += acceleration * throttleInput * Time.fixedDeltaTime;
+            currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
         }
         else
         {
@@ -42,7 +48,7 @@ public class HorseMovement : MonoBehaviour
         float speedPercent = currentSpeed / maxSpeed;
         float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
 
-        Quaternion turnRotation = Quaternion.Euler(0f, turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
+        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
 
         _rb.MoveRotation(_rb.rotation * turnRotation);
 
