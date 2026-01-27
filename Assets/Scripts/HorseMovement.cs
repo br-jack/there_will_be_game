@@ -23,8 +23,8 @@ public class HorseMovement : MonoBehaviour
 
     void Update()
     {
-        float throttleInput = Input.GetAxis("Vertical");
-        float turnInput = Input.GetAxis("Horizontal");
+        _throttleInput = Input.GetAxis("Vertical");
+        _turnInput = Input.GetAxis("Horizontal");
     }
 
     void FixedUpdate()  
