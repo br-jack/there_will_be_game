@@ -9,7 +9,7 @@ public class HorseMovement : MonoBehaviour
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
 
-    private float currentSpeed = 0f;
+    private float _currentSpeed = 0f;
 
     private Rigidbody _rb;
     
@@ -36,23 +36,24 @@ public class HorseMovement : MonoBehaviour
     {
         if (_throttleInput > 0f)
         {
-            currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
+            _currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
         }
         else
         {
-            currentSpeed -= deceleration * Time.fixedDeltaTime;
+            _currentSpeed -= deceleration * Time.fixedDeltaTime;
         }
 
-        currentSpeed = Mathf.Clamp(currentSpeed, 0f, maxSpeed);
+        _currentSpeed = Mathf.Clamp(_currentSpeed, 0f, maxSpeed);
 
-        float speedPercent = currentSpeed / maxSpeed;
+        //restrict turning more at higher speeds
+        float speedPercent = _currentSpeed / maxSpeed;
         float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
 
         Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
 
         _rb.MoveRotation(_rb.rotation * turnRotation);
 
-        Vector3 newPosition = _rb.position + ((currentSpeed * Time.fixedDeltaTime) * transform.forward);
+        Vector3 newPosition = _rb.position + ((_currentSpeed * Time.fixedDeltaTime) * transform.forward);
 
         _rb.MovePosition(newPosition);
     }
