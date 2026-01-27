@@ -11,7 +11,14 @@ public class HorseMovement : MonoBehaviour
 
     private float currentSpeed = 0f;
 
-    void FixedUpdate()
+    private Rigidbody _rb;
+
+    void Start() 
+    {
+        _rb = GetComponent<Rigidbody>();
+    }
+
+    void FixedUpdate()  
     {
         HandleMovement();
     }
@@ -35,14 +42,12 @@ public class HorseMovement : MonoBehaviour
         float speedPercent = currentSpeed / maxSpeed;
         float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
 
-        Rigidbody rb = GetComponent<Rigidbody>();
-
         Quaternion turnRotation = Quaternion.Euler(0f, turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
 
-        rb.MoveRotation(rb.rotation * turnRotation);
+        _rb.MoveRotation(_rb.rotation * turnRotation);
 
-        Vector3 newPosition = rb.position + transform.forward * currentSpeed * Time.fixedDeltaTime;
+        Vector3 newPosition = _rb.position + transform.forward * currentSpeed * Time.fixedDeltaTime;
 
-        rb.MovePosition(newPosition);
+        _rb.MovePosition(newPosition);
     }
 }
