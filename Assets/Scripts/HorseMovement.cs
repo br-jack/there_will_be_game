@@ -24,17 +24,17 @@ public class HorseMovement : MonoBehaviour
         _throttleInput = moveVector.y;
     }
 
-    void Awake() 
+    private void Awake() 
     {
         _rb = GetComponent<Rigidbody>();
     }
 
-    void FixedUpdate()  
+    private void FixedUpdate()  
     {
         HandleMovement();
     }
 
-    void HandleMovement()
+    private void HandleMovement()
     {
         if (_throttleInput > 0f)
         {
