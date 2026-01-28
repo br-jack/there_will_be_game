@@ -29,6 +29,6 @@ public class EnemyMovement : MonoBehaviour
         
         Vector3 distanceFromPlayer = playerPosition - transform.position;
         
-        _rb.linearVelocity = distanceFromPlayer.normalized * speed;
+        _rb.AddForce(distanceFromPlayer.normalized * speed, ForceMode.Impulse);
     }
 }
