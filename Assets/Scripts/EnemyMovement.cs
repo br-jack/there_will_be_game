@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public GameObject playerRef;
-
     public float speed;
+    
+    public Transform playerTransformRef;
 
     private Rigidbody _rb;
     
@@ -25,7 +25,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 playerPosition = playerRef.transform.position;
+        Vector3 playerPosition = playerTransformRef.position;
         
         Vector3 distanceFromPlayer = playerPosition - transform.position;
         
