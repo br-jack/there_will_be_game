@@ -5,9 +5,8 @@ public class EnemyMovement : MonoBehaviour
 {
     public float speed;
     
-    public Transform playerTransformRef;
-
-    public Health playerHealthRef;
+    private Health _playerHealthRef;
+    private Transform _playerTransformRef;
 
     private Rigidbody _rb;
     
@@ -18,18 +17,22 @@ public class EnemyMovement : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+
+        GameObject playerRef = GameObject.FindWithTag("Player");
+        
+        _playerTransformRef = playerRef.transform;
+        _playerHealthRef = playerRef.GetComponent<Health>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        
     }
 
     private void FixedUpdate()
     {
         //TODO use a* pathfinding instead
-        Vector3 playerPosition = playerTransformRef.position;
+        Vector3 playerPosition = _playerTransformRef.position;
         
         Vector3 distanceFromPlayer = playerPosition - transform.position;
         
@@ -40,7 +43,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            playerHealthRef.LoseLife();
+            _playerHealthRef.LoseLife();
         }
     }
 }
