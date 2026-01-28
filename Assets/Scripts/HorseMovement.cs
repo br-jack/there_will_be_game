@@ -9,9 +9,6 @@ public class HorseMovement : MonoBehaviour
 
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
-
-    //TODO make setter private but still serialize
-    public int lives = 4;
     
     private float _currentSpeed = 0f;
 
@@ -39,11 +36,6 @@ public class HorseMovement : MonoBehaviour
     private void FixedUpdate()  
     {
         HandleMovement();
-    }
-
-    public void LoseLife()
-    {
-        lives -= 1;
     }
 
     private void HandleMovement()

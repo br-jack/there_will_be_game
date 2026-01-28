@@ -7,6 +7,8 @@ public class EnemyMovement : MonoBehaviour
     
     public Transform playerTransformRef;
 
+    public Health playerHealthRef;
+
     private Rigidbody _rb;
     
     private void Awake()
@@ -38,6 +40,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            playerHealthRef.LoseLife();
         }
     }
 }
