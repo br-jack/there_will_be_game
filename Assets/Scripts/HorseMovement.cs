@@ -26,6 +26,10 @@ public class HorseMovement : MonoBehaviour
 
     private void Awake() 
     {
+    }
+
+    private void Start()
+    {
         _rb = GetComponent<Rigidbody>();
     }
 

@@ -2,15 +2,33 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public GameObject playerRef;
+
+    public float speed;
+
+    private Rigidbody _rb;
+    
+    private void Awake()
+    {
+    }
+
+    private void Start()
+    {
+        _rb = GetComponent<Rigidbody>();
+    }
+
+    // Update is called once per frame
+    private void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
+        Vector3 playerPosition = playerRef.transform.position;
         
+        Vector3 distance = transform.position - playerPosition;
+        
+        _rb.linearVelocity = distance.normalized * speed;
     }
 }
