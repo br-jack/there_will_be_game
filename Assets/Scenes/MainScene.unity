@@ -586,6 +586,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4490477375474901587, guid: 0cc90c063a9ad424a8cd297b90045d41, type: 3}
   m_PrefabInstance: {fileID: 1694188156}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1527663788 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 611199081197747249, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
+  m_PrefabInstance: {fileID: 2253082642983153049}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &1527663794
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527663788}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &1694188156
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -881,10 +913,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6599419910144533847, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6599419910144533847, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
+      propertyPath: m_ProvidesContacts
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 611199081197747249, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 1527663794}
   m_SourcePrefab: {fileID: 100100000, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
