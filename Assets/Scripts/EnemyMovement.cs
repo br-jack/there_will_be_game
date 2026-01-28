@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
@@ -25,10 +26,18 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //TODO use a* pathfinding instead
         Vector3 playerPosition = playerTransformRef.position;
         
         Vector3 distanceFromPlayer = playerPosition - transform.position;
         
         _rb.AddForce(distanceFromPlayer.normalized * speed, ForceMode.Impulse);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+        }
     }
 }
