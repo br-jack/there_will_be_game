@@ -28,12 +28,12 @@ public class WiimoteController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // remote.RumbleOn = true; // Enabled Rumble
-        // remote.SendStatusInfoRequest(); // Requests Status Report, encodes Rumble into input report
+        
 
-        // Thread.Sleep(500); // Wait 0.5s
-
-        // remtote.RumbleOn = false; // Disabled Rumble
-        // remote.SendStatusInfoRequest(); // Requests Status Report, encodes Rumble into input report
+        remote.RumbleOn = true; // Enabled Rumble
+        remote.SendStatusInfoRequest(); // Requests Status Report, encodes Rumble into input repo
+        //Thread.Sleep(500); // Wait 0.
+        remote.RumbleOn = false; // Disabled Rumble
+        remote.SendStatusInfoRequest(); // Requests Status Report, encodes Rumble into input report
     }
 }
