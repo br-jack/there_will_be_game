@@ -8,8 +8,8 @@ public class WiimoteController : MonoBehaviour
     {
         WiimoteManager.FindWiimotes(); // Poll native bluetooth drivers to find Wiimotes
 
-            remote = WiimoteManager.Wiimotes[0];
-            remote.SendPlayerLED(true, false, false, true);
+        remote = WiimoteManager.Wiimotes[0];
+        remote.SendPlayerLED(true, false, false, true);
         
     }
 
@@ -23,6 +23,11 @@ public class WiimoteController : MonoBehaviour
     void Start()
     {
         InitWiimotes();
+    }
+
+    private void OnApplicationQuit()
+    {
+        FinishedWithWiimotes();
     }
 
     // Update is called once per frame
