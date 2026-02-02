@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class HorseMovement : MonoBehaviour
 {
@@ -15,24 +16,25 @@ public class HorseMovement : MonoBehaviour
     
     private float _throttleInput;
     private float _turnInput;
+    
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        Vector2 moveVector = context.ReadValue<Vector2>();
+        _turnInput = moveVector.x;
+        _throttleInput = moveVector.y;
+    }
 
-    void Start() 
+    private void Awake() 
     {
         _rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
-    {
-        _throttleInput = Input.GetAxis("Vertical");
-        _turnInput = Input.GetAxis("Horizontal");
-    }
-
-    void FixedUpdate()  
+    private void FixedUpdate()  
     {
         HandleMovement();
     }
 
-    void HandleMovement()
+    private void HandleMovement()
     {
         if (_throttleInput > 0f)
         {
