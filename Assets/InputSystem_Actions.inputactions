@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "InputSystem_Actions",
     "maps": [
         {
@@ -990,6 +991,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Hammer",
+            "id": "7ff2fb56-958c-4e2f-a3ea-944d2d5de771",
+            "actions": [
+                {
+                    "name": "Rotate Hammer",
+                    "type": "Value",
+                    "id": "c149fed1-98b8-4f72-89f2-74ef7a5213f2",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Move Hammer",
+                    "type": "Value",
+                    "id": "90bc130b-4279-4967-93af-45552051de98",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "88038796-13b9-4cfc-8617-37710f24bc09",
+                    "path": "<AttitudeSensor>/attitude",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Sensor",
+                    "action": "Rotate Hammer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4ffd3e7c-16dc-4278-b178-065fdfa5c9f8",
+                    "path": "<Accelerometer>/acceleration",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Sensor",
+                    "action": "Move Hammer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
@@ -1052,6 +1101,11 @@
                     "isOR": false
                 }
             ]
+        },
+        {
+            "name": "Sensor",
+            "bindingGroup": "Sensor",
+            "devices": []
         }
     ]
 }
