@@ -34,9 +34,9 @@ public class EnemyMovement : MonoBehaviour
         //TODO use a* pathfinding instead
         Vector3 playerPosition = _playerTransformRef.position;
         
-        Vector3 distanceFromPlayer = playerPosition - transform.position;
+        Vector3 direction = (playerPosition - transform.position).normalized;
         
-        _rb.AddForce(distanceFromPlayer.normalized * speed, ForceMode.Impulse);
+        _rb.linearVelocity = new Vector3(direction.x * speed, _rb.linearVelocity.y, direction.z * speed);
     }
 
     private void OnCollisionEnter(Collision other)
