@@ -9,6 +9,7 @@ public class hammer_behaviour : MonoBehaviour
 
     public Wiimote Wiimote { get; private set; }
     
+    //Hammer should start flat with Pitch = 0
     private readonly Quaternion _startingRotation = Quaternion.Euler(new Vector3(270,0,0));
 
     void ConnectWiimote() {
@@ -75,7 +76,6 @@ public class hammer_behaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //Hammer should start flat with Pitch = 0
         ConnectWiimote();
     }
 
