@@ -16,22 +16,28 @@ public class hammer_behaviour : MonoBehaviour
             //Use the first wiimote: others ignored
             wiimote = WiimoteManager.Wiimotes[0];
 
-            if (wiimote.RequestIdentifyWiiMotionPlus())
-                {
-                    wiimote.ActivateWiiMotionPlus();
-                    print("connected with wiimotionplus");
-                } else print("Wii remote doesn't have motion plus :((");
+            //If the wiimote wasn't connected through dolphin, it may still have blinking lights
+            //even though it actually is still connected
+            wiimote.SendPlayerLED(true, false, false, false);
+
+            if (wiimote.Type == WiimoteType.WIIMOTEPLUS || wiimote.RequestIdentifyWiiMotionPlus())
+            {
+                wiimote.ActivateWiiMotionPlus();
+                print("connected with wiimotionplus");
+            }
+            else
+            {
+                print("Wii remote doesn't have motion plus :((");
+            }
         }
     }
     
-    static public Quaternion startingRotation;
+    private readonly Quaternion _startingRotation = Quaternion.Euler(new Vector3(270,0,0));
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //Hammer should start flat with Pitch = 0
-        startingRotation = Quaternion.Euler(new Vector3(270,0,0));
-
         ConnectWiimote(wiimote);
 
         
@@ -56,7 +62,7 @@ public class hammer_behaviour : MonoBehaviour
                 // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
 
 
-        transform.rotation = Quaternion.Inverse(Input.gyro.attitude * startingRotation);
+        transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);
 
 
         /*
@@ -66,8 +72,6 @@ public class hammer_behaviour : MonoBehaviour
             ConnectController();
             }
         */
-        
-        
         
     }
 }
