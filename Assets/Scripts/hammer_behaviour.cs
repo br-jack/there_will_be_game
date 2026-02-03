@@ -30,7 +30,12 @@ public class hammer_behaviour : MonoBehaviour
             if (Wiimote.Type == WiimoteType.WIIMOTEPLUS || Wiimote.RequestIdentifyWiiMotionPlus())
             {
                 Wiimote.ActivateWiiMotionPlus();
-                Debug.Log("connected with wiimotionplus");
+                
+                //Default input mode only sends button data, so for accelerometer / gyro data 
+                //we need to request a mode with extension bytes
+                Wiimote.SendDataReportMode(InputDataType.REPORT_EXT21);
+                
+                Debug.Log("Connected with Wii Motion Plus");
             }
             else
             {
@@ -66,8 +71,8 @@ public class hammer_behaviour : MonoBehaviour
         } while (ret > 0); // ReadWiimoteData() returns 0 when nothing is left to read.  
                 // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
 
-
-        transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);
+        //Unity Remote
+        //transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);
 
 
         /*
