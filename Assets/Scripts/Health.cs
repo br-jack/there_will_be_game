@@ -10,7 +10,7 @@ public class Health : MonoBehaviour
         lives--;
         if (lives == 0)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
     
