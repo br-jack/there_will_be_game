@@ -81,7 +81,7 @@ public class hammer_behaviour : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
+    {
 
         //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
         int ret;
@@ -97,6 +97,12 @@ public class hammer_behaviour : MonoBehaviour
         } while (ret > 0); // ReadWiimoteData() returns 0 when nothing is left to read.  
                 // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
 
+        if (Wiimote.Button.a)
+        {
+            Debug.Log("Calibrating WMP values");
+            Wiimote.MotionPlus.SetZeroValues();
+        }
+
         //Unity Remote
         //transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);
 
@@ -109,5 +115,10 @@ public class hammer_behaviour : MonoBehaviour
             }
         */
         
+    }
+
+    void OnDestroy()
+    {
+        CleanupWiimotes();
     }
 }
