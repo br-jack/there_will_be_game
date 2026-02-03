@@ -7,38 +7,43 @@ using WiimoteApi;
 public class hammer_behaviour : MonoBehaviour
 {
 
-    public Wiimote wiimote;
+    public Wiimote Wiimote { get; private set; }
+    
+    private readonly Quaternion _startingRotation = Quaternion.Euler(new Vector3(270,0,0));
 
-    static void ConnectWiimote(Wiimote wiimote) {
-         WiimoteManager.FindWiimotes(); // Poll native bluetooth drivers to find Wiimotes
+    void ConnectWiimote() {
+        if (WiimoteManager.HasWiimote())
+        {
+            Debug.LogWarning("Attempting to find a Wiimote even though one is already connected!");
+        }
+        
+        WiimoteManager.FindWiimotes(); // Poll native bluetooth drivers to find Wiimotes
 
-        if(WiimoteManager.HasWiimote()) {
+        if (WiimoteManager.HasWiimote()) {
             //Use the first wiimote: others ignored
-            wiimote = WiimoteManager.Wiimotes[0];
+            Wiimote = WiimoteManager.Wiimotes[0];
 
             //If the wiimote wasn't connected through dolphin, it may still have blinking lights
             //even though it actually is still connected
-            wiimote.SendPlayerLED(true, false, false, false);
+            Wiimote.SendPlayerLED(true, false, false, false);
 
-            if (wiimote.Type == WiimoteType.WIIMOTEPLUS || wiimote.RequestIdentifyWiiMotionPlus())
+            if (Wiimote.Type == WiimoteType.WIIMOTEPLUS || Wiimote.RequestIdentifyWiiMotionPlus())
             {
-                wiimote.ActivateWiiMotionPlus();
-                print("connected with wiimotionplus");
+                Wiimote.ActivateWiiMotionPlus();
+                Debug.Log("connected with wiimotionplus");
             }
             else
             {
-                print("Wii remote doesn't have motion plus :((");
+                Debug.LogWarning("Wii remote doesn't have motion plus :((");
             }
         }
     }
-    
-    private readonly Quaternion _startingRotation = Quaternion.Euler(new Vector3(270,0,0));
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //Hammer should start flat with Pitch = 0
-        ConnectWiimote(wiimote);
+        ConnectWiimote();
 
         
     }
@@ -52,12 +57,12 @@ public class hammer_behaviour : MonoBehaviour
         //As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
         int ret;
         do {
-            ret = wiimote.ReadWiimoteData();
+            ret = Wiimote.ReadWiimoteData();
             //not sure re efficiency, this may be v slow and laggy
             transform.rotation *= Quaternion.Euler(
-                wiimote.MotionPlus.PitchSpeed/95, 
-                wiimote.MotionPlus.YawSpeed/95, 
-                wiimote.MotionPlus.RollSpeed/95);
+                Wiimote.MotionPlus.PitchSpeed/95, 
+                Wiimote.MotionPlus.YawSpeed/95, 
+                Wiimote.MotionPlus.RollSpeed/95);
         } while (ret > 0); // ReadWiimoteData() returns 0 when nothing is left to read.  
                 // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
 
