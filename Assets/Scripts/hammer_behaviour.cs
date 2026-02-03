@@ -55,8 +55,16 @@ public class hammer_behaviour : MonoBehaviour
 
     void OnDisable()
     {
-        Debug.Log("Cleaning up Wiimote connection.");
-        WiimoteManager.Cleanup(Wiimote);
+        Debug.Log("Cleaning up Wiimote connections.");
+        
+        //Iterate from the end of the collection to prevent errors from the cleanup function removing each element
+        for (int index = WiimoteManager.Wiimotes.Count - 1; index >= 0; index--)
+        {
+            Wiimote remote = WiimoteManager.Wiimotes[index];
+            WiimoteManager.Cleanup(remote);
+        }
+
+        //Ensure reference to removed wiimote isn't used
         Wiimote = null;
     }
 
