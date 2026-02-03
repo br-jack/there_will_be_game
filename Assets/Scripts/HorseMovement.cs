@@ -9,7 +9,7 @@ public class HorseMovement : MonoBehaviour
 
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
-
+    
     private float _currentSpeed = 0f;
 
     private Rigidbody _rb;
@@ -25,6 +25,10 @@ public class HorseMovement : MonoBehaviour
     }
 
     private void Awake() 
+    {
+    }
+
+    private void Start()
     {
         _rb = GetComponent<Rigidbody>();
     }
