@@ -56,15 +56,8 @@ public class hammer_behaviour : MonoBehaviour
             Wiimote.SendDataReportMode(InputDataType.REPORT_EXT21);
         }
     }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        //Hammer should start flat with Pitch = 0
-        ConnectWiimote();
-    }
-
-    void OnDisable()
+    
+    private void CleanupWiimotes()
     {
         Debug.Log("Cleaning up Wiimote connections.");
         
@@ -79,13 +72,18 @@ public class hammer_behaviour : MonoBehaviour
         Wiimote = null;
     }
 
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        //Hammer should start flat with Pitch = 0
+        ConnectWiimote();
+    }
+
     // Update is called once per frame
     void Update()
     {   
-       
 
-
-        //As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
+        //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
         int ret;
         do {
             Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
