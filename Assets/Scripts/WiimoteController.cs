@@ -51,14 +51,7 @@ public class WiimoteController : MonoBehaviour
         }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
-    {
-        //Hammer should start flat with Pitch = 0
-        ConnectWiimote();
-    }
-
-    private void OnDisable()
+    private void CleanupWiimotes()
     {
         Debug.Log("Cleaning up Wiimote connections.");
         
@@ -71,6 +64,13 @@ public class WiimoteController : MonoBehaviour
 
         //Ensure reference to removed wiimote isn't used
         Wiimote = null;
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        //Hammer should start flat with Pitch = 0
+        ConnectWiimote();
     }
 
     public void RotateObject(Transform objTransform)
@@ -88,12 +88,5 @@ public class WiimoteController : MonoBehaviour
                 Wiimote.MotionPlus.RollSpeed/95);
         } while (ret > 0); // ReadWiimoteData() returns 0 when nothing is left to read.  
         // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {   
-        
-        
     }
 }
