@@ -19,7 +19,9 @@ public class hammer_behaviour : MonoBehaviour
         
         WiimoteManager.FindWiimotes(); // Poll native bluetooth drivers to find Wiimotes
 
-        if (WiimoteManager.HasWiimote()) {
+        if (WiimoteManager.HasWiimote())
+        {
+            Assert.IsTrue(WiimoteManager.Wiimotes.Count == 1, "Only one Wiimote should be connected at a time");
             //Use the first wiimote: others ignored
             Wiimote = WiimoteManager.Wiimotes[0];
 
@@ -27,20 +29,31 @@ public class hammer_behaviour : MonoBehaviour
             //even though it actually is still connected
             Wiimote.SendPlayerLED(true, false, false, false);
 
-            if (Wiimote.Type == WiimoteType.WIIMOTEPLUS || Wiimote.RequestIdentifyWiiMotionPlus())
+            if (Wiimote.Type == WiimoteType.WIIMOTEPLUS)
             {
+                //Running RequestIdentifyWiiMotionPlus() on a Wiimote Plus unfortunately fails,
+                //so we have to skip that check.
+                Debug.Log("Wii Remote Plus detected, skipping Motion Plus check.");
                 Wiimote.ActivateWiiMotionPlus();
-                
-                //Default input mode only sends button data, so for accelerometer / gyro data 
-                //we need to request a mode with extension bytes
-                Wiimote.SendDataReportMode(InputDataType.REPORT_EXT21);
-                
-                Debug.Log("Connected with Wii Motion Plus");
             }
             else
             {
-                Debug.LogWarning("Wii remote doesn't have motion plus :((");
+                Wiimote.RequestIdentifyWiiMotionPlus();
+
+                if (Wiimote.wmp_attached)
+                {
+                    Wiimote.ActivateWiiMotionPlus();
+                    Debug.Log("Connected with Wii Motion Plus Extension.");
+                }
+                else
+                {
+                    Debug.LogWarning("Wii remote doesn't have motion plus :(");
+                }
             }
+            
+            //Default input mode only sends button data, so for accelerometer / gyro data 
+            //we need to request a mode with extension bytes
+            Wiimote.SendDataReportMode(InputDataType.REPORT_EXT21);
         }
     }
 
@@ -49,8 +62,6 @@ public class hammer_behaviour : MonoBehaviour
     {
         //Hammer should start flat with Pitch = 0
         ConnectWiimote();
-
-        
     }
 
     void OnDisable()
@@ -77,7 +88,7 @@ public class hammer_behaviour : MonoBehaviour
         //As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
         int ret;
         do {
-            Assert.IsTrue(WiimoteManager.HasWiimote(), "Wiimote Connected");
+            Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
             
             ret = Wiimote.ReadWiimoteData();
             //not sure re efficiency, this may be v slow and laggy
