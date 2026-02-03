@@ -1,7 +1,7 @@
 using System;
 using UnityEditor;
-using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
+using UnityEngine.Assertions;
 using WiimoteApi;
 
 public class hammer_behaviour : MonoBehaviour
@@ -53,6 +53,13 @@ public class hammer_behaviour : MonoBehaviour
         
     }
 
+    void OnDisable()
+    {
+        Debug.Log("Cleaning up Wiimote connection.");
+        WiimoteManager.Cleanup(Wiimote);
+        Wiimote = null;
+    }
+
     // Update is called once per frame
     void Update()
     {   
@@ -62,6 +69,8 @@ public class hammer_behaviour : MonoBehaviour
         //As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
         int ret;
         do {
+            Assert.IsTrue(WiimoteManager.HasWiimote(), "Wiimote Connected");
+            
             ret = Wiimote.ReadWiimoteData();
             //not sure re efficiency, this may be v slow and laggy
             transform.rotation *= Quaternion.Euler(
