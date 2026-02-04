@@ -4,6 +4,8 @@ public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab; 
     public float spawnInterval = 2f;
+    public int maxEnemies = 5;
+    public int currentEnemies = 0;
 
     private float timer = 0.0f;
 
@@ -19,6 +21,10 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        if (currentEnemies < maxEnemies)
+        {
+            GameObject enemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
+            currentEnemies++;
+        }
     }
 }
