@@ -17,6 +17,12 @@ public class DebugHammer : MonoBehaviour
         _wiimote = GetComponent<hammer_behaviour>().Wiimote;
     }
 
+    public void CalibrateWiiMotionPlus()
+    {
+        Debug.Log("Calibrating WMP values");
+        _wiimote.MotionPlus.SetZeroValues();
+    }
+
     // Update is called once per frame
     void Update()
     {
