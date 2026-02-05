@@ -1,6 +1,9 @@
 using System;
+using System.Globalization;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Assertions;
 using WiimoteApi;
 
@@ -8,6 +11,10 @@ public class hammer_behaviour : MonoBehaviour
 {
 
     public Wiimote Wiimote { get; private set; }
+
+    public TMP_Text pitchSpeedText;
+    public TMP_Text rollSpeedText;
+    public TMP_Text yawSpeedText;
     
     //Hammer should start flat with Pitch = 0
     private readonly Quaternion _startingRotation = Quaternion.Euler(new Vector3(270,0,0));
@@ -89,6 +96,11 @@ public class hammer_behaviour : MonoBehaviour
             Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
             
             ret = Wiimote.ReadWiimoteData();
+
+            pitchSpeedText.text = Wiimote.MotionPlus.PitchSpeed.ToString(CultureInfo.CurrentCulture);
+            rollSpeedText.text = Wiimote.MotionPlus.RollSpeed.ToString(CultureInfo.CurrentCulture);
+            yawSpeedText.text = Wiimote.MotionPlus.YawSpeed.ToString(CultureInfo.CurrentCulture);
+            
             //not sure re efficiency, this may be v slow and laggy
             transform.rotation *= Quaternion.Euler(
                 Wiimote.MotionPlus.PitchSpeed/95, 
