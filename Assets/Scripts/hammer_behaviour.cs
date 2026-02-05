@@ -61,7 +61,7 @@ public class hammer_behaviour : MonoBehaviour
             
             //Default input mode only sends button data, so for accelerometer / gyro data 
             //we need to request a mode with extension bytes
-            Wiimote.SendDataReportMode(InputDataType.REPORT_EXT21);
+            Wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_EXT19);
         }
     }
     
@@ -73,6 +73,7 @@ public class hammer_behaviour : MonoBehaviour
         for (int index = WiimoteManager.Wiimotes.Count - 1; index >= 0; index--)
         {
             Wiimote remote = WiimoteManager.Wiimotes[index];
+            // remote.SendPlayerLED(true, false, false, false);
             WiimoteManager.Cleanup(remote);
         }
 
