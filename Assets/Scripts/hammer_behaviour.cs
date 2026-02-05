@@ -35,7 +35,7 @@ public class hammer_behaviour : MonoBehaviour
 
             //If the wiimote wasn't connected through dolphin, it may still have blinking lights
             //even though it actually is still connected
-            Wiimote.SendPlayerLED(true, false, false, false);
+            Wiimote.SendPlayerLED(true, false, false, true);
 
             if (Wiimote.Type == WiimoteType.WIIMOTEPLUS)
             {
@@ -129,7 +129,7 @@ public class hammer_behaviour : MonoBehaviour
         
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         CleanupWiimotes();
     }
