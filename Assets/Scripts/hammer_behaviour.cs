@@ -97,9 +97,9 @@ public class hammer_behaviour : MonoBehaviour
             
             ret = Wiimote.ReadWiimoteData();
 
-            pitchSpeedText.text = Wiimote.MotionPlus.PitchSpeed.ToString(CultureInfo.CurrentCulture);
-            rollSpeedText.text = Wiimote.MotionPlus.RollSpeed.ToString(CultureInfo.CurrentCulture);
-            yawSpeedText.text = Wiimote.MotionPlus.YawSpeed.ToString(CultureInfo.CurrentCulture);
+            pitchSpeedText.text = $"Pitch Speed: {Wiimote.MotionPlus.PitchSpeed.ToString(CultureInfo.CurrentCulture)}";
+            rollSpeedText.text = $"Roll Speed: {Wiimote.MotionPlus.RollSpeed.ToString(CultureInfo.CurrentCulture)}";
+            yawSpeedText.text = $"Yaw Speed: {Wiimote.MotionPlus.YawSpeed.ToString(CultureInfo.CurrentCulture)}";
             
             //not sure re efficiency, this may be v slow and laggy
             transform.rotation *= Quaternion.Euler(
