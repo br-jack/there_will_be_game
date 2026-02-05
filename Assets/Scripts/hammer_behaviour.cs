@@ -11,10 +11,6 @@ public class hammer_behaviour : MonoBehaviour
 {
 
     public Wiimote Wiimote { get; private set; }
-
-    public TMP_Text pitchSpeedText;
-    public TMP_Text rollSpeedText;
-    public TMP_Text yawSpeedText;
     
     //Hammer should start flat with Pitch = 0
     private readonly Quaternion _startingRotation = Quaternion.Euler(new Vector3(270,0,0));
@@ -82,7 +78,7 @@ public class hammer_behaviour : MonoBehaviour
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         ConnectWiimote();
     }
@@ -97,10 +93,6 @@ public class hammer_behaviour : MonoBehaviour
             Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
             
             ret = Wiimote.ReadWiimoteData();
-
-            pitchSpeedText.text = $"Pitch Speed: {Wiimote.MotionPlus.PitchSpeed.ToString(CultureInfo.CurrentCulture)}";
-            rollSpeedText.text = $"Roll Speed: {Wiimote.MotionPlus.RollSpeed.ToString(CultureInfo.CurrentCulture)}";
-            yawSpeedText.text = $"Yaw Speed: {Wiimote.MotionPlus.YawSpeed.ToString(CultureInfo.CurrentCulture)}";
             
             //not sure re efficiency, this may be v slow and laggy
             transform.rotation *= Quaternion.Euler(
