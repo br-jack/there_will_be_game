@@ -71,6 +71,7 @@ namespace Hammer
             for (int index = WiimoteManager.Wiimotes.Count - 1; index >= 0; index--)
             {
                 Wiimote remote = WiimoteManager.Wiimotes[index];
+                //TODO manually reset LED, rumble etc. before cleaning without it crashing
                 // remote.SendPlayerLED(true, false, false, false);
                 WiimoteManager.Cleanup(remote);
             }
