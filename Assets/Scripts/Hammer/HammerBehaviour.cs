@@ -9,18 +9,19 @@ using WiimoteApi;
 
 namespace Hammer
 {
+    
     public class HammerBehaviour : MonoBehaviour
     {
 
         public Wiimote Wiimote { get; private set; }
+
         
         //Hammer should start flat with Pitch = 0
         public Quaternion StartingRotation { get; private set; }
 
+        private Vector3 wmpOffset = Vector3.zero;
 
-    
-            
-        
+
         void ConnectWiimote() {
             if (WiimoteManager.HasWiimote())
             {
@@ -95,11 +96,7 @@ namespace Hammer
         void Update()
         {
             Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
-            //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
-            int ret = Wiimote.ReadWiimoteData();
-            // ReadWiimoteData() returns 0 when nothing is left to read.
-            // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
-
+            
              if (Wiimote.Button.a)
             {
                 print("Calibrating Wiimote!");
@@ -107,6 +104,25 @@ namespace Hammer
                 Wiimote.MotionPlus.SetZeroValues();
             }
 
+            //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
+            int ret;
+            do {
+                ret = Wiimote.ReadWiimoteData();
+                if (ret > 0 && Wiimote.current_ext == ExtensionController.MOTIONPLUS) {
+                    Vector3 offset = new Vector3(  -Wiimote.MotionPlus.PitchSpeed,
+                                                    Wiimote.MotionPlus.YawSpeed,
+                                                    Wiimote.MotionPlus.RollSpeed) / 95f; // Divide by 95Hz (average updates per second from wiimote)
+                    wmpOffset += offset;
+
+                    transform.Rotate(offset, Space.Self);
+                }
+            } while (ret > 0);
+            // ReadWiimoteData() returns 0 when nothing is left to read.
+            // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
+
+            
+
+            /*
             while (ret > 0) {
                 //not sure re efficiency, this may be v slow and laggy
                 transform.Rotate( new Vector3(
@@ -116,7 +132,7 @@ namespace Hammer
                 
                 ret = Wiimote.ReadWiimoteData();
             }   
-
+            */
            
 
             //Unity Remote
