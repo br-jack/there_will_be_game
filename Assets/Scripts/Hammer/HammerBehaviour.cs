@@ -15,8 +15,12 @@ namespace Hammer
         public Wiimote Wiimote { get; private set; }
         
         //Hammer should start flat with Pitch = 0
-        private readonly Quaternion _startingRotation = Quaternion.Euler(new Vector3(270,0,0));
+        public readonly Quaternion StartingRotation = Quaternion.Euler(new Vector3(270,0,0));
 
+
+    
+            
+        
         void ConnectWiimote() {
             if (WiimoteManager.HasWiimote())
             {
@@ -94,6 +98,14 @@ namespace Hammer
             int ret = Wiimote.ReadWiimoteData();
             // ReadWiimoteData() returns 0 when nothing is left to read.
             // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
+
+             if (Wiimote.Button.a)
+            {
+                print("Calibrating Wiimote!");
+                transform.SetPositionAndRotation(transform.position, StartingRotation);
+                Wiimote.MotionPlus.SetZeroValues();
+            }
+
             while (ret > 0) {
                 //not sure re efficiency, this may be v slow and laggy
                 transform.Rotate( new Vector3(
@@ -104,11 +116,7 @@ namespace Hammer
                 ret = Wiimote.ReadWiimoteData();
             }   
 
-            if (Wiimote.Button.a)
-            {
-                Debug.Log("Calibrating WMP values");
-                Wiimote.MotionPlus.SetZeroValues();
-            }
+           
 
             //Unity Remote
             //transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);

@@ -1,7 +1,9 @@
 using System.Globalization;
 using Hammer;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 using WiimoteApi;
 
 namespace Hammer
@@ -22,8 +24,10 @@ namespace Hammer
 
         public void CalibrateWiiMotionPlus()
         {
-            Debug.Log("Calibrating WMP values");
-            _wiimote.MotionPlus.SetZeroValues();
+            HammerBehaviour hb = GetComponent<HammerBehaviour>();
+            print("Calibrating Wiimote!");
+            transform.SetPositionAndRotation(transform.position, hb.StartingRotation);
+            hb.Wiimote.MotionPlus.SetZeroValues();
         }
 
         // Update is called once per frame
