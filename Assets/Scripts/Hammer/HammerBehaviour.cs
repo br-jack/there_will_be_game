@@ -89,24 +89,20 @@ namespace Hammer
         // Update is called once per frame
         void Update()
         {
+            Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
-            int ret;
-            do {
-                Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
+            int ret = Wiimote.ReadWiimoteData();
+            // ReadWiimoteData() returns 0 when nothing is left to read.
+            // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
+            while (ret > 0) {
+                //not sure re efficiency, this may be v slow and laggy
+                transform.Rotate( new Vector3(
+                    Wiimote.MotionPlus.PitchSpeed, 
+                    -Wiimote.MotionPlus.YawSpeed, 
+                    -Wiimote.MotionPlus.RollSpeed) / 95f);
                 
                 ret = Wiimote.ReadWiimoteData();
-
-                //avoid extra rotations when no data has been read
-                if (ret > 0)
-                {
-                    //not sure re efficiency, this may be v slow and laggy
-                    transform.Rotate( new Vector3(
-                        Wiimote.MotionPlus.PitchSpeed, 
-                        -Wiimote.MotionPlus.YawSpeed, 
-                        -Wiimote.MotionPlus.RollSpeed) / 95f);
-                }
-            } while (ret > 0); // ReadWiimoteData() returns 0 when nothing is left to read.  
-                    // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
+            }   
 
             if (Wiimote.Button.a)
             {
