@@ -100,8 +100,8 @@ namespace Hammer
                 //not sure re efficiency, this may be v slow and laggy
                 transform.Rotate( new Vector3(
                     Wiimote.MotionPlus.PitchSpeed, 
-                    Wiimote.MotionPlus.YawSpeed, 
-                    Wiimote.MotionPlus.RollSpeed) / 95f);
+                    -Wiimote.MotionPlus.YawSpeed, 
+                    -Wiimote.MotionPlus.RollSpeed) / 95f);
             } while (ret > 0); // ReadWiimoteData() returns 0 when nothing is left to read.  
                     // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
 
