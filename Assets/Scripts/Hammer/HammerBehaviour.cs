@@ -15,7 +15,7 @@ namespace Hammer
         public Wiimote Wiimote { get; private set; }
         
         //Hammer should start flat with Pitch = 0
-        public readonly Quaternion StartingRotation = Quaternion.Euler(new Vector3(270,0,0));
+        public Quaternion StartingRotation { get; private set; }
 
 
     
@@ -87,6 +87,7 @@ namespace Hammer
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Awake()
         {
+            StartingRotation = transform.rotation;
             ConnectWiimote();
         }
 
@@ -109,9 +110,9 @@ namespace Hammer
             while (ret > 0) {
                 //not sure re efficiency, this may be v slow and laggy
                 transform.Rotate( new Vector3(
-                    Wiimote.MotionPlus.PitchSpeed, 
-                    -Wiimote.MotionPlus.YawSpeed, 
-                    -Wiimote.MotionPlus.RollSpeed) / 95f);
+                    -Wiimote.MotionPlus.PitchSpeed, 
+                    -Wiimote.MotionPlus.RollSpeed, 
+                    -Wiimote.MotionPlus.YawSpeed) / 190f);
                 
                 ret = Wiimote.ReadWiimoteData();
             }   
