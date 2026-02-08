@@ -19,7 +19,7 @@ namespace Hammer
         //Hammer should start flat with Pitch = 0
         public Quaternion StartingRotation { get; private set; }
 
-        private Vector3 wmpOffset = Vector3.zero;
+        private Quaternion attitude;
 
 
         void ConnectWiimote() {
@@ -86,9 +86,15 @@ namespace Hammer
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
+        {
+            
+        }
+
+        //Called once before start when the game starts
         void Awake()
         {
-            StartingRotation = transform.rotation;
+            //StartingRotation = transform.rotation;
             ConnectWiimote();
         }
 
@@ -97,7 +103,7 @@ namespace Hammer
         {
             Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
             
-             if (Wiimote.Button.a)
+            if (Wiimote.Button.a)
             {
                 print("Calibrating Wiimote!");
                 transform.SetPositionAndRotation(transform.position, StartingRotation);
@@ -106,47 +112,31 @@ namespace Hammer
 
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;
+            Vector3 gyroOffset = Vector3.zero;
+
             do {
                 ret = Wiimote.ReadWiimoteData();
+                //add all detected rotations throughout the frame to gyroOffset
                 if (ret > 0 && Wiimote.current_ext == ExtensionController.MOTIONPLUS) {
-                    Vector3 offset = new Vector3(  -Wiimote.MotionPlus.PitchSpeed,
+                    gyroOffset += new Vector3(  -Wiimote.MotionPlus.PitchSpeed,
                                                     Wiimote.MotionPlus.YawSpeed,
-                                                    Wiimote.MotionPlus.RollSpeed) / 95f; // Divide by 95Hz (average updates per second from wiimote)
-                    wmpOffset += offset;
-
-                    transform.Rotate(offset, Space.Self);
+                                                    Wiimote.MotionPlus.RollSpeed);
                 }
             } while (ret > 0);
+
+            gyroOffset /= 95f; //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
+                            //and speeds of rotations are sent in degrees per second (i think!)
+                            //would be cool to actually count the number of updates per second but I'm not sure how. 
+
+
             // ReadWiimoteData() returns 0 when nothing is left to read.
             // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
 
-            
-
-            /*
-            while (ret > 0) {
-                //not sure re efficiency, this may be v slow and laggy
-                transform.Rotate( new Vector3(
-                    -Wiimote.MotionPlus.PitchSpeed, 
-                    -Wiimote.MotionPlus.RollSpeed, 
-                    -Wiimote.MotionPlus.YawSpeed) / 190f);
-                
-                ret = Wiimote.ReadWiimoteData();
-            }   
-            */
-           
+            transform.Rotate(gyroOffset, Space.Self);
 
             //Unity Remote
             //transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);
 
-
-            /*
-            also doesn't work because of input system
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                print("Looking for connected controllers");
-                ConnectController();
-                }
-            */
-            
         }
 
         public void OnCollisionEnter(Collision collision)

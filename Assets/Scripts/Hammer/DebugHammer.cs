@@ -15,16 +15,21 @@ namespace Hammer
         public TMP_Text yawSpeedText;
 
         private Wiimote _wiimote;
+
+        private HammerBehaviour hb;
     
+        void Awake()
+        {
+            hb = GetComponent<HammerBehaviour>();
+        }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            _wiimote = GetComponent<HammerBehaviour>().Wiimote;
+            _wiimote = hb.Wiimote;
         }
 
         public void CalibrateWiiMotionPlus()
         {
-            HammerBehaviour hb = GetComponent<HammerBehaviour>();
             print("Calibrating Wiimote!");
             transform.SetPositionAndRotation(transform.position, hb.StartingRotation);
             hb.Wiimote.MotionPlus.SetZeroValues();
