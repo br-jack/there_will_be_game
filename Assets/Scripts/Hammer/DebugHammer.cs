@@ -28,6 +28,7 @@ namespace Hammer
             _wiimote = hb.Wiimote;
         }
 
+
         public void CalibrateWiiMotionPlus()
         {
             print("Calibrating Wiimote! Detected gyro speeds at moment of calibration: \nPitch: " 

@@ -9,7 +9,9 @@ using WiimoteApi;
 
 namespace Hammer
 {
-    
+    //probs should set up a mechanism for calibrating the accelerometer. 
+    // This will need the game to take the user through a short process.  
+    //currently just uses whatever calibration values are in there. 
     public class HammerBehaviour : MonoBehaviour
     {
 
@@ -117,7 +119,13 @@ namespace Hammer
 
             do {
                 ret = Wiimote.ReadWiimoteData();
+                //ACCELEROMETER
+
+
+
+                //GYROSCOPE
                 //add all detected rotations throughout the frame to gyroOffset
+                //we should integrate this! would give accurate total rotation
                 if (ret > 0 && Wiimote.current_ext == ExtensionController.MOTIONPLUS) {
                     gyroOffset += new Vector3(  -Wiimote.MotionPlus.PitchSpeed,
                                                     Wiimote.MotionPlus.YawSpeed,
@@ -128,6 +136,7 @@ namespace Hammer
             gyroOffset /= 95f; //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
                             //and speeds of rotations are sent in degrees per second (i think!)
                             //would be cool to actually count the number of updates per second but I'm not sure how. 
+
 
 
             // ReadWiimoteData() returns 0 when nothing is left to read.
