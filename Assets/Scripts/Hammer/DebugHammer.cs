@@ -30,7 +30,14 @@ namespace Hammer
 
         public void CalibrateWiiMotionPlus()
         {
-            print("Calibrating Wiimote!");
+            print("Calibrating Wiimote! Detected gyro speeds at moment of calibration: \nPitch: " 
+                + hb.Wiimote.MotionPlus.PitchSpeed + 
+                "\nRoll: "+hb.Wiimote.MotionPlus.RollSpeed+
+                "\nYaw: "+hb.Wiimote.MotionPlus.YawSpeed);
+            if(!hb.Wiimote.MotionPlus.PitchSlow) print("Also, wiimote is Pitching fast!");
+            if(!hb.Wiimote.MotionPlus.YawSlow) print("Also, wiimote is Yawing fast!");
+            if(!hb.Wiimote.MotionPlus.RollSlow) print("Also, wiimote is Rolling fast!");
+
             transform.SetPositionAndRotation(transform.position, hb.StartingRotation);
             hb.Wiimote.MotionPlus.SetZeroValues();
         }
