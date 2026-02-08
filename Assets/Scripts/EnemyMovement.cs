@@ -46,4 +46,10 @@ public class EnemyMovement : MonoBehaviour
             _playerHealthRef.LoseLife();
         }
     }
+
+    public void Die()
+    {
+        Debug.Log("Enemy died!");
+        Destroy(gameObject);
+    }
 }
