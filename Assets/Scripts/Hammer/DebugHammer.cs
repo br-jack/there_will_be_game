@@ -40,6 +40,7 @@ namespace Hammer
             if(!hb.Wiimote.MotionPlus.RollSlow) print("Also, wiimote is Rolling fast!");
 
             transform.SetPositionAndRotation(transform.position, hb.StartingRotation);
+            hb.attitude = hb.StartingRotation;
             hb.Wiimote.MotionPlus.SetZeroValues();
             hb.Wiimote.Accel.CalibrateAccel(0);
         }

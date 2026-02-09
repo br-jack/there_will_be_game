@@ -22,7 +22,9 @@ namespace Hammer
         //Hammer should start flat with Pitch = 0
         public Quaternion StartingRotation { get; private set; }
 
-        private Quaternion attitude;
+        public float FilterRatio;
+
+        public Quaternion attitude;
 
 
         void ConnectWiimote() {
@@ -114,35 +116,57 @@ namespace Hammer
 
             int ret;
             Vector3 gyroOffset = Vector3.zero;
-            Vector3 accelOffset = Vector3.zero;
 
             do { 
                 ret = Wiimote.ReadWiimoteData();
-            
-                //ACCELEROMETER (unused)
-                float accel_x = Wiimote.Accel.GetCalibratedAccelData()[0];
-                float accel_y = Wiimote.Accel.GetCalibratedAccelData()[1];
-                float accel_z = Wiimote.Accel.GetCalibratedAccelData()[2];
-                Vector3 accelDataForFrameTest = new Vector3(accel_x, accel_y, accel_z);
-                print("Accel data: "+accelDataForFrameTest);
-                accelOffset += accelDataForFrameTest;
 
                 //GYROSCOPE
                 //add all detected rotations throughout the frame to gyroOffset
                 if (ret > 0)// && Wiimote.current_ext == ExtensionController.MOTIONPLUS 
                             // would be good but doesn't seem to work with actual extnesion (not built in)
                     {gyroOffset += new Vector3( 
-                        -Wiimote.MotionPlus.PitchSpeed, 
-                        -Wiimote.MotionPlus.RollSpeed, 
-                        -Wiimote.MotionPlus.YawSpeed);
+                        Wiimote.MotionPlus.PitchSpeed, 
+                        Wiimote.MotionPlus.RollSpeed, 
+                        Wiimote.MotionPlus.YawSpeed);
                     } 
-            } while (ret > 0);
+
+                
+            } while (ret > 0); // ReadWiimoteData() returns 0 when nothing is left to read.
+            // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
+
+            //ACCELEROMETER ADJUSTMENT
+            float accel_x = Wiimote.Accel.GetCalibratedAccelData()[0];
+            float accel_y = Wiimote.Accel.GetCalibratedAccelData()[1];
+            float accel_z = Wiimote.Accel.GetCalibratedAccelData()[2];
+
+            float accelPitch = Mathf.Atan2(accel_y, accel_z) * Mathf.Rad2Deg;
+            float accelRoll  = Mathf.Atan2(-accel_x, Mathf.Sqrt(accel_y*accel_y + accel_z*accel_z)) * Mathf.Rad2Deg;
+
             gyroOffset /= 95f;
-            //  //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
-            //  //and speeds of rotations are sent in degrees per second (i think!)
-            //  // ReadWiimoteData() returns 0 when nothing is left to read.
-            //  // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
-            transform.Rotate(gyroOffset, Space.Self);
+            //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
+            //and speeds of rotations are sent in degrees per second (i think!)
+
+            //probs shouldn't have so much switching between quaternions and euler! 
+            // i want to use quaternions but i am not cool enough to understand them yet
+            attitude *= Quaternion.Euler(gyroOffset);
+            Vector3 accel = new Vector3(accel_x, accel_y, accel_z).normalized;
+            Vector3 estimatedGravity = attitude * Vector3.down;
+            Quaternion gravityError = Quaternion.FromToRotation(estimatedGravity, accel);
+            float correctionStrength = 1f - FilterRatio; 
+            Quaternion correction = Quaternion.Slerp(Quaternion.identity, gravityError, correctionStrength);
+
+            attitude = correction * attitude;
+
+
+            /*
+            commenting out while i try to only quaternion
+            Vector3 euler_attitude = attitude.eulerAngles;
+            //euler_attitude.x = FilterRatio * euler_attitude.x + (1f - FilterRatio) * accelPitch;
+            //euler_attitude.z = FilterRatio * euler_attitude.z + (1f - FilterRatio) * accelRoll;
+            attitude = Quaternion.Euler(euler_attitude);
+            */
+            
+            transform.localRotation = attitude;
         }
 
         public void OnCollisionEnter(Collision collision)
