@@ -9,7 +9,9 @@ public class EnemyMovement : MonoBehaviour
     private Transform _playerTransformRef;
 
     private Rigidbody _rb;
-    
+
+    private bool isKnockedback;
+
     private void Awake()
     {
     }
@@ -27,10 +29,15 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+
     }
 
     private void FixedUpdate()
     {
+        if (isKnockedback)
+        {
+            return;
+        }
         //TODO use a* pathfinding instead
         Vector3 playerPosition = _playerTransformRef.position;
         
@@ -45,11 +52,24 @@ public class EnemyMovement : MonoBehaviour
         {
             _playerHealthRef.LoseLife();
         }
+
+        if (other.gameObject.CompareTag("Arena") && isKnockedback)
+        {
+            isKnockedback = false;
+        }
     }
 
     public void Die()
     {
         Debug.Log("Enemy died!");
         Destroy(gameObject);
+    }
+
+    public void ApplyKnockback(Vector3 force)
+    {
+        isKnockedback = true;
+
+        _rb.linearVelocity = Vector3.zero;
+        _rb.AddForce(force, ForceMode.Impulse);
     }
 }

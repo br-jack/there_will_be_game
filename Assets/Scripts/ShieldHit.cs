@@ -9,15 +9,15 @@ public class ShieldHit : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        Rigidbody enemyRb = GetComponentInParent<Rigidbody>();
+        EnemyMovement enemyRb = GetComponentInParent<EnemyMovement>();
         if (enemyRb == null) return;
 
         Vector3 direction =
-            enemyRb.position - other.transform.position;
+            enemyRb.transform.position - other.transform.position;
 
         direction.y = 0.5f;
         direction.Normalize();
 
-        enemyRb.AddForce(direction * knockbackForce, ForceMode.Impulse);
+        enemyRb.ApplyKnockback(direction * knockbackForce);
     }
 }
