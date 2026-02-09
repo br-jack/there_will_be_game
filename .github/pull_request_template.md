@@ -8,7 +8,7 @@
 ## Description
 <!--- Describe your changes in detail here -->
 
-## Related Issue
+## Related Issues
 <!--- If suggesting a new feature or change, please discuss it in an issue first -->
 <!--- If fixing a bug, there should be an issue describing it with steps to reproduce -->
 
@@ -33,6 +33,11 @@ Replace the ' ' with an 'x' in all the boxes that apply: -->
 - [ ] Input Mechanisms (e.g. Wiimote, Steering Wheel, etc.)
 - [ ] Documentation (non-code additions or modifications to documentation or other .md files)
 - [ ] `.github` (e.g. changes to Issue/PR templates or GitHub Actions workflows)
+
+## Potential Future Improvements (if applicable)
+
+<!--- If some/all of the changes or features in this pull request are unfinished,
+suggest how they could be further improved, adjusted or polished in the future. -->
 
 ## Types of code changes (if applicable)
 <!--- If this PR is modifying code, what types of code changes does this PR introduce/include? 
