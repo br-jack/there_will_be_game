@@ -22,7 +22,7 @@ Closes INSERT ISSUE NUMBER(S) HERE
 <!--- Why is this change required? What problem does it solve? -->
 
 ## Areas changed
-<!--- What areas of the repository files does this PR change? 
+<!--- What areas of the game and/or repository does this PR change? 
 Replace the ' ' with an 'x' in all the boxes that apply: -->
 
 - [ ] Human (Hammer User)
