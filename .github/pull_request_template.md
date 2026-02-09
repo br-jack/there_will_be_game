@@ -27,6 +27,10 @@ Replace the ' ' with an 'x' in all the boxes that apply: -->
 
 - [ ] Human (Hammer User)
 - [ ] Horse
+- [ ] Physics
+- [ ] Visuals
+- [ ] Sounds
+- [ ] Input Mechanisms (e.g. Wiimote, Steering Wheel, etc.)
 - [ ] Documentation (non-code additions or modifications to documentation or other .md files)
 - [ ] `.github` (e.g. changes to Issue/PR templates or GitHub Actions workflows)
 
@@ -41,12 +45,10 @@ Replace the ' ' with an 'x' in all the boxes that apply: -->
 ## Checklist for code changes (if applicable):
 <!--- Replace the ' ' with an 'x' in boxes for tasks that have been completed: -->
 
+- [ ] All changes made in the Unity Editor have been saved and committed.
 - [ ] My code follows the code style of this project and is formatted correctly.
-- [ ] My code change requires a change to the documentation.
+- [ ] The documentation might need to be changed as a result of a code change.
 - [ ] I have updated the documentation accordingly.
-- [ ] I have added tests to cover my changes.
-- [ ] All new and existing tests passed.
-- [ ] I have verified that there are no linter warnings.
 
 ## How Has This Been Tested? (if applicable)
 <!--- Please describe in detail how you tested your changes. -->
@@ -57,6 +59,3 @@ Replace the ' ' with an 'x' in all the boxes that apply: -->
 
 ## Notes
 <!--- Add any miscellaneous information here if needed -->
-
-
-<!--- PR template modified from https://www.talater.com/open-source-templates/#/page/99 -->
