@@ -41,6 +41,7 @@ namespace Hammer
 
             transform.SetPositionAndRotation(transform.position, hb.StartingRotation);
             hb.Wiimote.MotionPlus.SetZeroValues();
+            hb.Wiimote.Accel.CalibrateAccel(0);
         }
 
         // Update is called once per frame

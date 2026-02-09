@@ -66,7 +66,7 @@ namespace Hammer
                 
                 //Default input mode only sends button data, so for accelerometer / gyro data 
                 //we need to request a mode with extension bytes
-                Wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_EXT19);
+                Wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
             }
         }
         
@@ -116,20 +116,20 @@ namespace Hammer
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;
             Vector3 gyroOffset = Vector3.zero;
-            //Vector3 accelOffset = Vector3.zero;
+            Vector3 accelOffset = Vector3.zero;
 
             do {
                 ret = Wiimote.ReadWiimoteData();
 
                 //ACCELEROMETER
-                /*
+                
                 Vector3 accelDataForFrameTest = new Vector3(
                     Wiimote.Accel.GetCalibratedAccelData()[0],
                     Wiimote.Accel.GetCalibratedAccelData()[1],
                     Wiimote.Accel.GetCalibratedAccelData()[2]);
                 print("Accel data: "+accelDataForFrameTest);
                 accelOffset += accelDataForFrameTest;
-                */
+                
                 //this is a test basically
 
                 //GYROSCOPE
