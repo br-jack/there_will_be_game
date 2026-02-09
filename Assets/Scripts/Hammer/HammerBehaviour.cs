@@ -116,12 +116,19 @@ namespace Hammer
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;
             Vector3 gyroOffset = Vector3.zero;
+            Vector3 accelOffset = Vector3.zero;
 
             do {
                 ret = Wiimote.ReadWiimoteData();
+
                 //ACCELEROMETER
-
-
+                Vector3 accelDataForFrameTest = new Vector3(
+                    Wiimote.Accel.GetCalibratedAccelData()[0],
+                    Wiimote.Accel.GetCalibratedAccelData()[1],
+                    Wiimote.Accel.GetCalibratedAccelData()[2]);
+                print("Accel data: "+accelDataForFrameTest);
+                accelOffset += accelDataForFrameTest;
+                //this is a test basically
 
                 //GYROSCOPE
                 //add all detected rotations throughout the frame to gyroOffset
@@ -136,13 +143,20 @@ namespace Hammer
             gyroOffset /= 95f; //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
                             //and speeds of rotations are sent in degrees per second (i think!)
                             //would be cool to actually count the number of updates per second but I'm not sure how. 
+                            //i think that this is completely wrong. nothing like 95 messages sent per frame. but idk
+                            //oh wait yeah ofc its wrong, we are not 1 frame per second!! 
 
 
 
             // ReadWiimoteData() returns 0 when nothing is left to read.
             // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
 
-            transform.Rotate(gyroOffset, Space.Self);
+            //transform.Rotate(gyroOffset, Space.Self);
+            //^^needed for hammer rotation w/ gyroscope - commented out to test accelerometer
+
+            print("Total accel offset for frame: "+accelOffset);
+            transform.Translate(accelOffset/95f, Space.Self);
+            //just using accel values/100 for translation - makes no sense but testing!
 
             //Unity Remote
             //transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);
