@@ -21,7 +21,9 @@ namespace Hammer
         //Hammer should start flat with Pitch = 0
         public Quaternion StartingRotation { get; private set; }
 
-        private Quaternion wiimoteAttitude;
+        public Quaternion wiimoteAttitude; //should be private, can change later as only one method uses i think!
+
+        public float accelAdjustmentRatio; //0.02 seems reasonable
 
 
         void ConnectWiimote() {
@@ -123,14 +125,7 @@ namespace Hammer
             do {
                 ret = Wiimote.ReadWiimoteData();
 
-                //ACCELEROMETER
                 
-                Vector3 accelDataForFrameTest = new Vector3(
-                    Wiimote.Accel.GetCalibratedAccelData()[0],
-                    Wiimote.Accel.GetCalibratedAccelData()[1],
-                    Wiimote.Accel.GetCalibratedAccelData()[2]);
-                print("Accel data: "+accelDataForFrameTest);
-                accelOffset += accelDataForFrameTest;
                 
                 //this is a test basically
 
@@ -144,6 +139,8 @@ namespace Hammer
                 }
             } while (ret > 0);
 
+            
+
             gyroOffset /= 95f; //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
                             //and speeds of rotations are sent in degrees per second (i think!)
                             //would be cool to actually count the number of updates per second but I'm not sure how. 
@@ -154,8 +151,24 @@ namespace Hammer
             
             // ReadWiimoteData() returns 0 when nothing is left to read.
             // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
+            wiimoteAttitude *= Quaternion.Euler(gyroOffset);
 
-            transform.Rotate(gyroOffset, Space.Self);
+            
+            //ACCELEROMETER
+                
+            Vector3 accel = new Vector3(
+                Wiimote.Accel.GetCalibratedAccelData()[0],
+                Wiimote.Accel.GetCalibratedAccelData()[1],
+                Wiimote.Accel.GetCalibratedAccelData()[2]);
+            
+            
+            Vector3 down = new Vector3(270,0,0);
+            wiimoteAttitude *= Quaternion.Slerp(Quaternion.Euler(accel), Quaternion.Euler(down), accelAdjustmentRatio); 
+            //Meant to rotate by an amount determined by adjustment ratio towards accelerometer reccomended attitude. dumb because obvs accelerometer does not always reccomend to rotate towards down. 
+            
+            
+            
+            transform.localRotation = wiimoteAttitude;
 
             //print("Total accel offset for frame: "+accelOffset);
             //transform.Translate(accelOffset/95f, Space.Self);
