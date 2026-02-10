@@ -10,6 +10,10 @@ public class Health : MonoBehaviour
         lives--;
         if (lives == 0)
         {
+            if (CompareTag("Enemy"))
+            {
+                
+            }
             gameObject.SetActive(false);
         }
     }

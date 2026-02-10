@@ -4,11 +4,12 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     public float speed;
-    
+    public EnemySpawner spawner;
     private Health _playerHealthRef;
     private Transform _playerTransformRef;
-
     private Rigidbody _rb;
+    private Vector3 formationTarget;
+    private bool hasFormationTarget;
     
     private void Awake()
     {
@@ -32,10 +33,9 @@ public class EnemyMovement : MonoBehaviour
     private void FixedUpdate()
     {
         //TODO use a* pathfinding instead
-        Vector3 playerPosition = _playerTransformRef.position;
-        
-        Vector3 direction = (playerPosition - transform.position).normalized;
-        
+        Vector3 targetPosition = hasFormationTarget ? formationTarget : _playerTransformRef.position;
+        Vector3 direction = (targetPosition - transform.position).normalized;
+
         _rb.linearVelocity = new Vector3(direction.x * speed, _rb.linearVelocity.y, direction.z * speed);
     }
 
@@ -45,5 +45,21 @@ public class EnemyMovement : MonoBehaviour
         {
             _playerHealthRef.LoseLife();
         }
+    }
+
+    private void OnDisable()
+    {
+        if (spawner != null)
+        {
+            spawner.aliveEnemies.Remove(this);
+            spawner.currentEnemies = Mathf.Max(0, spawner.currentEnemies - 1);
+            spawner.UpdateFormationTargets();
+        }
+    }
+
+    public void SetFormationTarget(Vector3 target) 
+    {
+        formationTarget = target;
+        hasFormationTarget = true;
     }
 }
