@@ -49,7 +49,6 @@ public class HorseMovement : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        col = GetComponent<CapsuleCollider>();
     }
 
     private void FixedUpdate()  
@@ -61,12 +60,6 @@ public class HorseMovement : MonoBehaviour
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
         bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
-
-        // bool grounded = Physics.CheckCapsule( 
-        //     col.bounds.center, 
-        //     new Vector3(col.bounds.center.x, col.bounds.min.y, col.bounds.center.z), 
-        //     0.1f, 
-        //     groundMask );
 
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
@@ -81,16 +74,28 @@ public class HorseMovement : MonoBehaviour
 
         if (grounded) //prevents accelerating, decelerating or turning whilst midair
         {
-            if (_throttleInput > 0f)
+            if (_throttleInput > 0.0f)
             {
                 _currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
             }
-            else
+            else if (_throttleInput < 0.0f)
             {
                 _currentSpeed -= deceleration * Time.fixedDeltaTime;
             }
+            else 
+            {
+                if (_currentSpeed > 0f)
+                {
+                    _currentSpeed -= deceleration * Time.fixedDeltaTime;
+                } else if (_currentSpeed < 0f)
+                {
+                _currentSpeed += deceleration * Time.fixedDeltaTime;
+                }
+                
+                if (Mathf.Abs(_currentSpeed) < 0.01f) _currentSpeed = 0f;
+            }
 
-            _currentSpeed = Mathf.Clamp(_currentSpeed, 0f, maxSpeed);
+            _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
 
             //restrict turning more at higher speeds
             float speedPercent = _currentSpeed / maxSpeed;
@@ -104,5 +109,6 @@ public class HorseMovement : MonoBehaviour
         Vector3 forwardMovement = transform.forward * (_currentSpeed * Time.fixedDeltaTime); 
         
         _rb.MovePosition(_rb.position + forwardMovement);
+        deceleration = 6.0f;
     }
 }
