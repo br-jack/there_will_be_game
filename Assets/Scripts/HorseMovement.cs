@@ -12,16 +12,34 @@ public class HorseMovement : MonoBehaviour
     
     private float _currentSpeed = 0f;
 
+    private float speedPercent;
+
+    private float scaledJumpForce;
+
     private Rigidbody _rb;
+
+    private CapsuleCollider col;
     
     private float _throttleInput;
     private float _turnInput;
+
+    public float jumpForce = 8.5f;
+    public LayerMask groundMask;
+    public float groundCheckDistance = 1.0f;
+
+    private bool _jumpPressed;
     
     public void OnMove(InputAction.CallbackContext context)
     {
         Vector2 moveVector = context.ReadValue<Vector2>();
         _turnInput = moveVector.x;
         _throttleInput = moveVector.y;
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            _jumpPressed = true;
     }
 
     private void Awake() 
@@ -31,6 +49,7 @@ public class HorseMovement : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        col = GetComponent<CapsuleCollider>();
     }
 
     private void FixedUpdate()  
@@ -40,27 +59,50 @@ public class HorseMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (_throttleInput > 0f)
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
+        bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
+
+        // bool grounded = Physics.CheckCapsule( 
+        //     col.bounds.center, 
+        //     new Vector3(col.bounds.center.x, col.bounds.min.y, col.bounds.center.z), 
+        //     0.1f, 
+        //     groundMask );
+
+        //scale jumping to speed
+        speedPercent = _currentSpeed / maxSpeed;
+        scaledJumpForce = jumpForce * speedPercent;
+
+        if (_jumpPressed && grounded && _currentSpeed > 2f)
         {
-            _currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
+            _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
-        else
+
+        _jumpPressed = false;
+
+        if (grounded) //prevents accelerating, decelerating or turning whilst midair
         {
-            _currentSpeed -= deceleration * Time.fixedDeltaTime;
+            if (_throttleInput > 0f)
+            {
+                _currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
+            }
+            else
+            {
+                _currentSpeed -= deceleration * Time.fixedDeltaTime;
+            }
+
+            _currentSpeed = Mathf.Clamp(_currentSpeed, 0f, maxSpeed);
+
+            //restrict turning more at higher speeds
+            float speedPercent = _currentSpeed / maxSpeed;
+            float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
+            
+            Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
+
+            _rb.MoveRotation(_rb.rotation * turnRotation);
         }
 
-        _currentSpeed = Mathf.Clamp(_currentSpeed, 0f, maxSpeed);
-
-        //restrict turning more at higher speeds
-        float speedPercent = _currentSpeed / maxSpeed;
-        float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
-
-        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
-
-        _rb.MoveRotation(_rb.rotation * turnRotation);
-
-        Vector3 newPosition = _rb.position + ((_currentSpeed * Time.fixedDeltaTime) * transform.forward);
-
-        _rb.MovePosition(newPosition);
+        Vector3 forwardMovement = transform.forward * (_currentSpeed * Time.fixedDeltaTime); 
+        
+        _rb.MovePosition(_rb.position + forwardMovement);
     }
 }

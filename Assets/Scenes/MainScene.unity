@@ -526,6 +526,11 @@ MonoBehaviour:
   maxSpeed: 14
   turnSpeed: 70
   turnSpeedAtZero: 100
+  jumpForce: 8.5
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
+  groundCheckDistance: 1.1
 --- !u!136 &1460002595
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -638,6 +643,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 111a6bfb-e3bc-4f77-980a-78385e362bb1
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1460002594}
+        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3f41fc29-43a5-49cf-80e0-a4537fd069c3
+    m_ActionName: 'Player/Jump[/Keyboard/space]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -764,7 +785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4490477375474901587, guid: 0cc90c063a9ad424a8cd297b90045d41, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4490477375474901587, guid: 0cc90c063a9ad424a8cd297b90045d41, type: 3}
       propertyPath: m_LocalPosition.z
@@ -817,7 +838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1438546959266459337, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.523
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 1438546959266459337, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_LocalPosition.z
