@@ -21,7 +21,7 @@ namespace Hammer
         //Hammer should start flat with Pitch = 0
         public Quaternion StartingRotation { get; private set; }
 
-        private Quaternion attitude;
+        private Quaternion wiimoteAttitude;
 
 
         void ConnectWiimote() {
@@ -60,7 +60,8 @@ namespace Hammer
                     }
                     else
                     {
-                        Debug.LogWarning("Wii remote doesn't have motion plus :(");
+                        Wiimote.ActivateWiiMotionPlus();
+                        Debug.LogWarning("Wii remote doesn't have motion plus :( have to activate anyways as check seems to not work");
                     }
                 }
                 
@@ -97,6 +98,7 @@ namespace Hammer
         void Awake()
         {
             StartingRotation = transform.rotation;
+            wiimoteAttitude = StartingRotation; //have to set it to something! assume same as hammer
             ConnectWiimote();
         }
 
@@ -136,9 +138,9 @@ namespace Hammer
                 //add all detected rotations throughout the frame to gyroOffset
                 //we should integrate this! would give accurate total rotation
                 if (ret > 0 && Wiimote.current_ext == ExtensionController.MOTIONPLUS) {
-                    gyroOffset += new Vector3(  -Wiimote.MotionPlus.PitchSpeed,
-                                                    -Wiimote.MotionPlus.RollSpeed,
-                                                    -Wiimote.MotionPlus.YawSpeed);
+                    gyroOffset += new Vector3(  Wiimote.MotionPlus.PitchSpeed,
+                                                    Wiimote.MotionPlus.RollSpeed,
+                                                    Wiimote.MotionPlus.YawSpeed);
                 }
             } while (ret > 0);
 
@@ -149,7 +151,7 @@ namespace Hammer
                             //oh wait yeah ofc its wrong, we are not 1 frame per second!! 
 
 
-
+            
             // ReadWiimoteData() returns 0 when nothing is left to read.
             // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
 
