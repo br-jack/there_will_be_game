@@ -22,6 +22,10 @@ namespace Hammer
         public TMP_Text accelMessagesText;
         public TMP_Text accelButtonText;
 
+        public GameObject backImage;
+        public GameObject noseImage;
+        public GameObject sideImage;
+
         public enum calibrationMode { BACK, NOSE, SIDE, NONE }
         private calibrationMode step = calibrationMode.NONE;
 
@@ -37,6 +41,11 @@ namespace Hammer
         void Start()
         {
             _wiimote = hb.Wiimote;
+            sideImage.gameObject.SetActive(false);
+            noseImage.gameObject.SetActive(false);
+            backImage.gameObject.SetActive(false);
+
+
         }
 
         public void CalibrateAccelStep()
@@ -45,24 +54,31 @@ namespace Hammer
             {
                 case calibrationMode.NONE:
                     // display back image
+                    backImage.gameObject.SetActive(true);
                     accelMessagesText.text = $"Place your remote on its back then press next.";
                     accelButtonText.text = "Next";
                     this.step = calibrationMode.BACK;
                     break;
                 case calibrationMode.BACK:
                     // display nose image
+                    backImage.gameObject.SetActive(false);
+                    noseImage.gameObject.SetActive(true);
                     accelMessagesText.text = "Place your remote on its nose then press next.";
                     _wiimote.Accel.CalibrateAccel(AccelCalibrationStep.A_BUTTON_UP);
                     this.step = calibrationMode.NOSE;
                     break;
                 case calibrationMode.NOSE:
                     // display side image
-                    accelMessagesText.text = "Place your remote on its side then press next.";
+                    sideImage.gameObject.SetActive(true);
+                    noseImage.gameObject.SetActive(false);
+                    accelMessagesText.text = "Place your remote on its right side then press next.";
                     _wiimote.Accel.CalibrateAccel(AccelCalibrationStep.EXPANSION_UP);
                     this.step = calibrationMode.SIDE;
                     break;
                 case calibrationMode.SIDE:
                     // display calibrated image
+                    sideImage.gameObject.SetActive(false);
+
                     accelMessagesText.text = "Calibration Complete.";
                     accelButtonText.text = "Calibrate Again";
                     _wiimote.Accel.CalibrateAccel(AccelCalibrationStep.LEFT_SIDE_UP);
