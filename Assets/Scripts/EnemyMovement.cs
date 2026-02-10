@@ -4,7 +4,8 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     public float speed;
-    
+    public GameObject shield;
+
     private Health _playerHealthRef;
     private Transform _playerTransformRef;
 
@@ -50,7 +51,14 @@ public class EnemyMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            _playerHealthRef.LoseLife();
+            if (HasShield())
+            {
+                _playerHealthRef.LoseLife();
+            }
+            else
+            {
+                Die();
+            }
         }
 
         if (other.gameObject.CompareTag("Arena") && isKnockedback)
@@ -71,5 +79,19 @@ public class EnemyMovement : MonoBehaviour
 
         _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(force, ForceMode.Impulse);
+    }
+
+    public void BreakShield()
+    {
+        if (shield != null)
+        {
+            Destroy(shield);
+            shield = null;
+        }
+    }
+
+    public bool HasShield()
+    {
+        return shield != null;
     }
 }

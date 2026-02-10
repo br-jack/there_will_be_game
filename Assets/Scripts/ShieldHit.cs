@@ -19,5 +19,6 @@ public class ShieldHit : MonoBehaviour
         direction.Normalize();
 
         enemyRb.ApplyKnockback(direction * knockbackForce);
+        enemyRb.BreakShield();
     }
 }
