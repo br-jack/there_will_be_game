@@ -14,6 +14,10 @@ namespace Hammer
         public TMP_Text rollSpeedText;
         public TMP_Text yawSpeedText;
 
+        public TMP_Text xAccelText;
+        public TMP_Text yAccelText;
+        public TMP_Text zAccelText;
+
         private Wiimote _wiimote;
 
         private HammerBehaviour hb;
@@ -41,7 +45,6 @@ namespace Hammer
 
             transform.SetPositionAndRotation(transform.position, hb.StartingRotation);
             hb.Wiimote.MotionPlus.SetZeroValues();
-            hb.Wiimote.Accel.CalibrateAccel(0);
         }
 
         // Update is called once per frame
@@ -50,6 +53,9 @@ namespace Hammer
             pitchSpeedText.text = $"Pitch Speed: {_wiimote.MotionPlus.PitchSpeed.ToString(CultureInfo.CurrentCulture)}";
             rollSpeedText.text = $"Roll Speed: {_wiimote.MotionPlus.RollSpeed.ToString(CultureInfo.CurrentCulture)}";
             yawSpeedText.text = $"Yaw Speed: {_wiimote.MotionPlus.YawSpeed.ToString(CultureInfo.CurrentCulture)}";
+            xAccelText.text = $"X Accel: {_wiimote.Accel.GetCalibratedAccelData()[0].ToString(CultureInfo.CurrentCulture)}";
+            yAccelText.text = $"Y Accel: {_wiimote.Accel.GetCalibratedAccelData()[1].ToString(CultureInfo.CurrentCulture)}";
+            zAccelText.text = $"Z Accel: {_wiimote.Accel.GetCalibratedAccelData()[2].ToString(CultureInfo.CurrentCulture)}";
         }
     }
 }
