@@ -22,6 +22,7 @@ public class HorseMovement : MonoBehaviour
     
     private float _throttleInput;
     private float _turnInput;
+    private float _brakeInput;
 
     public float jumpForce = 8.5f;
     public LayerMask groundMask;
@@ -29,17 +30,32 @@ public class HorseMovement : MonoBehaviour
 
     private bool _jumpPressed;
     
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        Vector2 moveVector = context.ReadValue<Vector2>();
-        _turnInput = moveVector.x;
-        _throttleInput = moveVector.y;
-    }
+    // public void OnMove(InputAction.CallbackContext context)
+    // {
+    //     Vector2 moveVector = context.ReadValue<Vector2>();
+    //     _turnInput = moveVector.x;
+    //     _throttleInput = moveVector.y;
+    // }
 
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed)
             _jumpPressed = true;
+    }
+
+    public void onSteer(InputAction.CallbackContext context)
+    {
+        _turnInput = context.ReadValue<float>();
+    }
+
+    public void onAccelerate(InputAction.CallbackContext context)
+    {
+        _throttleInput = context.ReadValue<float>();
+    }
+
+    public void onBrake(InputAction.CallbackContext context)
+    {
+        _brakeInput = context.ReadValue<float>();
     }
 
     private void Awake() 
@@ -72,43 +88,58 @@ public class HorseMovement : MonoBehaviour
 
         _jumpPressed = false;
 
-        if (grounded) //prevents accelerating, decelerating or turning whilst midair
+        if (grounded) //prevents accelerating and decelerating whilst midair
         {
             if (_throttleInput > 0.0f)
             {
                 _currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
             }
-            else if (_throttleInput < 0.0f)
+            if (_brakeInput > 0.0f)
             {
                 _currentSpeed -= deceleration * Time.fixedDeltaTime;
             }
-            else 
+            if (_throttleInput == 0.0f && _brakeInput == 0.0f)
             {
                 if (_currentSpeed > 0f)
                 {
                     _currentSpeed -= deceleration * Time.fixedDeltaTime;
                 } else if (_currentSpeed < 0f)
                 {
-                _currentSpeed += deceleration * Time.fixedDeltaTime;
+                    _currentSpeed += deceleration * Time.fixedDeltaTime;
                 }
-                
-                if (Mathf.Abs(_currentSpeed) < 0.01f) _currentSpeed = 0f;
             }
+            // code for using onMove - vector 2 via joystick
+            // if (_throttleInput < 0.0f)
+            // {
+            //     _currentSpeed -= deceleration * Time.fixedDeltaTime;
+            // }
+            // else 
+            // {
+            //     if (_currentSpeed > 0f)
+            //     {
+            //         _currentSpeed -= deceleration * Time.fixedDeltaTime;
+            //     } else if (_currentSpeed < 0f)
+            //     {
+            //         _currentSpeed += deceleration * Time.fixedDeltaTime;
+            //     }
+                
+            //     if (Mathf.Abs(_currentSpeed) < 0.01f) _currentSpeed = 0f;
+            // }
 
             _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
-
-            //restrict turning more at higher speeds
-            float speedPercent = _currentSpeed / maxSpeed;
-            float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
-            
-            Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
-
-            _rb.MoveRotation(_rb.rotation * turnRotation);
         }
+
+        //restrict turning more at higher speeds
+        float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
+        if (!grounded) {effectiveTurnSpeed *= 0.2f;}
+            
+        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
+
+        _rb.MoveRotation(_rb.rotation * turnRotation);
+        
 
         Vector3 forwardMovement = transform.forward * (_currentSpeed * Time.fixedDeltaTime); 
         
         _rb.MovePosition(_rb.position + forwardMovement);
-        deceleration = 6.0f;
     }
 }
