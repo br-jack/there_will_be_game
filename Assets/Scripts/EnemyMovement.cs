@@ -12,7 +12,6 @@ public class EnemyMovement : MonoBehaviour
     private Vector3 _attackTarget;
     public bool hasFormationTarget;
     private bool _hasAttackTarget;
-    private float _breakFormationDistance = 4f;
     
     private void Awake()
     {
@@ -41,10 +40,10 @@ public class EnemyMovement : MonoBehaviour
             : (_hasAttackTarget ? _attackTarget : _playerTransformRef.position);
         Vector3 direction = (targetPosition - transform.position).normalized;
 
-        _rb.linearVelocity = new Vector3(direction.x * speed, _rb.linearVelocity.y, direction.z * speed);
+        _rb.linearVelocity = new Vector3(direction.x * speed * 0.5f, _rb.linearVelocity.y, direction.z * speed * 0.5f);
 
         // If the enemy is in a formation, break it when it's sufficiently close to the player
-        if (hasFormationTarget && Vector3.Distance(_playerTransformRef.position, transform.position) < _breakFormationDistance)
+        if (hasFormationTarget && spawner != null && Vector3.Distance(_playerTransformRef.position, transform.position) < spawner.breakFormationDistance)
         {
             ClearFormationTarget();
             spawner.UpdateFormationTargets();

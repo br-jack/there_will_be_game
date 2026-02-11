@@ -19,13 +19,14 @@ public class EnemySpawner : MonoBehaviour
     public int formationColumns = 5;
     public Vector2 formationSpacing = new Vector2(3f, 3f);
     public bool centerFormationOnSpawner = true;
-    public float formationMoveSpeed = 2f;
-    public float attackRingRadius = 1.5f;
-    public float attackRingRotationSpeed = 35f;
+    public float attackRingRadius = 2.0f;
+    public float attackRingRotationSpeed = 0f;
     public float formationJoinDistance = 8f;
-    public float formationBreakDistance = 3f;
+    public float breakFormationDistance = 4f;
     private Vector3 _formationAnchor;
-    private float _timer = 0.0f;
+    private float _spawnTimer = 0.0f;
+    private float _formationCheckTimer = 0.0f;
+    private float _formationCheckInterval = 0.5f;
 
     private void Start()
     {
@@ -33,20 +34,29 @@ public class EnemySpawner : MonoBehaviour
     }
     void Update()
     {
-        _timer += Time.deltaTime;
-        if (_timer >= spawnInterval)
+        _spawnTimer += Time.deltaTime;
+        if (_spawnTimer >= spawnInterval)
         {
             SpawnEnemy();
-            _timer = 0.0f;
+            _spawnTimer = 0.0f;
         }
+        
+        _formationCheckTimer += Time.deltaTime;
+        if (_formationCheckTimer >= _formationCheckInterval)
+        {
+            UpdateFormationTargets();
+            _formationCheckTimer = 0.0f;
+        }
+        
         GameObject playerRef = GameObject.FindWithTag("Player");
         if (playerRef != null)
         {
+            float moveSpeed = aliveEnemies.Count > 0 ? aliveEnemies[0].speed * 0.5f : 2f;
             Vector3 playerPos = playerRef.transform.position;
             _formationAnchor = Vector3.MoveTowards(
                 _formationAnchor,
                 playerPos,
-                formationMoveSpeed * Time.deltaTime
+                moveSpeed * Time.deltaTime
             );
         }
         UpdateFormationTargets();
@@ -171,7 +181,7 @@ public class EnemySpawner : MonoBehaviour
         if (playerRef != null)
         {
             float distanceToPlayer = Vector3.Distance(enemy.transform.position, playerRef.transform.position);
-            if (distanceToPlayer < formationBreakDistance)
+            if (distanceToPlayer < breakFormationDistance)
             {
                 return false;
             }
