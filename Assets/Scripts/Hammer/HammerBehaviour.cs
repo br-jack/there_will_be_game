@@ -30,7 +30,6 @@ namespace Hammer
 
         private Quaternion _attitude;
 
-
         private bool ConnectWiimote() {
             if (WiimoteManager.HasWiimote())
             {
@@ -98,51 +97,6 @@ namespace Hammer
             Wiimote = null;
         }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        private void Start()
-        {
-            
-        }
-
-        //Called once before start when the game starts
-        private void Awake()
-        {
-            StartingRotation = transform.rotation;
-            bool wiimoteConnected = ConnectWiimote();
-            if (wiimoteConnected)
-            {
-                _inputDevice = InputDevice.Wiimote;
-            }
-            else
-            {
-                _inputDevice = InputDevice.Phone;
-            }
-        }
-
-        // Update is called once per frame
-        private void Update()
-        {
-            if (_inputDevice == InputDevice.Wiimote)
-            {
-                UseWiimoteData();
-            }
-            //Unity Remote
-            else
-            {
-                Assert.IsTrue(_inputDevice == InputDevice.Phone, "Only Wiimote and Phone inputs are handled!");
-                
-                //start() sadly runs after input is connected,
-                //so I put this here. 
-                //Sort enabling of gyroscopes later with input manager object probably
-                if (Input.touchCount > 0)
-                {
-                    Input.gyro.enabled = true;
-                }
-
-                transform.rotation = Quaternion.Inverse(Input.gyro.attitude * StartingRotation);
-            }
-        }
-
         private void UseWiimoteData()
         {
             Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
@@ -192,6 +146,51 @@ namespace Hammer
             //print("Total accel offset for frame: "+accelOffset);
             //transform.Translate(accelOffset/95f, Space.Self);
             //just using accel values/100 for translation - makes no sense but testing!
+        }
+        
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        private void Start()
+        {
+            
+        }
+
+        //Called once before start when the game starts
+        private void Awake()
+        {
+            StartingRotation = transform.rotation;
+            bool wiimoteConnected = ConnectWiimote();
+            if (wiimoteConnected)
+            {
+                _inputDevice = InputDevice.Wiimote;
+            }
+            else
+            {
+                _inputDevice = InputDevice.Phone;
+            }
+        }
+
+        // Update is called once per frame
+        private void Update()
+        {
+            if (_inputDevice == InputDevice.Wiimote)
+            {
+                UseWiimoteData();
+            }
+            //Unity Remote
+            else
+            {
+                Assert.IsTrue(_inputDevice == InputDevice.Phone, "Only Wiimote and Phone inputs are handled!");
+                
+                //start() sadly runs after input is connected,
+                //so I put this here. 
+                //Sort enabling of gyroscopes later with input manager object probably
+                if (Input.touchCount > 0)
+                {
+                    Input.gyro.enabled = true;
+                }
+
+                transform.rotation = Quaternion.Inverse(Input.gyro.attitude * StartingRotation);
+            }
         }
 
         public void OnCollisionEnter(Collision collision)
