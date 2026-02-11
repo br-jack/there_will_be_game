@@ -43,7 +43,14 @@ public class EnemyMovement : MonoBehaviour
         Vector3 playerPosition = _playerTransformRef.position;
         
         Vector3 direction = (playerPosition - transform.position).normalized;
-        
+
+        // Enemy actually needs to face the player
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 5f);
+        }
+
         _rb.linearVelocity = new Vector3(direction.x * speed, _rb.linearVelocity.y, direction.z * speed);
     }
 
