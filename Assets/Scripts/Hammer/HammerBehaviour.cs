@@ -21,7 +21,7 @@ namespace Hammer
             Phone
         }
         
-        private InputDevice _inputDevice = InputDevice.Phone;
+        private InputDevice _inputDevice = InputDevice.Wiimote;
 
         public Wiimote Wiimote { get; private set; }
         
