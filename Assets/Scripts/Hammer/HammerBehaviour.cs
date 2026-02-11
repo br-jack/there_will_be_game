@@ -189,7 +189,7 @@ namespace Hammer
                     Input.gyro.enabled = true;
                 }
 
-                transform.rotation = Quaternion.Inverse(Input.gyro.attitude * StartingRotation);
+                transform.Rotate(Input.gyro.rotationRateUnbiased, Space.Self);
             }
         }
 
