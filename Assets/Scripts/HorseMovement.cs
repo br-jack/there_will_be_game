@@ -3,8 +3,10 @@ using UnityEngine.InputSystem;
 
 public class HorseMovement : MonoBehaviour
 {
-    public float acceleration = 10f;
-    public float deceleration = 6f;
+    public float acceleration = 12f;
+    public float deceleration = 2f; //ambient deceleration when no acceleration or braking/reverse
+
+    public float brake = 20f;
     public float maxSpeed = 14f;
 
     public float turnSpeed = 70f;
@@ -90,14 +92,13 @@ public class HorseMovement : MonoBehaviour
 
         if (grounded) //prevents accelerating and decelerating whilst midair
         {
-            if (_throttleInput > 0.0f)
-            {
-                _currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
-            }
-            if (_brakeInput > 0.0f)
-            {
-                _currentSpeed -= deceleration * Time.fixedDeltaTime;
-            }
+            float netForce = 0f;
+
+            netForce += acceleration * _throttleInput;
+            netForce -= brake * _brakeInput;
+
+            _currentSpeed += netForce * Time.fixedDeltaTime;
+
             if (_throttleInput == 0.0f && _brakeInput == 0.0f)
             {
                 if (_currentSpeed > 0f)
@@ -109,6 +110,10 @@ public class HorseMovement : MonoBehaviour
                 }
             }
             // code for using onMove - vector 2 via joystick
+            // if (_throttleInput > 0.0f)
+            // {
+            //     _currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
+            // }
             // if (_throttleInput < 0.0f)
             // {
             //     _currentSpeed -= deceleration * Time.fixedDeltaTime;
