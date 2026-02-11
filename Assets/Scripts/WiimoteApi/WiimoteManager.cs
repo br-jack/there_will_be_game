@@ -117,6 +117,10 @@ public class WiimoteManager
     /// \param remote The remote to cleanup
     public static void Cleanup(Wiimote remote)
     {
+        while (WriteQueue.Count > 0)
+        {
+        }
+        
         if (remote.hidapi_handle != IntPtr.Zero)
             HIDapi.hid_close(remote.hidapi_handle);
 
