@@ -5,7 +5,7 @@ public class EnemySpawner : MonoBehaviour
 {
     public List<EnemyMovement> aliveEnemies = new List<EnemyMovement>();
     public GameObject enemyPrefab; 
-    public float spawnInterval = 2f;
+    public float spawnInterval = 0.5f;
     public int maxEnemies = 5;
     public int currentEnemies = 0;
     public enum FormationType
@@ -15,22 +15,40 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Formation")]
     public FormationType formationType = FormationType.Grid; 
-    public int formationRows = 1;
+    // formationRows are based on how many enemies you have and how many columns you allow
     public int formationColumns = 5;
-    public Vector2 formationSpacing = new Vector2(2f, 2f);
+    public Vector2 formationSpacing = new Vector2(3f, 3f);
     public bool centerFormationOnSpawner = true;
+    public float formationMoveSpeed = 2f;
+    public float attackRingRadius = 1.5f;
+    public float attackRingRotationSpeed = 35f;
+    public float formationJoinDistance = 8f;
+    public float formationBreakDistance = 3f;
+    private Vector3 _formationAnchor;
+    private float _timer = 0.0f;
 
-    private float timer = 0.0f;
-
+    private void Start()
+    {
+        _formationAnchor = transform.position;
+    }
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= spawnInterval)
+        _timer += Time.deltaTime;
+        if (_timer >= spawnInterval)
         {
             SpawnEnemy();
-            timer = 0.0f;
+            _timer = 0.0f;
         }
-        
+        GameObject playerRef = GameObject.FindWithTag("Player");
+        if (playerRef != null)
+        {
+            Vector3 playerPos = playerRef.transform.position;
+            _formationAnchor = Vector3.MoveTowards(
+                _formationAnchor,
+                playerPos,
+                formationMoveSpeed * Time.deltaTime
+            );
+        }
         UpdateFormationTargets();
     }
 
@@ -51,56 +69,156 @@ public class EnemySpawner : MonoBehaviour
     public void UpdateFormationTargets()
     {
         GameObject playerRef = GameObject.FindWithTag("Player");
-        Vector3 anchorPosition = playerRef != null ? playerRef.transform.position : transform.position;
+        Vector3 anchorPosition = _formationAnchor;
+        
+        // Calculate direction to player for formation orientation
+        Vector3 directionToPlayer = Vector3.forward;
+        if (playerRef != null)
+        {
+            directionToPlayer = (playerRef.transform.position - anchorPosition).normalized;
+            if (directionToPlayer.sqrMagnitude < 0.01f)
+            {
+                directionToPlayer = Vector3.forward;
+            }
+        }
+        
+        // Update formation eligibility for each enemy
+        for (int i = 0; i < aliveEnemies.Count; i++)
+        {
+            EnemyMovement enemy = aliveEnemies[i];
+            if (enemy == null) continue;
+            
+            bool shouldBeInFormation = CanJoinFormation(enemy, playerRef);
+            
+            if (shouldBeInFormation && !enemy.hasFormationTarget)
+            {
+                enemy.hasFormationTarget = true;
+            }
+            else if (!shouldBeInFormation && enemy.hasFormationTarget)
+            {
+                enemy.ClearFormationTarget();
+            }
+        }
+        
+        // Count formation members
+        int formationCount = 0;
+        for (int i = 0; i < aliveEnemies.Count; i++)
+        {
+            EnemyMovement enemy = aliveEnemies[i];
+            if (enemy == null || !enemy.hasFormationTarget) continue;
+            formationCount++;
+        }
 
+        // Assign formation positions
+        int formationIndex = 0;
         for (int i=0; i < aliveEnemies.Count; i++)
         {
             EnemyMovement enemy = aliveEnemies[i];
-            if (enemy == null) {
+            if (enemy == null || !enemy.hasFormationTarget) continue;
+
+            Vector3 offset = GetGridSpacing(formationIndex, formationCount, directionToPlayer);
+            enemy.SetFormationTarget(anchorPosition + offset);
+            formationIndex++;
+        }
+
+        if (playerRef == null)
+        {
+            return;
+        }
+
+        // Update attack targets for broken formation enemies
+        int brokenCount = 0;
+        for (int i = 0; i < aliveEnemies.Count; i++)
+        {
+            EnemyMovement enemy = aliveEnemies[i];
+            if (enemy == null || enemy.hasFormationTarget)
+            {
                 continue;
             }
 
-            Vector3 offset = GetGridSpacing(i);
-            enemy.SetFormationTarget(anchorPosition + offset);
+            brokenCount++;
+        }
+
+        if (brokenCount == 0)
+        {
+            return;
+        }
+
+        Vector3 playerPosition = playerRef.transform.position;
+        float angleStep = 360f / brokenCount;
+        float rotationOffset = attackRingRotationSpeed * Time.time;
+        int brokenIndex = 0;
+        for (int i = 0; i < aliveEnemies.Count; i++)
+        {
+            EnemyMovement enemy = aliveEnemies[i];
+            if (enemy == null || enemy.hasFormationTarget)
+            {
+                continue;
+            }
+
+            float angle = (angleStep * brokenIndex + rotationOffset) * Mathf.Deg2Rad;
+            Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * attackRingRadius;
+            enemy.SetAttackTarget(playerPosition + offset);
+            brokenIndex++;
         }
     }
 
-    private Vector3 GetGridSpacing(int index)
+    private bool CanJoinFormation(EnemyMovement enemy, GameObject playerRef)
+    {
+        if (enemy == null) return false;
+        
+        // Check if too close to player
+        if (playerRef != null)
+        {
+            float distanceToPlayer = Vector3.Distance(enemy.transform.position, playerRef.transform.position);
+            if (distanceToPlayer < formationBreakDistance)
+            {
+                return false;
+            }
+        }
+        
+        // Check if near any other enemy
+        bool nearOtherEnemy = false;
+        for (int i = 0; i < aliveEnemies.Count; i++)
+        {
+            EnemyMovement other = aliveEnemies[i];
+            if (other == null || other == enemy) continue;
+            
+            float distance = Vector3.Distance(enemy.transform.position, other.transform.position);
+            if (distance <= formationJoinDistance)
+            {
+                nearOtherEnemy = true;
+                break;
+            }
+        }
+        
+        return nearOtherEnemy;
+    }
+
+    private Vector3 GetGridSpacing(int index, int totalCount, Vector3 forwardDirection)
     {
         int columns = Mathf.Max(1, formationColumns);
+        int rows = Mathf.Max(1, Mathf.CeilToInt(totalCount / (float)columns));
 
         int col = index % columns;
         int row = Mathf.FloorToInt(index / columns);
 
-        float x = col * formationSpacing.x;
-        float z = row * formationSpacing.y;
+        float totalWidth = (columns - 1) * formationSpacing.x;
+        float totalDepth = (rows - 1) * formationSpacing.y;
 
-        return new Vector3(x, 0f, z);
+        float x = col * formationSpacing.x - totalWidth * 0.5f;
+        float z = row * formationSpacing.y - totalDepth * 0.5f;
+        
+        // Orient the offset toward the player
+        Vector3 right = Vector3.Cross(Vector3.up, forwardDirection).normalized;
+        Vector3 forward = forwardDirection;
+        
+        return right * x + forward * z;
     }
 
     Vector3 GetFormationPosition(int index)
     {
-        int columns = Mathf.Max(1, formationColumns);
-        int rows = Mathf.Max(1, formationRows);
-
-        int col = index % columns;
-        int row = Mathf.FloorToInt(index / columns);
-
-        if (row >= rows)
-        {
-            row = rows - 1;
-        }
-
-        float xOffset = col * formationSpacing.x;
-        float zOffset = row * formationSpacing.y;
-
-        if (centerFormationOnSpawner)
-        {
-            float totalWidth = (columns - 1) * formationSpacing.x;
-            xOffset -= totalWidth * 0.5f;
-        }
-
-        return transform.position + new Vector3(xOffset, 0f, zOffset);
+        return transform.position;
     }
 
 }

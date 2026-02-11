@@ -8,8 +8,11 @@ public class EnemyMovement : MonoBehaviour
     private Health _playerHealthRef;
     private Transform _playerTransformRef;
     private Rigidbody _rb;
-    private Vector3 formationTarget;
-    private bool hasFormationTarget;
+    private Vector3 _formationTarget;
+    private Vector3 _attackTarget;
+    public bool hasFormationTarget;
+    private bool _hasAttackTarget;
+    private float _breakFormationDistance = 4f;
     
     private void Awake()
     {
@@ -33,10 +36,19 @@ public class EnemyMovement : MonoBehaviour
     private void FixedUpdate()
     {
         //TODO use a* pathfinding instead
-        Vector3 targetPosition = hasFormationTarget ? formationTarget : _playerTransformRef.position;
+        Vector3 targetPosition = hasFormationTarget
+            ? _formationTarget
+            : (_hasAttackTarget ? _attackTarget : _playerTransformRef.position);
         Vector3 direction = (targetPosition - transform.position).normalized;
 
         _rb.linearVelocity = new Vector3(direction.x * speed, _rb.linearVelocity.y, direction.z * speed);
+
+        // If the enemy is in a formation, break it when it's sufficiently close to the player
+        if (hasFormationTarget && Vector3.Distance(_playerTransformRef.position, transform.position) < _breakFormationDistance)
+        {
+            ClearFormationTarget();
+            spawner.UpdateFormationTargets();
+        }
     }
 
     private void OnCollisionEnter(Collision other)
@@ -59,7 +71,19 @@ public class EnemyMovement : MonoBehaviour
 
     public void SetFormationTarget(Vector3 target) 
     {
-        formationTarget = target;
+        _formationTarget = target;
         hasFormationTarget = true;
+    }
+
+    public void ClearFormationTarget()
+    {
+        _formationTarget = Vector3.zero;
+        hasFormationTarget = false;
+    }
+
+    public void SetAttackTarget(Vector3 target)
+    {
+        _attackTarget = target;
+        _hasAttackTarget = true;
     }
 }

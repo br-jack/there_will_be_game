@@ -3,9 +3,9 @@ using UnityEngine.InputSystem;
 
 public class HorseMovement : MonoBehaviour
 {
-    public float acceleration = 10f;
+    public float acceleration = 20f;
     public float deceleration = 6f;
-    public float maxSpeed = 14f;
+    public float maxSpeed = 28f;
 
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
