@@ -165,14 +165,14 @@ namespace Hammer
             Vector3 accel = new Vector3(
                 Wiimote.Accel.GetCalibratedAccelData()[0], //x 
                 Wiimote.Accel.GetCalibratedAccelData()[1], //y 
-                Wiimote.Accel.GetCalibratedAccelData()[2]); //z (downwards)
+                -Wiimote.Accel.GetCalibratedAccelData()[2]); //z (downwards)
             
             
             accel.Normalize();
             Vector3 measuredDown = accel; // gravity direction. shouldn't have to add starting rotation. axes are cooked
             print("measured down: "+measuredDown);
             // what "down" currently is according to the gyro
-            Vector3 currentDown = wiimoteAttitude * Vector3.down;
+            Vector3 currentDown = wiimoteAttitude * new Vector3(0,0,-1);
 
             // rotation needed to fix tilt
             Quaternion correction = Quaternion.FromToRotation(currentDown, measuredDown);
