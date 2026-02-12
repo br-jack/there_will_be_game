@@ -101,4 +101,11 @@ public class EnemyMovement : MonoBehaviour
     {
         return shield != null;
     }
+
+    public void HitBody()
+    {
+        if (shield != null) return;
+
+        Die();
+    }
 }
