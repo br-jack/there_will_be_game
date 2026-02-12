@@ -39,8 +39,8 @@ namespace Hammer
             if(!hb.Wiimote.MotionPlus.YawSlow) print("Also, wiimote is Yawing fast!");
             if(!hb.Wiimote.MotionPlus.RollSlow) print("Also, wiimote is Rolling fast!");
 
-            transform.SetPositionAndRotation(transform.position, hb.StartingRotation);
-            hb.wiimoteAttitude = hb.StartingRotation;
+            transform.SetPositionAndRotation(transform.position, Quaternion.Euler(0,0,0));
+            hb.wiimoteAttitude = Quaternion.Euler(0,0,0);
             hb.Wiimote.MotionPlus.SetZeroValues();
             hb.Wiimote.Accel.CalibrateAccel(0);
         }

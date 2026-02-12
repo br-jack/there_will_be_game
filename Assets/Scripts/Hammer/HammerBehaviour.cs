@@ -25,6 +25,11 @@ namespace Hammer
 
         public float accelAdjustmentRatio; //0.02 seems reasonable
 
+        
+        //debug
+        public bool accelEnabled;
+        public bool gyroEnabled;
+
 
         void ConnectWiimote() {
             if (WiimoteManager.HasWiimote())
@@ -122,6 +127,7 @@ namespace Hammer
             Vector3 gyroOffset = Vector3.zero;
             Vector3 accelOffset = Vector3.zero;
 
+            if (gyroEnabled) { //debug
             do {
                 ret = Wiimote.ReadWiimoteData();
 
@@ -134,11 +140,11 @@ namespace Hammer
                 //we should integrate this! would give accurate total rotation
                 if (ret > 0 && Wiimote.current_ext == ExtensionController.MOTIONPLUS) {
                     gyroOffset += new Vector3(  Wiimote.MotionPlus.PitchSpeed,
-                                                    Wiimote.MotionPlus.RollSpeed,
-                                                    Wiimote.MotionPlus.YawSpeed);
+                                                    -Wiimote.MotionPlus.YawSpeed,
+                                                    Wiimote.MotionPlus.RollSpeed);
                 }
             } while (ret > 0);
-
+            }   else ret = Wiimote.ReadWiimoteData();
             
 
             gyroOffset /= 95f; //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
@@ -154,21 +160,40 @@ namespace Hammer
             wiimoteAttitude *= Quaternion.Euler(gyroOffset);
 
             
-            //ACCELEROMETER
-                
+            //ACCELEROMETER adjustment
+            if (accelEnabled) { //debug
             Vector3 accel = new Vector3(
-                Wiimote.Accel.GetCalibratedAccelData()[0],
-                Wiimote.Accel.GetCalibratedAccelData()[1],
-                Wiimote.Accel.GetCalibratedAccelData()[2]);
+                Wiimote.Accel.GetCalibratedAccelData()[0], //x 
+                Wiimote.Accel.GetCalibratedAccelData()[1], //y 
+                Wiimote.Accel.GetCalibratedAccelData()[2]); //z (downwards)
             
             
-            Vector3 down = new Vector3(270,0,0);
-            wiimoteAttitude *= Quaternion.Slerp(Quaternion.Euler(accel), Quaternion.Euler(down), accelAdjustmentRatio); 
-            //Meant to rotate by an amount determined by adjustment ratio towards accelerometer reccomended attitude. dumb because obvs accelerometer does not always reccomend to rotate towards down. 
-            
-            
-            
+            accel.Normalize();
+            Vector3 measuredDown = accel; // gravity direction. shouldn't have to add starting rotation. axes are cooked
+            print("measured down: "+measuredDown);
+            // what "down" currently is according to the gyro
+            Vector3 currentDown = wiimoteAttitude * Vector3.down;
+
+            // rotation needed to fix tilt
+            Quaternion correction = Quaternion.FromToRotation(currentDown, measuredDown);
+
+            // blend a small amount of that correction in
+            wiimoteAttitude = Quaternion.Slerp(
+                wiimoteAttitude,
+                correction * wiimoteAttitude,
+                accelAdjustmentRatio
+            );
+            }
             transform.localRotation = wiimoteAttitude;
+
+            /*
+            Vector3 accel_estimate = Vector3.down-accel;
+            wiimoteAttitude = Quaternion.Slerp(wiimoteAttitude, 
+                Quaternion.Euler(accel_estimate.x,wiimoteAttitude.eulerAngles.y,accel_estimate.z), 
+                accelAdjustmentRatio); 
+            */
+            //Meant to rotate by an amount determined by adjustment ratio towards accelerometer reccomended attitude.
+            //ignores yaw (slerps dowards current yaw)
 
             //print("Total accel offset for frame: "+accelOffset);
             //transform.Translate(accelOffset/95f, Space.Self);
