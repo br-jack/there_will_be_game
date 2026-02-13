@@ -29,6 +29,13 @@ namespace Hammer
         //debug
         public bool accelEnabled;
         public bool gyroEnabled;
+        public int mult0;
+        public int mult1;
+        public int mult2;
+        public int ind0;
+        public int ind1;
+        public int ind2;
+
 
 
         void ConnectWiimote() {
@@ -155,9 +162,9 @@ namespace Hammer
             //ACCELEROMETER adjustment
             if (accelEnabled) { //debug
             Vector3 accel = new Vector3(
-                Wiimote.Accel.GetCalibratedAccelData()[0], //x 
-                Wiimote.Accel.GetCalibratedAccelData()[1], //y 
-                -Wiimote.Accel.GetCalibratedAccelData()[2]); //z (downwards)
+                (mult0)*Wiimote.Accel.GetCalibratedAccelData()[ind0], //x 
+                (mult1)*Wiimote.Accel.GetCalibratedAccelData()[ind1], //y 
+                (mult2)*Wiimote.Accel.GetCalibratedAccelData()[ind2]); //z 
             
             
             accel.Normalize();
