@@ -173,20 +173,19 @@ namespace Hammer
             float accel_roll = Mathf.Atan2(accel.x,accel.z) * Mathf.Rad2Deg;
             float accel_pitch =Mathf.Atan2(accel.y,accel.z) * Mathf.Rad2Deg;
 
-            Quaternion accel_suggested_attitude = Quaternion.Euler(new Vector3(accel_pitch,0,-accel_roll));
-            wiimoteAttitude = accel_suggested_attitude; //for now just set to accel suggestion
+            Quaternion accel_suggested_attitude = Quaternion.Euler(new Vector3(accel_pitch,wiimoteAttitude.eulerAngles.y,-accel_roll)); //always zero yaw is probs silly
+            //wiimoteAttitude = accel_suggested_attitude; //for now just set to accel suggestion
 
-            // rotation needed to fix tilt
-            //Quaternion correction = Quaternion.FromToRotation(currentDown, measuredDown);
+            
 
-            // blend a small amount of that correction in
-            /*
+            
+            
             wiimoteAttitude = Quaternion.Slerp(
                 wiimoteAttitude,
-                correction * wiimoteAttitude,
+                accel_suggested_attitude,
                 accelAdjustmentRatio
             );
-            */
+            
             }
             transform.localRotation = wiimoteAttitude;
 
