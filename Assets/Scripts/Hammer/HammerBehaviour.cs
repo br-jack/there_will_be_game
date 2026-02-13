@@ -113,14 +113,6 @@ namespace Hammer
         void Update()
         {
             Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
-            
-            //pressing a on the wiimote runs calibrateWiiMotionPlus many (50+) times as this is not a getkeydown 
-            //I believe that this is compounding errors in calibration and sets the speeds very high. 
-            //Not priority to fix I think - we should eventually have a proper calibration sequence
-            if (Wiimote.Button.a)
-            {
-                GetComponent<DebugHammer>().CalibrateWiiMotionPlus();
-            }
 
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;
