@@ -218,6 +218,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6d0a1dd8956af4385d7151cfe70551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitchSpeedText: {fileID: 0}
-  rollSpeedText: {fileID: 0}
-  yawSpeedText: {fileID: 0}
+  wiimoteAttitude: {x: 0, y: 0, z: 0, w: 0}
+  accelAdjustmentRatio: 0
+  accelEnabled: 1
+  gyroEnabled: 1
+  mult0: 1
+  mult1: 1
+  mult2: 1
+  ind0: 0
+  ind1: 1
+  ind2: 2
