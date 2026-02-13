@@ -168,20 +168,25 @@ namespace Hammer
             
             
             accel.Normalize();
-            Vector3 measuredDown = accel; // gravity direction. shouldn't have to add starting rotation. axes are cooked
-            print("measured down: "+measuredDown);
             // what "down" currently is according to the gyro
-            Vector3 currentDown = wiimoteAttitude * new Vector3(0,0,-1);
+            //Vector3 currentDown = wiimoteAttitude * new Vector3(0,0,-1);
+            float accel_roll = Mathf.Atan2(accel.x,accel.z) * Mathf.Rad2Deg;
+            float accel_pitch =Mathf.Atan2(accel.y,accel.z) * Mathf.Rad2Deg;
+
+            Quaternion accel_suggested_attitude = Quaternion.Euler(new Vector3(accel_pitch,0,-accel_roll));
+            wiimoteAttitude = accel_suggested_attitude; //for now just set to accel suggestion
 
             // rotation needed to fix tilt
-            Quaternion correction = Quaternion.FromToRotation(currentDown, measuredDown);
+            //Quaternion correction = Quaternion.FromToRotation(currentDown, measuredDown);
 
             // blend a small amount of that correction in
+            /*
             wiimoteAttitude = Quaternion.Slerp(
                 wiimoteAttitude,
                 correction * wiimoteAttitude,
                 accelAdjustmentRatio
             );
+            */
             }
             transform.localRotation = wiimoteAttitude;
 
