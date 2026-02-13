@@ -131,9 +131,9 @@ namespace Hammer
                 //add all detected rotations throughout the frame to gyroOffset
                 //we should integrate this! would give accurate total rotation
                 if (ret > 0 && Wiimote.current_ext == ExtensionController.MOTIONPLUS) {
-                    gyroOffset += new Vector3(  Wiimote.MotionPlus.PitchSpeed,
-                                                    -Wiimote.MotionPlus.YawSpeed,
-                                                    Wiimote.MotionPlus.RollSpeed);
+                    gyroOffset += new Vector3(  -Wiimote.MotionPlus.PitchSpeed,
+                                                    Wiimote.MotionPlus.YawSpeed,
+                                                    -Wiimote.MotionPlus.RollSpeed);
                 }
             } while (ret > 0);
             }   else ret = Wiimote.ReadWiimoteData();
