@@ -49,7 +49,6 @@ namespace Hammer
         {
             SceneManager.LoadScene("MainScene");
         }
-        static WiimoteManager wiimoteManager;
 
         public void CalibrateAccelStep()
         {
