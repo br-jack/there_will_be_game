@@ -169,9 +169,9 @@ namespace Hammer
             }
         }
 
-        void OnDisable()
+        void OnApplicationQuit()
         {
-            // CleanupWiimotes();
+            CleanupWiimotes();
         }
     }
 
