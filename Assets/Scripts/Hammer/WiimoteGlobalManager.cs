@@ -8,8 +8,6 @@ using UnityEngine.Assertions;
 using WiimoteApi;
 using UnityEngine.SceneManagement;
 
-
-
 public static class WiimoteGlobal
 {
     public static Wiimote wiimote { get; set; }

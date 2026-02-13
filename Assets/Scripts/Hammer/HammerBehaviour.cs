@@ -36,7 +36,7 @@ namespace Hammer
             SceneManager.LoadScene("hammerTest");
         }
 
-        private bool void ConnectWiimote() {
+        private bool ConnectWiimote() {
             if (WiimoteManager.HasWiimote())
             {
                 Debug.LogWarning("Attempting to find a Wiimote even though one is already connected!");
@@ -78,7 +78,7 @@ namespace Hammer
                 
                 //Default input mode only sends button data, so for accelerometer / gyro data 
                 //we need to request a mode with extension bytes
-                WiimoteGlobal.Wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
+                WiimoteGlobal.wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
 
                 return true;
             }
