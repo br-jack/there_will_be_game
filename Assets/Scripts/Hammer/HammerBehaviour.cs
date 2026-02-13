@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
 using WiimoteApi;
+using UnityEngine.SceneManagement;
 
 namespace Hammer
 {
@@ -23,6 +24,10 @@ namespace Hammer
 
         private Quaternion attitude;
 
+        public void SceneSwitch()
+        {
+            SceneManager.LoadScene("hammerTest");
+        }
 
         void ConnectWiimote() {
             if (WiimoteManager.HasWiimote())

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using WiimoteApi;
+using UnityEngine.SceneManagement;
 
 namespace Hammer
 {
@@ -45,8 +46,12 @@ namespace Hammer
             noseImage.gameObject.SetActive(false);
             backImage.gameObject.SetActive(false);
 
-
         }
+        public void SceneSwitch()
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+        
 
         public void CalibrateAccelStep()
         {
