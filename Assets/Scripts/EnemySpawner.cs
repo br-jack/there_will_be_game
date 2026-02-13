@@ -35,12 +35,12 @@ public class EnemySpawner : MonoBehaviour
     private float _spawnTimer = 0.0f;
     private float _formationCheckTimer = 0.0f;
     private float _formationCheckInterval = 0.1f;
-    GameObject playerRef = GameObject.FindWithTag("Player");
 
     private void Start()
     {
         _formationAnchor = transform.position;
-
+        GameObject _playerRef = GameObject.FindWithTag("Player");
+        if (_playerRef != null) _playerTransform = _playerRef.transform;
     }
     void Update()
     {
@@ -59,11 +59,10 @@ public class EnemySpawner : MonoBehaviour
             _formationCheckTimer = 0.0f;
         }
         
-        GameObject playerRef = GameObject.FindWithTag("Player");
-        if (playerRef != null)
+        if (_playerRef != null)
         {
             float moveSpeed = aliveEnemies.Count > 0 ? aliveEnemies[0].formationSpeed : 2f;
-            Vector3 playerPos = playerRef.transform.position;
+            Vector3 playerPos = _playerRef.transform.position;
             _formationAnchor = Vector3.MoveTowards(
                 _formationAnchor,
                 playerPos,
@@ -87,14 +86,11 @@ public class EnemySpawner : MonoBehaviour
 
     public void UpdateFormationTargets()
     {
-        GameObject playerRef = GameObject.FindWithTag("Player");
-        Vector3 anchorPosition = _formationAnchor;
-        
         // Calculate direction to player for formation orientation
         Vector3 directionToPlayer = Vector3.forward;
-        if (playerRef != null)
+        if (_playerTransform != null)
         {
-            directionToPlayer = (playerRef.transform.position - anchorPosition).normalized;
+            directionToPlayer = (_playerTransform.position - _formationAnchor).normalized;
             if (directionToPlayer.sqrMagnitude < 0.01f)
             {
                 directionToPlayer = Vector3.forward;
@@ -107,7 +103,7 @@ public class EnemySpawner : MonoBehaviour
             EnemyMovement enemy = aliveEnemies[i];
             if (enemy == null) continue;
             
-            bool shouldBeInFormation = CanJoinFormation(enemy, playerRef);
+            bool shouldBeInFormation = CanJoinFormation(enemy, _playerTransform);
             
             if (shouldBeInFormation && !enemy.hasFormationTarget)
             {
@@ -136,11 +132,11 @@ public class EnemySpawner : MonoBehaviour
             if (enemy == null || !enemy.hasFormationTarget) continue;
 
             Vector3 offset = GetGridSpacing(formationIndex, formationCount, directionToPlayer);
-            enemy.SetFormationTarget(anchorPosition + offset);
+            enemy.SetFormationTarget(_formationAnchor + offset);
             formationIndex++;
         }
 
-        if (playerRef == null)
+        if (_playerTransform == null)
         {
             return;
         }
@@ -163,7 +159,7 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        Vector3 playerPosition = playerRef.transform.position;
+        Vector3 playerPosition = _playerTransform.position;
         float angleStep = 360f / brokenCount;
         int brokenIndex = 0;
         for (int i = 0; i < aliveEnemies.Count; i++)
@@ -181,21 +177,22 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private bool CanJoinFormation(EnemyMovement enemy, GameObject playerRef)
+    // Returns whether enemy E can join a formation.
+    private bool CanJoinFormation(EnemyMovement enemy, Transform playerTransform)
     {
         if (enemy == null) return false;
         
-        // Check if too close to player
-        if (playerRef != null)
+        // E can't join formation if E is too close to the player.
+        if (playerTransform != null)
         {
-            float distanceToPlayer = Vector3.Distance(enemy.transform.position, playerRef.transform.position);
+            float distanceToPlayer = Vector3.Distance(enemy.transform.position, playerTransform.position);
             if (distanceToPlayer < breakFormationDistance)
             {
                 return false;
             }
         }
         
-        // Check if near any other enemy
+        // Can only join formation if E is within a threshold distance to other enemies.
         bool nearOtherEnemy = false;
         for (int i = 0; i < aliveEnemies.Count; i++)
         {
@@ -213,6 +210,7 @@ public class EnemySpawner : MonoBehaviour
         return nearOtherEnemy;
     }
 
+    // Returns an offset that tells the enemy where to position itself in relation to _formationAnchor.
     private Vector3 GetGridSpacing(int index, int totalCount, Vector3 forwardDirection)
     {
         int columns = Mathf.Max(1, formationColumns);
