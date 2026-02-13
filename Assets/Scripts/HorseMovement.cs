@@ -19,8 +19,6 @@ public class HorseMovement : MonoBehaviour
     private float scaledJumpForce;
 
     private Rigidbody _rb;
-
-    private CapsuleCollider col;
     
     private float _throttleInput;
     private float _turnInput;
@@ -28,7 +26,9 @@ public class HorseMovement : MonoBehaviour
 
     public float jumpForce = 8.5f;
     public LayerMask groundMask;
-    public float groundCheckDistance = 1.0f;
+    public float groundCheckDistance = 0.3f;
+
+    private float _groundedTimer = 0f;
 
     private bool _jumpPressed;
     
@@ -81,17 +81,24 @@ public class HorseMovement : MonoBehaviour
 
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
-        scaledJumpForce = jumpForce * speedPercent;
+        scaledJumpForce = jumpForce * speedPercent * 1.2f;
 
-        if (_jumpPressed && grounded && _currentSpeed > 2f)
+        scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);
+
+        if (_jumpPressed && grounded && _groundedTimer > 0.1f && _currentSpeed > 2f)
         {
-            _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            _rb.AddForce(Vector3.up * scaledJumpForce, ForceMode.Impulse);
         }
 
         _jumpPressed = false;
 
+        //restrict turning more at higher speeds
+        float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
+
         if (grounded) //prevents accelerating and decelerating whilst midair
         {
+            _groundedTimer += Time.fixedDeltaTime;
+
             float netForce = 0f;
 
             netForce += acceleration * _throttleInput;
@@ -132,11 +139,11 @@ public class HorseMovement : MonoBehaviour
             // }
 
             _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
+        } else
+        {
+            _groundedTimer = 0f;
+            effectiveTurnSpeed *= 0.2f;
         }
-
-        //restrict turning more at higher speeds
-        float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
-        if (!grounded) {effectiveTurnSpeed *= 0.2f;}
             
         Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
 
