@@ -430,10 +430,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14a9c70830858341b472ad7fdbbf00c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aliveEnemies: []
   enemyPrefab: {fileID: 611199081197747249, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
-  spawnInterval: 4
-  maxEnemies: 5
-  currentEnemies: 0
+  spawnInterval: 0.25
+  maxEnemies: 25
+  formationType: 0
+  formationColumns: 5
+  formationSpacing: {x: 1.5, y: 1.5}
+  attackRingRadius: 2
+  joinFormationDistance: 32
+  breakFormationDistance: 4
 --- !u!4 &1353685249
 Transform:
   m_ObjectHideFlags: 0

@@ -3,11 +3,22 @@ using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
+    /**
+    Variables explained:
+    aliveEnemies: stores enemies currently in play.
+        - use aliveEnemies.Length for number of enemies
+    spawnInterval: time interval between enemies spawning.
+    formationColumns: number of cols in formation (rows decided automatically).
+    formationSpacing: spacing between enemies in formation.
+    attackRingRadius: how far from players do the enemies stop to attack?
+    joinFormationDistance: max distance from formation that an enemy tries to join.
+    breakFormationDistance: max distance from player that an enemy leaves the formation.
+    formationCheckInterval: checks every player and determines whether it should be solo or in a formation based on distance to a player being greater than breakFormationDistance and distance to a formation greater than joinFormationDistance: this is checked every `formationCheckInterval` seconds.
+    */
     public List<EnemyMovement> aliveEnemies = new List<EnemyMovement>();
     public GameObject enemyPrefab; 
-    public float spawnInterval = 0.5f;
-    public int maxEnemies = 5;
-    public int currentEnemies = 0;
+    public float spawnInterval = 0.25f;
+    public int maxEnemies = 50;
     public enum FormationType
     {
         Grid
@@ -15,33 +26,33 @@ public class EnemySpawner : MonoBehaviour
 
     [Header("Formation")]
     public FormationType formationType = FormationType.Grid; 
-    // formationRows are based on how many enemies you have and how many columns you allow
     public int formationColumns = 5;
-    public Vector2 formationSpacing = new Vector2(3f, 3f);
-    public bool centerFormationOnSpawner = true;
+    public Vector2 formationSpacing = new Vector2(3.0f, 3.0f); 
     public float attackRingRadius = 2.0f;
-    public float attackRingRotationSpeed = 0f;
-    public float formationJoinDistance = 8f;
-    public float breakFormationDistance = 4f;
+    public float joinFormationDistance = 32f;
+    public float breakFormationDistance = 2f;
     private Vector3 _formationAnchor;
     private float _spawnTimer = 0.0f;
     private float _formationCheckTimer = 0.0f;
-    private float _formationCheckInterval = 0.5f;
+    private float _formationCheckInterval = 0.1f;
+    GameObject playerRef = GameObject.FindWithTag("Player");
 
     private void Start()
     {
         _formationAnchor = transform.position;
+
     }
     void Update()
     {
+        // Update timers
         _spawnTimer += Time.deltaTime;
+        _formationCheckTimer += Time.deltaTime;
+
         if (_spawnTimer >= spawnInterval)
         {
             SpawnEnemy();
             _spawnTimer = 0.0f;
         }
-        
-        _formationCheckTimer += Time.deltaTime;
         if (_formationCheckTimer >= _formationCheckInterval)
         {
             UpdateFormationTargets();
@@ -51,7 +62,7 @@ public class EnemySpawner : MonoBehaviour
         GameObject playerRef = GameObject.FindWithTag("Player");
         if (playerRef != null)
         {
-            float moveSpeed = aliveEnemies.Count > 0 ? aliveEnemies[0].speed * 0.5f : 2f;
+            float moveSpeed = aliveEnemies.Count > 0 ? aliveEnemies[0].formationSpeed : 2f;
             Vector3 playerPos = playerRef.transform.position;
             _formationAnchor = Vector3.MoveTowards(
                 _formationAnchor,
@@ -59,19 +70,17 @@ public class EnemySpawner : MonoBehaviour
                 moveSpeed * Time.deltaTime
             );
         }
-        UpdateFormationTargets();
     }
 
     void SpawnEnemy()
     {
-        if (currentEnemies < maxEnemies)
+        if (aliveEnemies.Count < maxEnemies)
         {
-            Vector3 spawnPosition = GetFormationPosition(currentEnemies);
+            Vector3 spawnPosition = GetFormationPosition(aliveEnemies.Count);
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, transform.rotation);
             EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
             enemyMovement.spawner = this;
             aliveEnemies.Add(enemyMovement);
-            currentEnemies++;
             UpdateFormationTargets();
         }
     }
@@ -156,7 +165,6 @@ public class EnemySpawner : MonoBehaviour
 
         Vector3 playerPosition = playerRef.transform.position;
         float angleStep = 360f / brokenCount;
-        float rotationOffset = attackRingRotationSpeed * Time.time;
         int brokenIndex = 0;
         for (int i = 0; i < aliveEnemies.Count; i++)
         {
@@ -166,7 +174,7 @@ public class EnemySpawner : MonoBehaviour
                 continue;
             }
 
-            float angle = (angleStep * brokenIndex + rotationOffset) * Mathf.Deg2Rad;
+            float angle = (angleStep * brokenIndex) * Mathf.Deg2Rad;
             Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * attackRingRadius;
             enemy.SetAttackTarget(playerPosition + offset);
             brokenIndex++;
@@ -195,7 +203,7 @@ public class EnemySpawner : MonoBehaviour
             if (other == null || other == enemy) continue;
             
             float distance = Vector3.Distance(enemy.transform.position, other.transform.position);
-            if (distance <= formationJoinDistance)
+            if (distance <= joinFormationDistance)
             {
                 nearOtherEnemy = true;
                 break;

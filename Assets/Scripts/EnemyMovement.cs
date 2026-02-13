@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public float speed;
+    public float defaultSpeed;
+    public float formationSpeed;
     public EnemySpawner spawner;
     private Health _playerHealthRef;
     private Transform _playerTransformRef;
@@ -25,22 +26,41 @@ public class EnemyMovement : MonoBehaviour
         
         _playerTransformRef = playerRef.transform;
         _playerHealthRef = playerRef.GetComponent<Health>();
+
+        // Default values (if none set)
+        if (defaultSpeed <= 0f) defaultSpeed = 3f;
+        if (formationSpeed <= 0f) formationSpeed = 2/3 * defaultSpeed;
     }
 
     // Update is called once per frame
     private void Update()
     {
+        
     }
 
     private void FixedUpdate()
     {
+        float speed = defaultSpeed;
         //TODO use a* pathfinding instead
         Vector3 targetPosition = hasFormationTarget
             ? _formationTarget
             : (_hasAttackTarget ? _attackTarget : _playerTransformRef.position);
         Vector3 direction = (targetPosition - transform.position).normalized;
 
-        _rb.linearVelocity = new Vector3(direction.x * speed * 0.5f, _rb.linearVelocity.y, direction.z * speed * 0.5f);
+        if (hasFormationTarget)
+        {
+            float distanceToFormation = Vector3.Distance(transform.position, _formationTarget);
+            if (distanceToFormation > 0.5f)
+            {
+                speed = defaultSpeed;
+            }
+            else
+            {
+                speed = formationSpeed;
+            }
+        }
+
+        _rb.linearVelocity = new Vector3(direction.x * speed, _rb.linearVelocity.y, direction.z * speed);
 
         // If the enemy is in a formation, break it when it's sufficiently close to the player
         if (hasFormationTarget && spawner != null && Vector3.Distance(_playerTransformRef.position, transform.position) < spawner.breakFormationDistance)
@@ -63,7 +83,6 @@ public class EnemyMovement : MonoBehaviour
         if (spawner != null)
         {
             spawner.aliveEnemies.Remove(this);
-            spawner.currentEnemies = Mathf.Max(0, spawner.currentEnemies - 1);
             spawner.UpdateFormationTargets();
         }
     }
