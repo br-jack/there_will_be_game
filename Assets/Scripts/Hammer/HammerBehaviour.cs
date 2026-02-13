@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
 using WiimoteApi;
+using UnityEngine.SceneManagement;
 
 namespace Hammer
 {
@@ -15,7 +16,7 @@ namespace Hammer
     public class HammerBehaviour : MonoBehaviour
     {
 
-        public Wiimote Wiimote { get; private set; }
+        //public Wiimote Wiimote { get; private set; }
 
         
         //Hammer should start flat with Pitch = 0
@@ -23,6 +24,10 @@ namespace Hammer
 
         private Quaternion attitude;
 
+        public void SceneSwitch()
+        {
+            SceneManager.LoadScene("hammerTest");
+        }
 
         void ConnectWiimote() {
             if (WiimoteManager.HasWiimote())
@@ -36,26 +41,26 @@ namespace Hammer
             {
                 Assert.IsTrue(WiimoteManager.Wiimotes.Count == 1, "Only one Wiimote should be connected at a time");
                 //Use the first wiimote: others ignored
-                Wiimote = WiimoteManager.Wiimotes[0];
+                WiimoteGlobal.wiimote = WiimoteManager.Wiimotes[0];
 
                 //If the wiimote wasn't connected through dolphin, it may still have blinking lights
                 //even though it actually is still connected
-                Wiimote.SendPlayerLED(true, false, false, true);
+                WiimoteGlobal.wiimote.SendPlayerLED(true, false, false, true);
 
-                if (Wiimote.Type == WiimoteType.WIIMOTEPLUS)
+                if (WiimoteGlobal.wiimote.Type == WiimoteType.WIIMOTEPLUS)
                 {
                     //Running RequestIdentifyWiiMotionPlus() on a Wiimote Plus unfortunately fails,
                     //so we have to skip that check.
                     Debug.Log("Wii Remote Plus detected, skipping Motion Plus check.");
-                    Wiimote.ActivateWiiMotionPlus();
+                    WiimoteGlobal.wiimote.ActivateWiiMotionPlus();
                 }
                 else
                 {
-                    Wiimote.RequestIdentifyWiiMotionPlus();
+                    WiimoteGlobal.wiimote.RequestIdentifyWiiMotionPlus();
 
-                    if (Wiimote.wmp_attached)
+                    if (WiimoteGlobal.wiimote.wmp_attached)
                     {
-                        Wiimote.ActivateWiiMotionPlus();
+                        WiimoteGlobal.wiimote.ActivateWiiMotionPlus();
                         Debug.Log("Connected with Wii Motion Plus Extension.");
                     }
                     else
@@ -66,7 +71,7 @@ namespace Hammer
                 
                 //Default input mode only sends button data, so for accelerometer / gyro data 
                 //we need to request a mode with extension bytes
-                Wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
+                WiimoteGlobal.wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
             }
         }
         
@@ -84,7 +89,7 @@ namespace Hammer
             }
 
             //Ensure reference to removed wiimote isn't used
-            Wiimote = null;
+            WiimoteGlobal.wiimote = null;
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -111,14 +116,14 @@ namespace Hammer
             Vector3 accelOffset = Vector3.zero;
 
             do {
-                ret = Wiimote.ReadWiimoteData();
+                ret = WiimoteGlobal.wiimote.ReadWiimoteData();
 
                 //ACCELEROMETER
                 
                 Vector3 accelDataForFrameTest = new Vector3(
-                    Wiimote.Accel.GetCalibratedAccelData()[0],
-                    Wiimote.Accel.GetCalibratedAccelData()[1],
-                    Wiimote.Accel.GetCalibratedAccelData()[2]);
+                    WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[0],
+                    WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[1],
+                    WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[2]);
                 print("Accel data: "+accelDataForFrameTest);
                 accelOffset += accelDataForFrameTest;
                 
@@ -127,10 +132,10 @@ namespace Hammer
                 //GYROSCOPE
                 //add all detected rotations throughout the frame to gyroOffset
                 //we should integrate this! would give accurate total rotation
-                if (ret > 0 && Wiimote.current_ext == ExtensionController.MOTIONPLUS) {
-                    gyroOffset += new Vector3(  -Wiimote.MotionPlus.PitchSpeed,
-                                                    -Wiimote.MotionPlus.RollSpeed,
-                                                    -Wiimote.MotionPlus.YawSpeed);
+                if (ret > 0 && WiimoteGlobal.wiimote.current_ext == ExtensionController.MOTIONPLUS) {
+                    gyroOffset += new Vector3(  -WiimoteGlobal.wiimote.MotionPlus.PitchSpeed,
+                                                    -WiimoteGlobal.wiimote.MotionPlus.RollSpeed,
+                                                    -WiimoteGlobal.wiimote.MotionPlus.YawSpeed);
                 }
             } while (ret > 0);
 
@@ -164,7 +169,7 @@ namespace Hammer
             }
         }
 
-        void OnDisable()
+        void OnApplicationQuit()
         {
             CleanupWiimotes();
         }
