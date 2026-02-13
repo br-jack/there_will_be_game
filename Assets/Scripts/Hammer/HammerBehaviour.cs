@@ -125,7 +125,7 @@ namespace Hammer
             int ret;
             Vector3 gyroOffset = Vector3.zero;
             Vector3 accelOffset = Vector3.zero;
-
+            
             if (gyroEnabled) { //debug
             do {
                 ret = Wiimote.ReadWiimoteData();
@@ -160,7 +160,7 @@ namespace Hammer
 
             
             //ACCELEROMETER adjustment
-            if (accelEnabled) { //debug
+            if (accelEnabled) { 
             Vector3 accel = new Vector3(
                 (mult0)*Wiimote.Accel.GetCalibratedAccelData()[ind0], //x 
                 (mult1)*Wiimote.Accel.GetCalibratedAccelData()[ind1], //y 
@@ -168,18 +168,14 @@ namespace Hammer
             
             
             accel.Normalize();
-            // what "down" currently is according to the gyro
-            //Vector3 currentDown = wiimoteAttitude * new Vector3(0,0,-1);
+
             float accel_roll = Mathf.Atan2(accel.x,accel.z) * Mathf.Rad2Deg;
             float accel_pitch =Mathf.Atan2(accel.y,accel.z) * Mathf.Rad2Deg;
-
-            Quaternion accel_suggested_attitude = Quaternion.Euler(new Vector3(accel_pitch,wiimoteAttitude.eulerAngles.y,-accel_roll)); //always zero yaw is probs silly
-            //wiimoteAttitude = accel_suggested_attitude; //for now just set to accel suggestion
-
+            float accel_yaw_guess = wiimoteAttitude.eulerAngles.y;
             
 
-            
-            
+            Quaternion accel_suggested_attitude = Quaternion.Euler(new Vector3(accel_pitch,0,-accel_roll)); //always zero yaw is probs silly
+
             wiimoteAttitude = Quaternion.Slerp(
                 wiimoteAttitude,
                 accel_suggested_attitude,
@@ -187,20 +183,9 @@ namespace Hammer
             );
             
             }
+            
             transform.localRotation = wiimoteAttitude;
 
-            /*
-            Vector3 accel_estimate = Vector3.down-accel;
-            wiimoteAttitude = Quaternion.Slerp(wiimoteAttitude, 
-                Quaternion.Euler(accel_estimate.x,wiimoteAttitude.eulerAngles.y,accel_estimate.z), 
-                accelAdjustmentRatio); 
-            */
-            //Meant to rotate by an amount determined by adjustment ratio towards accelerometer reccomended attitude.
-            //ignores yaw (slerps dowards current yaw)
-
-            //print("Total accel offset for frame: "+accelOffset);
-            //transform.Translate(accelOffset/95f, Space.Self);
-            //just using accel values/100 for translation - makes no sense but testing!
 
             //Unity Remote
             //transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);
