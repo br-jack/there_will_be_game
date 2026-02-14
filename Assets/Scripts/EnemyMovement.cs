@@ -11,7 +11,7 @@ public class EnemyMovement : MonoBehaviour
 
     private Rigidbody _rb;
 
-    private bool isKnockedback;
+    public bool isKnockedback;
     public bool shieldWasJustHit = false;
 
     private void Awake()
