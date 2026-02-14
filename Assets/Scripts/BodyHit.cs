@@ -44,7 +44,7 @@ public class BodyHit : MonoBehaviour
                 continue;
             }
             // Check if the first thing hit was the shield
-            if (firstHit.CompareTag("Shield"))
+            if (h.collider.CompareTag("Shield"))
             {
                 return;
             }
