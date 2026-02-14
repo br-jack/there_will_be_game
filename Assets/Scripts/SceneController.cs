@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    public void ExitGame()
+    public static void ExitGame()
     {
         if (Application.isEditor)
         {
