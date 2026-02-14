@@ -500,7 +500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -150}
+  m_AnchoredPosition: {x: 0, y: -80}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &621112839
@@ -755,7 +755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1275670620
 RectTransform:
   m_ObjectHideFlags: 0
@@ -770,6 +770,7 @@ RectTransform:
   m_Children:
   - {fileID: 1335482025}
   - {fileID: 621112838}
+  - {fileID: 1369277887}
   m_Father: {fileID: 1345073733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1123,7 +1124,6 @@ RectTransform:
   m_Children:
   - {fileID: 1405911117}
   - {fileID: 1275670620}
-  - {fileID: 1369277887}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1192,7 +1192,7 @@ GameObject:
   - component: {fileID: 1369277889}
   - component: {fileID: 1369277888}
   m_Layer: 5
-  m_Name: Hammer Test Button
+  m_Name: Calibrate Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1211,11 +1211,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2145026180}
-  m_Father: {fileID: 1345073733}
+  m_Father: {fileID: 1275670620}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -100, y: 50}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 80}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1369277888
@@ -1325,7 +1325,7 @@ GameObject:
   - component: {fileID: 1405911119}
   - component: {fileID: 1405911118}
   m_Layer: 5
-  m_Name: Menu Button
+  m_Name: Open Menu Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
