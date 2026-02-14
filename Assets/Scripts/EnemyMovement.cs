@@ -12,6 +12,7 @@ public class EnemyMovement : MonoBehaviour
     private Rigidbody _rb;
 
     private bool isKnockedback;
+    public bool shieldWasJustHit = false;
 
     private void Awake()
     {
@@ -22,7 +23,7 @@ public class EnemyMovement : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
 
         GameObject playerRef = GameObject.FindWithTag("Player");
-        
+
         _playerTransformRef = playerRef.transform;
         _playerHealthRef = playerRef.GetComponent<Health>();
     }
@@ -35,13 +36,14 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        shieldWasJustHit = false;
         if (isKnockedback)
         {
             return;
         }
         //TODO use a* pathfinding instead
         Vector3 playerPosition = _playerTransformRef.position;
-        
+
         Vector3 direction = (playerPosition - transform.position).normalized;
 
         // Enemy actually needs to face the player
@@ -56,18 +58,6 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            if (HasShield())
-            {
-                _playerHealthRef.LoseLife();
-            }
-            else
-            {
-                Die();
-            }
-        }
-
         if (other.gameObject.CompareTag("Arena") && isKnockedback)
         {
             isKnockedback = false;
@@ -76,7 +66,6 @@ public class EnemyMovement : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("Enemy died!");
         Destroy(gameObject);
     }
 
@@ -102,10 +91,8 @@ public class EnemyMovement : MonoBehaviour
         return shield != null;
     }
 
-    public void HitBody()
+    public void MarkShieldHit()
     {
-        if (shield != null) return;
-
-        Die();
+        shieldWasJustHit = true;
     }
 }

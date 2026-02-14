@@ -6,18 +6,25 @@ public class ShieldHit : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
-        if (attack == null) return;
+        if (attack == null)
+        {
+            return;
+        }
 
         EnemyMovement enemy = GetComponentInParent<EnemyMovement>();
-        if (enemy == null) return;
+        if (enemy == null)
+        {
+            return;
+        }
 
-        Vector3 direction = enemy.transform.position - other.transform.position;
+        enemy.MarkShieldHit();
+        Vector3 knockbackDirection = enemy.transform.position - other.transform.position;
+        knockbackDirection.y = 0.5f;
+        knockbackDirection.Normalize();
 
-        direction.y = 0.5f;
-        direction.Normalize();
-
-        enemy.ApplyKnockback(direction * knockbackForce);
+        enemy.ApplyKnockback(knockbackDirection * knockbackForce);
         enemy.BreakShield();
     }
 }
