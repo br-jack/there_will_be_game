@@ -3,6 +3,14 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
+    /**
+    Variables explained:
+    defaultSpeed: speed E travels at when OUT of formation
+    formationSpeed: speed E travels at when IN formation
+    spawner: every E is connected to a spawner
+    _formationTarget: when IN formation, the position that E should move towards (in formation grid)
+    _attackTarget: when NOT in formation, the position that E should move towards
+    */
     public float defaultSpeed;
     public float formationSpeed;
     public EnemySpawner spawner;
@@ -16,14 +24,13 @@ public class EnemyMovement : MonoBehaviour
     
     private void Awake()
     {
+
     }
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-
         GameObject playerRef = GameObject.FindWithTag("Player");
-        
         _playerTransformRef = playerRef.transform;
         _playerHealthRef = playerRef.GetComponent<Health>();
 
@@ -40,30 +47,39 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float speed = defaultSpeed;
         //TODO use a* pathfinding instead
+
+        float speed = defaultSpeed;
+
+        /**
+        IF in formation, go to formation.
+        ELSE IF has attack target, go to attack target.
+        ELSE go to player.*/
         Vector3 targetPosition = hasFormationTarget
             ? _formationTarget
             : (_hasAttackTarget ? _attackTarget : _playerTransformRef.position);
         Vector3 direction = (targetPosition - transform.position).normalized;
-
-        if (hasFormationTarget)
+        
+        // If it meets the criteria of being in a formation, keep in formation.
+        float distanceToFormation = Vector3.Distance(transform.position, _formationTarget);
+        float distanceToPlayer = Vector3.Distance(transform.position, _playerTransformRef.position);
+        if (hasFormationTarget && (distanceToPlayer > spawner.breakFormationDistance) && (distanceToFormation < spawner.joinFormationDistance))
         {
-            float distanceToFormation = Vector3.Distance(transform.position, _formationTarget);
-            if (distanceToFormation > 0.5f)
-            {
-                speed = defaultSpeed;
-            }
-            else
-            {
-                speed = formationSpeed;
-            }
+            speed = formationSpeed;
+        }
+
+        /**
+        If E is trying to get in formation but not currently in the correct position, it continues to move at defaultSpeed.
+        Once E is in the actual formation position, it moves at formationSpeed.
+        */
+        if (hasFormationTarget) {
+            if (distanceToFormation < 0.5f) { speed = formationSpeed; }
         }
 
         _rb.linearVelocity = new Vector3(direction.x * speed, _rb.linearVelocity.y, direction.z * speed);
 
         // If the enemy is in a formation, break it when it's sufficiently close to the player
-        if (hasFormationTarget && spawner != null && Vector3.Distance(_playerTransformRef.position, transform.position) < spawner.breakFormationDistance)
+        if (hasFormationTarget && spawner != null && distanceToPlayer < spawner.breakFormationDistance)
         {
             ClearFormationTarget();
             spawner.UpdateFormationTargets();

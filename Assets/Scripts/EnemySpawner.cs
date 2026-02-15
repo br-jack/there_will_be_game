@@ -19,10 +19,7 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab; 
     public float spawnInterval = 0.25f;
     public int maxEnemies = 50;
-    public enum FormationType
-    {
-        Grid
-    }
+    private Transform _playerTransformRef;
 
     [Header("Formation")]
     public FormationType formationType = FormationType.Grid; 
@@ -35,12 +32,16 @@ public class EnemySpawner : MonoBehaviour
     private float _spawnTimer = 0.0f;
     private float _formationCheckTimer = 0.0f;
     private float _formationCheckInterval = 0.1f;
+    public enum FormationType
+    {
+        Grid
+    }
 
     private void Start()
     {
         _formationAnchor = transform.position;
         GameObject _playerRef = GameObject.FindWithTag("Player");
-        if (_playerRef != null) _playerTransform = _playerRef.transform;
+        if (_playerRef != null) _playerTransformRef = _playerRef.transform;
     }
     void Update()
     {
@@ -59,10 +60,14 @@ public class EnemySpawner : MonoBehaviour
             _formationCheckTimer = 0.0f;
         }
         
-        if (_playerRef != null)
+        if (_playerTransformRef != null)
         {
+            /**
+            If there's at least 1 enemy, use the enemy's formation speed as the speed that formationAnchor moves at.
+            Otherwise, use a default speed (2). */
             float moveSpeed = aliveEnemies.Count > 0 ? aliveEnemies[0].formationSpeed : 2f;
-            Vector3 playerPos = _playerRef.transform.position;
+            Vector3 playerPos = _playerTransformRef.position;
+            // Move anchor towards the player's position by the distance E should've travelled since the last Update() ran.
             _formationAnchor = Vector3.MoveTowards(
                 _formationAnchor,
                 playerPos,
@@ -75,7 +80,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (aliveEnemies.Count < maxEnemies)
         {
-            Vector3 spawnPosition = GetFormationPosition(aliveEnemies.Count);
+            Vector3 spawnPosition = GetSpawnPosition(aliveEnemies.Count);
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, transform.rotation);
             EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
             enemyMovement.spawner = this;
@@ -88,9 +93,9 @@ public class EnemySpawner : MonoBehaviour
     {
         // Calculate direction to player for formation orientation
         Vector3 directionToPlayer = Vector3.forward;
-        if (_playerTransform != null)
+        if (_playerTransformRef != null)
         {
-            directionToPlayer = (_playerTransform.position - _formationAnchor).normalized;
+            directionToPlayer = (_playerTransformRef.position - _formationAnchor).normalized;
             if (directionToPlayer.sqrMagnitude < 0.01f)
             {
                 directionToPlayer = Vector3.forward;
@@ -103,7 +108,7 @@ public class EnemySpawner : MonoBehaviour
             EnemyMovement enemy = aliveEnemies[i];
             if (enemy == null) continue;
             
-            bool shouldBeInFormation = CanJoinFormation(enemy, _playerTransform);
+            bool shouldBeInFormation = CanJoinFormation(enemy);
             
             if (shouldBeInFormation && !enemy.hasFormationTarget)
             {
@@ -136,7 +141,7 @@ public class EnemySpawner : MonoBehaviour
             formationIndex++;
         }
 
-        if (_playerTransform == null)
+        if (_playerTransformRef == null)
         {
             return;
         }
@@ -159,7 +164,7 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        Vector3 playerPosition = _playerTransform.position;
+        Vector3 playerPosition = _playerTransformRef.position;
         float angleStep = 360f / brokenCount;
         int brokenIndex = 0;
         for (int i = 0; i < aliveEnemies.Count; i++)
@@ -177,37 +182,34 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    // Returns whether enemy E can join a formation.
-    private bool CanJoinFormation(EnemyMovement enemy, Transform playerTransform)
+    /**
+    Helper function for UpdateFormationTargets(): Returns whether enemy E can join a formation.
+    Requirements for joining formation: E must be far enough from the player and close enough to another enemy. */
+    private bool CanJoinFormation(EnemyMovement E)
     {
-        if (enemy == null) return false;
-        
+        if (E == null) return false;
+
         // E can't join formation if E is too close to the player.
-        if (playerTransform != null)
+        if (_playerTransformRef != null)
         {
-            float distanceToPlayer = Vector3.Distance(enemy.transform.position, playerTransform.position);
-            if (distanceToPlayer < breakFormationDistance)
-            {
-                return false;
-            }
+            float distanceToPlayer = Vector3.Distance(E.transform.position, _playerTransformRef.position);
+            if (distanceToPlayer < breakFormationDistance) return false;
         }
-        
+
         // Can only join formation if E is within a threshold distance to other enemies.
-        bool nearOtherEnemy = false;
         for (int i = 0; i < aliveEnemies.Count; i++)
         {
-            EnemyMovement other = aliveEnemies[i];
-            if (other == null || other == enemy) continue;
-            
-            float distance = Vector3.Distance(enemy.transform.position, other.transform.position);
-            if (distance <= joinFormationDistance)
+            EnemyMovement otherEnemy = aliveEnemies[i];
+            if (otherEnemy == null || otherEnemy == E) continue;
+            float distanceToEnemy = Vector3.Distance(E.transform.position, otherEnemy.transform.position);
+            if (distanceToEnemy <= joinFormationDistance)
             {
-                nearOtherEnemy = true;
-                break;
+                return true;
             }
         }
-        
-        return nearOtherEnemy;
+
+        return false;
+
     }
 
     // Returns an offset that tells the enemy where to position itself in relation to _formationAnchor.
@@ -232,7 +234,8 @@ public class EnemySpawner : MonoBehaviour
         return right * x + forward * z;
     }
 
-    Vector3 GetFormationPosition(int index)
+    // A placeholder function for now for adding more advanced spawning functions.
+    Vector3 GetSpawnPosition(int index)
     {
         return transform.position;
     }
