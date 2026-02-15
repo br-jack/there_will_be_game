@@ -91,15 +91,19 @@ public class EnemySpawner : MonoBehaviour
 
     public void UpdateFormationTargets()
     {
-        // Calculate direction to player for formation orientation
+        // Calculate formation orientation (in relation to the player)
         Vector3 directionToPlayer = Vector3.forward;
         if (_playerTransformRef != null)
         {
-            directionToPlayer = (_playerTransformRef.position - _formationAnchor).normalized;
-            if (directionToPlayer.sqrMagnitude < 0.01f)
+            Vector3 formationToPlayer = _playerTransformRef.position - _formationAnchor;
+
+            // Edge case: player position and formation anchor in ~same position
+            if (formationToPlayer.sqrMagnitude < 0.01f)
             {
-                directionToPlayer = Vector3.forward;
+                formationToPlayer = Vector3.forward;
             }
+
+            directionToPlayer = formationToPlayer.normalized;
         }
         
         // Update formation eligibility for each enemy
@@ -163,7 +167,8 @@ public class EnemySpawner : MonoBehaviour
         {
             return;
         }
-
+        
+        // Counts players not in formation and gives them a target in a ring around the player
         Vector3 playerPosition = _playerTransformRef.position;
         float angleStep = 360f / brokenCount;
         int brokenIndex = 0;
@@ -239,5 +244,4 @@ public class EnemySpawner : MonoBehaviour
     {
         return transform.position;
     }
-
 }
