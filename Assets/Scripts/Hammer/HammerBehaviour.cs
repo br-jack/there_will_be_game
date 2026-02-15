@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.Assertions;
 using WiimoteApi;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 namespace Hammer
 {
@@ -36,6 +37,8 @@ namespace Hammer
         public int ind0;
         public int ind1;
         public int ind2;
+        public float accelPitch;
+        public float accelRoll;
 
 
         public void SceneSwitch()
@@ -175,26 +178,40 @@ namespace Hammer
             //ACCELEROMETER adjustment
             if (accelEnabled) { 
             Vector3 accel = new Vector3(
-                (mult1)*WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[ind1], //y 
                 (mult0)*WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[ind0], //x 
+                (mult1)*WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[ind1], //y 
                 (mult2)*WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[ind2]); //z 
             
             
             accel.Normalize();
 
-            float accel_roll = Mathf.Atan2(accel.x,accel.z) * Mathf.Rad2Deg;
-            float accel_pitch =Mathf.Atan2(accel.y,accel.z) * Mathf.Rad2Deg;
-            float accel_yaw_guess = wiimoteAttitude.eulerAngles.y;
+            float accel_roll;
+            float accel_yaw;
+            float accel_pitch;
+
+            if (Math.Abs(accel.z) < 0.05) accel_roll = wiimoteAttitude.eulerAngles.z;
+                else accel_roll = Mathf.Atan2(accel.x,accel.z) * Mathf.Rad2Deg;
+            if (Math.Abs(accel.y) < 0.05) accel_yaw = wiimoteAttitude.eulerAngles.y;
+                else accel_yaw = Mathf.Atan2(accel.x,accel.y) * Mathf.Rad2Deg;
+            if (Math.Abs(accel.z) < 0.05) accel_pitch = wiimoteAttitude.eulerAngles.x;
+                else accel_pitch =Mathf.Atan2(accel.y,accel.z) * Mathf.Rad2Deg;
+            
+            accelPitch = accel_pitch; //only to print, i know these lines look silly
+            accelRoll = accel_roll;
+            
+                
+            //float accel_yaw_guess = wiimoteAttitude.eulerAngles.y;
             
 
-            Quaternion accel_suggested_attitude = Quaternion.Euler(new Vector3(accel_pitch,0,-accel_roll)); //always zero yaw is probs silly
-
+            Quaternion accel_suggested_attitude = Quaternion.Euler(new Vector3(accel_pitch,accel_yaw,-accel_roll)); //always zero yaw is probs silly
+            /*
             wiimoteAttitude = Quaternion.Slerp(
                 wiimoteAttitude,
                 accel_suggested_attitude,
                 accelAdjustmentRatio
             );
-            
+            */
+            wiimoteAttitude = accel_suggested_attitude;
             }
             
             transform.localRotation = wiimoteAttitude;

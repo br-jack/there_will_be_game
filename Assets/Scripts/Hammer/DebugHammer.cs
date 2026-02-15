@@ -23,6 +23,9 @@ namespace Hammer
         public TMP_Text accelMessagesText;
         public TMP_Text accelButtonText;
 
+        public TMP_Text accelPitchText;
+        public TMP_Text accelRollText;
+
         public GameObject backImage;
         public GameObject noseImage;
         public GameObject sideImage;
@@ -116,7 +119,10 @@ namespace Hammer
             xAccelText.text = $"X Accel: {WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[0].ToString(CultureInfo.CurrentCulture)}";
             yAccelText.text = $"Y Accel: {WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[1].ToString(CultureInfo.CurrentCulture)}";
             zAccelText.text = $"Z Accel: {WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[2].ToString(CultureInfo.CurrentCulture)}";
+            accelPitchText.text = $"Accel Pitch: {hb.accelPitch}";
+            accelRollText.text = $"Accel Roll: {hb.accelRoll}";
+        }
         }
     }
-}
+
 
