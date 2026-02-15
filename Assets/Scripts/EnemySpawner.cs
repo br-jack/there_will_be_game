@@ -36,7 +36,6 @@ public class EnemySpawner : MonoBehaviour
     {
         Grid
     }
-
     private void Start()
     {
         _formationAnchor = transform.position;
