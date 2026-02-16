@@ -42,6 +42,6 @@ public class BodyHit : MonoBehaviour
         }
 
         // No shield blocking - kill the enemy
-        enemy.Die();
+        enemy.Die(other);
     }
 }

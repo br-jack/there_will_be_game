@@ -11,6 +11,10 @@ public class EnemyMovement : MonoBehaviour
 
     private Rigidbody _rb;
 
+    public float onDeathTimer;
+
+    public bool IsDying { get; private set; }
+
     public bool IsKnockedBack { get; private set; }
     public bool ShieldWasJustHit { get; private set; }
 
@@ -31,7 +35,14 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-
+        if (IsDying)
+        {
+            onDeathTimer -= Time.deltaTime;
+            if (onDeathTimer <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -69,9 +80,18 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public void Die()
+    public void Die(Collider other)
     {
-        Destroy(gameObject);
+        float knockbackForce = 20f;
+        
+        //Stagger enemy
+        Vector3 knockbackDirection = transform.position - other.transform.position;
+        knockbackDirection.y = 0.5f;
+        knockbackDirection.Normalize();
+
+        ApplyKnockback(knockbackDirection * knockbackForce);
+
+        IsDying = true;
     }
 
     public void ApplyKnockback(Vector3 force)
