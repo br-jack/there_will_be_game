@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BodyHit : MonoBehaviour
 {
+    public LayerMask shieldMask;
     void OnTriggerEnter(Collider other)
     {
 
@@ -34,22 +35,10 @@ public class BodyHit : MonoBehaviour
         float distance = Vector3.Distance(attackPosition, enemyPosition);
 
 
-        // Get all the hits, then filter out the attacker
-        RaycastHit[] hits = Physics.RaycastAll(attackPosition, direction, distance);
-
-        foreach (RaycastHit h in hits)
+        if (Physics.Raycast(attackPosition, direction, distance, shieldMask))
         {
-            // Skip the attacker's own colliders
-            if (h.collider.transform.IsChildOf(other.transform.root))
-            {
-                continue;
-            }
-            // Check if the first thing hit was the shield
-            if (h.collider.CompareTag("Shield"))
-            {
-                return;
-            }
-            break;
+            // Sheild is blocking
+            return;
         }
 
         // No shield blocking - kill the enemy
