@@ -31,12 +31,6 @@ namespace Hammer
         //debug
         public bool accelEnabled;
         public bool gyroEnabled;
-        public int mult0;
-        public int mult1;
-        public int mult2;
-        public int ind0;
-        public int ind1;
-        public int ind2;
         public float accelPitch;
         public float accelRoll;
 
@@ -131,90 +125,69 @@ namespace Hammer
 
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;
-            Vector3 gyroOffset = Vector3.zero;
-            Vector3 accelOffset = Vector3.zero;
-            
+            Quaternion wiimoteAxisAdjustment = Quaternion.identity;
+
+            //GYROSCOPE
             if (gyroEnabled) { //debug
             do {
                 ret = WiimoteGlobal.wiimote.ReadWiimoteData();
 
-                
-
-                Vector3 accelDataForFrameTest = new Vector3(
-                    WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[0],
-                    WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[1],
-                    WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[2]);
-                print("Accel data: "+accelDataForFrameTest);
-                accelOffset += accelDataForFrameTest;
-
-                
-                //this is a test basically
-
-                //GYROSCOPE
                 //add all detected rotations throughout the frame to gyroOffset
                 //we should integrate this! would give accurate total rotation
                 if (ret > 0 && WiimoteGlobal.wiimote.current_ext == ExtensionController.MOTIONPLUS) {
-                    gyroOffset += new Vector3(  -WiimoteGlobal.wiimote.MotionPlus.PitchSpeed,
+                    transform.Rotate(new Vector3(  -WiimoteGlobal.wiimote.MotionPlus.PitchSpeed,
                                                     WiimoteGlobal.wiimote.MotionPlus.YawSpeed,
-                                                    -WiimoteGlobal.wiimote.MotionPlus.RollSpeed);
-                }
-            } while (ret > 0);
-            }   else ret = WiimoteGlobal.wiimote.ReadWiimoteData();
-            
-
-            gyroOffset /= 95f; //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
+                                                    -WiimoteGlobal.wiimote.MotionPlus.RollSpeed)
+                                                    /95f); //would be cool to add into a quaternion but v complex with axes
+                                                    //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
                             //and speeds of rotations are sent in degrees per second (i think!)
                             //would be cool to actually count the number of updates per second but I'm not sure how. 
-                            //i think that this is completely wrong. nothing like 95 messages sent per frame. but idk
-                            //oh wait yeah ofc its wrong, we are not 1 frame per second!! 
-
-
-            
+                }
+                wiimoteAttitude = transform.rotation;
+            } while (ret > 0);
+            }   else WiimoteGlobal.wiimote.ReadWiimoteData();
             // ReadWiimoteData() returns 0 when nothing is left to read.
             // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
-            wiimoteAttitude *= Quaternion.Euler(gyroOffset);
+             
 
-            
             //ACCELEROMETER adjustment
             if (accelEnabled) { 
             Vector3 accel = new Vector3(
-                (mult0)*WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[ind0], //x 
-                (mult1)*WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[ind1], //y 
-                (mult2)*WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[ind2]); //z 
+                WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[0], //x 
+                WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[1], //y 
+                WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[2]); //z 
             
             
             accel.Normalize();
 
-            float accel_roll;
-            float accel_yaw;
+            //accelerometer estimates for roll and pitch relative to world space
+            float accel_roll; 
             float accel_pitch;
 
+            /*
             if (Math.Abs(accel.z) < 0.05) accel_roll = wiimoteAttitude.eulerAngles.z;
-                else accel_roll = Mathf.Atan2(accel.x,accel.z) * Mathf.Rad2Deg;
-            if (Math.Abs(accel.y) < 0.05) accel_yaw = wiimoteAttitude.eulerAngles.y;
-                else accel_yaw = Mathf.Atan2(accel.x,accel.y) * Mathf.Rad2Deg;
+                else */accel_roll = Mathf.Atan2(accel.x,accel.z) * Mathf.Rad2Deg;
+            /*
             if (Math.Abs(accel.z) < 0.05) accel_pitch = wiimoteAttitude.eulerAngles.x;
-                else accel_pitch =Mathf.Atan2(accel.y,accel.z) * Mathf.Rad2Deg;
+                else */accel_pitch =Mathf.Atan2(accel.y,accel.z) * Mathf.Rad2Deg;
             
             accelPitch = accel_pitch; //only to print, i know these lines look silly
             accelRoll = accel_roll;
             
-                
-            //float accel_yaw_guess = wiimoteAttitude.eulerAngles.y;
-            
+            //accelerometer estimate for attitude relative to world space
+            Quaternion accel_suggested_attitude = Quaternion.Euler(new Vector3 (accel_pitch,transform.rotation.y,accel_roll));
 
-            Quaternion accel_suggested_attitude = Quaternion.Euler(new Vector3(accel_pitch,accel_yaw,-accel_roll)); //always zero yaw is probs silly
-            /*
-            wiimoteAttitude = Quaternion.Slerp(
-                wiimoteAttitude,
-                accel_suggested_attitude,
-                accelAdjustmentRatio
-            );
-            */
-            wiimoteAttitude = accel_suggested_attitude;
+            if (gyroEnabled) {
+                wiimoteAttitude = Quaternion.Slerp(
+                    wiimoteAttitude,
+                    accel_suggested_attitude,
+                    accelAdjustmentRatio
+                );
+            } else wiimoteAttitude = accel_suggested_attitude;
             }
             
             transform.localRotation = wiimoteAttitude;
+            //starting to think i don't need to store wiimoteAttitude
 
 
             //Unity Remote
