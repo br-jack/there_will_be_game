@@ -18,12 +18,12 @@ public class BodyHit : MonoBehaviour
         {
             return;
         }
-        if (enemy.isKnockedback)
+        if (enemy.IsKnockedBack)
         {
             return;
         }
         // If shield was already hit this frame, ignore body hit
-        if (enemy.shieldWasJustHit)
+        if (enemy.ShieldWasJustHit)
         {
             return;
         }

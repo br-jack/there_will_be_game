@@ -11,8 +11,8 @@ public class EnemyMovement : MonoBehaviour
 
     private Rigidbody _rb;
 
-    public bool isKnockedback;
-    public bool shieldWasJustHit = false;
+    public bool IsKnockedBack { get; private set; }
+    public bool ShieldWasJustHit { get; private set; }
 
     private void Awake()
     {
@@ -36,8 +36,8 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        shieldWasJustHit = false;
-        if (isKnockedback)
+        ShieldWasJustHit = false;
+        if (IsKnockedBack)
         {
             return;
         }
@@ -63,9 +63,9 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Arena") && isKnockedback)
+        if (other.gameObject.CompareTag("Arena") && IsKnockedBack)
         {
-            isKnockedback = false;
+            IsKnockedBack = false;
         }
     }
 
@@ -76,7 +76,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void ApplyKnockback(Vector3 force)
     {
-        isKnockedback = true;
+        IsKnockedBack = true;
 
         _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(force, ForceMode.Impulse);
@@ -98,6 +98,6 @@ public class EnemyMovement : MonoBehaviour
 
     public void MarkShieldHit()
     {
-        shieldWasJustHit = true;
+        ShieldWasJustHit = true;
     }
 }
