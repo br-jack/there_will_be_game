@@ -13,6 +13,7 @@ public class EnemyMovement : MonoBehaviour
 
     [SerializeField] private float onDeathTimer;
     [SerializeField] private float onKnockbackTimer;
+    private float _knockbackTimer;
     [SerializeField] private float deathGroundCheckDistance = 0.3f;
     [SerializeField] private LayerMask groundMask;
 
@@ -33,6 +34,8 @@ public class EnemyMovement : MonoBehaviour
 
         _playerTransformRef = playerRef.transform;
         _playerHealthRef = playerRef.GetComponent<Health>();
+        
+        _knockbackTimer = onKnockbackTimer;
     }
 
     // Update is called once per frame
@@ -40,10 +43,11 @@ public class EnemyMovement : MonoBehaviour
     {
         if (IsKnockedBack)
         {
-            onKnockbackTimer -= Time.deltaTime;
-            if (onKnockbackTimer <= 0)
+            _knockbackTimer -= Time.deltaTime;
+            if (_knockbackTimer <= 0)
             {
                 IsKnockedBack = false;
+                _knockbackTimer = onKnockbackTimer;
             }
         }
         if (IsDying)

@@ -1047,16 +1047,12 @@ PrefabInstance:
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 2571725483055236638, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
-      propertyPath: onDeathTimer
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2571725483055236638, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
       propertyPath: onKnockbackTimer
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2571725483055236638, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
-      propertyPath: groundMask.m_Bits
-      value: 1
+      propertyPath: deathGroundCheckDistance
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4817801517837622803, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
       propertyPath: m_LocalPosition.x
