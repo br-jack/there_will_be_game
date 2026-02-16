@@ -132,6 +132,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   shield: {fileID: 6339469894394987824}
+  onDeathTimer: 5
+  onKnockbackTimer: 1
+  deathGroundCheckDistance: 0.3
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!136 &8163188274568113942
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -60,13 +60,13 @@ namespace Hammer
 
                     if (WiimoteGlobal.wiimote.wmp_attached)
                     {
-                        WiimoteGlobal.wiimote.ActivateWiiMotionPlus();
                         Debug.Log("Connected with Wii Motion Plus Extension.");
                     }
                     else
                     {
                         Debug.LogWarning("Wii remote doesn't have motion plus :(");
                     }
+                    WiimoteGlobal.wiimote.ActivateWiiMotionPlus();
                 }
                 
                 //Default input mode only sends button data, so for accelerometer / gyro data 
@@ -108,7 +108,7 @@ namespace Hammer
         // Update is called once per frame
         void Update()
         {
-            Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
+            // Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
 
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;

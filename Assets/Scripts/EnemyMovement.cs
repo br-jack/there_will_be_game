@@ -11,7 +11,10 @@ public class EnemyMovement : MonoBehaviour
 
     private Rigidbody _rb;
 
-    public float onDeathTimer;
+    [SerializeField] private float onDeathTimer;
+    [SerializeField] private float onKnockbackTimer;
+    [SerializeField] private float deathGroundCheckDistance = 0.3f;
+    [SerializeField] private LayerMask groundMask;
 
     public bool IsDying { get; private set; }
 
@@ -35,10 +38,21 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (IsKnockedBack)
+        {
+            onKnockbackTimer -= Time.deltaTime;
+            if (onKnockbackTimer <= 0)
+            {
+                IsKnockedBack = false;
+            }
+        }
         if (IsDying)
         {
             onDeathTimer -= Time.deltaTime;
-            if (onDeathTimer <= 0)
+            Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
+            bool isGrounded = Physics.Raycast(rayOrigin, Vector3.down, deathGroundCheckDistance, groundMask);
+            
+            if (onDeathTimer <= 0 || isGrounded == true)
             {
                 Destroy(gameObject);
             }
@@ -72,14 +86,6 @@ public class EnemyMovement : MonoBehaviour
         _rb.linearVelocity = new Vector3(direction.x * speed, _rb.linearVelocity.y, direction.z * speed);
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Arena") && IsKnockedBack)
-        {
-            IsKnockedBack = false;
-        }
-    }
-
     public void Die(Collider other)
     {
         float knockbackForce = 20f;
@@ -91,6 +97,7 @@ public class EnemyMovement : MonoBehaviour
 
         ApplyKnockback(knockbackDirection * knockbackForce);
 
+        IsKnockedBack = true;
         IsDying = true;
     }
 

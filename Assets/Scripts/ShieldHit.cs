@@ -6,7 +6,6 @@ public class ShieldHit : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
         if (attack == null)
         {
