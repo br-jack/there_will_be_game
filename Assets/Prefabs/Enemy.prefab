@@ -225,6 +225,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56e0f9c281748342bf1f7467b43504c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shieldMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &6339469894394987824
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +241,7 @@ GameObject:
   - component: {fileID: 2286034224666636685}
   - component: {fileID: 8238429626968606762}
   - component: {fileID: 3878966871341973484}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Shield
   m_TagString: Shield
   m_Icon: {fileID: 0}
