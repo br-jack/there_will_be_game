@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ShieldHit : MonoBehaviour
 {
-    public float knockbackForce = 20f;
+    public float knockbackForce;
 
     void OnTriggerEnter(Collider other)
     {
@@ -20,8 +20,9 @@ public class ShieldHit : MonoBehaviour
         }
 
         enemy.MarkShieldHit();
+        //Stagger enemy
         Vector3 knockbackDirection = enemy.transform.position - other.transform.position;
-        knockbackDirection.y = 0.5f;
+        knockbackDirection.y = 0f;
         knockbackDirection.Normalize();
 
         enemy.ApplyKnockback(knockbackDirection * knockbackForce);

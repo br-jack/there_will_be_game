@@ -132,8 +132,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   shield: {fileID: 6339469894394987824}
-  isKnockedback: 0
-  shieldWasJustHit: 0
 --- !u!136 &8163188274568113942
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -349,4 +347,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4567802b5f9c4ef48bfc8cc69e1f5dcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackForce: 40
+  knockbackForce: 10
