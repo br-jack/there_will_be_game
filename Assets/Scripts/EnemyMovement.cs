@@ -49,8 +49,13 @@ public class EnemyMovement : MonoBehaviour
         // Enemy actually needs to face the player
         if (direction != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 5f);
+            // Need to stop the enemy from tilting forward when they are close
+            Vector3 flatDirection = new Vector3(direction.x, 0, direction.z).normalized;
+            if (flatDirection != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(flatDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 5f);
+            }
         }
 
         _rb.linearVelocity = new Vector3(direction.x * speed, _rb.linearVelocity.y, direction.z * speed);

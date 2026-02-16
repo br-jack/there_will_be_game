@@ -37,8 +37,6 @@ public class BodyHit : MonoBehaviour
         // Get all the hits, then filter out the attacker
         RaycastHit[] hits = Physics.RaycastAll(attackPosition, direction, distance);
 
-        // Find the FIRST non-attacker hit
-        GameObject firstHit = null;
         foreach (RaycastHit h in hits)
         {
             // Skip the attacker's own colliders
