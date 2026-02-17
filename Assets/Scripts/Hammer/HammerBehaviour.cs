@@ -151,8 +151,8 @@ namespace Hammer
                     float accelRollAdjustment = (transform.eulerAngles.z - accelRoll - 180)*accelAdjustmentRatio; 
                     transform.Rotate(new Vector3(0,0,accelRollAdjustment),Space.World);
 
-                    //roll towards measured pitch
-                    accelPitch = (Mathf.Rad2Deg * Mathf.Atan2(accel.y,Mathf.Sqrt(Mathf.Pow(accel.x,2)+Mathf.Pow(accel.z,2)))) - transform.eulerAngles.x;
+                    //pitch towards measured pitch
+                    accelPitch = Mathf.Rad2Deg * Mathf.Atan2(accel.y,Mathf.Sqrt(Mathf.Pow(accel.x,2)+Mathf.Pow(accel.z,2)));
                     float accelPitchAdjustment = (transform.eulerAngles.x - accelPitch - 180)*accelAdjustmentRatio; 
                     transform.Rotate(new Vector3(accelPitchAdjustment,0,0),Space.World);
 
