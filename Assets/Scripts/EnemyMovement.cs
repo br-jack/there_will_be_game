@@ -71,7 +71,7 @@ public class EnemyMovement : MonoBehaviour
         Vector3 targetPosition = hasFormationTarget
             ? _formationTarget
             : (_hasAttackTarget ? _attackTarget : _playerTransformRef.position);
-        Vector3 direction = (targetPosition - transform.position).normalized;
+        Vector3 targetDirection = (targetPosition - transform.position).normalized;
         
         // If it meets the criteria of being in a formation, keep in formation.
         float distanceToFormation = Vector3.Distance(transform.position, _formationTarget);
@@ -105,7 +105,7 @@ public class EnemyMovement : MonoBehaviour
             }
         }
 
-        _rb.linearVelocity = new Vector3(direction.x * speed, _rb.linearVelocity.y, direction.z * speed);
+        _rb.linearVelocity = new Vector3(targetDirection.x * speed, _rb.linearVelocity.y, targetDirection.z * speed);
 
         // If the enemy is in a formation, break it when it's sufficiently close to the player
         if (hasFormationTarget && spawner != null && distanceToPlayer < spawner.breakFormationDistance)
