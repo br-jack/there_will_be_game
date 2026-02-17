@@ -3,8 +3,10 @@ using UnityEngine;
 public class BodyHit : MonoBehaviour
 {
     public LayerMask shieldMask;
+    public hitSound hitSounds;
     void OnTriggerEnter(Collider other)
     {
+
 
         // Check if hit by attack
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
@@ -12,12 +14,12 @@ public class BodyHit : MonoBehaviour
         {
             return;
         }
-
         EnemyMovement enemy = GetComponentInParent<EnemyMovement>();
         if (enemy == null)
         {
             return;
         }
+
         if (enemy.isKnockedback)
         {
             return;
@@ -27,7 +29,6 @@ public class BodyHit : MonoBehaviour
         {
             return;
         }
-
         // Use raycasting to check if shield is blocking
         Vector3 attackPosition = other.transform.position;
         Vector3 enemyPosition = enemy.transform.position;
@@ -40,7 +41,9 @@ public class BodyHit : MonoBehaviour
             // Sheild is blocking
             return;
         }
-
+        hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
+        hitSounds.PlaySFX();
+     
         // No shield blocking - kill the enemy
         enemy.Die();
     }
