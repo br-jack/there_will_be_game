@@ -31,7 +31,7 @@ namespace Hammer
         public GameObject sideImage;
 
 
-        
+
         public int[,] savedAccelCalib;
         public bool saveAccelCalib;
         public bool useAccelCalib;
@@ -118,7 +118,7 @@ namespace Hammer
 
             hb.transform.SetPositionAndRotation(hb.transform.position, Quaternion.identity);
             WiimoteGlobal.wiimote.MotionPlus.SetZeroValues();
-            hb.wiimoteAttitude = Quaternion.Euler(0,0,0);
+            hb.wiimoteAttitude = Vector3.zero;
         }
 
         // Update is called once per frame

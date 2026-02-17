@@ -21,7 +21,7 @@ namespace Hammer
 
         
 
-        public Quaternion wiimoteAttitude; //should be private, can change later as only one method uses i think!
+        public Vector3 wiimoteAttitude; //should be private, can change later as only one method uses i think!
 
         public float accelAdjustmentRatio; //0.02 seems reasonable
 
@@ -114,7 +114,7 @@ namespace Hammer
         //Called once before start when the game starts
         void Awake()
         {
-            wiimoteAttitude = Quaternion.identity; //have to set it to something! assume same as hammer
+            wiimoteAttitude = Vector3.zero; //have to set it to something! assume same as hammer
             ConnectWiimote();
         }
 
@@ -125,7 +125,8 @@ namespace Hammer
 
             Wiimote wm = WiimoteGlobal.wiimote;
             
-            
+            //WE APPLY ROTATIONS IN THE ORDER: ROLL, PITCH, YAW
+            //unity does it in this order naturally, but it's a good order!
             int ret;
             do
             {
@@ -139,30 +140,24 @@ namespace Hammer
                     wm.MotionPlus.YawSpeed,
                     -wm.MotionPlus.RollSpeed)/95f;
 
-                //Gyro
-                transform.Rotate(gyro);
-                wiimoteAttitude = transform.rotation;
-                gyroAttitude = transform.rotation;
-                GameObject.Find("gyroGhostHammer").transform.rotation = gyroAttitude;
+                
+                if (gyroEnabled) transform.Rotate(gyro);
+                wiimoteAttitude = transform.rotation.eulerAngles;
+                
+                if (accelEnabled) {
 
-                //Accel
-                accelRoll = Mathf.Rad2Deg *  Mathf.Atan2(-accel.x,Mathf.Sqrt(Mathf.Pow(accel.y,2)+Mathf.Pow(accel.z,2))); //-180 < accelRoll < 180
-                accelPitch = Mathf.Rad2Deg * Mathf.Atan2(accel.y,Mathf.Sqrt(Mathf.Pow(accel.x,2)+Mathf.Pow(accel.z,2))); //-90 < accelPitch < 90
-            
-                //Convert to world pitch and roll axes.
-                Quaternion yawedAccelRoll = Quaternion.AngleAxis(accelRoll,transform.forward);
-                Quaternion yawedAccelPitch = Quaternion.AngleAxis(accelPitch,transform.right); 
+                    //roll towards measured roll
+                    accelRoll = Mathf.Rad2Deg *  Mathf.Atan2(-accel.x,accel.z);
+                    float accelRollAdjustment = (transform.eulerAngles.z - accelRoll - 180)*accelAdjustmentRatio; 
+                    transform.Rotate(new Vector3(0,0,accelRollAdjustment),Space.World);
 
-                //ghost hammer accel
-                accelAttitude = Quaternion.identity * yawedAccelPitch * yawedAccelRoll;
-                GameObject.Find("accelGhostHammer").transform.rotation = accelAttitude;
+                    //roll towards measured pitch
+                    accelPitch = (Mathf.Rad2Deg * Mathf.Atan2(accel.y,Mathf.Sqrt(Mathf.Pow(accel.x,2)+Mathf.Pow(accel.z,2)))) - transform.eulerAngles.x;
+                    float accelPitchAdjustment = (transform.eulerAngles.x - accelPitch - 180)*accelAdjustmentRatio; 
+                    transform.Rotate(new Vector3(accelPitchAdjustment,0,0),Space.World);
 
-                //slerp towards desired pitch
-                wiimoteAttitude=Quaternion.Slerp(wiimoteAttitude,yawedAccelPitch,accelAdjustmentRatio);
-                //slerp towards desired roll
-                wiimoteAttitude=Quaternion.Slerp(wiimoteAttitude,yawedAccelRoll,accelAdjustmentRatio);
-
-                transform.rotation = wiimoteAttitude;
+                    GameObject.Find("accelGhostHammer").transform.rotation = Quaternion.Euler(new Vector3(accelPitch,0,accelRoll));
+                }
                 
             } while (ret > 0);
 
