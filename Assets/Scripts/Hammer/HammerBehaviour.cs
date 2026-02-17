@@ -26,11 +26,6 @@ namespace Hammer
 
         private Quaternion attitude;
 
-        public void SceneSwitch()
-        {
-            SceneManager.LoadScene("hammerTest");
-        }
-
         void ConnectWiimote() {
             if (WiimoteManager.HasWiimote())
             {
