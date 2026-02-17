@@ -3,8 +3,14 @@ using UnityEngine;
 public class BodyHit : MonoBehaviour
 {
     public LayerMask shieldMask;
+    private AudioSource audioSource;
     void OnTriggerEnter(Collider other)
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("man there's no audio source");
+        }
 
         // Check if hit by attack
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
@@ -18,6 +24,7 @@ public class BodyHit : MonoBehaviour
         {
             return;
         }
+        audioSource.Play();
         if (enemy.isKnockedback)
         {
             return;
@@ -40,7 +47,7 @@ public class BodyHit : MonoBehaviour
             // Sheild is blocking
             return;
         }
-
+     
         // No shield blocking - kill the enemy
         enemy.Die();
     }

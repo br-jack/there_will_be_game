@@ -7,12 +7,15 @@ using UnityEngine.UI;
 using UnityEngine.Assertions;
 using WiimoteApi;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 namespace Hammer
 {
     //probs should set up a mechanism for calibrating the accelerometer. 
     // This will need the game to take the user through a short process.  
     //currently just uses whatever calibration values are in there. 
+    [RequireComponent(typeof(AudioSource))]
+
     public class HammerBehaviour : MonoBehaviour
     {
         private AudioSource audioSource;
@@ -97,6 +100,11 @@ namespace Hammer
         void Start()
         {
             audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("man there's no audio source");
+        }
+
         }
 
         //Called once before start when the game starts
@@ -164,8 +172,10 @@ namespace Hammer
 
         public void OnCollisionEnter(Collision collision)
         {
+
             if (collision.gameObject.CompareTag("Enemy"))
             {
+
                 audioSource.Play();
                 Destroy(collision.gameObject);
             }
