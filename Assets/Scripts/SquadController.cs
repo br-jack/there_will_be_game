@@ -1,0 +1,240 @@
+/**
+Squad controller.
+Responsible for:
+- maintaining centre of formation
+- giving each soldier in a squad a slot (that corresponds to a position)
+- setting each soldier a target (follow in moving formation position or attack player)
+- handle formation state (move toward player, change formation, etc.)
+*/
+
+using UnityEngine;
+using System.Collections.Generic;
+
+public class SquadController : MonoBehaviour
+{
+    /**
+    Variables explained:
+    aliveEnemies: stores enemies currently in play.
+        - use aliveEnemies.Length for number of enemies
+    spawnInterval: time interval between enemies spawning.
+    formationColumns: number of cols in formation (rows decided automatically).
+    formationSpacing: spacing between enemies in formation.
+    attackRingRadius: how far from players do the enemies stop to attack?
+    joinFormationDistance: max distance from formation that an enemy tries to join.
+    breakFormationDistance: max distance from player that an enemy leaves the formation.
+    formationCheckInterval: checks every player and determines whether it should be solo or in a formation based on distance to a player being greater than breakFormationDistance and distance to a formation greater than joinFormationDistance: this is checked every `formationCheckInterval` seconds.
+    */
+    public List<Soldier> aliveSoldiers = new List<Soldier>();
+    private Soldier[] positions;
+    public int squadCapacity = 50;
+    private Transform _playerTransformRef;
+
+    [Header("Formation")]
+    public FormationType formationType = FormationType.Grid; 
+    public int formationColumns = 5;
+    public Vector2 formationSpacing = new Vector2(3.0f, 3.0f); 
+    public float attackRingRadius = 2.0f;
+    public float joinFormationDistance = 32f;
+    public float breakFormationDistance = 2f;
+    private Vector3 _formationCentre;
+    private float _formationCheckTimer = 0.0f;
+    private float _formationCheckInterval = 0.1f;
+    public enum Formations
+    {
+        Grid
+    }
+    private Formations formations = Formations.Grid;
+    private void Start()
+    {
+        _formationCentre = transform.position;
+        GameObject _playerRef = GameObject.FindWithTag("Player");
+        if (_playerRef != null) _playerTransformRef = _playerRef.transform;
+    }
+    void Update()
+    {
+        _formationCheckTimer += Time.deltaTime;
+
+        
+        if (_formationCheckTimer >= _formationCheckInterval)
+        {
+            UpdateFormationTargets();
+            _formationCheckTimer = 0.0f;
+        }
+        
+        // Move centre towards the player's position
+        if (_playerTransformRef != null)
+
+            float speed = GetCentreSpeedHelper();
+
+            _formationCentre = Vector3.MoveTowards(
+                _formationCentre,
+                _playerTransformRef.position,
+                speed * Time.deltaTime
+            );
+        }
+        
+    public void UpdateSquadEligibilityHelper()
+    // Update formation eligibility for each enemy
+    {
+        for (int i = 0; i < aliveEnemies.Count; i++)
+        {
+            EnemyMovement enemy = aliveEnemies[i];
+            if (enemy == null) continue;
+            
+            bool shouldBeInFormation = CanJoinFormation(enemy);
+            
+            if (shouldBeInFormation && !enemy.hasFormationTarget)
+            {
+                enemy.hasFormationTarget = true;
+            }
+            else if (!shouldBeInFormation && enemy.hasFormationTarget)
+            {
+                enemy.ClearFormationTarget();
+            }
+        }
+    }
+
+    public void AssignSoldierPositions()
+    {
+        for (int i = 0; i < positions.Count; i++)
+        {
+            Soldier soldier = positions[i];
+            if (soldier == null) continue;
+
+            int positionIndex = soldier.SlotIndex;
+            if (positionIndex < 0) continue;
+
+            Vector3 offset = GetSlotOffset();
+            soldier.SetFormationTarget(formationCentre + offset);
+        }
+    }
+
+    public void UpdateFormationTargets()
+    {
+        // Calculate formation orientation (in relation to the player)
+        Vector3 directionToPlayer = Vector3.forward;
+        if (_playerTransformRef != null)
+        {
+            Vector3 formationToPlayer = _playerTransformRef.position - _formationCentre;
+
+            // Edge case: player position and formation anchor in ~same position
+            if (formationToPlayer.sqrMagnitude < 0.01f)
+            {
+                formationToPlayer = Vector3.forward;
+            }
+
+            directionToPlayer = formationToPlayer.normalized;
+        }
+
+        UpdateSquadEligibilityHelper();
+
+        AssignSoldierPositions();
+
+        if (_playerTransformRef == null)
+        {
+            return;
+        }
+
+        // Update attack targets for broken formation enemies
+        int brokenCount = 0;
+        for (int i = 0; i < aliveEnemies.Count; i++)
+        {
+            EnemyMovement enemy = aliveEnemies[i];
+            if (enemy == null || enemy.hasFormationTarget)
+            {
+                continue;
+            }
+
+            brokenCount++;
+        }
+
+        if (brokenCount == 0)
+        {
+            return;
+        }
+        
+        // Counts players not in formation and gives them a target in a ring around the player
+        Vector3 playerPosition = _playerTransformRef.position;
+        float angleStep = 360f / brokenCount;
+        int brokenIndex = 0;
+        for (int i = 0; i < aliveEnemies.Count; i++)
+        {
+            EnemyMovement enemy = aliveEnemies[i];
+            if (enemy == null || enemy.hasFormationTarget)
+            {
+                continue;
+            }
+
+            float angle = (angleStep * brokenIndex) * Mathf.Deg2Rad;
+            Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * attackRingRadius;
+            enemy.SetAttackTarget(playerPosition + offset);
+            brokenIndex++;
+        }
+    }
+
+    private float GetCentreSpeedHelper()
+    {
+        switch (Formations)
+        {
+            case Formations.Grid: return 2.0f;
+        }
+    }
+
+    /**
+    Helper function for UpdateFormationTargets(): Returns whether enemy E can join a formation.
+    Requirements for joining formation: E must be far enough from the player and close enough to another enemy. */
+    private bool CanJoinFormation(EnemyMovement E)
+    {
+        if (E == null) return false;
+
+        // E can't join formation if E is too close to the player.
+        if (_playerTransformRef != null)
+        {
+            float distanceToPlayer = Vector3.Distance(E.transform.position, _playerTransformRef.position);
+            if (distanceToPlayer < breakFormationDistance) return false;
+        }
+
+        // Can only join formation if E is within a threshold distance to other enemies.
+        for (int i = 0; i < aliveEnemies.Count; i++)
+        {
+            EnemyMovement otherEnemy = aliveEnemies[i];
+            if (otherEnemy == null || otherEnemy == E) continue;
+            float distanceToEnemy = Vector3.Distance(E.transform.position, otherEnemy.transform.position);
+            if (distanceToEnemy <= joinFormationDistance)
+            {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    // Returns an offset that tells the enemy where to position itself in relation to _formationCentre.
+    private Vector3 GetGridSpacing(int index, int totalCount, Vector3 forwardDirection)
+    {
+        int columns = Mathf.Max(1, formationColumns);
+        int rows = Mathf.Max(1, Mathf.CeilToInt(totalCount / (float)columns));
+
+        int col = index % columns;
+        int row = Mathf.FloorToInt(index / columns);
+
+        float totalWidth = (columns - 1) * formationSpacing.x;
+        float totalDepth = (rows - 1) * formationSpacing.y;
+
+        float x = col * formationSpacing.x - totalWidth * 0.5f;
+        float z = row * formationSpacing.y - totalDepth * 0.5f;
+        
+        // Orient the offset toward the player
+        Vector3 right = Vector3.Cross(Vector3.up, forwardDirection).normalized;
+        Vector3 forward = forwardDirection;
+        
+        return right * x + forward * z;
+    }
+
+    // A placeholder function for now for adding more advanced spawning functions.
+    Vector3 GetSpawnPosition(int index)
+    {
+        return transform.position;
+    }
+}
