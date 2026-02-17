@@ -97,11 +97,11 @@ public class EnemyMovement : MonoBehaviour
     {
         gameObject.GetComponent<Renderer>().material.color = Color.gray;
 
-        float knockbackForce = 20f;
+        float knockbackForce = 40f;
         
         //Stagger enemy
         Vector3 knockbackDirection = transform.position - other.transform.position;
-        knockbackDirection.y = 0.5f;
+        knockbackDirection.y = 1.0f;
         knockbackDirection.Normalize();
 
         ApplyKnockback(knockbackDirection * knockbackForce);
