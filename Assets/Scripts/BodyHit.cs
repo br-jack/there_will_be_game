@@ -4,9 +4,11 @@ public class BodyHit : MonoBehaviour
 {
     public LayerMask shieldMask;
     private AudioSource audioSource;
+    public hitSound hitSounds;
     void OnTriggerEnter(Collider other)
     {
         audioSource = GetComponent<AudioSource>();
+
         if (audioSource == null)
         {
             Debug.LogError("man there's no audio source");
@@ -18,13 +20,13 @@ public class BodyHit : MonoBehaviour
         {
             return;
         }
-
+        //audioSource.Play();
         EnemyMovement enemy = GetComponentInParent<EnemyMovement>();
         if (enemy == null)
         {
             return;
         }
-        audioSource.Play();
+
         if (enemy.isKnockedback)
         {
             return;
@@ -34,7 +36,6 @@ public class BodyHit : MonoBehaviour
         {
             return;
         }
-
         // Use raycasting to check if shield is blocking
         Vector3 attackPosition = other.transform.position;
         Vector3 enemyPosition = enemy.transform.position;
@@ -47,6 +48,8 @@ public class BodyHit : MonoBehaviour
             // Sheild is blocking
             return;
         }
+        hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
+        hitSounds.PlaySFX();
      
         // No shield blocking - kill the enemy
         enemy.Die();

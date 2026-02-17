@@ -13,6 +13,7 @@ public class EnemyMovement : MonoBehaviour
 
     public bool isKnockedback;
     public bool shieldWasJustHit = false;
+            private AudioSource audioSource;
 
     private void Awake()
     {
@@ -20,6 +21,12 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
+        if (audioSource == null)
+        {
+            Debug.LogError("man there's no audio source");
+        }
         _rb = GetComponent<Rigidbody>();
 
         GameObject playerRef = GameObject.FindWithTag("Player");
@@ -88,6 +95,8 @@ public class EnemyMovement : MonoBehaviour
         {
             Destroy(shield);
             shield = null;
+            audioSource.Play();
+
         }
     }
 
