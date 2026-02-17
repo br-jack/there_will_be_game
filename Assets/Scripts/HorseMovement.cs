@@ -32,12 +32,12 @@ public class HorseMovement : MonoBehaviour
 
     private bool _jumpPressed;
     
-    // public void OnMove(InputAction.CallbackContext context)
-    // {
-    //     Vector2 moveVector = context.ReadValue<Vector2>();
-    //     _turnInput = moveVector.x;
-    //     _throttleInput = moveVector.y;
-    // }
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        Vector2 moveVector = context.ReadValue<Vector2>();
+        _turnInput = moveVector.x;
+        _throttleInput = moveVector.y;
+    }
 
     public void OnJump(InputAction.CallbackContext context)
     {
