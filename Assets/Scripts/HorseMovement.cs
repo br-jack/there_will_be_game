@@ -139,28 +139,6 @@ public class HorseMovement : MonoBehaviour
                     _currentSpeed += deceleration * Time.fixedDeltaTime;
                 }
             }
-            // code for using onMove - vector 2 via joystick
-            // if (_throttleInput > 0.0f)
-            // {
-            //     _currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
-            // }
-            // if (_throttleInput < 0.0f)
-            // {
-            //     _currentSpeed -= deceleration * Time.fixedDeltaTime;
-            // }
-            // else 
-            // {
-            //     if (_currentSpeed > 0f)
-            //     {
-            //         _currentSpeed -= deceleration * Time.fixedDeltaTime;
-            //     } else if (_currentSpeed < 0f)
-            //     {
-            //         _currentSpeed += deceleration * Time.fixedDeltaTime;
-            //     }
-                
-            //     if (Mathf.Abs(_currentSpeed) < 0.01f) _currentSpeed = 0f;
-            // }
-
             _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
         } else
         {
