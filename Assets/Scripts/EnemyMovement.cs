@@ -95,11 +95,11 @@ public class EnemyMovement : MonoBehaviour
 
     public void Die(Collider other)
     {
+        //Grey out enemy to signify that its dead
         gameObject.GetComponent<Renderer>().material.color = Color.gray;
 
         float knockbackForce = 40f;
         
-        //Stagger enemy
         Vector3 knockbackDirection = transform.position - other.transform.position;
         knockbackDirection.y = 1.0f;
         knockbackDirection.Normalize();
