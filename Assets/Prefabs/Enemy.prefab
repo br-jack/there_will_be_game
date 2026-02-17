@@ -133,8 +133,9 @@ MonoBehaviour:
   speed: 2
   shield: {fileID: 6339469894394987824}
   onDeathTimer: 5
-  onKnockbackTimer: 2
-  deathGroundCheckDistance: 0.3
+  knockbackTime: 0.5
+  currentKnockbackTimer: 0
+  deathGroundCheckDistance: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 1

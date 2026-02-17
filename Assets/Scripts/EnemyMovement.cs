@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -12,8 +13,8 @@ public class EnemyMovement : MonoBehaviour
     private Rigidbody _rb;
 
     [SerializeField] private float onDeathTimer;
-    [SerializeField] private float onKnockbackTimer;
-    private float _knockbackTimer;
+    [SerializeField] private float knockbackTime;
+    [SerializeField] private float currentKnockbackTimer;
     [SerializeField] private float deathGroundCheckDistance = 0.3f;
     [SerializeField] private LayerMask groundMask;
 
@@ -35,7 +36,7 @@ public class EnemyMovement : MonoBehaviour
         _playerTransformRef = playerRef.transform;
         _playerHealthRef = playerRef.GetComponent<Health>();
         
-        _knockbackTimer = onKnockbackTimer;
+        currentKnockbackTimer = knockbackTime;
     }
 
     // Update is called once per frame
@@ -43,21 +44,22 @@ public class EnemyMovement : MonoBehaviour
     {
         if (IsKnockedBack)
         {
-            _knockbackTimer -= Time.deltaTime;
-            if (_knockbackTimer <= 0)
+            currentKnockbackTimer -= Time.deltaTime;
+            Vector3 rayOrigin = transform.position;
+            bool isGrounded = Physics.Raycast(rayOrigin, Vector3.down, deathGroundCheckDistance, groundMask);
+            // Debug.DrawRay(rayOrigin, Vector3.down * deathGroundCheckDistance, Color.yellow);
+
+            if (isGrounded && currentKnockbackTimer <= 0)
             {
                 IsKnockedBack = false;
-                _knockbackTimer = onKnockbackTimer;
+                currentKnockbackTimer = knockbackTime;
             }
         }
         if (IsDying)
         {
             onDeathTimer -= Time.deltaTime;
-            Vector3 rayOrigin = transform.position;
-            bool isGrounded = Physics.Raycast(rayOrigin, Vector3.down, deathGroundCheckDistance, groundMask);
-            Debug.DrawRay(rayOrigin, Vector3.down * deathGroundCheckDistance, Color.yellow);
             
-            if (onDeathTimer <= 0 || (isGrounded == true && IsKnockedBack == false))
+            if (onDeathTimer <= 0 || IsKnockedBack == false)
             {
                 Destroy(gameObject);
             }
