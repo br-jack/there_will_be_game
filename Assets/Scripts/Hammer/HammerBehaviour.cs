@@ -14,11 +14,9 @@ namespace Hammer
     //probs should set up a mechanism for calibrating the accelerometer. 
     // This will need the game to take the user through a short process.  
     //currently just uses whatever calibration values are in there. 
-    [RequireComponent(typeof(AudioSource))]
 
     public class HammerBehaviour : MonoBehaviour
     {
-        private AudioSource audioSource;
 
         //public Wiimote Wiimote { get; private set; }
 
@@ -99,11 +97,6 @@ namespace Hammer
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            Debug.LogError("man there's no audio source");
-        }
 
         }
 
@@ -176,7 +169,6 @@ namespace Hammer
             if (collision.gameObject.CompareTag("Enemy"))
             {
 
-                audioSource.Play();
                 Destroy(collision.gameObject);
             }
         }

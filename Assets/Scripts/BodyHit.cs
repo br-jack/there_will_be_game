@@ -3,16 +3,10 @@ using UnityEngine;
 public class BodyHit : MonoBehaviour
 {
     public LayerMask shieldMask;
-    private AudioSource audioSource;
     public hitSound hitSounds;
     void OnTriggerEnter(Collider other)
     {
-        audioSource = GetComponent<AudioSource>();
 
-        if (audioSource == null)
-        {
-            Debug.LogError("man there's no audio source");
-        }
 
         // Check if hit by attack
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
@@ -20,7 +14,6 @@ public class BodyHit : MonoBehaviour
         {
             return;
         }
-        //audioSource.Play();
         EnemyMovement enemy = GetComponentInParent<EnemyMovement>();
         if (enemy == null)
         {
