@@ -5,14 +5,11 @@ public class SceneController : MonoBehaviour
 {
     public static void ExitGame()
     {
-        if (Application.isEditor)
-        {
-            UnityEditor.EditorApplication.ExitPlaymode();
-        }
-        else
-        {
-            Application.Quit();
-        }
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
     }
     
     public static void LoadMenu()
