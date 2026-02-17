@@ -130,10 +130,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultSpeed: 7
+  formationSpeed: 7
+  spawner: {fileID: 0}
   speed: 2
   shield: {fileID: 6339469894394987824}
   isKnockedback: 0
   shieldWasJustHit: 0
+  hasFormationTarget: 0
 --- !u!136 &8163188274568113942
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -227,7 +231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shieldMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
 --- !u!1 &6339469894394987824
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +245,7 @@ GameObject:
   - component: {fileID: 2286034224666636685}
   - component: {fileID: 8238429626968606762}
   - component: {fileID: 3878966871341973484}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Shield
   m_TagString: Shield
   m_Icon: {fileID: 0}
@@ -349,4 +353,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4567802b5f9c4ef48bfc8cc69e1f5dcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackForce: 40
+  knockbackForce: 20
