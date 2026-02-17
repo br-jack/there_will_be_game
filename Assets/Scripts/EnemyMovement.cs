@@ -53,10 +53,11 @@ public class EnemyMovement : MonoBehaviour
         if (IsDying)
         {
             onDeathTimer -= Time.deltaTime;
-            Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
+            Vector3 rayOrigin = transform.position;
             bool isGrounded = Physics.Raycast(rayOrigin, Vector3.down, deathGroundCheckDistance, groundMask);
+            Debug.DrawRay(rayOrigin, Vector3.down * deathGroundCheckDistance, Color.yellow);
             
-            if (onDeathTimer <= 0 || isGrounded == true)
+            if (onDeathTimer <= 0 || (isGrounded == true && IsKnockedBack == false))
             {
                 Destroy(gameObject);
             }
