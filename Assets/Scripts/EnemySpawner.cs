@@ -243,4 +243,39 @@ public class EnemySpawner : MonoBehaviour
     {
         return transform.position;
     }
+
+    // Triangle version
+    // private Vector3 GetTriangleSpacing(int index, int totalCount, Vector3 forwardDirection)
+    // {
+    //     // Get total number of rows
+    //     // Get index's row number
+    //     // Get amount of people in that index
+    //     int[] rowCapacities = [1, 3, 5, 7, 9, 11]
+    //     int i = totalCount;
+    //     int totalRows = 0;
+    //     int[] rows; 
+    //     while (i > 0)
+    //     {
+    //         i -= rowCapacities[totalRows];
+    //         totalRows++;
+    //         if (i >= 0)
+    //         {
+    //             rows[i] = rowCapacities[i];
+    //         }
+    //         else
+    //         {
+    //             break;
+    //         }
+    //     }
+    //     int rowIndex = index;
+    //     while (i > 0)
+    //     {
+    //         rowIndex -= rows[i];
+    //     }
+    //     // rowIndex (index of row); rows (total structure); rows.Length is no. of rows
+    //     int totalDepth = rows.Length * formationSpacing.y;
+    //     int rowWidth = rows[rows.Length - 1] * formationSpacing.y;
+    // }
 }
+
+
