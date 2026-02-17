@@ -15,6 +15,7 @@ namespace Hammer
     //currently just uses whatever calibration values are in there. 
     public class HammerBehaviour : MonoBehaviour
     {
+        private AudioSource audioSource;
 
         //public Wiimote Wiimote { get; private set; }
 
@@ -95,7 +96,7 @@ namespace Hammer
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            
+            audioSource = GetComponent<AudioSource>();
         }
 
         //Called once before start when the game starts
@@ -165,6 +166,7 @@ namespace Hammer
         {
             if (collision.gameObject.CompareTag("Enemy"))
             {
+                audioSource.Play();
                 Destroy(collision.gameObject);
             }
         }
