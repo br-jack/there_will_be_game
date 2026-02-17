@@ -160,6 +160,7 @@ public class EnemyMovement : MonoBehaviour
         if (spawner != null)
         {
             spawner.aliveEnemies.Remove(this);
+            
             spawner.UpdateFormationTargets();
         }
     }
