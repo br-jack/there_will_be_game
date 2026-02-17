@@ -124,7 +124,7 @@ namespace Hammer
             Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
 
             Wiimote wm = WiimoteGlobal.wiimote;
-            wiimoteAttitude = transform.rotation;
+            
             
             int ret;
             do
@@ -135,24 +135,25 @@ namespace Hammer
                     wm.Accel.GetCalibratedAccelData()[1],
                     wm.Accel.GetCalibratedAccelData()[2]);
                 Vector3 gyro = new Vector3(  
-                    wm.MotionPlus.PitchSpeed,
-                    wm.MotionPlus.RollSpeed,
-                    wm.MotionPlus.YawSpeed);
+                    -wm.MotionPlus.PitchSpeed,
+                    wm.MotionPlus.YawSpeed,
+                    -wm.MotionPlus.RollSpeed)/95f;
 
                 //Gyro
-                //transform.GetChild(1).transform.rotation = gyroAttitude;
+                transform.Rotate(gyro);
+                wiimoteAttitude = transform.rotation;
+                gyroAttitude = transform.rotation;
+                GameObject.Find("gyroGhostHammer").transform.rotation = gyroAttitude;
 
                 //Accel
                 accelRoll = Mathf.Rad2Deg *  Mathf.Atan2(-accel.x,Mathf.Sqrt(Mathf.Pow(accel.y,2)+Mathf.Pow(accel.z,2))); //-180 < accelRoll < 180
                 accelPitch = Mathf.Rad2Deg * Mathf.Atan2(accel.y,Mathf.Sqrt(Mathf.Pow(accel.x,2)+Mathf.Pow(accel.z,2))); //-90 < accelPitch < 90
-                
-               
-
+            
                 //Convert to world pitch and roll axes.
                 Quaternion yawedAccelRoll = Quaternion.AngleAxis(accelRoll,transform.forward);
                 Quaternion yawedAccelPitch = Quaternion.AngleAxis(accelPitch,transform.right); 
 
-                //ghost hammer
+                //ghost hammer accel
                 accelAttitude = Quaternion.identity * yawedAccelPitch * yawedAccelRoll;
                 GameObject.Find("accelGhostHammer").transform.rotation = accelAttitude;
 
