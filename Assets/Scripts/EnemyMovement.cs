@@ -95,6 +95,8 @@ public class EnemyMovement : MonoBehaviour
 
     public void Die(Collider other)
     {
+        gameObject.GetComponent<Renderer>().material.color = Color.gray;
+
         float knockbackForce = 20f;
         
         //Stagger enemy
