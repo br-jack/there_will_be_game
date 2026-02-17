@@ -26,7 +26,7 @@ public class HorseMovement : MonoBehaviour
 
     public float jumpForce = 8f;
     private bool _jumpHeld;
-    public float fallMultiplier = 3.5f;
+    public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
     public LayerMask groundMask;
     public float groundCheckDistance = 0.3f;
