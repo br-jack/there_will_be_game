@@ -280,8 +280,9 @@ GameObject:
   m_Component:
   - component: {fileID: 201162544}
   - component: {fileID: 201162543}
+  - component: {fileID: 201162545}
   m_Layer: 0
-  m_Name: Audio Source
+  m_Name: KillSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -298,7 +299,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 7c044a7bd46ac4d49b3a13effd5aaa97, type: 3}
+  m_Resource: {fileID: 8300000, guid: 0dad18fa7acc1734c84607c310731415, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.689
   m_Pitch: 1
@@ -392,13 +393,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201162542}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 403.10004, y: 201.3, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 403.1001, y: 201.3, z: -0.000014305115}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &201162545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201162542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6b6db3271f4634fa28cf7ffae649db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &377037374
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,7 +961,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 611199081197747249, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
-  spawnInterval: 4
+  spawnInterval: 1
   maxEnemies: 3
   currentEnemies: 1
 --- !u!4 &1353685249
@@ -1051,6 +1064,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 743921864}
     m_Modifications:
+    - target: {fileID: 2038485157496798775, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3899600505029062167, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
       propertyPath: m_LocalScale.x
       value: 20
@@ -1339,6 +1356,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 3825456421266901065, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
+      propertyPath: hitSounds
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4817801517837622803, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.95
@@ -1379,6 +1400,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7558864114923480485, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 8c0954f65f76abd4d9eab27180c82e6d, type: 3}
+    - target: {fileID: 8339629706695140088, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
+      propertyPath: m_Volume
+      value: 0.448
+      objectReference: {fileID: 0}
+    - target: {fileID: 8339629706695140088, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 8c0954f65f76abd4d9eab27180c82e6d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
