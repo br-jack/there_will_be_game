@@ -30,8 +30,17 @@ namespace Hammer
         public GameObject noseImage;
         public GameObject sideImage;
 
+
+        
+        public int[,] savedAccelCalib;
+        public bool saveAccelCalib;
+        public bool useAccelCalib;
+
+
         public enum calibrationMode { BACK, NOSE, SIDE, NONE }
         private calibrationMode step = calibrationMode.NONE;
+
+        
 
 
         private HammerBehaviour hb;
@@ -42,7 +51,8 @@ namespace Hammer
         }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
-        {
+        {   
+            if (useAccelCalib) WiimoteGlobal.wiimote.Accel.accel_calib = savedAccelCalib;
             sideImage.gameObject.SetActive(false);
             noseImage.gameObject.SetActive(false);
             backImage.gameObject.SetActive(false);
@@ -87,6 +97,7 @@ namespace Hammer
                     accelMessagesText.text = "Calibration Complete.";
                     accelButtonText.text = "Calibrate Again";
                     WiimoteGlobal.wiimote.Accel.CalibrateAccel(AccelCalibrationStep.LEFT_SIDE_UP);
+                    if (saveAccelCalib) savedAccelCalib = WiimoteGlobal.wiimote.Accel.accel_calib; //this doesn't work, you have to manually copy and then paste back into public field
                     this.step = calibrationMode.NONE;
                     break;
                 
@@ -105,7 +116,7 @@ namespace Hammer
             if(!WiimoteGlobal.wiimote.MotionPlus.YawSlow) print("Also, wiimote is Yawing fast!");
             if(!WiimoteGlobal.wiimote.MotionPlus.RollSlow) print("Also, wiimote is Rolling fast!");
 
-            transform.SetPositionAndRotation(transform.position, hb.StartingRotation);
+            hb.transform.SetPositionAndRotation(hb.transform.position, Quaternion.identity);
             WiimoteGlobal.wiimote.MotionPlus.SetZeroValues();
             hb.wiimoteAttitude = Quaternion.Euler(0,0,0);
         }
