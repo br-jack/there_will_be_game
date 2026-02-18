@@ -170,13 +170,20 @@ namespace Hammer
                         accelAdjustmentRatio);
 
                     
-                    
+                    Transform agh = GameObject.Find("accelGhostHammer").transform;
+                    Transform argh = GameObject.Find("accelReorderedGhostHammer").transform;
                     //set green hammer to main axis system estimate
-                    GameObject.Find("accelGhostHammer").transform.rotation = Quaternion.Euler(new Vector3(accelPitch,0,accelRoll));
+                    agh.rotation = Quaternion.Euler(new Vector3(accelPitch,0,accelRoll));
 
                     //set purple hammer to reordered axis system estimate
-                    GameObject.Find("accelReorderedGhostHammer").transform.rotation = Quaternion.Euler(new Vector3(accelPitchReordered,0,0))
+                    argh.rotation = Quaternion.Euler(new Vector3(accelPitchReordered,0,0))
                         *Quaternion.AngleAxis(accelRollReordered,Vector3.forward);
+                    if (accel.z < 0) argh.Rotate(new Vector3(0,180,0),Space.World);
+                    //float regularProportion = Mathf.Pow(Mathf.Cos(accelRoll),2);
+                    float reorderedProportion = Mathf.Abs(accel.y);// maybe something like Mathf.Pow(Mathf.Cos(Mathf.Deg2Rad*accelRoll),2)
+                    print("reordered proportion: "+reorderedProportion);
+                    GameObject.Find("accelCombinedGhostHammer").transform.rotation = 
+                        Quaternion.Slerp(agh.rotation,argh.rotation,reorderedProportion);
                 }
                 
             } while (ret > 0);
