@@ -32,6 +32,9 @@ namespace Hammer
         public float accelPitch;
         public float accelRoll;
 
+        public float accelPitchReordered;
+        public float accelRollReordered;
+
         public Quaternion accelAttitude;
         public Quaternion gyroAttitude;
 
@@ -142,21 +145,38 @@ namespace Hammer
 
                 
                 if (gyroEnabled) transform.Rotate(gyro);
-                wiimoteAttitude = transform.rotation.eulerAngles;
                 
+                wiimoteAttitude = transform.rotation.eulerAngles; //seems silly. remove wiimoteattitude i think
+
                 if (accelEnabled) {
 
-                    //roll towards measured roll
                     accelRoll = Mathf.Rad2Deg *  Mathf.Atan2(-accel.x,accel.z);
-                    float accelRollAdjustment = (transform.eulerAngles.z - accelRoll - 180)*accelAdjustmentRatio; 
-                    transform.Rotate(new Vector3(0,0,accelRollAdjustment),Space.World);
-
-                    //pitch towards measured pitch
                     accelPitch = Mathf.Rad2Deg * Mathf.Atan2(accel.y,Mathf.Sqrt(Mathf.Pow(accel.x,2)+Mathf.Pow(accel.z,2)));
-                    float accelPitchAdjustment = (transform.eulerAngles.x - accelPitch - 180)*accelAdjustmentRatio; 
-                    transform.Rotate(new Vector3(accelPitchAdjustment,0,0),Space.World);
 
+                    accelRollReordered = Mathf.Rad2Deg * Mathf.Atan2(-accel.x,Mathf.Sqrt(Mathf.Pow(accel.y,2)+Mathf.Pow(accel.z,2)));
+                    accelPitchReordered = Mathf.Rad2Deg * Mathf.Atan2(accel.y,accel.z);
+
+                    //roll white hammer w/ main axis system
+                    transform.rotation = Quaternion.Slerp(
+                        transform.rotation, 
+                        Quaternion.Euler(wiimoteAttitude.x,wiimoteAttitude.y,accelRoll),
+                        accelAdjustmentRatio);
+                    
+                    //pitch white hammer w/ main axis system
+                    wiimoteAttitude = transform.rotation.eulerAngles;
+                    transform.rotation = Quaternion.Slerp(
+                        transform.rotation,
+                        Quaternion.Euler(accelPitch,wiimoteAttitude.y,wiimoteAttitude.z),
+                        accelAdjustmentRatio);
+
+                    
+                    
+                    //set green hammer to main axis system estimate
                     GameObject.Find("accelGhostHammer").transform.rotation = Quaternion.Euler(new Vector3(accelPitch,0,accelRoll));
+
+                    //set purple hammer to reordered axis system estimate
+                    GameObject.Find("accelReorderedGhostHammer").transform.rotation = Quaternion.Euler(new Vector3(accelPitchReordered,0,0))
+                        *Quaternion.AngleAxis(accelRollReordered,Vector3.forward);
                 }
                 
             } while (ret > 0);
