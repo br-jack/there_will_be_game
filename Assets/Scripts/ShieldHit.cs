@@ -4,7 +4,6 @@ public class ShieldHit : MonoBehaviour
 {
     public float knockbackForce = 20f;
     public AudioSource audioSource;
-    public float knockbackForce;
 
     void OnTriggerEnter(Collider other)
     {
