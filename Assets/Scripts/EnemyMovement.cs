@@ -161,6 +161,11 @@ public class EnemyMovement : MonoBehaviour
     {
         //Grey out enemy to signify that its dead
         gameObject.GetComponent<Renderer>().material.color = Color.gray;
+        
+        if (spawner != null)
+        {
+            spawner.RemoveEnemy(this);
+        }
 
         float knockbackForce = 40f;
         
@@ -205,10 +210,10 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        if (spawner != null)
-        {
-            spawner.RemoveEnemy(this);
-        }
+        // if (spawner != null)
+        // {
+        //     spawner.RemoveEnemy(this);
+        // }
     }
 
     public void SetFormationTarget(Vector3 target) 
