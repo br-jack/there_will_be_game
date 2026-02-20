@@ -7,12 +7,14 @@ using UnityEngine.UI;
 using UnityEngine.Assertions;
 using WiimoteApi;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 namespace Hammer
 {
     //probs should set up a mechanism for calibrating the accelerometer. 
     // This will need the game to take the user through a short process.  
     //currently just uses whatever calibration values are in there. 
+
     public class HammerBehaviour : MonoBehaviour
     {
 
@@ -23,11 +25,6 @@ namespace Hammer
         public Quaternion StartingRotation { get; private set; }
 
         private Quaternion attitude;
-
-        public void SceneSwitch()
-        {
-            SceneManager.LoadScene("hammerTest");
-        }
 
         void ConnectWiimote() {
             if (WiimoteManager.HasWiimote())
@@ -95,7 +92,7 @@ namespace Hammer
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            
+
         }
 
         //Called once before start when the game starts
@@ -163,8 +160,10 @@ namespace Hammer
 
         public void OnCollisionEnter(Collision collision)
         {
+
             if (collision.gameObject.CompareTag("Enemy"))
             {
+
                 Destroy(collision.gameObject);
             }
         }
