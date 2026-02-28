@@ -39,7 +39,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float onDeathTimer;
     [SerializeField] private float deathGroundCheckDistance = 0.3f;
     [SerializeField] private LayerMask groundMask;
-    private AudioSource _audioSource;
+    private AudioSource _shieldBreakAudioSource;
 
     private void Awake()
     {
@@ -48,9 +48,9 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
-        _audioSource = GetComponent<AudioSource>();
+        _shieldBreakAudioSource = GetComponent<AudioSource>();
 
-        if (_audioSource == null)
+        if (_shieldBreakAudioSource == null)
         {
             Debug.LogError("man there's no audio source");
         }
@@ -193,7 +193,7 @@ public class EnemyMovement : MonoBehaviour
         {
             Destroy(shield);
             shield = null;
-            _audioSource.Play();
+            _shieldBreakAudioSource.Play();
         }
     }
 
