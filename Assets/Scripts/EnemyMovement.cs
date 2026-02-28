@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -36,6 +35,7 @@ public class EnemyMovement : MonoBehaviour
     
     public bool IsDying { get; private set; }
     [Header("Death Checks")]
+    //Max amount of time enemy can be in "dying" state before destruction
     [SerializeField] private float onDeathTimer;
     [SerializeField] private float deathGroundCheckDistance = 0.3f;
     [SerializeField] private LayerMask groundMask;
@@ -76,8 +76,9 @@ public class EnemyMovement : MonoBehaviour
             Vector3 rayOrigin = transform.position;
             bool isGrounded = Physics.Raycast(rayOrigin, Vector3.down, deathGroundCheckDistance, groundMask);
             // Debug.DrawRay(rayOrigin, Vector3.down * deathGroundCheckDistance, Color.yellow);
-
-        
+            
+            //End knockback state if on ground AND only if a certain amount of time has passed
+            //(as enemy doesn't get launched vertically off ground when their shield breaks)
             if (isGrounded && currentKnockbackTimer <= 0)
             {
                 IsKnockedBack = false;
@@ -88,7 +89,10 @@ public class EnemyMovement : MonoBehaviour
         {
             onDeathTimer -= Time.deltaTime;
             
-            if (onDeathTimer <= 0 || IsKnockedBack == false)
+            //If the enemy gets launched entirely off the map,
+            //onDeathTimer ensures it will still eventually be destroyed.
+            //But otherwise, will destroy when enemy reaches the ground
+            if (IsKnockedBack == false || onDeathTimer <= 0)
             {
                 Destroy(gameObject);
             }

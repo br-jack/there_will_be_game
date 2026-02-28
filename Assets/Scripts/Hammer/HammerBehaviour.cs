@@ -105,7 +105,7 @@ namespace Hammer
         // Update is called once per frame
         void Update()
         {
-            // Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
+            Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
 
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;
