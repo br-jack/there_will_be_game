@@ -161,9 +161,9 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public void Die(Collider other)
+    public void KilledBy(Collider other)
     {
-        //Grey out enemy to signify that its dead
+        //Grey out enemy to signify that it's dead
         gameObject.GetComponent<Renderer>().material.color = Color.gray;
         
         if (spawner != null)
@@ -173,6 +173,7 @@ public class EnemyMovement : MonoBehaviour
 
         float knockbackForce = 40f;
         
+        //Knock away from what killed it
         Vector3 knockbackDirection = transform.position - other.transform.position;
         knockbackDirection.y = 1.0f;
         knockbackDirection.Normalize();
