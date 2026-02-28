@@ -194,7 +194,6 @@ public class EnemyMovement : MonoBehaviour
             Destroy(shield);
             shield = null;
             _audioSource.Play();
-
         }
     }
 
@@ -210,10 +209,12 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        // if (spawner != null)
-        // {
-        //     spawner.RemoveEnemy(this);
-        // }
+        //If the death trigger code hasn't already run,
+        //make sure enemy is removed from spawner list
+        if (!IsDying && spawner != null)
+        {
+            spawner.RemoveEnemy(this);
+        }
     }
 
     public void SetFormationTarget(Vector3 target) 
