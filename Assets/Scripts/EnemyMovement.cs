@@ -22,15 +22,19 @@ public class EnemyMovement : MonoBehaviour
     private Transform _playerTransformRef;
     private Rigidbody _rb;
 
-    public bool isKnockedback;
     public bool shieldWasJustHit = false;
     private Vector3 _formationTarget;
     private Vector3 _attackTarget;
     public bool hasFormationTarget;
     private bool _hasAttackTarget;
-    [SerializeField] private float onDeathTimer;
+    
+    [Header("Knockback Timer")]
+    public bool isKnockedback;
     [SerializeField] private float knockbackTime;
     [SerializeField] private float currentKnockbackTimer;
+    
+    [Header("Death Checks")]
+    [SerializeField] private float onDeathTimer;
     [SerializeField] private float deathGroundCheckDistance = 0.3f;
     [SerializeField] private LayerMask groundMask;
 
@@ -39,7 +43,7 @@ public class EnemyMovement : MonoBehaviour
     public bool IsKnockedBack { get; private set; }
     public bool ShieldWasJustHit { get; private set; }
     
-    private AudioSource audioSource;
+    private AudioSource _audioSource;
 
     private void Awake()
     {
@@ -48,9 +52,9 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        _audioSource = GetComponent<AudioSource>();
 
-        if (audioSource == null)
+        if (_audioSource == null)
         {
             Debug.LogError("man there's no audio source");
         }
@@ -193,7 +197,7 @@ public class EnemyMovement : MonoBehaviour
         {
             Destroy(shield);
             shield = null;
-            audioSource.Play();
+            _audioSource.Play();
 
         }
     }
