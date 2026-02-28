@@ -22,27 +22,23 @@ public class EnemyMovement : MonoBehaviour
     private Transform _playerTransformRef;
     private Rigidbody _rb;
 
-    public bool shieldWasJustHit = false;
     private Vector3 _formationTarget;
     private Vector3 _attackTarget;
     public bool hasFormationTarget;
     private bool _hasAttackTarget;
     
+    public bool IsKnockedBack { get; private set; }
     [Header("Knockback Timer")]
-    public bool isKnockedback;
     [SerializeField] private float knockbackTime;
     [SerializeField] private float currentKnockbackTimer;
     
+    public bool ShieldWasJustHit { get; private set; }
+    
+    public bool IsDying { get; private set; }
     [Header("Death Checks")]
     [SerializeField] private float onDeathTimer;
     [SerializeField] private float deathGroundCheckDistance = 0.3f;
     [SerializeField] private LayerMask groundMask;
-
-    public bool IsDying { get; private set; }
-
-    public bool IsKnockedBack { get; private set; }
-    public bool ShieldWasJustHit { get; private set; }
-    
     private AudioSource _audioSource;
 
     private void Awake()
