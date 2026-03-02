@@ -48,6 +48,8 @@ namespace Hammer
                 _input = new PhoneController();
                 InputDeviceType = InputDevice.PHONE;
             }
+            
+            _input.Connect();
         }
 
         // Update is called once per frame
