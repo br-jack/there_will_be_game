@@ -9,7 +9,7 @@ using UnityEngine.Assertions;
 using WiimoteApi;
 using UnityEngine.SceneManagement;
 
-public class WiimoteGlobal : IRotatable
+public class WiimoteManager : IRotatable
 {
     private Wiimote _wiimote;
     

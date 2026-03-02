@@ -27,45 +27,37 @@ namespace Hammer
         private InputDevice _inputDevice = InputDevice.Wiimote;
 
         private IRotatable _input;
-
-        //public Wiimote Wiimote { get; private set; }
         
         //Hammer should start flat with Pitch = 0
         public Quaternion StartingRotation { get; private set; }
 
         private Quaternion _attitude;
-        
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        private void Start()
-        {
-            
-        }
 
         //Called once before start when the game starts
         private void Awake()
         {
             StartingRotation = transform.rotation;
-            bool wiimoteConnected = ConnectWiimote();
-            if (wiimoteConnected)
-            {
-                _inputDevice = InputDevice.Wiimote;
-            }
-            else
-            {
-                _inputDevice = InputDevice.Phone;
-            }
+
+            _input = new WiimoteManager();
+
+            // bool wiimoteConnected = ConnectWiimote();
+            // if (wiimoteConnected)
+            // {
+            //     _inputDevice = InputDevice.Wiimote;
+            // }
+            // else
+            // {
+            //     _inputDevice = InputDevice.Phone;
+            // }
         }
 
         // Update is called once per frame
         private void Update()
         {
+            transform.Rotate(_input.GetRotationOffset(), Space.Self);
+            
             switch (_inputDevice)
             {
-                case InputDevice.Wiimote:
-                {
-                    UseWiimoteData();
-                    break;
-                }
                 //Unity Remote
                 case InputDevice.Phone:
                 {
@@ -91,17 +83,15 @@ namespace Hammer
 
         public void OnCollisionEnter(Collision collision)
         {
-
             if (collision.gameObject.CompareTag("Enemy"))
             {
-
                 Destroy(collision.gameObject);
             }
         }
 
         void OnApplicationQuit()
         {
-            CleanupWiimotes();
+            _input.Cleanup();
         }
     }
 
