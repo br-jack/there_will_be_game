@@ -82,7 +82,7 @@ public class HorseMovement : MonoBehaviour
 
     private void FixedUpdate()  
     {
-        HandleMovement2();
+        HandleMovement();
         if (_rb.linearVelocity.y < 0) //speed up fall for feel  
         { 
             _rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime; 
@@ -91,40 +91,6 @@ public class HorseMovement : MonoBehaviour
         { 
             _rb.linearVelocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime; 
         }
-    }
-    
-    private void HandleMovement2()
-    {
-        Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
-        bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
-
-        //scale jumping to speed
-        speedPercent = _currentSpeed / maxSpeed;
-
-        /*Not currently using this:
-        scaledJumpForce = jumpForce * speedPercent * 1.2f;
-        scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);*/
-
-        if (_jumpPressed && grounded)
-        {
-            _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        }
-        _jumpPressed = false;
-        
-        // _rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, ForceMode.Impulse);
-            
-        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * turnSpeed * Time.fixedDeltaTime, 0f);
-        _rb.MoveRotation(_rb.rotation * turnRotation);
-        
-        
-
-        Vector3 forwardMovement = transform.forward * (Time.fixedDeltaTime); 
-        // _rb.linearVelocity = _rb.linearVelocity + transform.forward; //#Shay: doing this fixes clipping into walls but breaks everything else.
-        _rb.AddForce(transform.forward * acceleration * _throttleInput, ForceMode.Force);
-        //Looking into another way to get around it
-        // _rb.MovePosition(_rb.position + forwardMovement);
-        
-        
     }
 
     private void HandleMovement()
@@ -177,18 +143,16 @@ public class HorseMovement : MonoBehaviour
             effectiveTurnSpeed *= 0.2f;
         }
         
-        // _rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, ForceMode.Impulse);
+        _rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, ForceMode.Impulse);
             
-        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
-        _rb.MoveRotation(_rb.rotation * turnRotation);
+        // Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
+        // _rb.MoveRotation(_rb.rotation * turnRotation);
         
 
         Vector3 forwardMovement = transform.forward * (_currentSpeed * Time.fixedDeltaTime); 
         // _rb.linearVelocity = _rb.linearVelocity + transform.forward; //#Shay: doing this fixes clipping into walls but breaks everything else.
-        _rb.AddForce(forwardMovement, ForceMode.Acceleration);
+        // _rb.AddForce(transform.forward, ForceMode.VelocityChange);
         //Looking into another way to get around it
-        // _rb.MovePosition(_rb.position + forwardMovement);
-        
-        
+        _rb.MovePosition(_rb.position + forwardMovement);
     }
 }
