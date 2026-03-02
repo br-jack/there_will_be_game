@@ -15,7 +15,7 @@ namespace Hammer
         
         public void Connect()
         {
-            throw new System.NotImplementedException();
+            Input.gyro.enabled = true;
         }
 
         public Vector3 GetRotationOffset()

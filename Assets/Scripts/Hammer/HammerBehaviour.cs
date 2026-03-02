@@ -53,29 +53,18 @@ namespace Hammer
         // Update is called once per frame
         private void Update()
         {
-            transform.Rotate(_input.GetRotationOffset(), Space.Self);
-            
-            switch (InputDeviceType)
+            if (InputDeviceType == InputDevice.PHONE)
             {
-                //Unity Remote
-                case InputDevice.PHONE:
+                //start() sadly runs after input is connected,
+                //so I put this here. 
+                //Sort enabling of gyroscopes later with input manager object probably
+                if (Input.touchCount > 0)
                 {
-                    Assert.IsTrue(InputDeviceType == InputDevice.PHONE, "Only Wiimote and Phone inputs are handled!");
-                
-                    //start() sadly runs after input is connected,
-                    //so I put this here. 
-                    //Sort enabling of gyroscopes later with input manager object probably
-                    if (Input.touchCount > 0)
-                    {
-                        Input.gyro.enabled = true;
-                    }
-                    
-                    break;
+                    _input.Connect();
                 }
-                default:
-                    Debug.LogWarning("Input Device type not handled!");
-                    break;
             }
+            
+            transform.Rotate(_input.GetRotationOffset(), Space.Self);
         }
 
         public void OnCollisionEnter(Collision collision)
