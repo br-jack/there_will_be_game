@@ -100,17 +100,17 @@ public class HorseMovement : MonoBehaviour
 
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
-        scaledJumpForce = jumpForce * speedPercent * 1.2f;
 
-        scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);
+        /*Not currently using this:
+        scaledJumpForce = jumpForce * speedPercent * 1.2f;
+        scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);*/
 
         if (_jumpPressed && grounded && _groundedTimer > 0.1f && _currentSpeed > 2f)
         {
-            //_rb.AddForce(Vector3.up * scaledJumpForce, ForceMode.Impulse);
+            // _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             Vector3 v = _rb.linearVelocity;
             v.y = jumpForce;
             _rb.linearVelocity = v;
-
         }
 
         _jumpPressed = false;
@@ -153,8 +153,8 @@ public class HorseMovement : MonoBehaviour
 
         Vector3 forwardMovement = transform.forward * (_currentSpeed * Time.fixedDeltaTime); 
         // _rb.linearVelocity = _rb.linearVelocity + transform.forward; //#Shay: doing this fixes clipping into walls but breaks everything else.
-        _rb.AddForce(transform.forward, ForceMode.VelocityChange);
+        // _rb.AddForce(transform.forward, ForceMode.VelocityChange);
         //Looking into another way to get around it
-        // _rb.MovePosition(_rb.position + forwardMovement);
+        _rb.MovePosition(_rb.position + forwardMovement);
     }
 }
