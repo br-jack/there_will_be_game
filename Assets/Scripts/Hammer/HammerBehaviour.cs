@@ -38,7 +38,17 @@ namespace Hammer
         {
             StartingRotation = transform.rotation;
 
-            _input = new WiimoteManager();
+            if (WiimoteController.IsAvailable())
+            {
+                _input = new WiimoteController();
+                _inputDevice = InputDevice.Wiimote;
+            }
+            if (PhoneController.IsAvailable())
+            {
+                _input = new PhoneController();
+                _inputDevice = InputDevice.Phone;
+            }
+            
 
             // bool wiimoteConnected = ConnectWiimote();
             // if (wiimoteConnected)

@@ -9,9 +9,16 @@ using UnityEngine.Assertions;
 using WiimoteApi;
 using UnityEngine.SceneManagement;
 
-public class WiimoteManager : IRotatable
+public class WiimoteController : IRotatable
 {
     private Wiimote _wiimote;
+
+    public static bool IsAvailable()
+    {
+        WiimoteManager.FindWiimotes(); // Poll native bluetooth drivers to find Wiimotes
+        
+        return WiimoteManager.HasWiimote();
+    }
     
     private bool ConnectWiimote() {
         if (WiimoteManager.HasWiimote())
