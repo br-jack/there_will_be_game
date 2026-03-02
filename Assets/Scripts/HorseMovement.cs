@@ -142,10 +142,11 @@ public class HorseMovement : MonoBehaviour
             _groundedTimer = 0f;
             effectiveTurnSpeed *= 0.2f;
         }
+        
+        _rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, ForceMode.Impulse);
             
-        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
-
-        _rb.MoveRotation(_rb.rotation * turnRotation);
+        // Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
+        // _rb.MoveRotation(_rb.rotation * turnRotation);
         
 
         Vector3 forwardMovement = transform.forward * (_currentSpeed * Time.fixedDeltaTime); 
