@@ -107,10 +107,7 @@ public class HorseMovement : MonoBehaviour
 
         if (_jumpPressed && grounded && _groundedTimer > 0.1f && _currentSpeed > 2f)
         {
-            // _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            Vector3 v = _rb.linearVelocity;
-            v.y = jumpForce;
-            _rb.linearVelocity = v;
+            _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 
         _jumpPressed = false;
