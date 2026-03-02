@@ -5,7 +5,7 @@ public class Health : MonoBehaviour
     //TODO make setter private but still serialize
     public int lives = 4;
     public int maxLives = 4;
-    public HealthBar healthbar;
+    public ContinuousHealthBar healthbar;
 
     public void UpdateHealthDisplay()
     {

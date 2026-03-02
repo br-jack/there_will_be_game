@@ -6,10 +6,11 @@ To display a value on the healthbar, use DisplayHealth().
 The range of the healthbar is [0, 1].
 So if you want 4 lives, display {0, 0.25, 0.50, 0.75, 1} for example.
 */
-public class HealthBar : MonoBehaviour
+public class ContinuousHealthBar : MonoBehaviour
 {
     public Slider slider;
-    public Image fillImage; // Assign in inspector for color change
+
+    [SerializeField] private Image fillImage; // Assign in inspector for color change
 
     public void DisplayMaxHealth()
     {
