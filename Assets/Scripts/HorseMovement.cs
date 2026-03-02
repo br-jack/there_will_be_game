@@ -12,7 +12,7 @@ public class HorseMovement : MonoBehaviour
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
     
-    private float _currentSpeed = 0f;
+    [SerializeField] private float _currentSpeed = 0f;
 
     private float speedPercent;
 

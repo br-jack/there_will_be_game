@@ -73,7 +73,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3304088472591636408}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2da9a3d9231420c4f85fb6954eab355a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -102,11 +102,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 10
-  deceleration: 3
+  deceleration: 6
   brake: 20
   maxSpeed: 30
   turnSpeed: 130
   turnSpeedAtZero: 100
+  _currentSpeed: 0
   jumpForce: 8.5
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
