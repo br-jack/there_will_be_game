@@ -7,8 +7,8 @@ PlayerLives contains both the discrete and continuous bars (UI).
 
 public class PlayerLives : MonoBehaviour
 {
-    [SerializeField] private int maxLives = 3;
-    [SerializeField] private int startingLives = 3;
+    [SerializeField] private int maxLives = 5;
+    [SerializeField] private int startingLives = 5;
 
     [Header("UI")]
     [SerializeField] private DiscreteHealthBar livesBar;
@@ -16,6 +16,11 @@ public class PlayerLives : MonoBehaviour
 
     [Header("Dependencies")]
     [SerializeField] private PlayerHealth playerHealth;
+
+    [SerializeField] private float invincibilityTime = 3.0f;
+    private float invincibilityTimer = 0.0f;
+    private bool _isInvincible;
+    public bool IsInvincible => _isInvincible;
 
     private int lives;
 
@@ -66,6 +71,8 @@ public class PlayerLives : MonoBehaviour
         UpdateLivesUI(Lives, maxLives);
         OnLivesChanged?.Invoke(Lives, maxLives);
 
+        MakeInvincibleFor(invincibilityTime);
+
         if (IsGameOver)
         {
             OnGameOver?.Invoke();
@@ -87,6 +94,30 @@ public class PlayerLives : MonoBehaviour
         OnLivesChanged?.Invoke(Lives, maxLives);
     }
 
-    private void UpdateHealthUI(int current, int max) => healthBar?.DisplayHealth(current, max);
-    private void UpdateLivesUI(int current, int max)  => livesBar?.DisplayHealth(current, max);
+    public void MakeInvincibleFor(float time)
+    {
+        _isInvincible = true;
+        invincibilityTimer = time;
+    }
+
+    private void Update()
+    {
+        if (_isInvincible)
+        {
+            invincibilityTimer -= Time.deltaTime;
+            if (invincibilityTimer <= 0)
+            {
+                _isInvincible = false;
+            }
+        }
+    }
+
+    private void UpdateHealthUI(int current, int max)
+    {
+        healthBar?.DisplayHealth(current, max);
+    }
+    private void UpdateLivesUI(int current, int max)
+    {
+        livesBar?.DisplayHealth(current, max);
+    }
 }

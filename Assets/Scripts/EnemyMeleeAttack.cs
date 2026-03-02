@@ -1,0 +1,101 @@
+using UnityEngine;
+
+/// Melee attack component (Requires the EnemyMovement on the same GameObject).
+public class EnemyMeleeAttack : MonoBehaviour
+{
+    [Header("Melee Attack Settings")]
+    [SerializeField] private int damage = 10;
+    [SerializeField] private float attackRange = 2f;
+    [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private string playerTag = "Player";
+    [SerializeField] private float missingPlayerWarnDelay = 2f;
+
+    // Requires {enemyMovement, playerHealth, playerTransform} to function.
+    private EnemyMovement enemyMovement;
+    private PlayerHealth playerHealth;
+    private Transform playerTransform;
+    private float nextAttackTime;
+    private bool hasWarnedMissingPlayerRefs;
+
+    private void Start()
+    {
+        ResolveEnemyMovement();
+        ResolvePlayerRefs();
+    }
+
+    private void ResolveEnemyMovement()
+    {
+        enemyMovement = GetComponent<EnemyMovement>();
+        if (enemyMovement == null) Debug.LogError("EnemyMeleeAttack.cs: missing `enemyMovement`.");
+    }
+
+    private void ResolvePlayerRefs()
+    {
+        if (enemyMovement != null)
+        {
+            playerHealth = enemyMovement._playerHealthRef;
+            playerTransform = enemyMovement._playerTransformRef;
+        }
+
+        // There was some problems with missing playerRefs, hence this code.
+        if (playerHealth == null || playerTransform == null)
+        {
+            GameObject player = GameObject.FindWithTag(playerTag);
+            if (player != null)
+            {
+                if (playerHealth == null) playerHealth = player.GetComponent<PlayerHealth>();
+                if (playerTransform == null) playerTransform = player.transform;
+            }
+            if (playerHealth != null && playerTransform != null && enemyMovement != null)
+            {
+                enemyMovement._playerHealthRef = playerHealth;
+                enemyMovement._playerTransformRef = playerTransform;
+            }
+        }
+    }
+
+    private void Update()
+    {
+        // There was some problems with missing playerRefs, hence this if loop.
+        if (playerHealth == null || playerTransform == null)
+        {
+            ResolvePlayerRefs();
+            WarnIfMissingPlayerRefs();
+        }
+
+        if (!CanAttack()) return;
+        if (Time.time < nextAttackTime) return;
+
+        // Code below here only runs if enemy is available to attack (and has cooled down)
+        float sqrDistance = (playerTransform.position - transform.position).sqrMagnitude;
+        if (sqrDistance > attackRange * attackRange) return;
+
+        PerformAttack();
+    }
+
+    private bool CanAttack()
+    {
+        if (playerHealth == null || playerTransform == null) return false;
+        if (playerHealth.IsDead) return false;
+        return true;
+    }
+
+    private void PerformAttack()
+    {
+        Debug.Log($"EnemyMeleeAttack: dealing {damage} damage to {playerHealth?.name} at time {Time.time}");
+        playerHealth.TakeDamage(damage);
+        nextAttackTime = Time.time + attackCooldown;
+    }
+
+    private void WarnIfMissingPlayerRefs()
+    {
+        if (hasWarnedMissingPlayerRefs) return;
+        if (Time.time < missingPlayerWarnDelay) return;
+
+        hasWarnedMissingPlayerRefs = true;
+        Debug.LogWarning(
+            $"EnemyMeleeAttack on {gameObject.name} still cannot find Player refs after {missingPlayerWarnDelay:0.0}s. " +
+            $"Check that the Player exists, is active, has tag '{playerTag}', and has PlayerHealth."
+        );
+    }
+}

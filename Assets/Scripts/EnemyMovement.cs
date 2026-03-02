@@ -17,8 +17,8 @@ public class EnemyMovement : MonoBehaviour
     public float speed;
     public GameObject shield;
 
-    private PlayerHealth _playerHealthRef;
-    private Transform _playerTransformRef;
+    [HideInInspector] public PlayerHealth _playerHealthRef;
+    [HideInInspector] public Transform _playerTransformRef;
     private Rigidbody _rb;
 
     public bool isKnockedback;
@@ -27,15 +27,17 @@ public class EnemyMovement : MonoBehaviour
     private Vector3 _attackTarget;
     public bool hasFormationTarget;
     private bool _hasAttackTarget;
-            private AudioSource audioSource;
-
-    private void Awake()
-    {
-
-    }
+    private AudioSource audioSource;
 
     private void Start()
     {
+        GameObject playerRef = GameObject.FindWithTag("Player");
+        if (playerRef != null)
+        {
+            _playerTransformRef = playerRef.transform;
+            _playerHealthRef = playerRef.GetComponent<PlayerHealth>();
+        }
+
         audioSource = GetComponent<AudioSource>();
 
         if (audioSource == null)
@@ -43,10 +45,6 @@ public class EnemyMovement : MonoBehaviour
             Debug.LogError("man there's no audio source");
         }
         _rb = GetComponent<Rigidbody>();
-        GameObject playerRef = GameObject.FindWithTag("Player");
-
-        _playerTransformRef = playerRef.transform;
-        _playerHealthRef = playerRef.GetComponent<PlayerHealth>();
 
         // Default values (if none set)
         if (defaultSpeed <= 0f) defaultSpeed = 3f;
@@ -67,6 +65,15 @@ public class EnemyMovement : MonoBehaviour
         {
             return;
         }
+
+        if (_playerTransformRef == null)
+        {
+            GameObject playerRef = GameObject.FindWithTag("Player");
+            if (playerRef == null) return;
+            _playerTransformRef = playerRef.transform;
+            _playerHealthRef = playerRef.GetComponent<PlayerHealth>();
+        }
+
         //TODO use a* pathfinding instead
 
         float speed = defaultSpeed;

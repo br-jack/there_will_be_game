@@ -16,13 +16,22 @@ public class PlayerHealth : MonoBehaviour
     public bool IsDead => Current <= 0;
     public event Action<int, int> OnHealthChanged;
     public event Action OnDeath;
+    private PlayerLives playerLives;
+
+    private void Awake()
+    {
+        
+    }
 
     private void Start()
     {
+        if (playerLives == null) playerLives = GetComponent<PlayerLives>();
         ResetHealthToFull();
     }
     public void TakeDamage(int damage)
     {
+        if (playerLives.IsInvincible) return; // Don't let player take damage while invisible.
+
         // Don't put negative values for TakeDamage, use Heal() instead
         if (damage <= 0) return;
         if (IsDead) return;
