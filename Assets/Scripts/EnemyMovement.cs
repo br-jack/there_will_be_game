@@ -17,7 +17,7 @@ public class EnemyMovement : MonoBehaviour
     public float speed;
     public GameObject shield;
 
-    private Health _playerHealthRef;
+    private PlayerHealth _playerHealthRef;
     private Transform _playerTransformRef;
     private Rigidbody _rb;
 
@@ -46,7 +46,7 @@ public class EnemyMovement : MonoBehaviour
         GameObject playerRef = GameObject.FindWithTag("Player");
 
         _playerTransformRef = playerRef.transform;
-        _playerHealthRef = playerRef.GetComponent<Health>();
+        _playerHealthRef = playerRef.GetComponent<PlayerHealth>();
 
         // Default values (if none set)
         if (defaultSpeed <= 0f) defaultSpeed = 3f;
