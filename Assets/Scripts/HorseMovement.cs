@@ -146,17 +146,16 @@ public class HorseMovement : MonoBehaviour
         Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
 
         _rb.MoveRotation(_rb.rotation * turnRotation);
-
-
-        Vector3 forwardMovement = transform.forward * _currentSpeed;
-
-        // Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
-        // accel.y = 0.0f;
         
-        // _rb.AddForce(accel, ForceMode.Acceleration);
+
+        Vector3 forwardMovement = transform.forward * (_currentSpeed);
+
+        Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
+        accel.y = 0.0f;
         
-        forwardMovement.y = _rb.linearVelocity.y;
-        _rb.linearVelocity = forwardMovement; //#Shay: doing this fixes clipping into walls but breaks everything else.
+        _rb.AddForce(accel, ForceMode.Acceleration);
+        
+        // _rb.linearVelocity += forwardMovement; //#Shay: doing this fixes clipping into walls but breaks everything else.
         // AccelerateTo(_rb, forwardMovement, 100.0f);
         //Looking into another way to get around it
         // _rb.MovePosition(_rb.position + forwardMovement);
