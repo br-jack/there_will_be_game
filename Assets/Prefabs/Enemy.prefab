@@ -136,8 +136,13 @@ MonoBehaviour:
   spawner: {fileID: 0}
   speed: 2
   shield: {fileID: 6339469894394987824}
-  isKnockedback: 0
-  shieldWasJustHit: 0
+  onDeathTimer: 5
+  knockbackTime: 0.5
+  currentKnockbackTimer: 0
+  deathGroundCheckDistance: 1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
   hasFormationTarget: 0
 --- !u!136 &8163188274568113942
 CapsuleCollider:
