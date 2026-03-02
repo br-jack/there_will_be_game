@@ -152,8 +152,9 @@ public class HorseMovement : MonoBehaviour
         
 
         Vector3 forwardMovement = transform.forward * (_currentSpeed * Time.fixedDeltaTime); 
-        //_rb.linearVelocity = _rb.linearVelocity + transform.forward; //#Shay: doing this fixes clipping into walls but breaks everything else.
+        // _rb.linearVelocity = _rb.linearVelocity + transform.forward; //#Shay: doing this fixes clipping into walls but breaks everything else.
+        _rb.AddForce(transform.forward, ForceMode.VelocityChange);
         //Looking into another way to get around it
-        _rb.MovePosition(_rb.position + forwardMovement);
+        // _rb.MovePosition(_rb.position + forwardMovement);
     }
 }
