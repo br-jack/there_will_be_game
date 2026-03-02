@@ -45,10 +45,6 @@ namespace Hammer
             backImage.gameObject.SetActive(false);
 
         }
-        public void SceneSwitch()
-        {
-            SceneManager.LoadScene("MainScene");
-        }
 
         public void CalibrateAccelStep()
         {
