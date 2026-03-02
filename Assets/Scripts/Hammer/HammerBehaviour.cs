@@ -48,17 +48,6 @@ namespace Hammer
                 _input = new PhoneController();
                 InputDeviceType = InputDevice.PHONE;
             }
-            
-
-            // bool wiimoteConnected = ConnectWiimote();
-            // if (wiimoteConnected)
-            // {
-            //     _inputDevice = InputDevice.Wiimote;
-            // }
-            // else
-            // {
-            //     _inputDevice = InputDevice.Phone;
-            // }
         }
 
         // Update is called once per frame
@@ -80,9 +69,7 @@ namespace Hammer
                     {
                         Input.gyro.enabled = true;
                     }
-
-                    transform.Rotate(Input.gyro.rotationRateUnbiased, Space.Self);
-
+                    
                     break;
                 }
                 default:
