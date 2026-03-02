@@ -3,6 +3,7 @@ using Hammer;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using WiimoteApi;
@@ -27,6 +28,8 @@ namespace Hammer
         public GameObject noseImage;
         public GameObject sideImage;
 
+        private Wiimote _wiimoteRef;
+
         public enum calibrationMode { BACK, NOSE, SIDE, NONE }
         private calibrationMode step = calibrationMode.NONE;
 
@@ -44,6 +47,11 @@ namespace Hammer
             noseImage.gameObject.SetActive(false);
             backImage.gameObject.SetActive(false);
 
+            if (hb.InputDeviceType == HammerBehaviour.InputDevice.WIIMOTE)
+            {
+                Assert.IsTrue(WiimoteManager.HasWiimote());
+                _wiimoteRef = WiimoteManager.Wiimotes[1];
+            }
         }
 
         public void CalibrateAccelStep()
@@ -62,7 +70,7 @@ namespace Hammer
                     backImage.gameObject.SetActive(false);
                     noseImage.gameObject.SetActive(true);
                     accelMessagesText.text = "Place your remote on its nose then press next.";
-                    WiimoteGlobal.wiimote.Accel.CalibrateAccel(AccelCalibrationStep.A_BUTTON_UP);
+                    _wiimoteRef.Accel.CalibrateAccel(AccelCalibrationStep.A_BUTTON_UP);
                     this.step = calibrationMode.NOSE;
                     break;
                 case calibrationMode.NOSE:
@@ -70,7 +78,7 @@ namespace Hammer
                     sideImage.gameObject.SetActive(true);
                     noseImage.gameObject.SetActive(false);
                     accelMessagesText.text = "Place your remote on its right side then press next.";
-                    WiimoteGlobal.wiimote.Accel.CalibrateAccel(AccelCalibrationStep.EXPANSION_UP);
+                    _wiimoteRef.Accel.CalibrateAccel(AccelCalibrationStep.EXPANSION_UP);
                     this.step = calibrationMode.SIDE;
                     break;
                 case calibrationMode.SIDE:
@@ -79,7 +87,7 @@ namespace Hammer
 
                     accelMessagesText.text = "Calibration Complete.";
                     accelButtonText.text = "Calibrate Again";
-                    WiimoteGlobal.wiimote.Accel.CalibrateAccel(AccelCalibrationStep.LEFT_SIDE_UP);
+                    _wiimoteRef.Accel.CalibrateAccel(AccelCalibrationStep.LEFT_SIDE_UP);
                     this.step = calibrationMode.NONE;
                     break;
                 
@@ -90,27 +98,31 @@ namespace Hammer
 
         public void CalibrateWiiMotionPlus()
         {
+            Assert.IsTrue(_wiimoteRef != null);
+            
             print("Calibrating Wiimote! Detected gyro speeds at moment of calibration: \nPitch: " 
-                + WiimoteGlobal.wiimote.MotionPlus.PitchSpeed + 
-                "\nRoll: "+WiimoteGlobal.wiimote.MotionPlus.RollSpeed+
-                "\nYaw: "+WiimoteGlobal.wiimote.MotionPlus.YawSpeed);
-            if(!WiimoteGlobal.wiimote.MotionPlus.PitchSlow) print("Also, wiimote is Pitching fast!");
-            if(!WiimoteGlobal.wiimote.MotionPlus.YawSlow) print("Also, wiimote is Yawing fast!");
-            if(!WiimoteGlobal.wiimote.MotionPlus.RollSlow) print("Also, wiimote is Rolling fast!");
+                + _wiimoteRef.MotionPlus.PitchSpeed + 
+                "\nRoll: "+_wiimoteRef.MotionPlus.RollSpeed+
+                "\nYaw: "+_wiimoteRef.MotionPlus.YawSpeed);
+            if(!_wiimoteRef.MotionPlus.PitchSlow) print("Also, wiimote is Pitching fast!");
+            if(!_wiimoteRef.MotionPlus.YawSlow) print("Also, wiimote is Yawing fast!");
+            if(!_wiimoteRef.MotionPlus.RollSlow) print("Also, wiimote is Rolling fast!");
 
             transform.SetPositionAndRotation(transform.position, hb.StartingRotation);
-            WiimoteGlobal.wiimote.MotionPlus.SetZeroValues();
+            _wiimoteRef.MotionPlus.SetZeroValues();
         }
 
         // Update is called once per frame
         void Update()
         {
-            pitchSpeedText.text = $"Pitch Speed: {WiimoteGlobal.wiimote.MotionPlus.PitchSpeed.ToString(CultureInfo.CurrentCulture)}";
-            rollSpeedText.text = $"Roll Speed: {WiimoteGlobal.wiimote.MotionPlus.RollSpeed.ToString(CultureInfo.CurrentCulture)}";
-            yawSpeedText.text = $"Yaw Speed: {WiimoteGlobal.wiimote.MotionPlus.YawSpeed.ToString(CultureInfo.CurrentCulture)}";
-            xAccelText.text = $"X Accel: {WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[0].ToString(CultureInfo.CurrentCulture)}";
-            yAccelText.text = $"Y Accel: {WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[1].ToString(CultureInfo.CurrentCulture)}";
-            zAccelText.text = $"Z Accel: {WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[2].ToString(CultureInfo.CurrentCulture)}";
+            Assert.IsTrue(_wiimoteRef != null);
+            
+            pitchSpeedText.text = $"Pitch Speed: {_wiimoteRef.MotionPlus.PitchSpeed.ToString(CultureInfo.CurrentCulture)}";
+            rollSpeedText.text = $"Roll Speed: {_wiimoteRef.MotionPlus.RollSpeed.ToString(CultureInfo.CurrentCulture)}";
+            yawSpeedText.text = $"Yaw Speed: {_wiimoteRef.MotionPlus.YawSpeed.ToString(CultureInfo.CurrentCulture)}";
+            xAccelText.text = $"X Accel: {_wiimoteRef.Accel.GetCalibratedAccelData()[0].ToString(CultureInfo.CurrentCulture)}";
+            yAccelText.text = $"Y Accel: {_wiimoteRef.Accel.GetCalibratedAccelData()[1].ToString(CultureInfo.CurrentCulture)}";
+            zAccelText.text = $"Z Accel: {_wiimoteRef.Accel.GetCalibratedAccelData()[2].ToString(CultureInfo.CurrentCulture)}";
         }
     }
 }

@@ -18,13 +18,13 @@ namespace Hammer
     public class HammerBehaviour : MonoBehaviour
     {
 
-        enum InputDevice
+        public enum InputDevice
         {
-            Wiimote,
-            Phone
+            WIIMOTE,
+            PHONE
         }
         
-        private InputDevice _inputDevice = InputDevice.Wiimote;
+        public InputDevice InputDeviceType { get; private set; }
 
         private IRotatable _input;
         
@@ -41,12 +41,12 @@ namespace Hammer
             if (WiimoteController.IsAvailable())
             {
                 _input = new WiimoteController();
-                _inputDevice = InputDevice.Wiimote;
+                InputDeviceType = InputDevice.WIIMOTE;
             }
             if (PhoneController.IsAvailable())
             {
                 _input = new PhoneController();
-                _inputDevice = InputDevice.Phone;
+                InputDeviceType = InputDevice.PHONE;
             }
             
 
@@ -66,12 +66,12 @@ namespace Hammer
         {
             transform.Rotate(_input.GetRotationOffset(), Space.Self);
             
-            switch (_inputDevice)
+            switch (InputDeviceType)
             {
                 //Unity Remote
-                case InputDevice.Phone:
+                case InputDevice.PHONE:
                 {
-                    Assert.IsTrue(_inputDevice == InputDevice.Phone, "Only Wiimote and Phone inputs are handled!");
+                    Assert.IsTrue(InputDeviceType == InputDevice.PHONE, "Only Wiimote and Phone inputs are handled!");
                 
                     //start() sadly runs after input is connected,
                     //so I put this here. 
