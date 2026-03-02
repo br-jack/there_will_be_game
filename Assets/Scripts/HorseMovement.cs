@@ -92,17 +92,6 @@ public class HorseMovement : MonoBehaviour
             _rb.linearVelocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime; 
         }
     }
-    
-    public static void AccelerateTo(Rigidbody body, Vector3 targetVelocity, float maxAccel)
-    {
-        Vector3 deltaV = targetVelocity - body.linearVelocity;
-        Vector3 accel = deltaV/Time.deltaTime;
-
-        if(accel.sqrMagnitude > maxAccel * maxAccel)
-            accel = accel.normalized * maxAccel;
-
-        body.AddForce(accel, ForceMode.Acceleration);
-    }
 
     private void HandleMovement()
     {
@@ -159,9 +148,12 @@ public class HorseMovement : MonoBehaviour
         _rb.MoveRotation(_rb.rotation * turnRotation);
         
 
-        Vector3 forwardMovement = transform.forward * (_currentSpeed); 
+        Vector3 forwardMovement = transform.forward * (_currentSpeed);
+
+        Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
+        accel.y = 0.0f;
         
-        _rb.AddForce((forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime, ForceMode.Acceleration);
+        _rb.AddForce(accel, ForceMode.Acceleration);
         
         // _rb.linearVelocity += forwardMovement; //#Shay: doing this fixes clipping into walls but breaks everything else.
         // AccelerateTo(_rb, forwardMovement, 100.0f);
