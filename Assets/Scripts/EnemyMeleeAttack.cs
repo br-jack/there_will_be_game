@@ -8,7 +8,6 @@ public class EnemyMeleeAttack : MonoBehaviour
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private string playerTag = "Player";
-    [SerializeField] private float missingPlayerWarnDelay = 2f;
 
     // Requires {enemyMovement, playerHealth, playerTransform} to function.
     private EnemyMovement enemyMovement;
@@ -90,11 +89,11 @@ public class EnemyMeleeAttack : MonoBehaviour
     private void WarnIfMissingPlayerRefs()
     {
         if (hasWarnedMissingPlayerRefs) return;
-        if (Time.time < missingPlayerWarnDelay) return;
+        if (Time.time < 2.0f) return;
 
         hasWarnedMissingPlayerRefs = true;
         Debug.LogWarning(
-            $"EnemyMeleeAttack on {gameObject.name} still cannot find Player refs after {missingPlayerWarnDelay:0.0}s. " +
+            $"EnemyMeleeAttack on {gameObject.name} still cannot find Player refs after 2.0s. " +
             $"Check that the Player exists, is active, has tag '{playerTag}', and has PlayerHealth."
         );
     }
