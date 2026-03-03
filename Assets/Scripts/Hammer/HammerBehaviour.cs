@@ -44,12 +44,13 @@ namespace Hammer
         {
             try
             {
-                stream = new SerialPort("COM3", 9600)
+                stream = new SerialPort("/dev/ttyACM0", 9600)
                 {
                     ReadTimeout = timeoutMs
                 };
                 stream.Open();
                 open = true;
+                Debug.Log("Connected (allegedly)");
             }
             catch (System.Exception e)
             {
@@ -77,7 +78,7 @@ namespace Hammer
 
             if (!stream.IsOpen)
             {
-                Console.WriteLine("Port is not open for reading.");
+                Debug.Log("Port is not open for reading.");
                 return;
             }
 
@@ -85,17 +86,17 @@ namespace Hammer
             {
                 stream.ReadTimeout = timeoutMs;
                 string receivedData = stream.ReadLine();
-                Console.WriteLine($"Received: {receivedData}");
+                Debug.Log($"Received: {receivedData}");
                 Debug.Log(receivedData.Trim());
             }
             catch (TimeoutException)
             {
-                Console.WriteLine("Timeout occurred while reading data.");
+                Debug.Log("Timeout occurred while reading data.");
                 return;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error reading data: {ex.Message}");
+                Debug.Log($"Error reading data: {ex.Message}");
                 return;
             }
         }
