@@ -93,14 +93,8 @@ public class HorseMovement : MonoBehaviour
         }
     }
 
-    private void HandleMovement()
+    private void Jump(bool grounded)
     {
-        Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
-        bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
-
-        //scale jumping to speed
-        speedPercent = _currentSpeed / maxSpeed;
-
         /*Not currently using this:
         scaledJumpForce = jumpForce * speedPercent * 1.2f;
         scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);*/
@@ -111,44 +105,69 @@ public class HorseMovement : MonoBehaviour
         }
 
         _jumpPressed = false;
+    }
 
+    private void Turn(bool grounded)
+    {
         //restrict turning more at higher speeds
         float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
 
+        if (!grounded)
+        {
+            effectiveTurnSpeed *= 0.2f;
+        }
+        
+        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
+
+        _rb.MoveRotation(_rb.rotation * turnRotation);
+    }
+
+    private void CalculateSpeed()
+    {
+        float netForce = 0f;
+
+        netForce += acceleration * _throttleInput;
+        netForce -= brake * _brakeInput;
+
+        _currentSpeed += netForce * Time.fixedDeltaTime;
+
+        if (_throttleInput == 0.0f && _brakeInput == 0.0f)
+        {
+            if (_currentSpeed > 0f)
+            {
+                _currentSpeed -= deceleration * Time.fixedDeltaTime;
+            } else if (_currentSpeed < 0f)
+            {
+                _currentSpeed += deceleration * Time.fixedDeltaTime;
+            }
+        }
+        
+        _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
+    }
+
+    private void HandleMovement()
+    {
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
+        bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
+
+        //scale jumping to speed
+        speedPercent = _currentSpeed / maxSpeed;
+        
+        Jump(grounded);
+        
         if (grounded) //prevents accelerating and decelerating whilst midair
         {
             _groundedTimer += Time.fixedDeltaTime;
 
-            float netForce = 0f;
-
-            netForce += acceleration * _throttleInput;
-            netForce -= brake * _brakeInput;
-
-            _currentSpeed += netForce * Time.fixedDeltaTime;
-
-            if (_throttleInput == 0.0f && _brakeInput == 0.0f)
-            {
-                if (_currentSpeed > 0f)
-                {
-                    _currentSpeed -= deceleration * Time.fixedDeltaTime;
-                } else if (_currentSpeed < 0f)
-                {
-                    _currentSpeed += deceleration * Time.fixedDeltaTime;
-                }
-            }
-            _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
+            CalculateSpeed();
         } else
         {
             _groundedTimer = 0f;
-            effectiveTurnSpeed *= 0.2f;
         }
-            
-        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
 
-        _rb.MoveRotation(_rb.rotation * turnRotation);
-        
+        Turn(grounded);
 
-        Vector3 forwardMovement = transform.forward * (_currentSpeed);
+        Vector3 forwardMovement = transform.forward * _currentSpeed;
 
         Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
         accel.y = 0.0f;
