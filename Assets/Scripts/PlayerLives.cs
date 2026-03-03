@@ -3,6 +3,8 @@ using UnityEngine;
 
 /*
 PlayerLives contains both the discrete and continuous bars (UI).
+It's connected to both UIs and PlayerHealth.
+Invincibility is controlled here, PlayerHealth can use the getter IsInvincible to see whether to deal damage.
 */
 
 public class PlayerLives : MonoBehaviour

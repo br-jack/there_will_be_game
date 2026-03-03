@@ -1,13 +1,21 @@
 using System;
 using UnityEngine;
 
+/*
+PlayerHealth:
+Manages the player's health, including taking damage, healing, and updating the health bar UI.
+- Raises an event when player dies (OnDeath)
+- use Heal() or TakeDamage() to heal or take damage.
+Connected to PlayerLives (which gives it the healthbar UI).
+*/
+
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 100;
 
     private int current;
 
-    public int Current // Use `Current` NOT `current` to change
+    public int Current
     {
         get { return current; }
         private set { current = value; }
@@ -18,16 +26,12 @@ public class PlayerHealth : MonoBehaviour
     public event Action OnDeath;
     private PlayerLives playerLives;
 
-    private void Awake()
-    {
-        
-    }
-
     private void Start()
     {
         if (playerLives == null) playerLives = GetComponent<PlayerLives>();
         ResetHealthToFull();
     }
+
     public void TakeDamage(int damage)
     {
         if (playerLives.IsInvincible) return; // Don't let player take damage while invisible.
@@ -57,6 +61,7 @@ public class PlayerHealth : MonoBehaviour
         OnHealthChanged?.Invoke(Current, Max);
     }
 
+    // Resets player health to full and updates UI accordingly.
     public void ResetHealthToFull()
     {
         Current = Max;

@@ -65,7 +65,7 @@ public class EnemyMeleeAttack : MonoBehaviour
         if (!CanAttack()) return;
         if (Time.time < nextAttackTime) return;
 
-        // Code below here only runs if enemy is available to attack (and has cooled down)
+        // Checks whether player is close enough to attack
         float sqrDistance = (playerTransform.position - transform.position).sqrMagnitude;
         if (sqrDistance > attackRange * attackRange) return;
 
@@ -81,7 +81,8 @@ public class EnemyMeleeAttack : MonoBehaviour
 
     private void PerformAttack()
     {
-        Debug.Log($"EnemyMeleeAttack: dealing {damage} damage to {playerHealth?.name} at time {Time.time}");
+        // Logs attack in console, performs attack, sets cooldown
+        Debug.Log($"EnemyMeleeAttack: the enemy deals {damage} damage to {playerHealth?.name} at this time: {Time.time}");
         playerHealth.TakeDamage(damage);
         nextAttackTime = Time.time + attackCooldown;
     }
@@ -93,8 +94,7 @@ public class EnemyMeleeAttack : MonoBehaviour
 
         hasWarnedMissingPlayerRefs = true;
         Debug.LogWarning(
-            $"EnemyMeleeAttack on {gameObject.name} still cannot find Player refs after 2.0s. " +
-            $"Check that the Player exists, is active, has tag '{playerTag}', and has PlayerHealth."
+            $"EnemyMeleeAttack on {gameObject.name} still cannot find Player refs after 2.0s. " + $"Check that the Player exists, is active, has tag '{playerTag}', and has PlayerHealth."
         );
     }
 }
