@@ -85,11 +85,11 @@ public class HorseMovement : MonoBehaviour
         HandleMovement();
         if (_rb.linearVelocity.y < 0) //speed up fall for feel  
         { 
-            _rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime; 
+            _rb.linearVelocity += Physics.gravity * ((fallMultiplier - 1) * Time.fixedDeltaTime); 
         }
         else if (_rb.linearVelocity.y > 0 && !_jumpHeld) //smaller jump when jump button not held
         { 
-            _rb.linearVelocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime; 
+            _rb.linearVelocity += Physics.gravity * ((lowJumpMultiplier - 1) * Time.fixedDeltaTime); 
         }
     }
 
