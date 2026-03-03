@@ -6,8 +6,6 @@ public class BodyHit : MonoBehaviour
     public hitSound hitSounds;
     void OnTriggerEnter(Collider other)
     {
-
-
         // Check if hit by attack
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
         if (attack == null)
@@ -19,13 +17,12 @@ public class BodyHit : MonoBehaviour
         {
             return;
         }
-
-        if (enemy.isKnockedback)
+        if (enemy.IsKnockedBack)
         {
             return;
         }
         // If shield was already hit this frame, ignore body hit
-        if (enemy.shieldWasJustHit)
+        if (enemy.ShieldWasJustHit)
         {
             return;
         }
@@ -38,13 +35,13 @@ public class BodyHit : MonoBehaviour
 
         if (Physics.Raycast(attackPosition, direction, distance, shieldMask))
         {
-            // Sheild is blocking
+            // Shield is blocking
             return;
         }
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
         hitSounds.PlaySFX();
      
         // No shield blocking - kill the enemy
-        enemy.Die();
+        enemy.KilledBy(other);
     }
 }

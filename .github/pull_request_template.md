@@ -27,6 +27,7 @@ Replace the ' ' with an 'x' in all the boxes that apply: -->
 
 - [ ] Human (Hammer User)
 - [ ] Horse
+- [ ] Enemies
 - [ ] Physics
 - [ ] Visuals
 - [ ] Sounds

@@ -21,26 +21,37 @@ public class EnemyMovement : MonoBehaviour
     [HideInInspector] public Transform _playerTransformRef;
     private Rigidbody _rb;
 
-    public bool isKnockedback;
-    public bool shieldWasJustHit = false;
     private Vector3 _formationTarget;
     private Vector3 _attackTarget;
     public bool hasFormationTarget;
     private bool _hasAttackTarget;
-    private AudioSource audioSource;
+    
+    public bool IsKnockedBack { get; private set; }
+    [Header("Knockback Timer")]
+    [SerializeField] private float knockbackTime;
+    [SerializeField] private float currentKnockbackTimer;
+    
+    public bool ShieldWasJustHit { get; private set; }
+    
+    public bool IsDying { get; private set; }
+    [Header("Death Checks")]
+    //Max amount of time enemy can be in "dying" state before destruction
+    [SerializeField] private float onDeathTimer;
+    [SerializeField] private float deathGroundCheckDistance = 0.3f;
+    [SerializeField] private LayerMask groundMask;
+    private AudioSource _shieldBreakAudioSource;
 
     private void Start()
     {
+        _shieldBreakAudioSource = GetComponent<AudioSource>();
         GameObject playerRef = GameObject.FindWithTag("Player");
         if (playerRef != null)
         {
             _playerTransformRef = playerRef.transform;
             _playerHealthRef = playerRef.GetComponent<PlayerHealth>();
         }
-
-        audioSource = GetComponent<AudioSource>();
-
-        if (audioSource == null)
+        
+        if (_shieldBreakAudioSource == null)
         {
             Debug.LogError("man there's no audio source");
         }
@@ -49,19 +60,46 @@ public class EnemyMovement : MonoBehaviour
         // Default values (if none set)
         if (defaultSpeed <= 0f) defaultSpeed = 3f;
         if (formationSpeed <= 0f) formationSpeed = 2/3 * defaultSpeed;
+        
+        currentKnockbackTimer = knockbackTime;
     }
 
     // Update is called once per frame
     private void Update()
     {
-
-        
+        if (IsKnockedBack)
+        {
+            currentKnockbackTimer -= Time.deltaTime;
+            Vector3 rayOrigin = transform.position;
+            bool isGrounded = Physics.Raycast(rayOrigin, Vector3.down, deathGroundCheckDistance, groundMask);
+            // Debug.DrawRay(rayOrigin, Vector3.down * deathGroundCheckDistance, Color.yellow);
+            
+            //End knockback state if on ground AND only if a certain amount of time has passed
+            //(as enemy doesn't get launched vertically off ground when their shield breaks)
+            if (isGrounded && currentKnockbackTimer <= 0)
+            {
+                IsKnockedBack = false;
+                currentKnockbackTimer = knockbackTime;
+            }
+        }
+        if (IsDying)
+        {
+            onDeathTimer -= Time.deltaTime;
+            
+            //If the enemy gets launched entirely off the map,
+            //onDeathTimer ensures it will still eventually be destroyed.
+            //But otherwise, will destroy when enemy reaches the ground
+            if (IsKnockedBack == false || onDeathTimer <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     private void FixedUpdate()
     {
-        shieldWasJustHit = false;
-        if (isKnockedback)
+        ShieldWasJustHit = false;
+        if (IsKnockedBack)
         {
             return;
         }
@@ -129,22 +167,32 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+    public void KilledBy(Collider other)
     {
-        if (other.gameObject.CompareTag("Arena") && isKnockedback)
+        //Grey out enemy to signify that it's dead
+        gameObject.GetComponent<Renderer>().material.color = Color.gray;
+        
+        if (spawner != null)
         {
-            isKnockedback = false;
+            spawner.RemoveEnemy(this);
         }
-    }
 
-    public void Die()
-    {
-        Destroy(gameObject);
+        float knockbackForce = 40f;
+        
+        //Knock away from what killed it
+        Vector3 knockbackDirection = transform.position - other.transform.position;
+        knockbackDirection.y = 1.0f;
+        knockbackDirection.Normalize();
+
+        ApplyKnockback(knockbackDirection * knockbackForce);
+
+        IsKnockedBack = true;
+        IsDying = true;
     }
 
     public void ApplyKnockback(Vector3 force)
     {
-        isKnockedback = true;
+        IsKnockedBack = true;
 
         _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(force, ForceMode.Impulse);
@@ -156,8 +204,7 @@ public class EnemyMovement : MonoBehaviour
         {
             Destroy(shield);
             shield = null;
-            audioSource.Play();
-
+            _shieldBreakAudioSource.Play();
         }
     }
 
@@ -168,16 +215,16 @@ public class EnemyMovement : MonoBehaviour
 
     public void MarkShieldHit()
     {
-        shieldWasJustHit = true;
+        ShieldWasJustHit = true;
     }
 
     private void OnDisable()
     {
-        if (spawner != null)
+        //If the death trigger code hasn't already run,
+        //make sure enemy is removed from spawner list
+        if (!IsDying && spawner != null)
         {
-            spawner.aliveEnemies.Remove(this);
-            
-            spawner.UpdateFormationTargets();
+            spawner.RemoveEnemy(this);
         }
     }
 
