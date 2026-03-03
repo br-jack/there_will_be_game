@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using TMPro;
 using Unity.VisualScripting;
@@ -91,6 +92,15 @@ namespace Hammer
                 string receivedData = stream.ReadLine();
                 Debug.Log($"Received: {receivedData}");
                 Debug.Log(receivedData.Trim());
+
+                string[] quaternionString = receivedData.Split(':');
+                if (quaternionString[0] != "q")
+                {
+                    return;
+                }
+
+                transform.rotation = new Quaternion(float.Parse(quaternionString[1]), float.Parse(quaternionString[2]), float.Parse(quaternionString[3]), float.Parse(quaternionString[4]));
+
             }
             catch (TimeoutException)
             {
@@ -104,43 +114,43 @@ namespace Hammer
             }
         }
 
-            //Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
+        //Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
 
-            ////TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
-            //int ret;
-            //Vector3 gyroOffset = Vector3.zero;
-            //Vector3 accelOffset = Vector3.zero;
+        ////TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
+        //int ret;
+        //Vector3 gyroOffset = Vector3.zero;
+        //Vector3 accelOffset = Vector3.zero;
 
-            //do {
-            //    ret = WiimoteGlobal.wiimote.ReadWiimoteData();
+        //do {
+        //    ret = WiimoteGlobal.wiimote.ReadWiimoteData();
 
-            //    //ACCELEROMETER
-                
-            //    Vector3 accelDataForFrameTest = new Vector3(
-            //        WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[0],
-            //        WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[1],
-            //        WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[2]);
-            //    print("Accel data: "+accelDataForFrameTest);
-            //    accelOffset += accelDataForFrameTest;
-                
-            //    //this is a test basically
+        //    //ACCELEROMETER
 
-            //    //GYROSCOPE
-            //    //add all detected rotations throughout the frame to gyroOffset
-            //    //we should integrate this! would give accurate total rotation
-            //    if (ret > 0 && WiimoteGlobal.wiimote.current_ext == ExtensionController.MOTIONPLUS) {
-            //        gyroOffset += new Vector3(  -WiimoteGlobal.wiimote.MotionPlus.PitchSpeed,
-            //                                        -WiimoteGlobal.wiimote.MotionPlus.RollSpeed,
-            //                                        -WiimoteGlobal.wiimote.MotionPlus.YawSpeed);
-            //    }
-            //} while (ret > 0);
+        //    Vector3 accelDataForFrameTest = new Vector3(
+        //        WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[0],
+        //        WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[1],
+        //        WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[2]);
+        //    print("Accel data: "+accelDataForFrameTest);
+        //    accelOffset += accelDataForFrameTest;
 
-            //gyroOffset /= 95f;
+        //    //this is a test basically
 
-            //transform.Rotate(gyroOffset, Space.Self);
+        //    //GYROSCOPE
+        //    //add all detected rotations throughout the frame to gyroOffset
+        //    //we should integrate this! would give accurate total rotation
+        //    if (ret > 0 && WiimoteGlobal.wiimote.current_ext == ExtensionController.MOTIONPLUS) {
+        //        gyroOffset += new Vector3(  -WiimoteGlobal.wiimote.MotionPlus.PitchSpeed,
+        //                                        -WiimoteGlobal.wiimote.MotionPlus.RollSpeed,
+        //                                        -WiimoteGlobal.wiimote.MotionPlus.YawSpeed);
+        //    }
+        //} while (ret > 0);
+
+        //gyroOffset /= 95f;
+
+        //transform.Rotate(gyroOffset, Space.Self);
 
 
-        
+
 
         public void OnCollisionEnter(Collision collision)
         {
