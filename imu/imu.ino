@@ -73,12 +73,13 @@ void loop() {
     
     case SH2_GAME_ROTATION_VECTOR:
 
+      Serial.print("q:");
       Serial.print(sensorValue.un.gameRotationVector.real);
-      Serial.print(",");
+      Serial.print(":");
       Serial.print(sensorValue.un.gameRotationVector.i);
-      Serial.print(",");
+      Serial.print(":");
       Serial.print(sensorValue.un.gameRotationVector.j);
-      Serial.print(",");
+      Serial.print(":");
       Serial.println(sensorValue.un.gameRotationVector.k);
       break;
   }
