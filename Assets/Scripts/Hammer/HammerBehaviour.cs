@@ -44,10 +44,12 @@ namespace Hammer
         {
             try
             {
+                //stream = new SerialPort("/dev/cu.usbmodem101", 9600)
                 stream = new SerialPort("/dev/ttyACM0", 9600)
                 {
                     ReadTimeout = timeoutMs
                 };
+                stream.DtrEnable = true;
                 stream.Open();
                 open = true;
                 Debug.Log("Connected (allegedly)");
