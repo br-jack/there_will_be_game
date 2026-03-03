@@ -171,20 +171,6 @@ public class HorseMovement : MonoBehaviour
 
         Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
         accel.y = 0.0f;
-
-        RaycastHit hit;
-        bool wallColliding = Physics.Raycast(transform.position, transform.forward, out hit, 3f, groundMask);
-        if (wallColliding)
-        {
-            Vector3 snapToSurface = _rb.linearVelocity.normalized * hit.distance;
-            Vector3 leftover = _rb.linearVelocity - snapToSurface;
-            
-            float angle =  Vector3.Angle(Vector3.up, hit.normal);
-            
-            leftover = Vector3.ProjectOnPlane(leftover, hit.normal);
-
-            accel += leftover;
-        }
         
         _rb.AddForce(accel, ForceMode.Acceleration);
         
