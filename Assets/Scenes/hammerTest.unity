@@ -338,7 +338,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 362666753}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Hammer.DebugHammer, Assembly-CSharp
         m_MethodName: CalibrateAccelStep
         m_Mode: 1
@@ -529,29 +529,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4419712744454927533, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
   m_PrefabInstance: {fileID: 1907265860}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &362666753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 362666751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69720bb7497ead345952bbe65877b799, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pitchSpeedText: {fileID: 1129509659}
-  rollSpeedText: {fileID: 332402042}
-  yawSpeedText: {fileID: 994837373}
-  xAccelText: {fileID: 1727837316}
-  yAccelText: {fileID: 1890693763}
-  zAccelText: {fileID: 1985192914}
-  accelMessagesText: {fileID: 1988000388}
-  accelButtonText: {fileID: 130610941}
-  backImage: {fileID: 1097927229}
-  noseImage: {fileID: 966197774}
-  sideImage: {fileID: 1206314224}
 --- !u!114 &362666754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,6 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6d0a1dd8956af4385d7151cfe70551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  closePort: 0
 --- !u!1 &422017817
 GameObject:
   m_ObjectHideFlags: 0
@@ -1704,7 +1682,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 362666753}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Hammer.DebugHammer, Assembly-CSharp
         m_MethodName: CalibrateWiiMotionPlus
         m_Mode: 1
@@ -2469,17 +2447,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hammer
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -2123105786150358034, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4419712744454927533, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 362666754}
-    - targetCorrespondingSourceObject: {fileID: 4419712744454927533, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 362666753}
   m_SourcePrefab: {fileID: 100100000, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
 --- !u!1 &1985192912
 GameObject:

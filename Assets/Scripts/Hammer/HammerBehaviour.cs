@@ -1,15 +1,16 @@
 using System;
-using System.Globalization;
-using TMPro;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Assertions;
-using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO.Ports;
+using System.Threading;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Hammer
 {
@@ -30,20 +31,31 @@ namespace Hammer
 
         private Quaternion attitude;
 
+        private readonly int timeoutMs = 50;
+
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            Connect();
+        }
+
+        private void Connect()
+        {
             try
             {
-                stream = new SerialPort("COM3", 115200);
-                stream.ReadTimeout = 50;
+                stream = new SerialPort("COM3", 9600)
+                {
+                    ReadTimeout = timeoutMs
+                };
                 stream.Open();
                 open = true;
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
                 open = false;
+                Debug.Log("Failed to connect to COM3: ");
+                Debug.Log(e);
             }
         }
 
@@ -63,10 +75,30 @@ namespace Hammer
                 Debug.Log("COM3 closed");
             }
 
+            if (!stream.IsOpen)
+            {
+                Console.WriteLine("Port is not open for reading.");
+                return;
+            }
 
-            //TODO this is where the issue is lol
-            Debug.Log(stream.ReadChar());
-
+            try
+            {
+                stream.ReadTimeout = timeoutMs;
+                string receivedData = stream.ReadLine();
+                Console.WriteLine($"Received: {receivedData}");
+                Debug.Log(receivedData.Trim());
+            }
+            catch (TimeoutException)
+            {
+                Console.WriteLine("Timeout occurred while reading data.");
+                return;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error reading data: {ex.Message}");
+                return;
+            }
+        }
 
             //Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
 
@@ -104,7 +136,7 @@ namespace Hammer
             //transform.Rotate(gyroOffset, Space.Self);
 
 
-        }
+        
 
         public void OnCollisionEnter(Collision collision)
         {

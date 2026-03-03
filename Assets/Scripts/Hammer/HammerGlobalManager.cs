@@ -6,10 +6,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using Hammer;
 
 
 
 public static class HammerGlobal
 {
-    //public static Hammer hammer { get; set; }
+    public static HammerBehaviour Hammer { get; set; }
 }
