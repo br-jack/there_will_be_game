@@ -8,8 +8,6 @@ using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using Hammer;
 
-
-
 public static class HammerGlobal
 {
     public static HammerBehaviour Hammer { get; set; }

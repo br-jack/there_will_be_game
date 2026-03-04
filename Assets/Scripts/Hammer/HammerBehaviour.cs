@@ -15,17 +15,13 @@ using UnityEngine.UI;
 
 namespace Hammer
 {
-    //probs should set up a mechanism for calibrating the accelerometer. 
-    // This will need the game to take the user through a short process.  
-    //currently just uses whatever calibration values are in there. 
-
     public class HammerBehaviour : MonoBehaviour
     {
         SerialPort stream;
         public bool closePort;
 
         internal bool open;
-        public int one = 1, two =3, three=2, four=4;
+        public int one = 1, two = 3, three = 2, four = 4;
 
         //Hammer should start flat with Pitch = 0
         public Quaternion StartingRotation { get; private set; }
@@ -33,11 +29,15 @@ namespace Hammer
         private Quaternion attitude;
 
         private readonly int timeoutMs = 50;
-        public float x =0 , y = 0, z = 0;
+        public float x = 0, y = 0, z = 0;
         private static Vector3 eulerRotationAdjustment;
 
+        public Quaternion CallibrationQuaternion = new Quaternion(0, 0, 0, 0);
 
-
+        public void CallibrateHammer()
+        {
+            CallibrationQuaternion = transform.rotation;
+        }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -50,8 +50,8 @@ namespace Hammer
         {
             try
             {
-                stream = new SerialPort("COM3", 9600)
-                //stream = new SerialPort("/dev/cu.usbmodem101", 9600)
+                //stream = new SerialPort("COM3", 9600)
+                stream = new SerialPort("/dev/cu.usbmodem101", 9600)
                 //stream = new SerialPort("/dev/ttyACM0", 9600)
                 {
                     ReadTimeout = timeoutMs
@@ -106,7 +106,7 @@ namespace Hammer
                 }
 
                 Quaternion imuData = new Quaternion(float.Parse(quaternionString[one]), float.Parse(quaternionString[two]), float.Parse(quaternionString[three]), float.Parse(quaternionString[four]));
-                transform.rotation = imuData * Quaternion.Euler(eulerRotationAdjustment);
+                transform.rotation = imuData * CallibrationQuaternion;
 
 
             }
