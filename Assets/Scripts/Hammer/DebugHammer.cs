@@ -1,11 +1,13 @@
-using System.Globalization;
 using Hammer;
+using System.Globalization;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
-using UnityEngine.SceneManagement;
+using static UnityEngine.Analytics.IAnalytic;
+
 
 namespace Hammer
 {
@@ -20,7 +22,7 @@ namespace Hammer
         [SerializeField] private TMP_Text zAccelText;
 
         [SerializeField] private TMP_Text accelButtonText;
-
+        [SerializeField] private HammerBehaviour hammerBehaviour;
 
         void Awake()
         {
@@ -34,7 +36,7 @@ namespace Hammer
         
         public void CalibrateHammer()
         {
-            HammerBehaviour.Instance.CalibrateHammer();
+            hammerBehaviour.CalibrateHammer();
             accelButtonText.text = $"Calibrated!";
 
         }
@@ -42,9 +44,9 @@ namespace Hammer
         // Update is called once per frame
         void Update()
         {
-            pitchSpeedText.text = $"X Rotation: {HammerBehaviour.Instance.transform.eulerAngles.x.ToString(CultureInfo.CurrentCulture)}";
-            rollSpeedText.text = $"Y Rotation: {HammerBehaviour.Instance.transform.eulerAngles.y.ToString(CultureInfo.CurrentCulture)}";
-            yawSpeedText.text = $"Z Rotation: {HammerBehaviour.Instance.transform.eulerAngles.z.ToString(CultureInfo.CurrentCulture)}";
+            pitchSpeedText.text = $"X Rotation: {hammerBehaviour.transform.eulerAngles.x.ToString(CultureInfo.CurrentCulture)}";
+            rollSpeedText.text = $"Y Rotation: {hammerBehaviour.transform.eulerAngles.y.ToString(CultureInfo.CurrentCulture)}";
+            yawSpeedText.text = $"Z Rotation: {hammerBehaviour.transform.transform.eulerAngles.z.ToString(CultureInfo.CurrentCulture)}";
         }
     }
 }
