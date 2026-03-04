@@ -57,13 +57,13 @@ namespace Hammer
 
                     if (WiimoteGlobal.wiimote.wmp_attached)
                     {
-                        WiimoteGlobal.wiimote.ActivateWiiMotionPlus();
                         Debug.Log("Connected with Wii Motion Plus Extension.");
                     }
                     else
                     {
                         Debug.LogWarning("Wii remote doesn't have motion plus :(");
                     }
+                    WiimoteGlobal.wiimote.ActivateWiiMotionPlus();
                 }
                 
                 //Default input mode only sends button data, so for accelerometer / gyro data 
