@@ -25,7 +25,7 @@ namespace Hammer
         public bool closePort;
 
         internal bool open;
-
+        public int one = 1, two =3, three=2, four=4;
 
         //Hammer should start flat with Pitch = 0
         public Quaternion StartingRotation { get; private set; }
@@ -33,21 +33,26 @@ namespace Hammer
         private Quaternion attitude;
 
         private readonly int timeoutMs = 50;
+        public float x =0 , y = 0, z = 0;
+        private static Vector3 eulerRotationAdjustment;
+
+
 
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             Connect();
+
         }
 
         private void Connect()
         {
             try
             {
-                //stream - new SerialPort("COM3", 9600)
+                stream = new SerialPort("COM3", 9600)
                 //stream = new SerialPort("/dev/cu.usbmodem101", 9600)
-                stream = new SerialPort("/dev/ttyACM0", 9600)
+                //stream = new SerialPort("/dev/ttyACM0", 9600)
                 {
                     ReadTimeout = timeoutMs
                 };
@@ -59,7 +64,7 @@ namespace Hammer
             catch (System.Exception e)
             {
                 open = false;
-                Debug.Log("Failed to connect to COM3: ");
+                Debug.Log("Failed to connect to port: ");
                 Debug.Log(e);
             }
         }
@@ -73,11 +78,12 @@ namespace Hammer
         // Update is called once per frame
         void Update()
         {
+            eulerRotationAdjustment = new Vector3(x, y, z);
             if (closePort)
             {
                 open = false;
                 stream.Close();
-                Debug.Log("COM3 closed");
+                Debug.Log("Port closed");
             }
 
             if (!stream.IsOpen)
@@ -99,7 +105,9 @@ namespace Hammer
                     return;
                 }
 
-                transform.rotation = new Quaternion(float.Parse(quaternionString[1]), float.Parse(quaternionString[2]), float.Parse(quaternionString[3]), float.Parse(quaternionString[4]));
+                Quaternion imuData = new Quaternion(float.Parse(quaternionString[one]), float.Parse(quaternionString[two]), float.Parse(quaternionString[three]), float.Parse(quaternionString[four]));
+                transform.rotation = imuData * Quaternion.Euler(eulerRotationAdjustment);
+
 
             }
             catch (TimeoutException)
@@ -166,7 +174,7 @@ namespace Hammer
         {
             open = false;
             stream.Close();
-            Debug.Log("COM3 closed");
+            Debug.Log("Port closed");
         }
 
         public void WriteToArduino(string message)
@@ -177,6 +185,29 @@ namespace Hammer
                 stream.BaseStream.Flush();
             }
 
+        }
+
+
+        private Quaternion EulerToQuaternion(Vector3 euler)
+        {
+            float xOver2 = euler.x * Mathf.Deg2Rad * 0.5f;
+            float yOver2 = euler.y * Mathf.Deg2Rad * 0.5f;
+            float zOver2 = euler.z * Mathf.Deg2Rad * 0.5f;
+
+            float sinXOver2 = Mathf.Sin(xOver2);
+            float cosXOver2 = Mathf.Cos(xOver2);
+            float sinYOver2 = Mathf.Sin(yOver2);
+            float cosYOver2 = Mathf.Cos(yOver2);
+            float sinZOver2 = Mathf.Sin(zOver2);
+            float cosZOver2 = Mathf.Cos(zOver2);
+
+            Quaternion result;
+            result.x = cosYOver2 * sinXOver2 * cosZOver2 + sinYOver2 * cosXOver2 * sinZOver2;
+            result.y = sinYOver2 * cosXOver2 * cosZOver2 - cosYOver2 * sinXOver2 * sinZOver2;
+            result.z = cosYOver2 * cosXOver2 * sinZOver2 - sinYOver2 * sinXOver2 * cosZOver2;
+            result.w = cosYOver2 * cosXOver2 * cosZOver2 + sinYOver2 * sinXOver2 * sinZOver2;
+
+            return result;
         }
     }
 
