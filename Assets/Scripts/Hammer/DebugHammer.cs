@@ -7,27 +7,24 @@ using UnityEngine.UI;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
-
 namespace Hammer
 {
     public class DebugHammer : MonoBehaviour
     {
-        public TMP_Text pitchSpeedText;
-        public TMP_Text rollSpeedText;
-        public TMP_Text yawSpeedText;
+        [SerializeField] private TMP_Text pitchSpeedText;
+        [SerializeField] private TMP_Text rollSpeedText;
+        [SerializeField] private TMP_Text yawSpeedText;
 
-        public TMP_Text xAccelText;
-        public TMP_Text yAccelText;
-        public TMP_Text zAccelText;
+        [SerializeField] private TMP_Text xAccelText;
+        [SerializeField] private TMP_Text yAccelText;
+        [SerializeField] private TMP_Text zAccelText;
 
-        public TMP_Text accelMessagesText;
-        public TMP_Text accelButtonText;
+        [SerializeField] private TMP_Text accelMessagesText;
+        [SerializeField] private TMP_Text accelButtonText;
 
-        private HammerBehaviour hammer;
 
         void Awake()
         {
-            hammer = GetComponent<HammerBehaviour>();
         }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -35,10 +32,10 @@ namespace Hammer
    
 
         }
-
+        
         public void CalibrateHammer()
         {
-            hammer.CalibrateHammer();
+            HammerBehaviour.Instance.CalibrateHammer();
             print("Calibrated!");
             accelButtonText.text = $"Calibrated!";
 

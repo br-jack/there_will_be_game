@@ -17,28 +17,39 @@ namespace Hammer
 {
     public class HammerBehaviour : MonoBehaviour
     {
+
+        public static HammerBehaviour Instance { get; private set; }
+
         SerialPort stream;
-        public bool closePort;
+        [SerializeField] private bool closePort;
 
         internal bool open;
-        public int one = 1, two = 3, three = 2, four = 4;
+        [SerializeField] private int one = 1, two = 3, three = 2, four = 4;
 
-        //Hammer should start flat with Pitch = 0
-        public Quaternion StartingRotation { get; private set; }
 
-        private Quaternion attitude;
+        [SerializeField] private Quaternion attitude;
 
         private readonly int timeoutMs = 50;
-        public float x = 0, y = 0, z = 0;
+        [SerializeField] private float x = 0, y = 0, z = 0;
         private static Vector3 eulerRotationAdjustment;
 
-        public Quaternion CalibrationQuaternion = new Quaternion(0, 0, 0, 0);
+        [SerializeField] private Quaternion CalibrationQuaternion = new Quaternion(0, 0, 0, 0);
 
         public void CalibrateHammer()
         {
             CalibrationQuaternion = transform.rotation;
         }
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
 
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
@@ -69,11 +80,6 @@ namespace Hammer
             }
         }
 
-        //Called once before start when the game starts
-        void Awake()
-        {
-            StartingRotation = transform.rotation;
-        }
 
         // Update is called once per frame
         void Update()
@@ -191,28 +197,6 @@ namespace Hammer
 
         }
 
-
-        private Quaternion EulerToQuaternion(Vector3 euler)
-        {
-            float xOver2 = euler.x * Mathf.Deg2Rad * 0.5f;
-            float yOver2 = euler.y * Mathf.Deg2Rad * 0.5f;
-            float zOver2 = euler.z * Mathf.Deg2Rad * 0.5f;
-
-            float sinXOver2 = Mathf.Sin(xOver2);
-            float cosXOver2 = Mathf.Cos(xOver2);
-            float sinYOver2 = Mathf.Sin(yOver2);
-            float cosYOver2 = Mathf.Cos(yOver2);
-            float sinZOver2 = Mathf.Sin(zOver2);
-            float cosZOver2 = Mathf.Cos(zOver2);
-
-            Quaternion result;
-            result.x = cosYOver2 * sinXOver2 * cosZOver2 + sinYOver2 * cosXOver2 * sinZOver2;
-            result.y = sinYOver2 * cosXOver2 * cosZOver2 - cosYOver2 * sinXOver2 * sinZOver2;
-            result.z = cosYOver2 * cosXOver2 * sinZOver2 - sinYOver2 * sinXOver2 * cosZOver2;
-            result.w = cosYOver2 * cosXOver2 * cosZOver2 + sinYOver2 * sinXOver2 * sinZOver2;
-
-            return result;
-        }
     }
 
 }
