@@ -510,7 +510,7 @@ GameObject:
   - component: {fileID: 574027611}
   - component: {fileID: 574027610}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Star Game TXT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -904,7 +904,7 @@ GameObject:
   - component: {fileID: 896106725}
   - component: {fileID: 896106724}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Accel Btn TXT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1176,6 +1176,7 @@ GameObject:
   - component: {fileID: 1119556390}
   - component: {fileID: 1119556389}
   - component: {fileID: 1119556388}
+  - component: {fileID: 1119556391}
   m_Layer: 5
   m_Name: Calibrate IMU Button
   m_TagString: Untagged
@@ -1247,9 +1248,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1119556391}
         m_TargetAssemblyTypeName: Hammer.DebugHammer, Assembly-CSharp
-        m_MethodName: CalibrateWiiMotionPlus
+        m_MethodName: CalibrateHammer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1297,6 +1298,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119556386}
   m_CullTransparentMesh: 1
+--- !u!114 &1119556391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119556386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69720bb7497ead345952bbe65877b799, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pitchSpeedText: {fileID: 1129509659}
+  rollSpeedText: {fileID: 332402042}
+  yawSpeedText: {fileID: 994837373}
+  xAccelText: {fileID: 1727837316}
+  yAccelText: {fileID: 1890693763}
+  zAccelText: {fileID: 1985192914}
+  accelMessagesText: {fileID: 1988000388}
+  accelButtonText: {fileID: 896106724}
 --- !u!1 &1129509657
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,6 +1920,22 @@ PrefabInstance:
     - target: {fileID: -2123105786150358034, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
       propertyPath: StartingRotation.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2123105786150358034, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
+      propertyPath: CalibrationQuaternion.w
+      value: 0.9998864
+      objectReference: {fileID: 0}
+    - target: {fileID: -2123105786150358034, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
+      propertyPath: CalibrationQuaternion.x
+      value: 0.008802022
+      objectReference: {fileID: 0}
+    - target: {fileID: -2123105786150358034, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
+      propertyPath: CalibrationQuaternion.y
+      value: 0.008649721
+      objectReference: {fileID: 0}
+    - target: {fileID: -2123105786150358034, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
+      propertyPath: CalibrationQuaternion.z
+      value: 0.008649721
       objectReference: {fileID: 0}
     - target: {fileID: 3899600505029062167, guid: 54d6c838b26f5bf40bbdcc1c2d71d79a, type: 3}
       propertyPath: m_LocalScale.x

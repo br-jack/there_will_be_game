@@ -23,10 +23,6 @@ namespace Hammer
         public TMP_Text accelMessagesText;
         public TMP_Text accelButtonText;
 
-        public GameObject backImage;
-        public GameObject noseImage;
-        public GameObject sideImage;
-
         private HammerBehaviour hammer;
 
         void Awake()
@@ -42,10 +38,9 @@ namespace Hammer
 
         public void CalibrateHammer()
         {
-
             hammer.CalibrateHammer();
             print("Calibrated!");
-            accelButtonText.text = $"Calibrated! ";
+            accelButtonText.text = $"Calibrated!";
 
         }
 
