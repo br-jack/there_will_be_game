@@ -19,7 +19,6 @@ namespace Hammer
         [SerializeField] private TMP_Text yAccelText;
         [SerializeField] private TMP_Text zAccelText;
 
-        [SerializeField] private TMP_Text accelMessagesText;
         [SerializeField] private TMP_Text accelButtonText;
 
 
@@ -36,7 +35,6 @@ namespace Hammer
         public void CalibrateHammer()
         {
             HammerBehaviour.Instance.CalibrateHammer();
-            print("Calibrated!");
             accelButtonText.text = $"Calibrated!";
 
         }
