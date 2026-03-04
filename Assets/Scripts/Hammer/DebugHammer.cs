@@ -1,13 +1,6 @@
-using Hammer;
 using System.Globalization;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using static UnityEngine.Analytics.IAnalytic;
-
 
 namespace Hammer
 {

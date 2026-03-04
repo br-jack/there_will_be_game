@@ -1,17 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO.Ports;
-using System.Linq;
-using System.Threading;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace Hammer
 {
@@ -20,7 +9,7 @@ namespace Hammer
 
         Quaternion imuData;
         SerialPort stream;
-        
+
         private bool portOpen;
         private readonly int timeoutMs = 50;
 
@@ -35,10 +24,10 @@ namespace Hammer
             {
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
                 {
-                stream = new SerialPort("COM3", 9600)
-                {
-                    ReadTimeout = timeoutMs
-                };
+                    stream = new SerialPort("COM3", 9600)
+                    {
+                        ReadTimeout = timeoutMs
+                    };
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
@@ -51,7 +40,7 @@ namespace Hammer
 
                 if (Application.platform.Equals(RuntimePlatform.LinuxPlayer) || Application.platform.Equals(RuntimePlatform.LinuxServer))
                 {
-                stream = new SerialPort("/dev/ttyACM0", 9600)
+                    stream = new SerialPort("/dev/ttyACM0", 9600)
                     {
                         ReadTimeout = timeoutMs
                     };
@@ -95,17 +84,18 @@ namespace Hammer
                     return;
                 }
 
-                imuData = new Quaternion(float.Parse(quaternionString[1]), 
-                                                    float.Parse(quaternionString[3]), 
-                                                    float.Parse(quaternionString[2]), 
-                                                    float.Parse(quaternionString[4]));
+                // format from imu: w, x, y, z
+                imuData = new Quaternion(float.Parse(quaternionString[2]),
+                                         float.Parse(quaternionString[3]),
+                                         float.Parse(quaternionString[4]),
+                                         float.Parse(quaternionString[1]));
 
                 // TODO make this use only quaternions?
-                Vector3 incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * imuData).eulerAngles;
-                Vector3 correctedRotation = new Vector3(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z);
-                
-                transform.localRotation = Quaternion.Euler(correctedRotation);
-                
+                //Vector3 incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * imuData).eulerAngles;
+                //Vector3 correctedRotation = new Vector3(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z);
+
+                transform.localRotation = imuData * GlobalManager.Instance.CalibrationQuaternion;
+
             }
             catch (TimeoutException)
             {
@@ -127,7 +117,7 @@ namespace Hammer
             }
         }
 
-        void OnDisable ()
+        void OnDisable()
         {
             portOpen = false;
             stream.Close();
