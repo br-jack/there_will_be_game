@@ -42,6 +42,6 @@ public class BodyHit : MonoBehaviour
         hitSounds.PlaySFX();
      
         // No shield blocking - kill the enemy
-        enemy.KilledBy(other);
+        enemy.KilledBy(other, attack);
     }
 }
