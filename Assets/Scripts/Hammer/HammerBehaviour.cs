@@ -101,7 +101,7 @@ namespace Hammer
                 Vector3 incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * imuData).eulerAngles;
                 Vector3 correctedRotation = new Vector3(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z);
                 
-                transform.rotation = Quaternion.Euler(correctedRotation);
+                transform.localRotation = Quaternion.Euler(correctedRotation);
                 
 
 
