@@ -32,11 +32,11 @@ namespace Hammer
         public float x = 0, y = 0, z = 0;
         private static Vector3 eulerRotationAdjustment;
 
-        public Quaternion CallibrationQuaternion = new Quaternion(0, 0, 0, 0);
+        public Quaternion CalibrationQuaternion = new Quaternion(0, 0, 0, 0);
 
-        public void CallibrateHammer()
+        public void CalibrateHammer()
         {
-            CallibrationQuaternion = transform.rotation;
+            CalibrationQuaternion = transform.rotation;
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -50,8 +50,8 @@ namespace Hammer
         {
             try
             {
-                //stream = new SerialPort("COM3", 9600)
-                stream = new SerialPort("/dev/cu.usbmodem101", 9600)
+                stream = new SerialPort("COM3", 9600)
+                //stream = new SerialPort("/dev/cu.usbmodem101", 9600)
                 //stream = new SerialPort("/dev/ttyACM0", 9600)
                 {
                     ReadTimeout = timeoutMs
@@ -105,8 +105,12 @@ namespace Hammer
                     return;
                 }
 
-                Quaternion imuData = new Quaternion(float.Parse(quaternionString[one]), float.Parse(quaternionString[two]), float.Parse(quaternionString[three]), float.Parse(quaternionString[four]));
-                transform.rotation = imuData * CallibrationQuaternion;
+                Quaternion imuData = new Quaternion(float.Parse(quaternionString[one]), 
+                                                    float.Parse(quaternionString[two]), 
+                                                    float.Parse(quaternionString[three]), 
+                                                    float.Parse(quaternionString[four]));
+                transform.rotation = imuData * CalibrationQuaternion;
+                
 
 
             }

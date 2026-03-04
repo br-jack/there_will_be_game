@@ -27,26 +27,25 @@ namespace Hammer
         public GameObject noseImage;
         public GameObject sideImage;
 
-        private HammerBehaviour hb;
+        private HammerBehaviour hammer;
 
         void Awake()
         {
-            hb = GetComponent<HammerBehaviour>();
+            hammer = GetComponent<HammerBehaviour>();
         }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            sideImage.gameObject.SetActive(false);
-            noseImage.gameObject.SetActive(false);
-            backImage.gameObject.SetActive(false);
+   
 
         }
 
-        public void CalibrateWiiMotionPlus()
+        public void CalibrateHammer()
         {
 
-            hb.CallibrateHammer();
-            print("Callibrated!");
+            hammer.CalibrateHammer();
+            print("Calibrated!");
+            accelButtonText.text = $"Calibrated! ";
 
         }
 
