@@ -152,7 +152,6 @@ public class HorseMovement : MonoBehaviour
         
 
         Vector3 forwardMovement = transform.forward * (_currentSpeed * Time.fixedDeltaTime); 
-        //Looking into another way to get around it
         _rb.MovePosition(_rb.position + forwardMovement);
     }
 }
