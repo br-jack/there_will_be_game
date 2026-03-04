@@ -18,15 +18,22 @@ namespace Hammer
     public class HammerBehaviour : MonoBehaviour
     {
 
-        //public Wiimote Wiimote { get; private set; }
+        enum InputDevice
+        {
+            Wiimote,
+            Phone
+        }
+        
+        private InputDevice _inputDevice = InputDevice.Wiimote;
 
+        //public Wiimote Wiimote { get; private set; }
         
         //Hammer should start flat with Pitch = 0
         public Quaternion StartingRotation { get; private set; }
 
-        private Quaternion attitude;
+        private Quaternion _attitude;
 
-        void ConnectWiimote() {
+        private bool ConnectWiimote() {
             if (WiimoteManager.HasWiimote())
             {
                 Debug.LogWarning("Attempting to find a Wiimote even though one is already connected!");
@@ -69,7 +76,11 @@ namespace Hammer
                 //Default input mode only sends button data, so for accelerometer / gyro data 
                 //we need to request a mode with extension bytes
                 WiimoteGlobal.wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
+
+                return true;
             }
+
+            return false;
         }
         
         private void CleanupWiimotes()
@@ -89,21 +100,7 @@ namespace Hammer
             WiimoteGlobal.wiimote = null;
         }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-
-        }
-
-        //Called once before start when the game starts
-        void Awake()
-        {
-            StartingRotation = transform.rotation;
-            ConnectWiimote();
-        }
-
-        // Update is called once per frame
-        void Update()
+        private void UseWiimoteData()
         {
             Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
 
@@ -148,14 +145,64 @@ namespace Hammer
             // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
 
             transform.Rotate(gyroOffset, Space.Self);
-
+            
             //print("Total accel offset for frame: "+accelOffset);
             //transform.Translate(accelOffset/95f, Space.Self);
             //just using accel values/100 for translation - makes no sense but testing!
+        }
+        
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        private void Start()
+        {
+            
+        }
 
-            //Unity Remote
-            //transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);
+        //Called once before start when the game starts
+        private void Awake()
+        {
+            StartingRotation = transform.rotation;
+            bool wiimoteConnected = ConnectWiimote();
+            if (wiimoteConnected)
+            {
+                _inputDevice = InputDevice.Wiimote;
+            }
+            else
+            {
+                _inputDevice = InputDevice.Phone;
+            }
+        }
 
+        // Update is called once per frame
+        private void Update()
+        {
+            switch (_inputDevice)
+            {
+                case InputDevice.Wiimote:
+                {
+                    UseWiimoteData();
+                    break;
+                }
+                //Unity Remote
+                case InputDevice.Phone:
+                {
+                    Assert.IsTrue(_inputDevice == InputDevice.Phone, "Only Wiimote and Phone inputs are handled!");
+                
+                    //start() sadly runs after input is connected,
+                    //so I put this here. 
+                    //Sort enabling of gyroscopes later with input manager object probably
+                    if (Input.touchCount > 0)
+                    {
+                        Input.gyro.enabled = true;
+                    }
+
+                    transform.Rotate(Input.gyro.rotationRateUnbiased, Space.Self);
+
+                    break;
+                }
+                default:
+                    Debug.LogWarning("Input Device type not handled!");
+                    break;
+            }
         }
 
         public void OnCollisionEnter(Collision collision)
