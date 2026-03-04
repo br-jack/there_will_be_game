@@ -4,7 +4,6 @@ using UnityEngine;
 public class GlobalManager : MonoBehaviour
 {
     public static GlobalManager Instance { get; private set; }
-    public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
 
     private void Awake()
     {
@@ -18,6 +17,7 @@ public class GlobalManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
     public static HammerBehaviour HammerBehaviour { get; private set; }
 
 

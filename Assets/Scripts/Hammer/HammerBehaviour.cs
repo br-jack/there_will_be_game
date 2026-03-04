@@ -21,58 +21,60 @@ namespace Hammer
         Quaternion imuData;
         SerialPort stream;
         
-        [SerializeField] private bool closePort;
-
-        internal bool open;
-        [SerializeField] private int one = 1, two = 3, three = 2, four = 4;
-
+        private bool portOpen;
         private readonly int timeoutMs = 50;
 
-
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             Connect();
-
         }
 
         private void Connect()
         {
             try
             {
+                if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
+                {
                 stream = new SerialPort("COM3", 9600)
-                //stream = new SerialPort("/dev/cu.usbmodem101", 9600)
-                //stream = new SerialPort("/dev/ttyACM0", 9600)
                 {
                     ReadTimeout = timeoutMs
                 };
+                }
+
+                if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
+                {
+                    stream = new SerialPort("/dev/cu.usbmodem101", 9600)
+                    {
+                        ReadTimeout = timeoutMs
+                    };
+                }
+
+                if (Application.platform.Equals(RuntimePlatform.LinuxPlayer) || Application.platform.Equals(RuntimePlatform.LinuxServer))
+                {
+                stream = new SerialPort("/dev/ttyACM0", 9600)
+                    {
+                        ReadTimeout = timeoutMs
+                    };
+                }
+
                 stream.DtrEnable = true;
                 stream.Open();
-                open = true;
+                portOpen = true;
                 Debug.Log("Connected (allegedly)");
             }
             catch (System.Exception e)
             {
-                open = false;
+                portOpen = false;
                 Debug.Log("Failed to connect to port: ");
                 Debug.Log(e);
             }
         }
-
         public void CalibrateHammer()
         {
             GlobalManager.Instance.CalibrationQuaternion = imuData;
         }
-
-        // Update is called once per frame
         void Update()
         {
-            if (closePort)
-            {
-                open = false;
-                stream.Close();
-                Debug.Log("Port closed");
-            }
 
             if (!stream.IsOpen)
             {
@@ -93,18 +95,17 @@ namespace Hammer
                     return;
                 }
 
-                imuData = new Quaternion(float.Parse(quaternionString[one]), 
-                                                    float.Parse(quaternionString[two]), 
-                                                    float.Parse(quaternionString[three]), 
-                                                    float.Parse(quaternionString[four]));
+                imuData = new Quaternion(float.Parse(quaternionString[1]), 
+                                                    float.Parse(quaternionString[3]), 
+                                                    float.Parse(quaternionString[2]), 
+                                                    float.Parse(quaternionString[4]));
 
+                // TODO make this use only quaternions?
                 Vector3 incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * imuData).eulerAngles;
                 Vector3 correctedRotation = new Vector3(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z);
                 
                 transform.localRotation = Quaternion.Euler(correctedRotation);
                 
-
-
             }
             catch (TimeoutException)
             {
@@ -117,8 +118,6 @@ namespace Hammer
                 return;
             }
         }
-
-
         public void OnCollisionEnter(Collision collision)
         {
 
@@ -130,19 +129,9 @@ namespace Hammer
 
         void OnDisable ()
         {
-            open = false;
+            portOpen = false;
             stream.Close();
             Debug.Log("Port closed");
-        }
-
-        public void WriteToArduino(string message)
-        {
-            if (open)
-            {
-                stream.WriteLine(message);
-                stream.BaseStream.Flush();
-            }
-
         }
 
     }

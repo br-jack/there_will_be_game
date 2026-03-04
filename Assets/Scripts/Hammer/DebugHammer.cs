@@ -24,24 +24,12 @@ namespace Hammer
         [SerializeField] private TMP_Text accelButtonText;
         [SerializeField] private HammerBehaviour hammerBehaviour;
 
-        void Awake()
-        {
-        }
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-   
-
-        }
-        
         public void CalibrateHammer()
         {
             hammerBehaviour.CalibrateHammer();
             accelButtonText.text = $"Calibrated!";
 
         }
-
-        // Update is called once per frame
         void Update()
         {
             pitchSpeedText.text = $"X Rotation: {hammerBehaviour.transform.eulerAngles.x.ToString(CultureInfo.CurrentCulture)}";
