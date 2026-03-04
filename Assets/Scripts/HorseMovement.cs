@@ -170,7 +170,25 @@ public class HorseMovement : MonoBehaviour
 
         Turn(grounded);
 
-        if (grounded)
+        RaycastHit hit;
+        bool wallHit = Physics.SphereCast(rayOrigin, 1.0f, transform.forward, out hit, 3.0f, groundMask);
+
+        if (wallHit)
+        {
+            Debug.DrawRay(rayOrigin, transform.forward * hit.distance, Color.red);
+            Vector3 normal = hit.normal;
+            Vector3 projection = Vector3.ProjectOnPlane(transform.forward.normalized * hit.distance, normal);
+            
+            // Vector3 forwardMovement = transform.forward * _currentSpeed;
+            //
+            // forwardMovement -= projection * 2 * _currentSpeed;
+            //
+            // Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
+            // accel.y = 0.0f;
+            //
+            // _rb.AddForce(accel, ForceMode.Acceleration);
+        }
+        else
         {
             Vector3 forwardMovement = transform.forward * _currentSpeed;
 
