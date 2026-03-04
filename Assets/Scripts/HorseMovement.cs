@@ -31,6 +31,9 @@ public class HorseMovement : MonoBehaviour
     public LayerMask groundMask;
     public float groundCheckDistance = 0.3f;
 
+    [SerializeField] [Range(0f, 1f)] private float wallCheckDistance = 0.40f;
+    [SerializeField] private LayerMask wallCheckMask;
+
     private float _groundedTimer = 0f;
 
     private bool _jumpPressed;
@@ -148,7 +151,7 @@ public class HorseMovement : MonoBehaviour
     private void HandleMovement()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
-        bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
+        bool grounded = Physics.Raycast(rayOrigin, Vector3.down, wallCheckDistance, groundMask);
 
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
@@ -166,6 +169,12 @@ public class HorseMovement : MonoBehaviour
         }
 
         Turn(grounded);
+        
+        bool wallHit = Physics.Raycast(rayOrigin, transform.forward, 0.5f, groundMask);
+        if (wallHit)
+        {
+            _currentSpeed = 0;
+        }
 
         Vector3 forwardMovement = transform.forward * _currentSpeed;
 
