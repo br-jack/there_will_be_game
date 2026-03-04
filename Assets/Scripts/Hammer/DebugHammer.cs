@@ -42,12 +42,9 @@ namespace Hammer
         // Update is called once per frame
         void Update()
         {
-            //    pitchSpeedText.text = $"Pitch Speed: {WiimoteGlobal.wiimote.MotionPlus.PitchSpeed.ToString(CultureInfo.CurrentCulture)}";
-            //    rollSpeedText.text = $"Roll Speed: {WiimoteGlobal.wiimote.MotionPlus.RollSpeed.ToString(CultureInfo.CurrentCulture)}";
-            //    yawSpeedText.text = $"Yaw Speed: {WiimoteGlobal.wiimote.MotionPlus.YawSpeed.ToString(CultureInfo.CurrentCulture)}";
-            //    xAccelText.text = $"X Accel: {WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[0].ToString(CultureInfo.CurrentCulture)}";
-            //    yAccelText.text = $"Y Accel: {WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[1].ToString(CultureInfo.CurrentCulture)}";
-            //    zAccelText.text = $"Z Accel: {WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[2].ToString(CultureInfo.CurrentCulture)}";
+            pitchSpeedText.text = $"X Rotation: {HammerBehaviour.Instance.transform.eulerAngles.x.ToString(CultureInfo.CurrentCulture)}";
+            rollSpeedText.text = $"Y Rotation: {HammerBehaviour.Instance.transform.eulerAngles.y.ToString(CultureInfo.CurrentCulture)}";
+            yawSpeedText.text = $"Z Rotation: {HammerBehaviour.Instance.transform.eulerAngles.z.ToString(CultureInfo.CurrentCulture)}";
         }
     }
 }
