@@ -97,7 +97,11 @@ namespace Hammer
                                                     float.Parse(quaternionString[two]), 
                                                     float.Parse(quaternionString[three]), 
                                                     float.Parse(quaternionString[four]));
-                transform.rotation = Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * imuData;
+
+                Vector3 incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * imuData).eulerAngles;
+                Vector3 correctedRotation = new Vector3(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z);
+                
+                transform.rotation = Quaternion.Euler(correctedRotation);
                 
 
 
