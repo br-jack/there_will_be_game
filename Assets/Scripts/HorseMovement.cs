@@ -33,6 +33,8 @@ public class HorseMovement : MonoBehaviour
 
     private float _groundedTimer = 0f;
 
+    [SerializeField] private bool grounded;
+
 
     [SerializeField] private Vector3 velocityTest;
     
@@ -96,7 +98,7 @@ public class HorseMovement : MonoBehaviour
         }
     }
 
-    private void Jump(bool grounded)
+    private void Jump()
     {
         /*Not currently using this:
         scaledJumpForce = jumpForce * speedPercent * 1.2f;
@@ -110,7 +112,7 @@ public class HorseMovement : MonoBehaviour
         _jumpPressed = false;
     }
 
-    private void Turn(bool grounded)
+    private void Turn()
     {
         //restrict turning more at higher speeds
         float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
@@ -151,12 +153,13 @@ public class HorseMovement : MonoBehaviour
     private void HandleMovement()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
-        bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
+        grounded = true;
+        // grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
 
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
         
-        Jump(grounded);
+        Jump();
         
         if (grounded) //prevents accelerating and decelerating whilst midair
         {
@@ -168,7 +171,7 @@ public class HorseMovement : MonoBehaviour
             _groundedTimer = 0f;
         }
 
-        Turn(grounded);
+        Turn();
 
         
         Vector3 forwardMovement = transform.forward * _currentSpeed;
@@ -180,7 +183,7 @@ public class HorseMovement : MonoBehaviour
 
         // if (!grounded && _rb.linearVelocity.magnitude > 0)
         // {
-            _rb.AddForce(-_rb.linearVelocity / 2.0f, ForceMode.VelocityChange);
+            // _rb.AddForce(-_rb.linearVelocity / 2.0f, ForceMode.VelocityChange);
         // }
         
 
