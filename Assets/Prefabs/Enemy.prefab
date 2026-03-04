@@ -137,16 +137,16 @@ MonoBehaviour:
   spawner: {fileID: 0}
   speed: 2
   shield: {fileID: 6339469894394987824}
-  onDeathTimer: 5
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  hasFormationTarget: 0
   knockbackTime: 0.5
   currentKnockbackTimer: 0
+  onDeathTimer: 5
   deathGroundCheckDistance: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 1
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
 --- !u!136 &8163188274568113942
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -576,7 +576,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knockbackForce: 20
-  audioSource: {fileID: 0}
 --- !u!82 &5835659165937718887
 AudioSource:
   m_ObjectHideFlags: 0
