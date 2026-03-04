@@ -33,6 +33,9 @@ public class HorseMovement : MonoBehaviour
 
     private float _groundedTimer = 0f;
 
+
+    [SerializeField] private Vector3 velocityTest;
+    
     private bool _jumpPressed;
     
     public void OnMove(InputAction.CallbackContext context)
@@ -167,13 +170,19 @@ public class HorseMovement : MonoBehaviour
 
         Turn(grounded);
 
-        Vector3 forwardMovement = transform.forward * _currentSpeed;
+        if (grounded)
+        {
+            Vector3 forwardMovement = transform.forward * _currentSpeed;
 
-        Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
-        accel.y = 0.0f;
+            Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
+            accel.y = 0.0f;
         
-        _rb.AddForce(accel, ForceMode.Acceleration);
-        
+            _rb.AddForce(accel, ForceMode.Acceleration);
+
+        }
+
+        velocityTest = _rb.linearVelocity;
+
         // _rb.linearVelocity += forwardMovement; //#Shay: doing this fixes clipping into walls but breaks everything else.
         // AccelerateTo(_rb, forwardMovement, 100.0f);
         //Looking into another way to get around it
