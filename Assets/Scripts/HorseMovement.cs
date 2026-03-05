@@ -37,8 +37,6 @@ public class HorseMovement : MonoBehaviour
     private float _groundedTimer = 0f;
 
     private bool _jumpPressed;
-
-    [SerializeField] private CapsuleCollider collider;
     
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -150,39 +148,6 @@ public class HorseMovement : MonoBehaviour
         _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
     }
 
-    private int maxDepth = 5;
-    private float skinWidth = 0.015f;
-    private Vector3 CollideAndSlide(Vector3 velocity, Vector3 position, int recursionDepth)
-    {
-        if (recursionDepth >= maxDepth)
-        {
-            return Vector3.zero; 
-        }
-        
-        float dist = velocity.magnitude + skinWidth;
-        
-        RaycastHit hit;
-        Debug.DrawRay(position, velocity.normalized * dist, Color.green);
-        if (Physics.SphereCast(position, 1.0f, velocity.normalized, out hit, dist, wallCheckMask))
-        {
-            Vector3 snapToSurface = velocity.normalized * (hit.distance - skinWidth);
-            Vector3 leftover = velocity - snapToSurface;
-
-            if (snapToSurface.magnitude < skinWidth)
-            {
-                snapToSurface = Vector3.zero;
-            }
-
-            float magnitude = leftover.magnitude;
-            leftover = Vector3.ProjectOnPlane(leftover, hit.normal).normalized;
-            leftover *= magnitude;
-
-            return snapToSurface + CollideAndSlide(leftover, position + snapToSurface, recursionDepth + 1);
-        }
-
-        return velocity;
-    }
-
     private void HandleMovement()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
@@ -211,13 +176,13 @@ public class HorseMovement : MonoBehaviour
         RaycastHit hit;
         bool wallHit = Physics.Raycast(rayOrigin, transform.forward, out hit, wallCheckDistance, wallCheckMask);
         Debug.DrawRay(rayOrigin, transform.forward * wallCheckDistance, Color.blue);
-        // Vector3 moveDir = transform.forward;
-        // if (wallHit)
-        // {
-        //     moveDir = Vector3.ProjectOnPlane(moveDir, hit.normal).normalized;
-        // }
-        //
-        Vector3 forwardMovement = CollideAndSlide(transform.forward * _currentSpeed, rayOrigin, 0);
+        Vector3 moveDir = transform.forward;
+        if (wallHit)
+        {
+            moveDir = Vector3.ProjectOnPlane(moveDir, hit.normal).normalized;
+        }
+        
+        Vector3 forwardMovement = moveDir * _currentSpeed;
 
         Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
         accel.y = 0.0f;
