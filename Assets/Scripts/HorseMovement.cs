@@ -37,6 +37,8 @@ public class HorseMovement : MonoBehaviour
     private float _groundedTimer = 0f;
 
     private bool _jumpPressed;
+
+    [SerializeField] private CapsuleCollider collider;
     
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -146,6 +148,33 @@ public class HorseMovement : MonoBehaviour
         }
         
         _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
+    }
+
+    private int maxDepth = 5;
+    private float skinWidth = 0.015f;
+    private Vector3 CollideAndSlide(Vector3 velocity, Vector3 position, int recursionDepth)
+    {
+        if (recursionDepth >= maxDepth)
+        {
+            return Vector3.zero; 
+        }
+        
+        float dist = velocity.magnitude + skinWidth;
+        
+        RaycastHit hit;
+        if (Physics.SphereCast(position, collider.bounds.extents.x, velocity.normalized, out hit, dist, wallCheckMask))
+        {
+            Vector3 snapToSurface = velocity.normalized * (hit.distance - skinWidth);
+            Vector3 leftover = velocity - snapToSurface;
+
+            float magnitude = leftover.magnitude;
+            leftover = Vector3.ProjectOnPlane(leftover, hit.normal).normalized;
+            leftover *= magnitude;
+
+            return snapToSurface + CollideAndSlide(leftover, position + snapToSurface, recursionDepth + 1);
+        }
+
+        return velocity;
     }
 
     private void HandleMovement()
