@@ -170,11 +170,11 @@ public class HorseMovement : MonoBehaviour
 
         Turn(grounded);
         
-        bool wallHit = Physics.SphereCast(transform.position + Vector3.up * 4.0f, 0.2f, transform.forward, out _, wallCheckDistance, wallCheckMask);
-        if (wallHit)
-        {
-            _currentSpeed = 0;
-        }
+        // bool wallHit = Physics.SphereCast(transform.position + Vector3.up * 4.0f, 0.2f, transform.forward, out _, wallCheckDistance, wallCheckMask);
+        // if (wallHit)
+        // {
+        //     _currentSpeed = 0;
+        // }
 
         Vector3 forwardMovement = transform.forward * _currentSpeed;
 
