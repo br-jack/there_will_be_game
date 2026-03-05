@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -37,6 +38,8 @@ public class HorseMovement : MonoBehaviour
     private float _groundedTimer = 0f;
 
     private bool _jumpPressed;
+
+    public bool wallHit;
     
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -86,14 +89,14 @@ public class HorseMovement : MonoBehaviour
     private void FixedUpdate()  
     {
         HandleMovement();
-        if (_rb.linearVelocity.y < 0) //speed up fall for feel  
-        { 
-            _rb.linearVelocity += Physics.gravity * ((fallMultiplier - 1) * Time.fixedDeltaTime); 
-        }
-        else if (_rb.linearVelocity.y > 0 && !_jumpHeld) //smaller jump when jump button not held
-        { 
-            _rb.linearVelocity += Physics.gravity * ((lowJumpMultiplier - 1) * Time.fixedDeltaTime); 
-        }
+        // if (_rb.linearVelocity.y < 0) //speed up fall for feel  
+        // { 
+        //     _rb.linearVelocity += Physics.gravity * ((fallMultiplier - 1) * Time.fixedDeltaTime); 
+        // }
+        // else if (_rb.linearVelocity.y > 0 && !_jumpHeld) //smaller jump when jump button not held
+        // { 
+        //     _rb.linearVelocity += Physics.gravity * ((lowJumpMultiplier - 1) * Time.fixedDeltaTime); 
+        // }
     }
 
     private void Jump(bool grounded)
@@ -168,24 +171,40 @@ public class HorseMovement : MonoBehaviour
             _groundedTimer = 0f;
         }
 
-        Turn(grounded);
+        Turn(grounded); 
         
-        bool wallHit = Physics.SphereCast(transform.position + Vector3.up * 4.0f, 0.2f, transform.forward, out _, wallCheckDistance, wallCheckMask);
-        if (wallHit)
+        RaycastHit hit;
+
+        Vector3 moveDir = transform.forward;
+        
+        if (Physics.Raycast(rayOrigin, Vector3.down, out hit, groundCheckDistance, groundMask))
         {
-            _currentSpeed = 0;
+            moveDir = Vector3.ProjectOnPlane(moveDir, hit.normal).normalized;
         }
 
-        Vector3 forwardMovement = transform.forward * _currentSpeed;
+        Vector3 forwardMovement = moveDir * _currentSpeed;
 
-        Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
+        /*RaycastHit hit;
+        wallHit = Physics.Raycast(rayOrigin, transform.forward, out hit, wallCheckDistance, wallCheckMask);
+
+        if (wallHit == true)
+        {
+            Debug.Log(hit.normal);
+        }*/
+
+        Vector3 accel = (forwardMovement - _rb.linearVelocity);
         accel.y = 0.0f;
         
-        _rb.AddForce(accel, ForceMode.Acceleration);
+        _rb.AddForce(accel, ForceMode.VelocityChange);
         
         // _rb.linearVelocity += forwardMovement; //#Shay: doing this fixes clipping into walls but breaks everything else.
         // AccelerateTo(_rb, forwardMovement, 100.0f);
         //Looking into another way to get around it
         // _rb.MovePosition(_rb.position + forwardMovement);
+    }
+
+    private void OnCollisionStay(Collision other)
+    {
+        // Debug.Log(other.impulse);
     }
 }
