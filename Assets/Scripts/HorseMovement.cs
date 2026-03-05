@@ -162,10 +162,16 @@ public class HorseMovement : MonoBehaviour
         float dist = velocity.magnitude + skinWidth;
         
         RaycastHit hit;
-        if (Physics.SphereCast(position, collider.bounds.extents.x, velocity.normalized, out hit, dist, wallCheckMask))
+        Debug.DrawRay(position, velocity.normalized * dist, Color.green);
+        if (Physics.SphereCast(position, 1.0f, velocity.normalized, out hit, dist, wallCheckMask))
         {
             Vector3 snapToSurface = velocity.normalized * (hit.distance - skinWidth);
             Vector3 leftover = velocity - snapToSurface;
+
+            if (snapToSurface.magnitude < skinWidth)
+            {
+                snapToSurface = Vector3.zero;
+            }
 
             float magnitude = leftover.magnitude;
             leftover = Vector3.ProjectOnPlane(leftover, hit.normal).normalized;
@@ -205,13 +211,13 @@ public class HorseMovement : MonoBehaviour
         RaycastHit hit;
         bool wallHit = Physics.Raycast(rayOrigin, transform.forward, out hit, wallCheckDistance, wallCheckMask);
         Debug.DrawRay(rayOrigin, transform.forward * wallCheckDistance, Color.blue);
-        Vector3 moveDir = transform.forward;
-        if (wallHit)
-        {
-            moveDir = Vector3.ProjectOnPlane(moveDir, hit.normal).normalized;
-        }
-        
-        Vector3 forwardMovement = moveDir * _currentSpeed;
+        // Vector3 moveDir = transform.forward;
+        // if (wallHit)
+        // {
+        //     moveDir = Vector3.ProjectOnPlane(moveDir, hit.normal).normalized;
+        // }
+        //
+        Vector3 forwardMovement = CollideAndSlide(transform.forward * _currentSpeed, rayOrigin, 0);
 
         Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
         accel.y = 0.0f;
