@@ -13,7 +13,7 @@ namespace Hammer
         private bool portOpen;
         private readonly int timeoutMs = 50;
 
-        Rigidbody rigidBody;
+        public Rigidbody rigidBody;
 
         void Start()
         {
@@ -66,18 +66,19 @@ namespace Hammer
             GlobalManager.Instance.CalibrationQuaternion = gameRotationVector;
             
         }
+        // TODO, make actually work and be more efficient
         void Update()
         {
-
+            bool updatedAccel=false, updatedRotation=false;
             if (!stream.IsOpen)
             {
                 Debug.Log("Port is not open for reading.");
                 return;
             }
-            while (true)
+            while (!updatedAccel||!updatedRotation)
             {
                 string receivedData = stream.ReadLine();
-                Debug.Log($"Received: {receivedData}");
+                
                 if (receivedData == null)
                 {
                     return;
@@ -85,10 +86,10 @@ namespace Hammer
 
                 try
                 {
-                    Debug.Log(receivedData.Trim());
+                    
 
                     string[] imuOutput = receivedData.Split(':');
-                    if (imuOutput[0] == "q")
+                    if (imuOutput[0] == "q" &&!updatedRotation)
                     {
                         gameRotationVector = new Quaternion(
                                                  float.Parse(imuOutput[1]),
@@ -99,19 +100,20 @@ namespace Hammer
                         Quaternion incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * gameRotationVector);
                         Quaternion correctedRotation = new(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z, incorrectRotation.w);
                         transform.localRotation = correctedRotation;
-                        return;
+                        updatedRotation = true;
                     }
-                    if (imuOutput[0] == "a")
+                    if (imuOutput[0] == "a"&&!updatedAccel)
                     {
-
+                        //Debug.Log($"Received: {receivedData}");
+                        Debug.Log(receivedData.Trim());
                         Vector3 acceleration = new(
                             float.Parse(imuOutput[1]),
                             float.Parse(imuOutput[2]),
                             float.Parse(imuOutput[3])
                             );
 
-                        rigidBody.AddForce(acceleration * rigidBody.mass);
-
+                        rigidBody.AddRelativeForce(acceleration, ForceMode.Acceleration);
+                        updatedAccel = true;
                     }
                 }
                 catch (TimeoutException)
