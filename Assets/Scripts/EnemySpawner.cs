@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -35,6 +36,9 @@ public class EnemySpawner : MonoBehaviour
     private float _spawnTimer = 0.0f;
     private float _formationCheckTimer = 0.0f;
     private float _formationCheckInterval = 0.1f;
+
+    private int _killCount = 0;
+    [SerializeField] private TMP_Text killCounterText;
 
     public enum FormationType { Grid }
 
@@ -107,6 +111,15 @@ public class EnemySpawner : MonoBehaviour
         enemyMovement.spawner = this;
         aliveEnemies.Add(enemyMovement);
         UpdateFormationTargets();
+    }
+
+    public void RemoveEnemy(EnemyMovement enemy)
+    {
+        aliveEnemies.Remove(enemy);
+        UpdateFormationTargets();
+        _killCount++;
+
+        killCounterText.text = $"Kill Count: {_killCount}";
     }
 
     public void UpdateFormationTargets()

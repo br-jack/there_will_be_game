@@ -60,8 +60,6 @@ public class EnemyMovement : MonoBehaviour
     private Transform _playerTransformRef;
     private Rigidbody _rb;
 
-    public bool isKnockedback;
-    public bool shieldWasJustHit = false;
     private Vector3 _formationTarget;
     private Vector3 _attackTarget;
     private Vector3 _formationForward = Vector3.forward;
@@ -102,24 +100,75 @@ public class EnemyMovement : MonoBehaviour
         Vector2 jitter2D = UnityEngine.Random.insideUnitCircle * slotJitterRadius;
         _slotJitter = new Vector3(jitter2D.x, 0f, jitter2D.y);
     }
+    
+    public bool IsKnockedBack { get; private set; }
+    [Header("Knockback Timer")]
+    [SerializeField] private float knockbackTime;
+    [SerializeField] private float currentKnockbackTimer;
+    
+    public bool ShieldWasJustHit { get; private set; }
+    
+    public bool IsDying { get; private set; }
+    [Header("Death Checks")]
+    //Max amount of time enemy can be in "dying" state before destruction
+    [SerializeField] private float onDeathTimer;
+    [SerializeField] private float deathGroundCheckDistance = 0.3f;
+    [SerializeField] private LayerMask groundMask;
+    private AudioSource _shieldBreakAudioSource;
 
     private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
+        _shieldBreakAudioSource = GetComponent<AudioSource>();
         GameObject playerRef = GameObject.FindWithTag("Player");
-
-        _playerTransformRef = playerRef.transform;
-        _playerHealthRef = playerRef.GetComponent<Health>();
+        if (playerRef != null)
+        {
+            _playerTransformRef = playerRef.transform;
+            _playerHealthRef = playerRef.GetComponent<PlayerHealth>();
+        }
+        
+        if (_shieldBreakAudioSource == null)
+        {
+            Debug.LogError("man there's no audio source");
+        }
+        _rb = GetComponent<Rigidbody>();
 
         // Default values (if none set)
         if (defaultSpeed <= 0f) defaultSpeed = 3f;
         if (formationSpeed <= 0f) formationSpeed = (2f/3f) * defaultSpeed;
+        
+        currentKnockbackTimer = knockbackTime;
     }
 
     // Update is called once per frame
     private void Update()
     {
-
+        if (IsKnockedBack)
+        {
+            currentKnockbackTimer -= Time.deltaTime;
+            Vector3 rayOrigin = transform.position;
+            bool isGrounded = Physics.Raycast(rayOrigin, Vector3.down, deathGroundCheckDistance, groundMask);
+            // Debug.DrawRay(rayOrigin, Vector3.down * deathGroundCheckDistance, Color.yellow);
+            
+            //End knockback state if on ground AND only if a certain amount of time has passed
+            //(as enemy doesn't get launched vertically off ground when their shield breaks)
+            if (isGrounded && currentKnockbackTimer <= 0)
+            {
+                IsKnockedBack = false;
+                currentKnockbackTimer = knockbackTime;
+            }
+        }
+        if (IsDying)
+        {
+            onDeathTimer -= Time.deltaTime;
+            
+            //If the enemy gets launched entirely off the map,
+            //onDeathTimer ensures it will still eventually be destroyed.
+            //But otherwise, will destroy when enemy reaches the ground
+            if (IsKnockedBack == false || onDeathTimer <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     private Vector3 GetTargetPosition()
@@ -214,10 +263,75 @@ public class EnemyMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        shieldWasJustHit = false;
+        ShieldWasJustHit = false;
         // Don't use AI if enemy was just hit.
-        if (isKnockedback) return;
+        if (IsKnockedBack)
+        {
+            return;
+        }
 
+        if (_playerTransformRef == null)
+        {
+            GameObject playerRef = GameObject.FindWithTag("Player");
+            if (playerRef == null) return;
+            _playerTransformRef = playerRef.transform;
+            _playerHealthRef = playerRef.GetComponent<PlayerHealth>();
+        }
+
+        //TODO use a* pathfinding instead
+
+        float speed = defaultSpeed;
+
+        /**
+        IF in formation, go to formation.
+        ELSE IF has attack target, go to attack target.
+        ELSE go to player.*/
+        Vector3 targetPosition = hasFormationTarget
+            ? _formationTarget
+            : (_hasAttackTarget ? _attackTarget : _playerTransformRef.position);
+        Vector3 targetDirection = (targetPosition - transform.position).normalized;
+        
+        // If it meets the criteria of being in a formation, keep in formation.
+        float distanceToFormation = Vector3.Distance(transform.position, _formationTarget);
+        float distanceToPlayer = Vector3.Distance(transform.position, _playerTransformRef.position);
+        if (hasFormationTarget && (distanceToPlayer > spawner.breakFormationDistance) && (distanceToFormation < spawner.joinFormationDistance))
+        {
+            speed = formationSpeed;
+        }
+
+        /**
+        If E is trying to get in formation but not currently in the correct position, it continues to move at defaultSpeed.
+        Once E is in the actual formation position, it moves at formationSpeed.
+        */
+        if (hasFormationTarget) {
+            if (distanceToFormation < 0.5f) { speed = formationSpeed; }
+        }
+
+        Vector3 playerPosition = _playerTransformRef.position;
+
+        Vector3 direction = (playerPosition - transform.position).normalized;
+
+        // Enemy actually needs to face the player
+        if (direction != Vector3.zero)
+        {
+            // Need to stop the enemy from tilting forward when they are close
+            Vector3 flatDirection = new Vector3(direction.x, 0, direction.z).normalized;
+            if (flatDirection != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(flatDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 5f);
+            }
+        }
+
+        _rb.linearVelocity = new Vector3(targetDirection.x * speed, _rb.linearVelocity.y, targetDirection.z * speed);
+
+        // If the enemy is in a formation, break it when it's sufficiently close to the player
+        if (hasFormationTarget && spawner != null && distanceToPlayer < spawner.breakFormationDistance)
+        {
+            ClearFormationTarget();
+            spawner.UpdateFormationTargets();
+        }
+        
         //TODO use a* pathfinding instead
 
         Vector3 targetPosition = GetTargetPosition();
@@ -301,22 +415,32 @@ public class EnemyMovement : MonoBehaviour
         );
     }
 
-    private void OnCollisionEnter(Collision E)
+    public void KilledBy(Collider other)
     {
-        if (E.gameObject.CompareTag("Arena") && isKnockedback)
+        //Grey out enemy to signify that it's dead
+        gameObject.GetComponent<Renderer>().material.color = Color.gray;
+        
+        if (spawner != null)
         {
-            isKnockedback = false;
+            spawner.RemoveEnemy(this);
         }
-    }
 
-    public void Die()
-    {
-        Destroy(gameObject);
+        float knockbackForce = 40f;
+        
+        //Knock away from what killed it
+        Vector3 knockbackDirection = transform.position - other.transform.position;
+        knockbackDirection.y = 1.0f;
+        knockbackDirection.Normalize();
+
+        ApplyKnockback(knockbackDirection * knockbackForce);
+
+        IsKnockedBack = true;
+        IsDying = true;
     }
 
     public void ApplyKnockback(Vector3 force)
     {
-        isKnockedback = true;
+        IsKnockedBack = true;
 
         _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(force, ForceMode.Impulse);
@@ -328,6 +452,7 @@ public class EnemyMovement : MonoBehaviour
         {
             Destroy(shield);
             shield = null;
+            _shieldBreakAudioSource.Play();
         }
     }
 
@@ -338,15 +463,16 @@ public class EnemyMovement : MonoBehaviour
 
     public void MarkShieldHit()
     {
-        shieldWasJustHit = true;
+        ShieldWasJustHit = true;
     }
 
     private void OnDisable()
     {
-        if (spawner != null)
+        //If the death trigger code hasn't already run,
+        //make sure enemy is removed from spawner list
+        if (!IsDying && spawner != null)
         {
-            spawner.aliveEnemies.Remove(this);
-            spawner.UpdateFormationTargets();
+            spawner.RemoveEnemy(this);
         }
     }
 

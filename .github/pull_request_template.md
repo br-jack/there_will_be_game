@@ -27,10 +27,12 @@ Replace the ' ' with an 'x' in all the boxes that apply: -->
 
 - [ ] Human (Hammer User)
 - [ ] Horse
+- [ ] Enemies
 - [ ] Physics
 - [ ] Visuals
 - [ ] Sounds
 - [ ] Input Mechanisms (e.g. Wiimote, Steering Wheel, etc.)
+- [ ] User Interface (e.g. Menus, HUD, etc.)
 - [ ] Documentation (non-code additions or modifications to documentation or other .md files)
 - [ ] `.github` (e.g. changes to Issue/PR templates or GitHub Actions workflows)
 
