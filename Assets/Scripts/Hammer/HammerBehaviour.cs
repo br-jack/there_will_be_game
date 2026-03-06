@@ -20,6 +20,8 @@ namespace Hammer
         [SerializeField] float maxLength = 3;
         [SerializeField] float sensitivity = 1;
 
+        Vector3 pivot;
+
         private bool portOpen = false;
         private readonly int timeoutMs = 50;
 
@@ -29,6 +31,11 @@ namespace Hammer
         {
             Connect();
             rigidBody = GetComponent<Rigidbody>();
+        }
+
+        void OnEnable()
+        {
+            pivot = transform.localPosition;
         }
 
         private void Connect()
@@ -145,7 +152,7 @@ namespace Hammer
             extensionVelocity += acceleration * Time.fixedDeltaTime;
             extension += extensionVelocity * Time.fixedDeltaTime;
             extension = Mathf.Clamp(extension, 0, maxLength);
-            rigidBody.MovePosition(transform.localPosition + gameRotationVector * transform.forward * extension);
+            rigidBody.MovePosition(pivot + gameRotationVector * transform.forward * extension);
         }
 
         void Update()
