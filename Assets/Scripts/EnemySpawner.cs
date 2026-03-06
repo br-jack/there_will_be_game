@@ -29,10 +29,17 @@ public class EnemySpawner : MonoBehaviour
     public float attackRingRadius = 2.0f;
     public float joinFormationDistance = 32f;
     public float breakFormationDistance = 2f;
+    public float anchorStandoffBuffer = 1.5f;
+
+    [Header("Spawn")]
+    public float spawnJitter = 0.75f;
+    public float spawnRadius = 0.5f;
+
     private Vector3 _formationAnchor;
     private float _spawnTimer = 0.0f;
     private float _formationCheckTimer = 0.0f;
     private float _formationCheckInterval = 0.1f;
+    public enum FormationType { Grid }
 
     private int _killCount = 0;
     [SerializeField] private TMP_Text killCounterText;
@@ -48,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
     }
     void Update()
     {
-        // Update timers
+        // Update and react to timers.
         _spawnTimer += Time.deltaTime;
         _formationCheckTimer += Time.deltaTime;
 
@@ -65,17 +72,33 @@ public class EnemySpawner : MonoBehaviour
         
         if (_playerTransformRef != null)
         {
-            /**
-            If there's at least 1 enemy, use the enemy's formation speed as the speed that formationAnchor moves at.
-            Otherwise, use a default speed (2). */
+            /* Anchor speed is set to the formation speed of the enemies in the formation.
+            If there are no enemies in the formation, use default value. */
             float moveSpeed = aliveEnemies.Count > 0 ? aliveEnemies[0].formationSpeed : 2f;
-            Vector3 playerPos = _playerTransformRef.position;
-            // Move anchor towards the player's position by the distance E should've travelled since the last Update() ran.
-            _formationAnchor = Vector3.MoveTowards(
-                _formationAnchor,
-                playerPos,
-                moveSpeed * Time.deltaTime
-            );
+            float formationSpeed = 2f;
+            if (aliveEnemies.Count > 0)
+            {
+                formationSpeed = aliveEnemies[0].formationSpeed;
+            }
+
+            Vector3 anchorToPlayer = _playerTransformRef.position - _formationAnchor;
+
+            float stopRadius = GetAnchorStopRadius();
+
+            // Check whether the formation anchor is close enough to the player already before moving it.
+            if (anchorToPlayer.magnitude < stopRadius)
+            {
+                // If the anchor position is less than a threshold distance to the player, don't move it
+            }
+            else
+            {
+                /* The anchor is further away from the player than the threshold.
+                Move it by displacement = speed * time,
+                BUT make sure the movement doesn't move the anchor any closer to the player than stopping distance */
+                float displacement = Mathf.Min(formationSpeed * Time.deltaTime, anchorToPlayer.magnitude - stopRadius);
+                _formationAnchor = _formationAnchor + anchorToPlayer.normalized * displacement;
+            }
+
         }
     }
 
