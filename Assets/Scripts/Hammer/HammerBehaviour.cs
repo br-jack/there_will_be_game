@@ -22,30 +22,29 @@ namespace Hammer
         {
             try
             {
+                string port = null;
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
                 {
-                    stream = new SerialPort("COM3", 9600)
-                    {
-                        ReadTimeout = timeoutMs
-                    };
+                    port = "COM3";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
                 {
-                    stream = new SerialPort("/dev/cu.usbmodem101", 9600)
-                    {
-                        ReadTimeout = timeoutMs
-                    };
+                    port = "/dev/cu.usbmodem101";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.LinuxPlayer) || Application.platform.Equals(RuntimePlatform.LinuxServer))
                 {
-                    stream = new SerialPort("/dev/ttyACM0", 9600)
+                    port = "/dev/ttyACM0";
+                }
+
+                if (!string.IsNullOrEmpty(port))
+                {
+                    stream = new SerialPort(port, 9600)
                     {
                         ReadTimeout = timeoutMs
                     };
                 }
-
                 stream.DtrEnable = true;
                 stream.Open();
                 portOpen = true;
@@ -54,8 +53,8 @@ namespace Hammer
             catch (System.Exception e)
             {
                 portOpen = false;
-                Debug.Log("Failed to connect to port: ");
-                Debug.Log(e);
+                Debug.LogWarning("Failed to connect to port: ");
+                Debug.LogWarning(e);
             }
         }
         public void CalibrateHammer()
@@ -84,27 +83,25 @@ namespace Hammer
                     return;
                 }
 
-                // format from imu: w, x, y, z
-                imuData = new Quaternion(float.Parse(quaternionString[2]),
-                                         float.Parse(quaternionString[3]),
-                                         float.Parse(quaternionString[4]),
-                                         float.Parse(quaternionString[1]));
+                imuData = new Quaternion(float.Parse(quaternionString[1]),
+                                             float.Parse(quaternionString[3]),
+                                             float.Parse(quaternionString[2]),
+                                             float.Parse(quaternionString[4]));
 
-                // TODO make this use only quaternions?
-                //Vector3 incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * imuData).eulerAngles;
-                //Vector3 correctedRotation = new Vector3(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z);
+                Quaternion incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * imuData);
+                Quaternion correctedRotation = new(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z, incorrectRotation.w);
 
-                transform.localRotation = imuData * GlobalManager.Instance.CalibrationQuaternion;
+                transform.localRotation = correctedRotation;
 
             }
             catch (TimeoutException)
             {
-                Debug.Log("Timeout occurred while reading data.");
+                Debug.LogWarning("Timeout occurred while reading data.");
                 return;
             }
             catch (Exception ex)
             {
-                Debug.Log($"Error reading data: {ex.Message}");
+                Debug.LogWarning($"Error reading data: {ex.Message}");
                 return;
             }
         }
