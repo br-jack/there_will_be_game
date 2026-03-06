@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using UnityEngine;
 
@@ -8,9 +9,10 @@ namespace Hammer
     {
 
         Quaternion gameRotationVector;
+        List<Vector3> accelerations = new List<Vector3>();
         SerialPort stream;
 
-        private bool portOpen;
+        private bool portOpen=false;
         private readonly int timeoutMs = 50;
 
         public Rigidbody rigidBody;
@@ -43,7 +45,7 @@ namespace Hammer
 
                 if (!string.IsNullOrEmpty(port))
                 {
-                    stream = new SerialPort(port, 9600)
+                    stream = new SerialPort(port, 19200)
                     {
                         ReadTimeout = timeoutMs
                     };
@@ -66,67 +68,85 @@ namespace Hammer
             GlobalManager.Instance.CalibrationQuaternion = gameRotationVector;
             
         }
-        // TODO, make actually work and be more efficient
-        void Update()
-        {
-            bool updatedAccel=false, updatedRotation=false;
-            if (!stream.IsOpen)
-            {
-                Debug.Log("Port is not open for reading.");
-                return;
-            }
-            while (!updatedAccel||!updatedRotation)
-            {
-                string receivedData = stream.ReadLine();
-                
-                if (receivedData == null)
-                {
-                    return;
-                }
 
+        void ParseStream()
+        {
+
+            string recievedData = null;
+            bool rotationReading = false;
+            int accelerationReadings = 0;
+            
+            // return one rotation (whatever the last one is) and a list of accel values?
+
+            while (stream.BytesToRead > 0)
+            {
                 try
                 {
-                    
-
-                    string[] imuOutput = receivedData.Split(':');
-                    if (imuOutput[0] == "q" &&!updatedRotation)
-                    {
-                        gameRotationVector = new Quaternion(
-                                                 float.Parse(imuOutput[1]),
-                                                 float.Parse(imuOutput[3]),
-                                                 float.Parse(imuOutput[2]),
-                                                 float.Parse(imuOutput[4]));
-
-                        Quaternion incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * gameRotationVector);
-                        Quaternion correctedRotation = new(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z, incorrectRotation.w);
-                        transform.localRotation = correctedRotation;
-                        updatedRotation = true;
-                    }
-                    if (imuOutput[0] == "a"&&!updatedAccel)
-                    {
-                        //Debug.Log($"Received: {receivedData}");
-                        Debug.Log(receivedData.Trim());
-                        Vector3 acceleration = new(
-                            float.Parse(imuOutput[1]),
-                            float.Parse(imuOutput[2]),
-                            float.Parse(imuOutput[3])
-                            );
-
-                        rigidBody.AddRelativeForce(acceleration, ForceMode.Acceleration);
-                        updatedAccel = true;
-                    }
-                }
-                catch (TimeoutException)
-                {
-                    Debug.LogWarning("Timeout occurred while reading data.");
-                    return;
+                recievedData = stream.ReadLine();
                 }
                 catch (Exception ex)
                 {
                     Debug.LogWarning($"Error reading data: {ex.Message}");
                     return;
                 }
+
+                if (recievedData == null)
+                {
+                    return;
+                }
+
+                Debug.Log(recievedData);
+                string[] parsedData = recievedData.Trim().Split(':');
+
+                // just get all acceleration readings
+                if (parsedData[0] == "a" && accelerationReadings < 5)
+                {
+                    Vector3 acceleration = new(
+                        float.Parse(parsedData[1]),
+                        float.Parse(parsedData[2]),
+                        float.Parse(parsedData[3])
+                        );
+                    accelerations.Add(acceleration);
+                    accelerationReadings++;
+                }
+            
+                if (parsedData[0] == "q")
+                {
+                    gameRotationVector = new Quaternion(
+                                                     float.Parse(parsedData[1]),
+                                                     float.Parse(parsedData[3]),
+                                                     float.Parse(parsedData[2]),
+                                                     float.Parse(parsedData[4]));
+                    rotationReading = true;
+                }
+
             }
+
+        }
+
+        void UpdateRotation()
+        {           
+            Quaternion incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * gameRotationVector);
+            Quaternion correctedRotation = new(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z, incorrectRotation.w);
+            transform.localRotation = correctedRotation;
+        }
+
+        void Update()
+        {
+
+
+            if (!stream.IsOpen)
+            {
+                Debug.Log("Port is not open for reading.");
+                return;
+            }
+
+            ParseStream();
+            UpdateRotation();
+
+            accelerations.Clear();
+
+
         }
 
 
