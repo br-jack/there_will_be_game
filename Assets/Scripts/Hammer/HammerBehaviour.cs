@@ -7,15 +7,18 @@ namespace Hammer
     public class HammerBehaviour : MonoBehaviour
     {
 
-        Quaternion imuData;
+        Quaternion gameRotationVector;
         SerialPort stream;
 
         private bool portOpen;
         private readonly int timeoutMs = 50;
 
+        Rigidbody rigidBody;
+
         void Start()
         {
             Connect();
+            rigidBody = GetComponent<Rigidbody>();
         }
 
         private void Connect()
@@ -47,6 +50,7 @@ namespace Hammer
                 }
                 stream.DtrEnable = true;
                 stream.Open();
+                stream.ReadTimeout = timeoutMs;
                 portOpen = true;
                 Debug.Log("Connected (allegedly)");
             }
@@ -59,7 +63,8 @@ namespace Hammer
         }
         public void CalibrateHammer()
         {
-            GlobalManager.Instance.CalibrationQuaternion = imuData;
+            GlobalManager.Instance.CalibrationQuaternion = gameRotationVector;
+            
         }
         void Update()
         {
@@ -69,42 +74,61 @@ namespace Hammer
                 Debug.Log("Port is not open for reading.");
                 return;
             }
-
-            try
+            while (true)
             {
-                stream.ReadTimeout = timeoutMs;
                 string receivedData = stream.ReadLine();
                 Debug.Log($"Received: {receivedData}");
-                Debug.Log(receivedData.Trim());
-
-                string[] quaternionString = receivedData.Split(':');
-                if (quaternionString[0] != "q")
+                if (receivedData == null)
                 {
                     return;
                 }
 
-                imuData = new Quaternion(float.Parse(quaternionString[1]),
-                                             float.Parse(quaternionString[3]),
-                                             float.Parse(quaternionString[2]),
-                                             float.Parse(quaternionString[4]));
+                try
+                {
+                    Debug.Log(receivedData.Trim());
 
-                Quaternion incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * imuData);
-                Quaternion correctedRotation = new(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z, incorrectRotation.w);
+                    string[] imuOutput = receivedData.Split(':');
+                    if (imuOutput[0] == "q")
+                    {
+                        gameRotationVector = new Quaternion(
+                                                 float.Parse(imuOutput[1]),
+                                                 float.Parse(imuOutput[3]),
+                                                 float.Parse(imuOutput[2]),
+                                                 float.Parse(imuOutput[4]));
 
-                transform.localRotation = correctedRotation;
+                        Quaternion incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * gameRotationVector);
+                        Quaternion correctedRotation = new(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z, incorrectRotation.w);
+                        transform.localRotation = correctedRotation;
+                        return;
+                    }
+                    if (imuOutput[0] == "a")
+                    {
 
-            }
-            catch (TimeoutException)
-            {
-                Debug.LogWarning("Timeout occurred while reading data.");
-                return;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning($"Error reading data: {ex.Message}");
-                return;
+                        Vector3 acceleration = new(
+                            float.Parse(imuOutput[1]),
+                            float.Parse(imuOutput[2]),
+                            float.Parse(imuOutput[3])
+                            );
+
+                        rigidBody.AddForce(acceleration * rigidBody.mass);
+
+                    }
+                }
+                catch (TimeoutException)
+                {
+                    Debug.LogWarning("Timeout occurred while reading data.");
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"Error reading data: {ex.Message}");
+                    return;
+                }
             }
         }
+
+
+            
         public void OnCollisionEnter(Collision collision)
         {
 

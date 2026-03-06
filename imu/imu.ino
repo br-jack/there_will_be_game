@@ -55,7 +55,7 @@ void setReports(void) {
     Serial.println("Could not enable game vector");
   }
   if (! bno08x.enableReport(SH2_LINEAR_ACCELERATION)) {
-    Serial.println("Could not enable game vector");
+    Serial.println("Could not enable linear acceleration");
   }
 }
 
