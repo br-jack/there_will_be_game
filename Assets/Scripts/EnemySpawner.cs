@@ -176,10 +176,63 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    private (int cols, int rows) GetFormationDimensions(int totalCount)
+    {
+        // If there are fewer enemies than max columns, return enemies. Otherwise, return max columns.
+        int cols = (totalCount < formationColumns) ? totalCount : formationColumns;
+
+        // Rows are automatically decided based on {enemy count, columns}
+        int rows = Mathf.Max(1, Mathf.CeilToInt(totalCount / (float)cols));
+
+        return (cols, rows);
+    }
+private Vector3 GetGridSpacing(int index, int totalCount, Vector3 forwardDirection, int cols, int rows)
+    {
+        // Calculate (column, row) of the current index
+        int C = index % cols;
+        int R = Mathf.FloorToInt(index / cols);
+
+        // Calculate the centre of the grid (by removing half the total width/length)
+        float centreX = C * formationSpacing.x - (cols - 1) * formationSpacing.x * 0.5f;
+        float centreZ = R * formationSpacing.y - (rows - 1) * formationSpacing.y * 0.5f;
+
+        // Project the grid offset into world space using the formation's right and forward axes.
+        Vector3 right = Vector3.Cross(Vector3.up, forwardDirection).normalized;
+        Vector3 forward = forwardDirection;
+        return right * centreX + forward * centreZ;
+    }
+
+    private Vector3 GetSpawnPosition(int index)
+    {
+        Vector2 noise = Random.insideUnitCircle * spawnJitter;
+
+        // anchorToPlayer represents the forward direction of the formation.
+        // If anchorToPlayer is not available or nonsense, use fallback.
+        Vector3 anchorToPlayer = transform.forward;
+        if (_playerTransformRef != null) anchorToPlayer = _playerTransformRef.position - _formationAnchor;
+        if (anchorToPlayer.sqrMagnitude < 0.001f) anchorToPlayer = Vector3.forward;
+
+        var (cols, rows) = GetFormationDimensions(Mathf.Max(index + 1, formationColumns));
+        Vector3 offset = GetGridSpacing(index, Mathf.Max(index + 1, cols * rows), anchorToPlayer, cols, rows);
+
+        Vector3 spawn = _formationAnchor + offset + new Vector3(noise.x, 0f, noise.y);
+        spawn.y = transform.position.y;
+        return spawn;
+    }
+
+    private float GetAnchorStopRadius()
+    {
+        var (cols, rows) = GetFormationDimensions(aliveEnemies.Count);
+        float depth = (rows - 1) * formationSpacing.y;
+
+        // base distance that enemies should stay away from player + 1/2 the formation depth + small extra offset
+        return attackRingRadius + depth * 0.5f + anchorStandoffBuffer;
+    }
+
 
     /**
     Helper function for UpdateFormationTargets(): Returns whether enemy E can join a formation.
-    Requirements for joining formation: E must be far enough from the player and close enough to another enemy. */
+    Requirements for joining formation: E must be far enough from the player and close enough to another enemy.
     private bool CanJoinFormation(EnemyMovement E)
     {
         if (E == null) return false;
@@ -206,6 +259,8 @@ public class EnemySpawner : MonoBehaviour
         return false;
 
     }
+
+    */
 
     // Returns an offset that tells the enemy where to position itself in relation to _formationAnchor.
     private Vector3 GetGridSpacing(int index, int totalCount, Vector3 forwardDirection)
@@ -235,38 +290,6 @@ public class EnemySpawner : MonoBehaviour
         return transform.position;
     }
 
-    // Triangle version
-    // private Vector3 GetTriangleSpacing(int index, int totalCount, Vector3 forwardDirection)
-    // {
-    //     // Get total number of rows
-    //     // Get index's row number
-    //     // Get amount of people in that index
-    //     int[] rowCapacities = [1, 3, 5, 7, 9, 11]
-    //     int i = totalCount;
-    //     int totalRows = 0;
-    //     int[] rows; 
-    //     while (i > 0)
-    //     {
-    //         i -= rowCapacities[totalRows];
-    //         totalRows++;
-    //         if (i >= 0)
-    //         {
-    //             rows[i] = rowCapacities[i];
-    //         }
-    //         else
-    //         {
-    //             break;
-    //         }
-    //     }
-    //     int rowIndex = index;
-    //     while (i > 0)
-    //     {
-    //         rowIndex -= rows[i];
-    //     }
-    //     // rowIndex (index of row); rows (total structure); rows.Length is no. of rows
-    //     int totalDepth = rows.Length * formationSpacing.y;
-    //     int rowWidth = rows[rows.Length - 1] * formationSpacing.y;
-    // }
 }
 
 
