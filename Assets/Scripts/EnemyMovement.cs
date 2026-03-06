@@ -69,7 +69,7 @@ public class EnemyMovement : MonoBehaviour
     public bool hasFormationTarget;
     private bool _hasAttackTarget; 
     private float _sideBias = 1f;
-    
+
     public AdaptiveRepelSettings repel = new AdaptiveRepelSettings
     {
         speedThreshold = 0.12f,
@@ -96,25 +96,33 @@ public class EnemyMovement : MonoBehaviour
         lateralNudgeDisplacement = 0.6f // distance that the enemy is moved if it's not moving (stuck)
     };
 
+    private void Awake()
+    {
+        _sideBias = UnityEngine.Random.value > 0.5f ? 1f : -1f;
+        Vector2 jitter2D = UnityEngine.Random.insideUnitCircle * slotJitterRadius;
+        _slotJitter = new Vector3(jitter2D.x, 0f, jitter2D.y);
+    }
+
     private void Start()
     {
-        _shieldBreakAudioSource = GetComponent<AudioSource>();
+        _rb = GetComponent<Rigidbody>();
         GameObject playerRef = GameObject.FindWithTag("Player");
+        _shieldBreakAudioSource = GetComponent<AudioSource>();
+
         if (playerRef != null)
         {
             _playerTransformRef = playerRef.transform;
-            _playerHealthRef = playerRef.GetComponent<PlayerHealth>();
+            _playerHealthRef = playerRef.GetComponent<Health>();
         }
         
         if (_shieldBreakAudioSource == null)
         {
             Debug.LogError("man there's no audio source");
         }
-        _rb = GetComponent<Rigidbody>();
 
         // Default values (if none set)
         if (defaultSpeed <= 0f) defaultSpeed = 3f;
-        if (formationSpeed <= 0f) formationSpeed = 2/3 * defaultSpeed;
+        if (formationSpeed <= 0f) formationSpeed = (2f/3f) * defaultSpeed;
         
         currentKnockbackTimer = knockbackTime;
     }
