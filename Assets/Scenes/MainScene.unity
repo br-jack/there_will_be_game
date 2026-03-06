@@ -3691,7 +3691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_ActionName
-      value: 'Player/Restart[/Keyboard/r,/XInputControllerWindows/buttonNorth]'
+      value: Player/Restart[/Keyboard/r,/XInputControllerWindows/buttonNorth]
       objectReference: {fileID: 0}
     - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.size
@@ -3765,10 +3765,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7176289254400105866, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-    m_RemovedGameObjects:
-    - {fileID: 8773128219249275434, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+    m_RemovedComponents: [{fileID: 7176289254400105866, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}]
+    m_RemovedGameObjects: [{fileID: 8773128219249275434, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}]
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
