@@ -1,6 +1,31 @@
 using System;
 using UnityEngine;
 
+public struct ZoneSettings
+{
+    public float radius;
+    public float weight;
+}
+
+public struct AdaptiveRepelSettings
+{
+    public float speedThreshold;
+    public ZoneSettings normal;
+    public ZoneSettings tooSlow;
+    public ZoneSettings GetSettings(float planarSpeed)
+    {
+        if (planarSpeed < speedThreshold) return tooSlow;
+        return normal;
+    }
+}
+
+public struct StillStuckSettings
+{
+    public float minSpeedThreshold;
+    public float lateralNudgeDisplacement;
+
+}
+
 public class EnemyMovement : MonoBehaviour
 {
     /**
@@ -14,8 +39,12 @@ public class EnemyMovement : MonoBehaviour
     public float defaultSpeed;
     public float formationSpeed;
     public EnemySpawner spawner;
-    public float speed;
     public GameObject shield;
+
+    [Header("Smooth Movement Variables")]
+    public float arriveRadius = 0.6f; // Distance from target before enemy slows down.
+    public float stopRadius = 0.18f; // Distance from target when enemy halts.
+    public float velocityLerp = 0.25f; // How quickly desired velocity becomes current velocity.
 
     [HideInInspector] public PlayerHealth _playerHealthRef;
     [HideInInspector] public Transform _playerTransformRef;

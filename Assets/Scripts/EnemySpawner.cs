@@ -285,9 +285,31 @@ private Vector3 GetGridSpacing(int index, int totalCount, Vector3 forwardDirecti
     }
 
     // A placeholder function for now for adding more advanced spawning functions.
-    Vector3 GetSpawnPosition(int index)
+    private Vector3 GetSpawnPosition(int index)
     {
-        return transform.position;
+        Vector2 noise = Random.insideUnitCircle * spawnJitter;
+
+        // anchorToPlayer represents the forward direction of the formation.
+        // If anchorToPlayer is not available or nonsense, use fallback.
+        Vector3 anchorToPlayer = transform.forward;
+        if (_playerTransformRef != null) anchorToPlayer = _playerTransformRef.position - _formationAnchor;
+        if (anchorToPlayer.sqrMagnitude < 0.001f) anchorToPlayer = Vector3.forward;
+
+        var (cols, rows) = GetFormationDimensions(Mathf.Max(index + 1, formationColumns));
+        Vector3 offset = GetGridSpacing(index, Mathf.Max(index + 1, cols * rows), anchorToPlayer, cols, rows);
+
+        Vector3 spawn = _formationAnchor + offset + new Vector3(noise.x, 0f, noise.y);
+        spawn.y = transform.position.y;
+        return spawn;
+    }
+
+    private float GetAnchorStopRadius()
+    {
+        var (cols, rows) = GetFormationDimensions(aliveEnemies.Count);
+        float depth = (rows - 1) * formationSpacing.y;
+
+        // base distance that enemies should stay away from player + 1/2 the formation depth + small extra offset
+        return attackRingRadius + depth * 0.5f + anchorStandoffBuffer;
     }
 
 }
