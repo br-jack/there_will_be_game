@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO.Ports;
 using UnityEngine;
 
@@ -9,10 +8,19 @@ namespace Hammer
     {
 
         Quaternion gameRotationVector;
-        List<Vector3> accelerations = new List<Vector3>();
+        Vector3 frameAcceleration;
         SerialPort stream;
 
-        private bool portOpen=false;
+
+        float extension;
+        float extensionVelocity;
+        [SerializeField] float k = 20f;
+        [SerializeField] float dampingCoef = 8f;
+        [SerializeField] float restLength = 1;
+        [SerializeField] float maxLength = 3;
+        [SerializeField] float sensitivity = 1;
+
+        private bool portOpen = false;
         private readonly int timeoutMs = 50;
 
         public Rigidbody rigidBody;
@@ -66,23 +74,19 @@ namespace Hammer
         public void CalibrateHammer()
         {
             GlobalManager.Instance.CalibrationQuaternion = gameRotationVector;
-            
+
         }
 
         void ParseStream()
         {
 
             string recievedData = null;
-            bool rotationReading = false;
-            int accelerationReadings = 0;
-            
-            // return one rotation (whatever the last one is) and a list of accel values?
 
             while (stream.BytesToRead > 0)
             {
                 try
                 {
-                recievedData = stream.ReadLine();
+                    recievedData = stream.ReadLine();
                 }
                 catch (Exception ex)
                 {
@@ -99,17 +103,17 @@ namespace Hammer
                 string[] parsedData = recievedData.Trim().Split(':');
 
                 // just get all acceleration readings
-                if (parsedData[0] == "a" && accelerationReadings < 5)
+                if (parsedData[0] == "a")
                 {
                     Vector3 acceleration = new(
                         float.Parse(parsedData[1]),
                         float.Parse(parsedData[2]),
                         float.Parse(parsedData[3])
                         );
-                    accelerations.Add(acceleration);
-                    accelerationReadings++;
+                    // TODO change to impulse or something (persist across frames)
+                    if (acceleration.magnitude > frameAcceleration.magnitude) frameAcceleration = acceleration;
                 }
-            
+
                 if (parsedData[0] == "q")
                 {
                     gameRotationVector = new Quaternion(
@@ -117,7 +121,6 @@ namespace Hammer
                                                      float.Parse(parsedData[3]),
                                                      float.Parse(parsedData[2]),
                                                      float.Parse(parsedData[4]));
-                    rotationReading = true;
                 }
 
             }
@@ -125,10 +128,24 @@ namespace Hammer
         }
 
         void UpdateRotation()
-        {           
-            Quaternion incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * gameRotationVector);
+        {
+            Quaternion incorrectRotation = Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * gameRotationVector;
             Quaternion correctedRotation = new(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z, incorrectRotation.w);
             transform.localRotation = correctedRotation;
+        }
+
+        void UpdatePosition()
+        {
+            float spring = -k * (extension - restLength);
+            float damping = -dampingCoef * extensionVelocity;
+            // angular acceleration
+            float force = Quaternion.Dot(Quaternion.Euler(frameAcceleration), gameRotationVector * Quaternion.Euler(transform.forward)) * sensitivity;
+
+            float acceleration = spring + damping + force;
+            extensionVelocity += acceleration * Time.fixedDeltaTime;
+            extension += extensionVelocity * Time.fixedDeltaTime;
+            extension = Mathf.Clamp(extension, 0, maxLength);
+            rigidBody.MovePosition(transform.localPosition + gameRotationVector * transform.forward * extension);
         }
 
         void Update()
@@ -143,14 +160,13 @@ namespace Hammer
 
             ParseStream();
             UpdateRotation();
-
-            accelerations.Clear();
+            UpdatePosition();
 
 
         }
 
 
-            
+
         public void OnCollisionEnter(Collision collision)
         {
 
