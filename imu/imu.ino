@@ -54,6 +54,9 @@ void setReports(void) {
   if (! bno08x.enableReport(SH2_GAME_ROTATION_VECTOR)) {
     Serial.println("Could not enable game vector");
   }
+  if (! bno08x.enableReport(SH2_LINEAR_ACCELERATION)) {
+    Serial.println("Could not enable game vector");
+  }
 }
 
 
@@ -82,6 +85,19 @@ void loop() {
       Serial.print(":");
       Serial.println(sensorValue.un.gameRotationVector.k);
       break;
+
+    case SH2_LINEAR_ACCELERATION:
+
+      Serial.print("a:");
+      Serial.print(sensorValue.un.linearAcceleration.x);
+      Serial.print(":");
+      Serial.print(sensorValue.un.linearAcceleration.y);
+      Serial.print(":");
+      Serial.println(sensorValue.un.linearAcceleration.z);
+      break;
+
   }
+
+
 
 }
