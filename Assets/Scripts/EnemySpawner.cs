@@ -104,15 +104,19 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        if (aliveEnemies.Count < maxEnemies)
-        {
-            Vector3 spawnPosition = GetSpawnPosition(aliveEnemies.Count);
-            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, transform.rotation);
-            EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
-            enemyMovement.spawner = this;
-            aliveEnemies.Add(enemyMovement);
-            UpdateFormationTargets();
-        }
+
+        if (aliveEnemies.Count >= maxEnemies) return;
+
+        Vector3 spawnPosition = GetSpawnPosition(aliveEnemies.Count);
+
+        // Set up the enemy: link it to the spawner, add it to the list of alive enemies, re-calculate the formation.
+        GameObject enemy = Instantiate(enemyPrefab, spawnPosition, transform.rotation);
+        EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
+        if (enemyMovement == null) return;
+        enemyMovement.spawner = this;
+        aliveEnemies.Add(enemyMovement);
+        UpdateFormationTargets();
+
     }
 
     public void RemoveEnemy(EnemyMovement enemy)
@@ -126,101 +130,52 @@ public class EnemySpawner : MonoBehaviour
 
     public void UpdateFormationTargets()
     {
-        // Calculate formation orientation (in relation to the player)
+        void SpawnEnemy()
+    {
+        if (aliveEnemies.Count >= maxEnemies) return;
+
+        Vector3 spawnPosition = GetSpawnPosition(aliveEnemies.Count);
+
+        // Set up the enemy: link it to the spawner, add it to the list of alive enemies, re-calculate the formation
+        GameObject enemy = Instantiate(enemyPrefab, spawnPosition, transform.rotation);
+        EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
+        if (enemyMovement == null) return;
+        enemyMovement.spawner = this;
+        aliveEnemies.Add(enemyMovement);
+        UpdateFormationTargets();
+    }
+
+    public void UpdateFormationTargets()
+    {
+        // Calculating directionToPlayer
         Vector3 directionToPlayer = Vector3.forward;
+
         if (_playerTransformRef != null)
         {
             Vector3 formationToPlayer = _playerTransformRef.position - _formationAnchor;
 
-            // Edge case: player position and formation anchor in ~same position
-            if (formationToPlayer.sqrMagnitude < 0.01f)
-            {
-                formationToPlayer = Vector3.forward;
-            }
-
+            if (formationToPlayer.sqrMagnitude < 0.01f) formationToPlayer = Vector3.forward;
+            // Error mitigation: if distance of anchorToPlayer ~ 0 then use a fallback
             directionToPlayer = formationToPlayer.normalized;
         }
-        
-        // Update formation eligibility for each enemy
-        for (int i = 0; i < aliveEnemies.Count; i++)
-        {
-            EnemyMovement enemy = aliveEnemies[i];
-            if (enemy == null) continue;
-            
-            bool shouldBeInFormation = CanJoinFormation(enemy);
-            
-            if (shouldBeInFormation && !enemy.hasFormationTarget)
-            {
-                enemy.hasFormationTarget = true;
-            }
-            else if (!shouldBeInFormation && enemy.hasFormationTarget)
-            {
-                enemy.ClearFormationTarget();
-            }
-        }
-        
-        // Count formation members
-        int formationCount = 0;
-        for (int i = 0; i < aliveEnemies.Count; i++)
-        {
-            EnemyMovement enemy = aliveEnemies[i];
-            if (enemy == null || !enemy.hasFormationTarget) continue;
-            formationCount++;
-        }
 
-        // Assign formation positions
+        if (aliveEnemies.Count == 0) return;
+
+        var (cols, rows) = GetFormationDimensions(aliveEnemies.Count);
+
+        // Give each enemy E in the formation their formation target
         int formationIndex = 0;
-        for (int i=0; i < aliveEnemies.Count; i++)
+        for (int i = 0; i < aliveEnemies.Count; i++)
         {
-            EnemyMovement enemy = aliveEnemies[i];
-            if (enemy == null || !enemy.hasFormationTarget) continue;
+            EnemyMovement E = aliveEnemies[i];
+            if (E == null) continue;
 
-            Vector3 offset = GetGridSpacing(formationIndex, formationCount, directionToPlayer);
-            enemy.SetFormationTarget(_formationAnchor + offset);
+            Vector3 offset = GetGridSpacing(formationIndex, aliveEnemies.Count, directionToPlayer, cols, rows);
+            E.SetFormationTarget(_formationAnchor + offset, directionToPlayer);
             formationIndex++;
         }
-
-        if (_playerTransformRef == null)
-        {
-            return;
-        }
-
-        // Update attack targets for broken formation enemies
-        int brokenCount = 0;
-        for (int i = 0; i < aliveEnemies.Count; i++)
-        {
-            EnemyMovement enemy = aliveEnemies[i];
-            if (enemy == null || enemy.hasFormationTarget)
-            {
-                continue;
-            }
-
-            brokenCount++;
-        }
-
-        if (brokenCount == 0)
-        {
-            return;
-        }
-        
-        // Counts players not in formation and gives them a target in a ring around the player
-        Vector3 playerPosition = _playerTransformRef.position;
-        float angleStep = 360f / brokenCount;
-        int brokenIndex = 0;
-        for (int i = 0; i < aliveEnemies.Count; i++)
-        {
-            EnemyMovement enemy = aliveEnemies[i];
-            if (enemy == null || enemy.hasFormationTarget)
-            {
-                continue;
-            }
-
-            float angle = (angleStep * brokenIndex) * Mathf.Deg2Rad;
-            Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * attackRingRadius;
-            enemy.SetAttackTarget(playerPosition + offset);
-            brokenIndex++;
-        }
     }
+
 
     /**
     Helper function for UpdateFormationTargets(): Returns whether enemy E can join a formation.
