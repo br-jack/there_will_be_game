@@ -45,30 +45,56 @@ public class EnemyMovement : MonoBehaviour
     public float arriveRadius = 0.6f; // Distance from target before enemy slows down.
     public float stopRadius = 0.18f; // Distance from target when enemy halts.
     public float velocityLerp = 0.25f; // How quickly desired velocity becomes current velocity.
+    /* 
+    There are 2 zones implemented around each player that prevent clumping.
+    
+    REPELS in a smaller zone
+    A force of repulsion of strength {repelStrength} repels 2 enemies inversely proportional to distance between.
+    It only has effect when distance is less than the {repelRadius} threshold. (It's analagous to the force-distance graph of the strong nuclear force but for repulsion rather than attraction.)
+
+    SLOWS down in a slightly bigger zone: {slowZoneRadius, slowFactor}
+    */
+    [Header("Prevent Clumping")]
+    public float slotJitterRadius = 0.08f;
+    public float minForwardClearLen = 0.45f;
 
     [HideInInspector] public PlayerHealth _playerHealthRef;
     [HideInInspector] public Transform _playerTransformRef;
     private Rigidbody _rb;
 
+    public bool isKnockedBack;
+    public bool shieldWasJustHit = false;
     private Vector3 _formationTarget;
     private Vector3 _attackTarget;
     public bool hasFormationTarget;
-    private bool _hasAttackTarget;
+    private bool _hasAttackTarget; 
+    private float _sideBias = 1f;
     
-    public bool IsKnockedBack { get; private set; }
-    [Header("Knockback Timer")]
-    [SerializeField] private float knockbackTime;
-    [SerializeField] private float currentKnockbackTimer;
-    
-    public bool ShieldWasJustHit { get; private set; }
-    
-    public bool IsDying { get; private set; }
-    [Header("Death Checks")]
-    //Max amount of time enemy can be in "dying" state before destruction
-    [SerializeField] private float onDeathTimer;
-    [SerializeField] private float deathGroundCheckDistance = 0.3f;
-    [SerializeField] private LayerMask groundMask;
-    private AudioSource _shieldBreakAudioSource;
+    public AdaptiveRepelSettings repel = new AdaptiveRepelSettings
+    {
+        speedThreshold = 0.12f,
+        normal = new ZoneSettings
+        {
+            radius = 1.15f, // Distance where enemies repel each other (analagous to protons in a nucleus, prevents clumping together)
+            weight = 1.15f // Decides how strong the repel force is 
+        },
+        tooSlow = new ZoneSettings
+        {
+            radius = 1.6f,
+            weight = 2.2f
+        }
+    };
+
+    public ZoneSettings slowZone = new ZoneSettings
+    {
+        radius = 0.9f, // radius of zone (max distance of effect)
+        weight = 0.35f // min speed multiplier when heavily crowded
+    }; 
+    public StillStuckSettings stillStuckSettings = new StillStuckSettings 
+    { 
+        minSpeedThreshold = 0.18f, // min speed to count as 'stuck'
+        lateralNudgeDisplacement = 0.6f // distance that the enemy is moved if it's not moving (stuck)
+    };
 
     private void Start()
     {
