@@ -176,15 +176,17 @@ public class HorseMovement : MonoBehaviour
         RaycastHit hit;
         bool wallHit = Physics.Raycast(rayOrigin, transform.forward, out hit, wallCheckDistance, wallCheckMask);
         Debug.DrawRay(rayOrigin, transform.forward * wallCheckDistance, Color.blue);
-        Vector3 moveDir = transform.forward;
+        
+        //Prevent shooting up walls when slamming into one by redirecting velocity against it
+        Vector3 movementDirection = transform.forward;
         if (wallHit)
         {
-            moveDir = Vector3.ProjectOnPlane(moveDir, hit.normal).normalized;
+            movementDirection = Vector3.ProjectOnPlane(movementDirection, hit.normal).normalized;
         }
         
-        Vector3 forwardMovement = moveDir * _currentSpeed;
+        Vector3 desiredVelocity = movementDirection * _currentSpeed;
 
-        Vector3 accel = (forwardMovement - _rb.linearVelocity) / Time.fixedDeltaTime;
+        Vector3 accel = (desiredVelocity - _rb.linearVelocity) / Time.fixedDeltaTime;
         accel.y = 0.0f;
         
         _rb.AddForce(accel, ForceMode.Acceleration);
