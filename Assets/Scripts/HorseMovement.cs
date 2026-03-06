@@ -29,7 +29,7 @@ public class HorseMovement : MonoBehaviour
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
     public LayerMask groundMask;
-    public float groundCheckDistance = 0.3f;
+    [SerializeField] [Range(0f, 1f)] private float groundCheckDistance = 0.3f;
 
     [SerializeField] [Range(0f, 1f)] private float wallCheckDistance = 0.40f;
     [SerializeField] private LayerMask wallCheckMask;
@@ -151,7 +151,7 @@ public class HorseMovement : MonoBehaviour
     private void HandleMovement()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
-        bool grounded = Physics.Raycast(rayOrigin, Vector3.down, wallCheckDistance, groundMask);
+        bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
 
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
@@ -173,9 +173,8 @@ public class HorseMovement : MonoBehaviour
         Vector3 movementDirection = transform.forward;
         
         Vector3 wallDetectionRayOrigin = transform.position + Vector3.up * 1.0f;
-        RaycastHit hit;
-        bool wallHit = Physics.Raycast(wallDetectionRayOrigin, transform.forward, out hit, wallCheckDistance, wallCheckMask);
-        // Debug.DrawRay(wallDetectionRayOrigin, transform.forward * wallCheckDistance, Color.blue);
+        bool wallHit = Physics.Raycast(wallDetectionRayOrigin, movementDirection, out RaycastHit hit, wallCheckDistance, wallCheckMask);
+        // Debug.DrawRay(wallDetectionRayOrigin, movementDirection * wallCheckDistance, Color.blue);
         //Prevent shooting up walls when slamming into one by redirecting velocity against it
         if (wallHit)
         {
