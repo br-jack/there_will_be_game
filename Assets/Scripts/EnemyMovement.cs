@@ -56,8 +56,8 @@ public class EnemyMovement : MonoBehaviour
     public float slotJitterRadius = 0.08f;
     public float minForwardClearLen = 0.45f;
 
-    private Health _playerHealthRef;
-    private Transform _playerTransformRef;
+    [HideInInspector] public PlayerHealth _playerHealthRef;
+    [HideInInspector] public Transform _playerTransformRef;
     private Rigidbody _rb;
 
     private Vector3 _formationTarget;
@@ -268,68 +268,6 @@ public class EnemyMovement : MonoBehaviour
         if (IsKnockedBack)
         {
             return;
-        }
-
-        if (_playerTransformRef == null)
-        {
-            GameObject playerRef = GameObject.FindWithTag("Player");
-            if (playerRef == null) return;
-            _playerTransformRef = playerRef.transform;
-            _playerHealthRef = playerRef.GetComponent<PlayerHealth>();
-        }
-
-        //TODO use a* pathfinding instead
-
-        float speed = defaultSpeed;
-
-        /**
-        IF in formation, go to formation.
-        ELSE IF has attack target, go to attack target.
-        ELSE go to player.*/
-        Vector3 targetPosition = hasFormationTarget
-            ? _formationTarget
-            : (_hasAttackTarget ? _attackTarget : _playerTransformRef.position);
-        Vector3 targetDirection = (targetPosition - transform.position).normalized;
-        
-        // If it meets the criteria of being in a formation, keep in formation.
-        float distanceToFormation = Vector3.Distance(transform.position, _formationTarget);
-        float distanceToPlayer = Vector3.Distance(transform.position, _playerTransformRef.position);
-        if (hasFormationTarget && (distanceToPlayer > spawner.breakFormationDistance) && (distanceToFormation < spawner.joinFormationDistance))
-        {
-            speed = formationSpeed;
-        }
-
-        /**
-        If E is trying to get in formation but not currently in the correct position, it continues to move at defaultSpeed.
-        Once E is in the actual formation position, it moves at formationSpeed.
-        */
-        if (hasFormationTarget) {
-            if (distanceToFormation < 0.5f) { speed = formationSpeed; }
-        }
-
-        Vector3 playerPosition = _playerTransformRef.position;
-
-        Vector3 direction = (playerPosition - transform.position).normalized;
-
-        // Enemy actually needs to face the player
-        if (direction != Vector3.zero)
-        {
-            // Need to stop the enemy from tilting forward when they are close
-            Vector3 flatDirection = new Vector3(direction.x, 0, direction.z).normalized;
-            if (flatDirection != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(flatDirection);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * 5f);
-            }
-        }
-
-        _rb.linearVelocity = new Vector3(targetDirection.x * speed, _rb.linearVelocity.y, targetDirection.z * speed);
-
-        // If the enemy is in a formation, break it when it's sufficiently close to the player
-        if (hasFormationTarget && spawner != null && distanceToPlayer < spawner.breakFormationDistance)
-        {
-            ClearFormationTarget();
-            spawner.UpdateFormationTargets();
         }
         
         //TODO use a* pathfinding instead
