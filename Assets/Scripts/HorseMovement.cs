@@ -170,15 +170,13 @@ public class HorseMovement : MonoBehaviour
 
         Turn(grounded);
         
-        
-        rayOrigin = transform.position + Vector3.up * 1.0f;
-
-        RaycastHit hit;
-        bool wallHit = Physics.Raycast(rayOrigin, transform.forward, out hit, wallCheckDistance, wallCheckMask);
-        Debug.DrawRay(rayOrigin, transform.forward * wallCheckDistance, Color.blue);
-        
-        //Prevent shooting up walls when slamming into one by redirecting velocity against it
         Vector3 movementDirection = transform.forward;
+        
+        Vector3 wallDetectionRayOrigin = transform.position + Vector3.up * 1.0f;
+        RaycastHit hit;
+        bool wallHit = Physics.Raycast(wallDetectionRayOrigin, transform.forward, out hit, wallCheckDistance, wallCheckMask);
+        // Debug.DrawRay(wallDetectionRayOrigin, transform.forward * wallCheckDistance, Color.blue);
+        //Prevent shooting up walls when slamming into one by redirecting velocity against it
         if (wallHit)
         {
             movementDirection = Vector3.ProjectOnPlane(movementDirection, hit.normal).normalized;
