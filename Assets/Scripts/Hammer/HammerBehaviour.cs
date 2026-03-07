@@ -33,10 +33,6 @@ namespace Hammer
             rigidBody = GetComponent<Rigidbody>();
         }
 
-        void OnEnable()
-        {
-            pivot = transform.localPosition;
-        }
 
         private void Connect()
         {
@@ -109,13 +105,12 @@ namespace Hammer
                 Debug.Log(recievedData);
                 string[] parsedData = recievedData.Trim().Split(':');
 
-                // just get all acceleration readings
                 if (parsedData[0] == "a")
                 {
                     Vector3 acceleration = new(
+                        float.Parse(parsedData[3]),
                         float.Parse(parsedData[1]),
-                        float.Parse(parsedData[2]),
-                        float.Parse(parsedData[3])
+                        float.Parse(parsedData[2])
                         );
                     // TODO change to impulse or something (persist across frames)
                     if (acceleration.magnitude > frameAcceleration.magnitude) frameAcceleration = acceleration;
@@ -152,7 +147,9 @@ namespace Hammer
             extensionVelocity += acceleration * Time.fixedDeltaTime;
             extension += extensionVelocity * Time.fixedDeltaTime;
             extension = Mathf.Clamp(extension, 0, maxLength);
-            rigidBody.MovePosition(pivot + gameRotationVector * transform.forward * extension);
+            transform.position=(pivot + transform.localRotation * transform.forward * extension);
+            //Debug.Log(transform.position);
+            //Debug.Log(transform.localPosition);
         }
 
         void Update()
@@ -167,6 +164,7 @@ namespace Hammer
 
             ParseStream();
             UpdateRotation();
+            pivot = transform.position;
             UpdatePosition();
 
 
