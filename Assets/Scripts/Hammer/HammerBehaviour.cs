@@ -150,7 +150,6 @@ namespace Hammer
             extension = Mathf.Clamp(extension, 0, maxLength);
 
             transform.position = pivotTransform.position + transform.rotation * Vector3.forward * extension;
-            Debug.Log($"spring: {spring}, damping: {damping}, force: {force}, extension: {extension}, velocity: {extensionVelocity}");
         }
 
         void Update()
