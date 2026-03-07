@@ -138,7 +138,8 @@ namespace Hammer
         void UpdatePosition()
         {
             Vector3 worldForward = transform.rotation * Vector3.forward;
-            float force = Vector3.Dot(frameAcceleration, worldForward) * sensitivity;
+            float radialAcceleration = Vector3.Dot(frameAcceleration, worldForward);
+            float force = Mathf.Abs(radialAcceleration) < 0.1f ? 0f : radialAcceleration * sensitivity;
 
             float spring = -k * (extension - restLength);
             float damping = -dampingCoef * extensionVelocity;
@@ -149,6 +150,7 @@ namespace Hammer
             extension = Mathf.Clamp(extension, 0, maxLength);
 
             transform.position = pivotTransform.position + transform.rotation * Vector3.forward * extension;
+            Debug.Log($"spring: {spring}, damping: {damping}, force: {force}, extension: {extension}, velocity: {extensionVelocity}");
         }
 
         void Update()
@@ -164,8 +166,7 @@ namespace Hammer
             ParseStream();
             UpdateRotation();
             UpdatePosition();
-
-
+            frameAcceleration = Vector3.zero;
         }
 
 
