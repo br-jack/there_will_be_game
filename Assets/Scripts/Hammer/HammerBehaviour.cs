@@ -151,7 +151,7 @@ namespace Hammer
 
             float spring = -k * (extension - restLength);
             float damping = -dampingCoef * extensionVelocity;
-            float acceleration = spring + damping + force*sensitivity;
+            float acceleration = spring + damping + momentum*sensitivity;
 
             extensionVelocity += acceleration * Time.deltaTime;
             extension += extensionVelocity * Time.deltaTime;
@@ -174,8 +174,6 @@ namespace Hammer
             UpdateRotation();
             UpdatePosition();
             frameAcceleration = Vector3.zero;
-
-            Debug.Log(momentum);
         }
 
 
