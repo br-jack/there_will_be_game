@@ -10,6 +10,7 @@ public class BodyHit : MonoBehaviour
     [SerializeField] private int speedBonusScore = 30;
     [SerializeField] private int lowHealthBonusScore = 20;
     [SerializeField] private int lowHealthThreshold = 30;
+    [SerializeField] private int airBonusScore = 25;
 
     void OnTriggerEnter(Collider other)
     {
@@ -77,6 +78,10 @@ public class BodyHit : MonoBehaviour
             {
                 scoreToAdd += lowHealthBonusScore;
             }
+        }
+        if (!horseMovement.IsGrounded)
+        {
+            scoreToAdd += airBonusScore;
         }
         
         ScoreManager.Instance.AddScore(scoreToAdd);
