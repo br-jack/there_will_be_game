@@ -11,6 +11,7 @@ public class BodyHit : MonoBehaviour
     [SerializeField] private int lowHealthBonusScore = 20;
     [SerializeField] private int lowHealthThreshold = 30;
     [SerializeField] private int airBonusScore = 25;
+    [SerializeField] private int shieldBypassBonusScore = 40;
 
     void OnTriggerEnter(Collider other)
     {
@@ -49,13 +50,13 @@ public class BodyHit : MonoBehaviour
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
         hitSounds.PlaySFX();
 
-        AwardScore();
+        AwardScore(enemy);
      
         // No shield blocking - kill the enemy
         enemy.KilledBy(other);
     }
 
-    private void AwardScore()
+    private void AwardScore(EnemyMovement enemy)
     {   
         GameObject player = GameObject.FindWithTag("Player");
         if (player == null) return;
@@ -82,6 +83,11 @@ public class BodyHit : MonoBehaviour
         if (!horseMovement.IsGrounded)
         {
             scoreToAdd += airBonusScore;
+        }
+
+        if (enemy != null && enemy.HasShield())
+        {
+            scoreToAdd += shieldBypassBonusScore;
         }
         
         ScoreManager.Instance.AddScore(scoreToAdd);
