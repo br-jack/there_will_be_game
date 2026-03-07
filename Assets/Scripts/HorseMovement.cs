@@ -13,6 +13,7 @@ public class HorseMovement : MonoBehaviour
     public float turnSpeedAtZero = 100f;
     
     private float _currentSpeed = 0f;
+    public float CurrentSpeed => _currentSpeed;
 
     private float speedPercent;
 

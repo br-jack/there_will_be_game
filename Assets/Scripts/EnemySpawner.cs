@@ -34,8 +34,6 @@ public class EnemySpawner : MonoBehaviour
     private float _formationCheckTimer = 0.0f;
     private float _formationCheckInterval = 0.1f;
 
-    private int _killCount = 0;
-    [SerializeField] private TMP_Text killCounterText;
     public enum FormationType
     {
         Grid
@@ -96,9 +94,6 @@ public class EnemySpawner : MonoBehaviour
     {
         aliveEnemies.Remove(enemy);
         UpdateFormationTargets();
-        _killCount++;
-
-        killCounterText.text = $"Kill Count: {_killCount}";
     }
 
     public void UpdateFormationTargets()

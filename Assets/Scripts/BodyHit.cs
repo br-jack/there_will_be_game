@@ -4,6 +4,11 @@ public class BodyHit : MonoBehaviour
 {
     public LayerMask shieldMask;
     public hitSound hitSounds;
+
+    [SerializeField] private float speedThreshold = 5f;
+    [SerializeField] private int baseScore = 10;
+    [SerializeField] private int speedBonusScore = 30;
+
     void OnTriggerEnter(Collider other)
     {
         // Check if hit by attack
@@ -40,8 +45,28 @@ public class BodyHit : MonoBehaviour
         }
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
         hitSounds.PlaySFX();
+
+        AwardScore();
      
         // No shield blocking - kill the enemy
         enemy.KilledBy(other);
+    }
+
+    private void AwardScore()
+    {   
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player == null) return;
+        
+        HorseMovement horseMovement = player.GetComponent<HorseMovement>();
+        if (horseMovement == null) return;
+        
+        int scoreToAdd = baseScore;
+        
+        if (horseMovement.CurrentSpeed >= speedThreshold)
+        {
+            scoreToAdd += speedBonusScore;
+        }
+        
+        ScoreManager.Instance.AddScore(scoreToAdd);
     }
 }
