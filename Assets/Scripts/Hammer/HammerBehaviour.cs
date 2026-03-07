@@ -15,10 +15,13 @@ namespace Hammer
         float extension;
         float extensionVelocity;
         [SerializeField] float k = 20f;
-        [SerializeField] float dampingCoef = 8f;
+        [SerializeField] float dampingCoef = 3f;
         [SerializeField] float restLength = 1;
-        [SerializeField] float maxLength = 3;
-        [SerializeField] float sensitivity = 1;
+        [SerializeField] float maxLength = 20;
+        [SerializeField] float sensitivity = 2;
+        [SerializeField] float momentumDecay = 0.92f;
+
+        private float momentum=0;
 
         [SerializeField] Transform pivotTransform;
         private bool portOpen = false;
@@ -30,6 +33,7 @@ namespace Hammer
         {
             Connect();
             rigidBody = GetComponent<Rigidbody>();
+            Application.targetFrameRate = 60;
         }
 
 
@@ -139,11 +143,15 @@ namespace Hammer
         {
             Vector3 worldForward = transform.rotation * Vector3.forward;
             float radialAcceleration = Vector3.Dot(frameAcceleration, worldForward);
-            float force = Mathf.Abs(radialAcceleration) < 0.1f ? 0f : radialAcceleration * sensitivity;
+            float force = Mathf.Abs(radialAcceleration) < 0.1f ? 0f : radialAcceleration;
+
+            momentum += force * Time.deltaTime;
+            momentum *= momentumDecay;
+
 
             float spring = -k * (extension - restLength);
             float damping = -dampingCoef * extensionVelocity;
-            float acceleration = spring + damping + force;
+            float acceleration = spring + damping + force*sensitivity;
 
             extensionVelocity += acceleration * Time.deltaTime;
             extension += extensionVelocity * Time.deltaTime;
@@ -166,6 +174,8 @@ namespace Hammer
             UpdateRotation();
             UpdatePosition();
             frameAcceleration = Vector3.zero;
+
+            Debug.Log(momentum);
         }
 
 
