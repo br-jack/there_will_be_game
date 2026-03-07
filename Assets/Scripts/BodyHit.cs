@@ -8,6 +8,8 @@ public class BodyHit : MonoBehaviour
     [SerializeField] private float speedThreshold = 5f;
     [SerializeField] private int baseScore = 10;
     [SerializeField] private int speedBonusScore = 30;
+    [SerializeField] private int lowHealthBonusScore = 20;
+    [SerializeField] private int lowHealthThreshold = 30;
 
     void OnTriggerEnter(Collider other)
     {
@@ -59,12 +61,22 @@ public class BodyHit : MonoBehaviour
         
         HorseMovement horseMovement = player.GetComponent<HorseMovement>();
         if (horseMovement == null) return;
+
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         
         int scoreToAdd = baseScore;
         
         if (horseMovement.CurrentSpeed >= speedThreshold)
         {
             scoreToAdd += speedBonusScore;
+        }
+        if (playerHealth != null)
+        {
+            float healthPercent = (float)playerHealth.Current / playerHealth.Max * 100f;
+            if (healthPercent <= lowHealthThreshold)
+            {
+                scoreToAdd += lowHealthBonusScore;
+            }
         }
         
         ScoreManager.Instance.AddScore(scoreToAdd);
