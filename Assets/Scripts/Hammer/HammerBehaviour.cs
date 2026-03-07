@@ -20,8 +20,7 @@ namespace Hammer
         [SerializeField] float maxLength = 3;
         [SerializeField] float sensitivity = 1;
 
-        Vector3 pivot;
-
+        [SerializeField] Transform pivotTransform;
         private bool portOpen = false;
         private readonly int timeoutMs = 50;
 
@@ -138,18 +137,18 @@ namespace Hammer
 
         void UpdatePosition()
         {
+            Vector3 worldForward = transform.rotation * Vector3.forward;
+            float force = Vector3.Dot(frameAcceleration, worldForward) * sensitivity;
+
             float spring = -k * (extension - restLength);
             float damping = -dampingCoef * extensionVelocity;
-            // angular acceleration
-            float force = Quaternion.Dot(Quaternion.Euler(frameAcceleration), gameRotationVector * Quaternion.Euler(transform.forward)) * sensitivity;
-
             float acceleration = spring + damping + force;
-            extensionVelocity += acceleration * Time.fixedDeltaTime;
-            extension += extensionVelocity * Time.fixedDeltaTime;
+
+            extensionVelocity += acceleration * Time.deltaTime;
+            extension += extensionVelocity * Time.deltaTime;
             extension = Mathf.Clamp(extension, 0, maxLength);
-            transform.position=(pivot + transform.localRotation * transform.forward * extension);
-            //Debug.Log(transform.position);
-            //Debug.Log(transform.localPosition);
+
+            transform.position = pivotTransform.position + transform.rotation * Vector3.forward * extension;
         }
 
         void Update()
@@ -164,7 +163,6 @@ namespace Hammer
 
             ParseStream();
             UpdateRotation();
-            pivot = transform.position;
             UpdatePosition();
 
 
