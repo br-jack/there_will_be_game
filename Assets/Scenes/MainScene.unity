@@ -2767,11 +2767,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1345073733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 51, y: 327}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 16, y: 0}
   m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1447757235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2857,7 +2857,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -60.776367, y: 0, z: 0, w: 0}
+  m_margin: {x: -60.776367, y: 0, z: 0, w: -33.755432}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2884,6 +2884,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1447757235}
+  scorePopupPrefab: {fileID: 4898506943713068070, guid: d4c02d738bc92114fba99be18ed0d18e, type: 3}
+  popupContainer: {fileID: 1345073733}
+  popupStartOffset: {x: 150, y: 0}
+  popupSpacing: 30
 --- !u!1001 &1670188739
 PrefabInstance:
   m_ObjectHideFlags: 0
