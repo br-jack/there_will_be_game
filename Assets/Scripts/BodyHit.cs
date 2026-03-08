@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BodyHit : MonoBehaviour
 {
@@ -66,30 +67,39 @@ public class BodyHit : MonoBehaviour
 
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         
-        int scoreToAdd = baseScore;
+        List<ScoreComponent> scoreComponents = new List<ScoreComponent>();
         
+        // Base score
+        scoreComponents.Add(new ScoreComponent(baseScore, ScoreType.Base));
+        
+        // Speed bonus
         if (horseMovement.CurrentSpeed >= speedThreshold)
         {
-            scoreToAdd += speedBonusScore;
+            scoreComponents.Add(new ScoreComponent(speedBonusScore, ScoreType.Speed));
         }
+        
+        // Low health bonus
         if (playerHealth != null)
         {
             float healthPercent = (float)playerHealth.Current / playerHealth.Max * 100f;
             if (healthPercent <= lowHealthThreshold)
             {
-                scoreToAdd += lowHealthBonusScore;
+                scoreComponents.Add(new ScoreComponent(lowHealthBonusScore, ScoreType.LowHealth));
             }
         }
+        
+        // Air bonus
         if (!horseMovement.IsGrounded)
         {
-            scoreToAdd += airBonusScore;
+            scoreComponents.Add(new ScoreComponent(airBonusScore, ScoreType.Air));
         }
 
+        // Shield bypass bonus
         if (enemy != null && enemy.HasShield())
         {
-            scoreToAdd += shieldBypassBonusScore;
+            scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
         }
         
-        ScoreManager.Instance.AddScore(scoreToAdd);
+        ScoreManager.Instance.AddScore(scoreComponents);
     }
 }
