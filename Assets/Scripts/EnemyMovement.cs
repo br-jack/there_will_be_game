@@ -364,11 +364,14 @@ public class EnemyMovement : MonoBehaviour
         }
 
         // Get velocity-based knockback force from the attack
-        float knockbackForce = attack != null ? attack.GetKnockbackForce() * 2f : 30f;
+        float knockbackForce = attack != null ? attack.GetKnockbackForce() : 30f;
         
         //Knock away from what killed it
         Vector3 knockbackDirection = transform.position - other.transform.position;
-        knockbackDirection.y = 1.0f;
+        
+        // Scale upward force based on knockback strength
+        float upwardForceRatio = Mathf.Clamp(knockbackForce / 75f, 0.2f, 1.5f);
+        knockbackDirection.y = upwardForceRatio;
         knockbackDirection.Normalize();
 
         ApplyKnockback(knockbackDirection * knockbackForce);

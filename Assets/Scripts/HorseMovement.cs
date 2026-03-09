@@ -15,6 +15,11 @@ public class HorseMovement : MonoBehaviour
     private float _currentSpeed = 0f;
 
     private float speedPercent;
+    
+    public float GetCurrentSpeed()
+    {
+        return Mathf.Abs(_currentSpeed);
+    }
 
     private float scaledJumpForce;
 
