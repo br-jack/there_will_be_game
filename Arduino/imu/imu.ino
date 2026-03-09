@@ -1,30 +1,5 @@
-/*
-  Software serial multiple serial test
 
- Receives from the hardware serial, sends to software serial.
- Receives from software serial, sends to hardware serial.
 
- The circuit:
- * RX is digital pin 10 (connect to TX of other device)
- * TX is digital pin 11 (connect to RX of other device)
-
- Note:
- Not all pins on the Mega and Mega 2560 support change interrupts,
- so only the following can be used for RX:
- 10, 11, 12, 13, 50, 51, 52, 53, 62, 63, 64, 65, 66, 67, 68, 69
-
- Not all pins on the Leonardo and Micro support change interrupts,
- so only the following can be used for RX:
- 8, 9, 10, 11, 14 (MISO), 15 (SCK), 16 (MOSI).
-
- created back in the mists of time
- modified 25 May 2012
- by Tom Igoe
- based on Mikal Hart's example
-
- This example code is in the public domain.
-
- */
 #include <SoftwareSerial.h>
 // Basic demo for readings from Adafruit BNO08x
 // Install this manually
@@ -43,7 +18,7 @@
 Adafruit_BNO08x  bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
 
-SoftwareSerial mySerial(10, 11); // RX, TX
+SoftwareSerial mySerial(1, 0); // RX, TX
 
 void setup(void) {
   Serial.begin(19200);
@@ -102,31 +77,31 @@ void loop() { // run over and over
   if (! bno08x.getSensorEvent(&sensorValue)) {
     return;
   }
-  switch (sensorValue.sensorId) {
+  // switch (sensorValue.sensorId) {
     
-    case SH2_GAME_ROTATION_VECTOR:
+  //   case SH2_GAME_ROTATION_VECTOR:
 
-      Serial.print("q:");
-      Serial.print(sensorValue.un.gameRotationVector.real);
-      Serial.print(":");
-      Serial.print(sensorValue.un.gameRotationVector.i);
-      Serial.print(":");
-      Serial.print(sensorValue.un.gameRotationVector.j);
-      Serial.print(":");
-      Serial.println(sensorValue.un.gameRotationVector.k);
-      break;
+  //     Serial.print("q:");
+  //     Serial.print(sensorValue.un.gameRotationVector.real);
+  //     Serial.print(":");
+  //     Serial.print(sensorValue.un.gameRotationVector.i);
+  //     Serial.print(":");
+  //     Serial.print(sensorValue.un.gameRotationVector.j);
+  //     Serial.print(":");
+  //     Serial.println(sensorValue.un.gameRotationVector.k);
+  //     break;
 
-    case SH2_LINEAR_ACCELERATION:
+  //   case SH2_LINEAR_ACCELERATION:
 
-      Serial.print("a:");
-      Serial.print(sensorValue.un.linearAcceleration.x);
-      Serial.print(":");
-      Serial.print(sensorValue.un.linearAcceleration.y);
-      Serial.print(":");
-      Serial.println(sensorValue.un.linearAcceleration.z);
-      break;
+  //     Serial.print("a:");
+  //     Serial.print(sensorValue.un.linearAcceleration.x);
+  //     Serial.print(":");
+  //     Serial.print(sensorValue.un.linearAcceleration.y);
+  //     Serial.print(":");
+  //     Serial.println(sensorValue.un.linearAcceleration.z);
+  //     break;
 
-  }
+  // }
 
 
 }

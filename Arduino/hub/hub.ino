@@ -27,7 +27,7 @@
  */
 #include <SoftwareSerial.h>
 
-SoftwareSerial mySerial(10, 11); // RX, TX
+SoftwareSerial BT(10, 11); // RX, TX
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -40,15 +40,18 @@ void setup() {
   Serial.println("Goodnight moon!");
 
   // set the data rate for the SoftwareSerial port
-  mySerial.begin(9600);
-  mySerial.println("Hello, world?");
+  BT.begin(9600);
+  BT.println("AT");
+
+  Serial.println("Goodnight moo2n!");
+
 }
 
 void loop() { // run over and over
-  if (mySerial.available()) {
-    Serial.write(mySerial.read());
+  if (BT.available()) {
+    Serial.write(BT.read());
   }
   if (Serial.available()) {
-    mySerial.write(Serial.read());
+    BT.write(Serial.read());
   }
 }
