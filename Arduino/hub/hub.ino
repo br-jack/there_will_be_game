@@ -27,13 +27,13 @@
  */
 #include <SoftwareSerial.h>
 
-SoftwareSerial BT(0, 1);  // RX, TX
+SoftwareSerial BT(10, 11); // RX, TX
 
 void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(19200);
   while (!Serial) {
-    ;  // wait for serial port to connect. Needed for native USB port only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
 
@@ -41,17 +41,15 @@ void setup() {
 
   // set the data rate for the SoftwareSerial port
   BT.begin(9600);
-  // BT.println("AT");
+  BT.println("AT");
 
   Serial.println("Goodnight moo2n!");
+
 }
 
-void loop() {  // run over and over
+void loop() { // run over and over
   if (BT.available()) {
     Serial.write(BT.read());
-  }
-  else {
-    Serial.println("test");
   }
   if (Serial.available()) {
     BT.write(Serial.read());
