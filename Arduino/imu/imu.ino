@@ -1,3 +1,31 @@
+/*
+  Software serial multiple serial test
+
+ Receives from the hardware serial, sends to software serial.
+ Receives from software serial, sends to hardware serial.
+
+ The circuit:
+ * RX is digital pin 10 (connect to TX of other device)
+ * TX is digital pin 11 (connect to RX of other device)
+
+ Note:
+ Not all pins on the Mega and Mega 2560 support change interrupts,
+ so only the following can be used for RX:
+ 10, 11, 12, 13, 50, 51, 52, 53, 62, 63, 64, 65, 66, 67, 68, 69
+
+ Not all pins on the Leonardo and Micro support change interrupts,
+ so only the following can be used for RX:
+ 8, 9, 10, 11, 14 (MISO), 15 (SCK), 16 (MOSI).
+
+ created back in the mists of time
+ modified 25 May 2012
+ by Tom Igoe
+ based on Mikal Hart's example
+
+ This example code is in the public domain.
+
+ */
+#include <SoftwareSerial.h>
 // Basic demo for readings from Adafruit BNO08x
 // Install this manually
 #include <Adafruit_BNO08x.h>
@@ -14,6 +42,8 @@
 
 Adafruit_BNO08x  bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
+
+SoftwareSerial mySerial(10, 11); // RX, TX
 
 void setup(void) {
   Serial.begin(19200);
@@ -42,8 +72,7 @@ void setup(void) {
     Serial.print(" Build ");
     Serial.println(bno08x.prodIds.entry[n].swBuildNumber);
   }
-
-  setReports();
+    setReports();
 
   Serial.println("Reading events");
   delay(100);
@@ -60,8 +89,10 @@ void setReports(void) {
   }
 }
 
-void loop() {
-  delay(5);
+
+void loop() { // run over and over
+
+    delay(5);
 
   if (bno08x.wasReset()) {
     Serial.print("sensor was reset ");
@@ -96,7 +127,6 @@ void loop() {
       break;
 
   }
-
 
 
 }
