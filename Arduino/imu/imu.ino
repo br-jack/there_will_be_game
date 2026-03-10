@@ -22,7 +22,17 @@ void setup(void) {
   //Without this inital delay it will usually never connect until you press the reset button
   delay(100);
 
-  BT.begin(9600);
+  // Open serial communications and wait for port to open:
+  // Serial.begin(19200);
+  // while (!Serial) {
+  //   ; // wait for serial port to connect. Needed for native USB port only
+  // }
+
+  // BT.begin(9600);
+  // BT.print("AT+ROLE0");
+  // BT.end();
+  BT.begin(19200);
+  
   while (!BT) delay(5);
   BT.println("Adafruit BNO08x test!");
 
@@ -68,6 +78,13 @@ void setReports(void) {
 void loop() {  // run over and over
 
   delay(5);
+
+  // if (BT.available()) {
+  //   Serial.write(BT.read());
+  // }
+  // if (Serial.available()) {
+  //   BT.write(Serial.read());
+  // }
 
   if (bno08x.wasReset()) {
     BT.print("sensor was reset ");
