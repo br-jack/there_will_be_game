@@ -8,7 +8,7 @@
 #define BNO08X_INT 9
 
 // For SPI mode, we also need a RESET
-//#define BNO08X_RESET 5
+// #define BNO08X_RESET 5
 // but not for I2C or UART
 #define BNO08X_RESET -1
 #define FAST_MODE
@@ -19,6 +19,9 @@ sh2_SensorValue_t sensorValue;
 SoftwareSerial BT(D8, D9);  // RX, TX
 
 void setup(void) {
+  //Without this inital delay it will usually never connect until you press the reset button
+  delay(100);
+
   BT.begin(9600);
   while (!BT) delay(5);
   BT.println("Adafruit BNO08x test!");

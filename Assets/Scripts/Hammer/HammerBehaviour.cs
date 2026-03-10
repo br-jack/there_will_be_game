@@ -59,7 +59,7 @@ namespace Hammer
 
                 if (!string.IsNullOrEmpty(port))
                 {
-                    stream = new SerialPort(port, 19200)
+                    stream = new SerialPort(port, 9600)
                     {
                         ReadTimeout = timeoutMs
                     };
