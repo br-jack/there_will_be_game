@@ -42,10 +42,10 @@ void setup() {
 }
 
 void loop() { // run over and over
-  if (BT.available()) {
+  while (BT.available()) {
     Serial.write(BT.read());
   }
-  if (Serial.available()) {
+  while (Serial.available()) {
     BT.write(Serial.read());
   }
 }
