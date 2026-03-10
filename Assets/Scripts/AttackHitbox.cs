@@ -3,7 +3,7 @@ using UnityEngine;
 public class AttackHitbox : MonoBehaviour
 {
     public float baseKnockbackForce = 12f;
-    public float velocityKnockbackMultiplier = 0.7f;
+    public float velocityKnockbackMultiplier = 1f;
     
     private Rigidbody _rb;
     private HorseMovement _horseMovement;
