@@ -15,6 +15,11 @@ public class ShieldHit : MonoBehaviour
         {
             return;
         }
+        if (enemy.IsKnockedBack)
+        {
+            return;
+        }
+        Debug.Log($"ShieldHit triggered by {other.gameObject.name}");
 
         enemy.MarkShieldHit();
         

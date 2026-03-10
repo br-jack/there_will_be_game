@@ -31,7 +31,8 @@ public class AttackHitbox : MonoBehaviour
         
         // Now calculates knockback based on the speed of approach
         float knockback = baseKnockbackForce + (speed * velocityKnockbackMultiplier);
-        
+        Debug.Log($"Hit at speed {speed:F2} -> Knockback force: {knockback:F2}");
+
         return knockback;
     }
 }
