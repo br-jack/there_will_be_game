@@ -25,7 +25,7 @@ namespace Hammer
 
         [SerializeField] Transform pivotTransform;
         private bool portOpen = false;
-        private readonly int timeoutMs = 50;
+        private readonly int timeoutMs = 30;
 
         public Rigidbody rigidBody;
 
@@ -59,7 +59,7 @@ namespace Hammer
 
                 if (!string.IsNullOrEmpty(port))
                 {
-                    stream = new SerialPort(port, 19200)
+                    stream = new SerialPort(port, 115200)
                     {
                         ReadTimeout = timeoutMs
                     };
@@ -99,12 +99,7 @@ namespace Hammer
                     Debug.LogWarning($"Error reading data: {ex.Message}");
                     return;
                 }
-
-                if (recievedData == null)
-                {
-                    return;
-                }
-
+                
                 Debug.Log(recievedData);
                 string[] parsedData = recievedData.Trim().Split(':');
 

@@ -23,10 +23,10 @@ void setup(void) {
   delay(100);
 
   // Open serial communications and wait for port to open:
-  Serial.begin(115200);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
+  // Serial.begin(115200);
+  // while (!Serial) {
+  //   ; // wait for serial port to connect. Needed for native USB port only
+  // }
 
   // BT.begin(9600);
   // BT.print("AT+ROLE0");
@@ -37,29 +37,29 @@ void setup(void) {
   BT.println("Adafruit BNO08x test!");
 
   // Try to initialize!
-  // if (!bno08x.begin_I2C()) {
-  //   //if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte UART buffer!
-  //   //if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
-  //   BT.println("Failed to find BNO08x chip");
-  //   while (1) { delay(5); }
-  // }
-  // BT.println("BNO08x Found!");
+  if (!bno08x.begin_I2C()) {
+    //if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte UART buffer!
+    //if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
+    BT.println("Failed to find BNO08x chip");
+    while (1) { delay(5); }
+  }
+  BT.println("BNO08x Found!");
 
-  // for (int n = 0; n < bno08x.prodIds.numEntries; n++) {
-  //   BT.print("Part ");
-  //   BT.print(bno08x.prodIds.entry[n].swPartNumber);
-  //   BT.print(": Version :");
-  //   BT.print(bno08x.prodIds.entry[n].swVersionMajor);
-  //   BT.print(".");
-  //   BT.print(bno08x.prodIds.entry[n].swVersionMinor);
-  //   BT.print(".");
-  //   BT.print(bno08x.prodIds.entry[n].swVersionPatch);
-  //   BT.print(" Build ");
-  //   BT.println(bno08x.prodIds.entry[n].swBuildNumber);
-  // }
-  // setReports();
+  for (int n = 0; n < bno08x.prodIds.numEntries; n++) {
+    BT.print("Part ");
+    BT.print(bno08x.prodIds.entry[n].swPartNumber);
+    BT.print(": Version :");
+    BT.print(bno08x.prodIds.entry[n].swVersionMajor);
+    BT.print(".");
+    BT.print(bno08x.prodIds.entry[n].swVersionMinor);
+    BT.print(".");
+    BT.print(bno08x.prodIds.entry[n].swVersionPatch);
+    BT.print(" Build ");
+    BT.println(bno08x.prodIds.entry[n].swBuildNumber);
+  }
+  setReports();
 
-  // BT.println("Reading events");
+  BT.println("Reading events");
   delay(100);
 }
 
@@ -79,43 +79,43 @@ void loop() {  // run over and over
 
   delay(5);
 
-  if (BT.available()) {
-    Serial.write(BT.read());
+  // if (BT.available()) {
+  //   Serial.write(BT.read());
+  // }
+  // if (Serial.available()) {
+  //   BT.write(Serial.read());
+  // }
+
+  if (bno08x.wasReset()) {
+    BT.print("sensor was reset ");
+    setReports();
   }
-  if (Serial.available()) {
-    BT.write(Serial.read());
+
+  if (!bno08x.getSensorEvent(&sensorValue)) {
+    return;
   }
+  switch (sensorValue.sensorId) {
 
-  // if (bno08x.wasReset()) {
-  //   BT.print("sensor was reset ");
-  //   setReports();
-  // }
+    case SH2_GAME_ROTATION_VECTOR:
 
-  // if (!bno08x.getSensorEvent(&sensorValue)) {
-  //   return;
-  // }
-  // switch (sensorValue.sensorId) {
+      BT.print("q:");
+      BT.print(sensorValue.un.gameRotationVector.real);
+      BT.print(":");
+      BT.print(sensorValue.un.gameRotationVector.i);
+      BT.print(":");
+      BT.print(sensorValue.un.gameRotationVector.j);
+      BT.print(":");
+      BT.println(sensorValue.un.gameRotationVector.k);
+      break;
 
-  //   case SH2_GAME_ROTATION_VECTOR:
+    case SH2_LINEAR_ACCELERATION:
 
-  //     BT.print("q:");
-  //     BT.print(sensorValue.un.gameRotationVector.real);
-  //     BT.print(":");
-  //     BT.print(sensorValue.un.gameRotationVector.i);
-  //     BT.print(":");
-  //     BT.print(sensorValue.un.gameRotationVector.j);
-  //     BT.print(":");
-  //     BT.println(sensorValue.un.gameRotationVector.k);
-  //     break;
-
-  //   case SH2_LINEAR_ACCELERATION:
-
-  //     BT.print("a:");
-  //     BT.print(sensorValue.un.linearAcceleration.x);
-  //     BT.print(":");
-  //     BT.print(sensorValue.un.linearAcceleration.y);
-  //     BT.print(":");
-  //     BT.println(sensorValue.un.linearAcceleration.z);
-  //     break;
-  // }
+      BT.print("a:");
+      BT.print(sensorValue.un.linearAcceleration.x);
+      BT.print(":");
+      BT.print(sensorValue.un.linearAcceleration.y);
+      BT.print(":");
+      BT.println(sensorValue.un.linearAcceleration.z);
+      break;
+  }
 }
