@@ -24,6 +24,7 @@ public class HorseMovement : MonoBehaviour
     private float _turnInput;
     private float _brakeInput;
 
+    [SerializeField] private ParticleSystem jumpParticles;
     public float jumpForce = 8f;
     private bool _jumpHeld;
     public float fallMultiplier = 2.5f;
@@ -105,6 +106,9 @@ public class HorseMovement : MonoBehaviour
         if (_jumpPressed && grounded && _groundedTimer > 0.1f && _currentSpeed > 2f)
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+            jumpParticles.gameObject.SetActive(true);
+            jumpParticles.Play();
         }
 
         _jumpPressed = false;
