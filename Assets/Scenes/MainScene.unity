@@ -235,7 +235,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &106978844
 Transform:
   m_ObjectHideFlags: 0
@@ -296,7 +296,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -401,7 +401,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -582,7 +582,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.2
+      scalar: 0.08
       minScalar: 0.04
       maxCurve:
         serializedVersion: 2
@@ -1104,7 +1104,7 @@ ParticleSystem:
           m_RotationOrder: 4
     arc:
       value: 360
-      mode: 0
+      mode: 3
       spread: 0
       speed:
         serializedVersion: 2
@@ -1275,7 +1275,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 30
+        scalar: 500
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -2439,7 +2439,7 @@ ParticleSystem:
         m_RotationOrder: 4
     inWorldSpace: 0
   InheritVelocityModule:
-    enabled: 0
+    enabled: 1
     m_Mode: 0
     m_Curve:
       serializedVersion: 2
@@ -3983,7 +3983,7 @@ ParticleSystem:
   CollisionModule:
     enabled: 0
     serializedVersion: 4
-    type: 0
+    type: 1
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
@@ -4156,7 +4156,7 @@ ParticleSystem:
       serializedVersion: 2
       m_Bits: 4294967295
     maxCollisionShapes: 256
-    quality: 0
+    quality: 1
     voxelSize: 0.5
     collisionMessages: 0
     collidesWithDynamic: 1
@@ -4302,7 +4302,7 @@ ParticleSystem:
     lifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.05
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -8538,7 +8538,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.31
+      value: 3.03
       objectReference: {fileID: 0}
     - target: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_LocalPosition.z
