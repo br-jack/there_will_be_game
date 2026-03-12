@@ -54,7 +54,7 @@ public class BodyHit : MonoBehaviour
         AwardScore(enemy);
      
         // No shield blocking - kill the enemy
-        enemy.KilledBy(other);
+        enemy.KilledBy(other, attack);
     }
 
     private void AwardScore(EnemyMovement enemy)

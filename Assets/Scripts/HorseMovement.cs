@@ -19,6 +19,11 @@ public class HorseMovement : MonoBehaviour
     public bool IsGrounded => _isGrounded;
 
     private float speedPercent;
+    
+    public float GetCurrentSpeed()
+    {
+        return Mathf.Abs(_currentSpeed);
+    }
 
     private float scaledJumpForce;
 
