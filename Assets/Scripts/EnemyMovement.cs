@@ -237,7 +237,7 @@ public class EnemyMovement : MonoBehaviour
         float speed = defaultSpeed;
         float distanceToFormation = Vector3.Distance(transform.position, _formationTarget);
         float distanceToPlayer = Vector3.Distance(transform.position, _playerTransformRef.position);
-        if (hasFormationTarget && (distanceToPlayer > spawner.breakFormationDistance) && (distanceToFormation < spawner.joinFormationDistance))
+        if (hasFormationTarget && spawner != null && (distanceToPlayer > spawner.breakFormationDistance) && (distanceToFormation < spawner.joinFormationDistance))
         {
             speed = formationSpeed;
         }
@@ -287,10 +287,6 @@ public class EnemyMovement : MonoBehaviour
 
         ZoneSettings curRepel = repel.GetSettings(planarSpeed);
 
-        // float activeSepRadius = horizSpeed < stuckSpeedThreshold ? stuckSeparationRadius : separationRadius;
-        // float activeSepWeight = horizSpeed < stuckSpeedThreshold ? stuckSeparationWeight : separationWeight;
-        // float activeSepRadiusSq = activeSepRadius * activeSepRadius;
-
         float proximitySlowFactor = 1f;
         bool blockedAhead = false;
 
@@ -325,7 +321,6 @@ public class EnemyMovement : MonoBehaviour
                     proximitySlowFactor = Mathf.Min(proximitySlowFactor, thisProximitySlowFactor);
                 }
 
-                // blockedAhead = IsBlockedAhead(s, d, targetDirection);
                 blockedAhead = blockedAhead || IsBlockedAhead(s, d, targetDirection);
             }
         }
