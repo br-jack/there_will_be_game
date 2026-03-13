@@ -74,7 +74,7 @@ public class EnemyMovement : MonoBehaviour
         normal = new ZoneSettings
         {
             radius = 1.15f, // Distance where enemies repel each other (analagous to protons in a nucleus, prevents clumping together)
-            weight = 6.15f // Decides how strong the repel force is 
+            weight = 10.15f // Decides how strong the repel force is 
         },
         tooSlow = new ZoneSettings
         {
