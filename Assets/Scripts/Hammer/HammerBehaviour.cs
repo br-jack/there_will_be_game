@@ -21,7 +21,7 @@ namespace Hammer
         [SerializeField] float sensitivity = 2;
         [SerializeField] float momentumDecay = 0.92f;
 
-        private float momentum = 0;
+        private float momentum=0;
 
         [SerializeField] Transform pivotTransform;
         private bool portOpen = false;
@@ -44,7 +44,7 @@ namespace Hammer
                 string port = null;
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
                 {
-                    port = "COM6";
+                    port = "COM4";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
@@ -88,64 +88,44 @@ namespace Hammer
 
             string recievedData = null;
 
-
-            try
+            while (stream.BytesToRead > 0)
             {
-                recievedData = stream.ReadExisting();
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning($"Error reading data: {ex.Message}");
-                return;
-            }
-
-            Debug.Log(recievedData);
-            string[] streamLines = recievedData.Split('\n');
-            foreach (string line in streamLines)
-            {
-                string[] parsedData = line.Trim().Split(':');
+                try
+                {
+                    recievedData = stream.ReadLine();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"Error reading data: {ex.Message}");
+                    return;
+                }
+                
+                Debug.Log(recievedData);
+                string[] parsedData = recievedData.Trim().Split(':');
 
                 if (parsedData[0] == "a")
                 {
-                    try
-                    {
-                        Vector3 acceleration = new(
-                                                float.Parse(parsedData[3]),
-                                                float.Parse(parsedData[1]),
-                                                float.Parse(parsedData[2])
-                                                );
-                        // TODO change to impulse or something (persist across frames)
-                        if (acceleration.magnitude > frameAcceleration.magnitude) frameAcceleration = acceleration;
-                    }
-                    catch
-                    {
-
-                    }
-
+                    Vector3 acceleration = new(
+                        float.Parse(parsedData[3]),
+                        float.Parse(parsedData[1]),
+                        float.Parse(parsedData[2])
+                        );
+                    // TODO change to impulse or something (persist across frames)
+                    if (acceleration.magnitude > frameAcceleration.magnitude) frameAcceleration = acceleration;
                 }
 
                 if (parsedData[0] == "q")
                 {
-                    try
-                    {
-                        gameRotationVector = new Quaternion(float.Parse(parsedData[1]),
-                            float.Parse(parsedData[3]),
-                            float.Parse(parsedData[2]),
-                            float.Parse(parsedData[4]));
-                    }
-                    catch
-                    {
-
-                    }
-
-
+                    gameRotationVector = new Quaternion(
+                                                     float.Parse(parsedData[1]),
+                                                     float.Parse(parsedData[3]),
+                                                     float.Parse(parsedData[2]),
+                                                     float.Parse(parsedData[4]));
                 }
+
             }
 
-
         }
-
-
 
         void UpdateRotation()
         {
@@ -166,7 +146,7 @@ namespace Hammer
 
             float spring = -k * (extension - restLength);
             float damping = -dampingCoef * extensionVelocity;
-            float acceleration = spring + damping + momentum * sensitivity;
+            float acceleration = spring + damping + momentum*sensitivity;
 
             extensionVelocity += acceleration * Time.deltaTime;
             extension += extensionVelocity * Time.deltaTime;
