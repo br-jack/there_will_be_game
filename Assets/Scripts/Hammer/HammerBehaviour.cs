@@ -28,6 +28,9 @@ namespace Hammer
         private bool portOpen = false;
         private readonly int timeoutMs = 30;
 
+     
+
+
         public Rigidbody rigidBody;
 
         void Start()
@@ -133,9 +136,9 @@ namespace Hammer
                 {
                     try
                     {
-                        gameRotationVector = new Quaternion(float.Parse(parsedData[2]),
+                        gameRotationVector = new Quaternion(-float.Parse(parsedData[3]),
                             -float.Parse(parsedData[4]),
-                            float.Parse(parsedData[3]),
+                            float.Parse(parsedData[2]),
                             float.Parse(parsedData[1]));
                     }
                     catch
@@ -154,7 +157,7 @@ namespace Hammer
 
         void UpdateRotation()
         {
-            transform.localRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;
+            transform.localRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion ;
         }
 
         void UpdatePosition()
