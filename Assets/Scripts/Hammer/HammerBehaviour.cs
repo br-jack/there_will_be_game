@@ -12,7 +12,7 @@ namespace Hammer
         SerialPort stream;
 
 
-        float extension;
+        [SerializeField] float extension;
         float extensionVelocity;
         [SerializeField] float k = 20f;
         [SerializeField] float dampingCoef = 3f;
@@ -20,6 +20,7 @@ namespace Hammer
         [SerializeField] float maxLength = 20;
         [SerializeField] float sensitivity = 2;
         [SerializeField] float momentumDecay = 0.92f;
+
 
         private float momentum = 0;
 
@@ -44,7 +45,7 @@ namespace Hammer
                 string port = null;
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
                 {
-                    port = "COM5";
+                    port = "COM3";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
@@ -79,7 +80,7 @@ namespace Hammer
         }
         public void CalibrateHammer()
         {
-            GlobalManager.Instance.CalibrationQuaternion = gameRotationVector;
+            GlobalManager.Instance.CalibrationQuaternion = Quaternion.Inverse(gameRotationVector);
 
         }
 
@@ -88,22 +89,23 @@ namespace Hammer
 
             string recievedData = null;
 
-            while (stream.BytesToRead > 0) {
-            try
+            while (stream.BytesToRead > 0)
             {
-                //recievedData = stream.ReadExisting();
-                recievedData = stream.ReadLine();
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning($"Error reading data: {ex.Message}");
-                return;
-            }
+                try
+                {
+                    //recievedData = stream.ReadExisting();
+                    recievedData = stream.ReadLine();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"Error reading data: {ex.Message}");
+                    return;
+                }
 
-            Debug.Log(recievedData);
-            //string[] streamLines = recievedData.Split('\n');
-            //foreach (string line in streamLines)
-            //{
+                Debug.Log(recievedData);
+                //string[] streamLines = recievedData.Split('\n');
+                //foreach (string line in streamLines)
+                //{
                 //string[] parsedData = line.Trim().Split(':');
                 string[] parsedData = recievedData.Trim().Split(':');
 
@@ -131,10 +133,10 @@ namespace Hammer
                 {
                     try
                     {
-                        gameRotationVector = new Quaternion(float.Parse(parsedData[1]),
+                        gameRotationVector = new Quaternion(float.Parse(parsedData[2]),
+                            -float.Parse(parsedData[4]),
                             float.Parse(parsedData[3]),
-                            float.Parse(parsedData[2]),
-                            float.Parse(parsedData[4]));
+                            float.Parse(parsedData[1]));
                     }
                     catch
                     {
@@ -152,9 +154,7 @@ namespace Hammer
 
         void UpdateRotation()
         {
-            Quaternion incorrectRotation = Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * gameRotationVector;
-            Quaternion correctedRotation = new(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z, incorrectRotation.w);
-            transform.localRotation = correctedRotation;
+            transform.localRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;
         }
 
         void UpdatePosition()

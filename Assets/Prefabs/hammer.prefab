@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6491346760045549281
+--- !u!1001 &4820427454857696387
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       propertyPath: m_Name
-      value: new-hammer
+      value: hammer 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -70,29 +70,26 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -2960621856707166108}
+      addedObject: {fileID: 364211550610626168}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -6593874990387992692}
+      addedObject: {fileID: 2693413810626932691}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -5026674706865323795}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -369563370127745049}
+      addedObject: {fileID: 5577740451161296096}
   m_SourcePrefab: {fileID: 100100000, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
---- !u!1 &6256780460042021808 stripped
+--- !u!1 &5630890325763975634 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
-  m_PrefabInstance: {fileID: 6491346760045549281}
+  m_PrefabInstance: {fileID: 4820427454857696387}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-2960621856707166108
+--- !u!114 &364211550610626168
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6256780460042021808}
+  m_GameObject: {fileID: 5630890325763975634}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b6d0a1dd8956af4385d7151cfe70551, type: 3}
@@ -106,13 +103,13 @@ MonoBehaviour:
   momentumDecay: 0.92
   pivotTransform: {fileID: 0}
   rigidBody: {fileID: 0}
---- !u!82 &-6593874990387992692
+--- !u!82 &2693413810626932691
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6256780460042021808}
+  m_GameObject: {fileID: 5630890325763975634}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -203,33 +200,13 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &-5026674706865323795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6256780460042021808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b6d0a1dd8956af4385d7151cfe70551, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  k: 20
-  dampingCoef: 3
-  restLength: 1
-  maxLength: 20
-  sensitivity: 2
-  momentumDecay: 0.92
-  pivotTransform: {fileID: 0}
-  rigidBody: {fileID: 0}
---- !u!54 &-369563370127745049
+--- !u!54 &5577740451161296096
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6256780460042021808}
+  m_GameObject: {fileID: 5630890325763975634}
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
@@ -245,7 +222,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
