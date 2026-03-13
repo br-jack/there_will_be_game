@@ -24,7 +24,6 @@ namespace Hammer
         private float momentum = 0;
 
         [SerializeField] Transform pivotTransform;
-        private bool portOpen = false;
         private readonly int timeoutMs = 30;
 
         public Rigidbody rigidBody;
@@ -67,12 +66,10 @@ namespace Hammer
                 stream.DtrEnable = true;
                 stream.Open();
                 stream.ReadTimeout = timeoutMs;
-                portOpen = true;
                 Debug.Log("Connected (allegedly)");
             }
             catch (System.Exception e)
             {
-                portOpen = false;
                 Debug.LogWarning("Failed to connect to port: ");
                 Debug.LogWarning(e);
             }
@@ -207,7 +204,6 @@ namespace Hammer
 
         void OnDisable()
         {
-            portOpen = false;
             stream.Close();
             Debug.Log("Port closed");
         }
