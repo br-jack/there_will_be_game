@@ -1330,6 +1330,7 @@ MonoBehaviour:
   attackRingRadius: 2
   joinFormationDistance: 32
   breakFormationDistance: 2
+  killCounterText: {fileID: 0}
 --- !u!4 &840754312
 Transform:
   m_ObjectHideFlags: 0
@@ -1384,6 +1385,7 @@ MonoBehaviour:
   attackRingRadius: 2
   joinFormationDistance: 32
   breakFormationDistance: 2
+  killCounterText: {fileID: 0}
 --- !u!4 &914851859
 Transform:
   m_ObjectHideFlags: 0
@@ -2241,6 +2243,7 @@ MonoBehaviour:
   attackRingRadius: 2
   joinFormationDistance: 32
   breakFormationDistance: 2
+  killCounterText: {fileID: 0}
 --- !u!4 &1353685249
 Transform:
   m_ObjectHideFlags: 0
@@ -2428,6 +2431,7 @@ MonoBehaviour:
   attackRingRadius: 2
   joinFormationDistance: 32
   breakFormationDistance: 2
+  killCounterText: {fileID: 0}
 --- !u!4 &1394557676
 Transform:
   m_ObjectHideFlags: 0
@@ -2664,6 +2668,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.587
       objectReference: {fileID: 0}
+    - target: {fileID: 3201316790095375026, guid: 4a769d0345654f345be733003b50a3e2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     - target: {fileID: 3424286442827462237, guid: 4a769d0345654f345be733003b50a3e2, type: 3}
       propertyPath: m_Convex
       value: 0
@@ -3223,6 +3231,7 @@ MonoBehaviour:
   attackRingRadius: 2
   joinFormationDistance: 32
   breakFormationDistance: 2
+  killCounterText: {fileID: 0}
 --- !u!4 &1773609907
 Transform:
   m_ObjectHideFlags: 0
@@ -3408,7 +3417,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -3522,6 +3532,7 @@ MonoBehaviour:
   attackRingRadius: 2
   joinFormationDistance: 32
   breakFormationDistance: 2
+  killCounterText: {fileID: 0}
 --- !u!4 &1910760422
 Transform:
   m_ObjectHideFlags: 0

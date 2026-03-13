@@ -1,0 +1,42 @@
+Stylized Low Poly Animated Horse Pack
+Version 2.92
+
+Imitation Studios
+Support@ImitationStudios.com
+https://www.imitationstudios.com/
+
+Version 2.92:
+10/18/19
+
+This information is intended as a quick start guide. 
+For a complete guide, please visit: https://www.imitationstudios.com/reactiverider.
+
+Setting up a rider using the Reactive Rider System Quick Start Guide:
+1.	Download any Unity Mecanim compatible character and place it in your scene.
+2.	Place any of the LPHorse_RR prefabs into your scene.
+3.	Locate the Reactive Rider script under the LPHorse_RR/Saddle_Dark_RR gameobject.
+4.	Assign your character to the “Rider” parameter in the Reactive Rider script.
+5.	Locate and assign the character’s skeleton’s right hand to the “Rider Right Hand” parameter in the Reactive Rider script.
+6.	Set “Update Position Every Frame” to true.
+7.	Make sure that the parameters under the "Horse References" section of the Reactive Rider script have been assigned. 
+    If they have not been assigned, please visit: https://www.imitationstudios.com/reactiverider.
+8.	Add an Animator to your character and set “ReactiveRider_AC” as the animation controller. 
+    For detailed information on expanding the animation controller, please visit: https://www.imitationstudios.com/reactiverider.
+9.	Press play and locate the LPHorse_RR gameobject in the scene. 
+    Note: it takes 1 second for the rider position to update after start.
+10.	Using the position settings in the Reactive Rider Script adjust your character’s position in the saddle. 
+    For detailed information on each setting, please visit: https://www.imitationstudios.com/reactiverider.
+11.	Once you are happy with your character’s position, while still in play mode, 
+    right click on the Reactive Rider Script and click “copy component”.
+12.	Exit play mode.
+13.	Right click on the Reactive Rider Script and select “paste component values”.
+14.	Set “Update Position Every Frame” to false.
+15.	For more information on expanded functionality, such as external targeting and adding your characters upper body actions
+    to the animation controller, please visit: https://www.imitationstudios.com/reactiverider.
+
+This information is intended as a quick start guide. 
+For a complete guide, please visit: https://www.imitationstudios.com/reactiverider.
+
+
+
+

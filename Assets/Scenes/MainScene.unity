@@ -1578,7 +1578,7 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -9040556449699470880, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: -2521075801865602973, guid: 409cc14195294d04f9f37eceda21a260, type: 3}
     - target: {fileID: -8679921383154817045, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
@@ -1638,27 +1638,27 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 536386165010467682, guid: de13a7420582ded45a8d7d3f96889aca, type: 3}
     - target: {fileID: -5935446307324163479, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 8183390860712030703, guid: de13a7420582ded45a8d7d3f96889aca, type: 3}
     - target: {fileID: -4629737934486910673, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 10c909074d284a348a18dea39472a898, type: 2}
     - target: {fileID: -3191863032104198667, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 95fcf9331ca635c459a201f2c56f44dc, type: 2}
     - target: {fileID: -2904498755951762835, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 95fcf9331ca635c459a201f2c56f44dc, type: 2}
     - target: {fileID: -2226850388338331810, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 0ec77e506658168428e174ef6ddb4abe, type: 2}
     - target: {fileID: 919132149155446097, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
@@ -1666,11 +1666,11 @@ PrefabInstance:
       value: Bagb_BattleCourse1
       objectReference: {fileID: 0}
     - target: {fileID: 4007510898924609081, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 3583960168783715676, guid: 409cc14195294d04f9f37eceda21a260, type: 3}
     - target: {fileID: 6817778598024065314, guid: 444b5a1eafff0f14b853e3e008614f5e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: c07a83a7d48b561409f63d90157db441, type: 2}
     m_RemovedComponents: []
@@ -3636,7 +3636,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -4373,7 +4374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_ActionName
-      value: Player/Restart[/Keyboard/r,/XInputControllerWindows/buttonNorth]
+      value: 'Player/Restart[/Keyboard/r,/XInputControllerWindows/buttonNorth]'
       objectReference: {fileID: 0}
     - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.size
