@@ -1,6 +1,17 @@
 using Hammer;
 using UnityEngine;
 
+public enum GameState
+{
+    Menu,
+    Calibration,
+    BeforePlay,
+    Play,
+    Paused,
+    GameOver
+
+}
+
 public class GlobalManager : MonoBehaviour
 {
     public static GlobalManager Instance { get; private set; }
