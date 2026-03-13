@@ -6,7 +6,7 @@ public enum GameState
     Menu,
     Calibration,
     BeforePlay,
-    Play,
+    Playing,
     Paused,
     GameOver
 
@@ -15,6 +15,11 @@ public enum GameState
 public class GlobalManager : MonoBehaviour
 {
     public static GlobalManager Instance { get; private set; }
+
+    public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
+    public static HammerBehaviour HammerBehaviour { get; private set; }
+    public GameState curState { get; private set; }
+    public float playTimeSoFar { get; private set; }
 
     private void Awake()
     {
@@ -28,8 +33,11 @@ public class GlobalManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
-    public static HammerBehaviour HammerBehaviour { get; private set; }
-
-
+    private void Update()
+    {
+        if (curState == GameState.Playing)
+        {
+            ElapsedRunTime += Time.deltaTime;
+        }
+    }
 }
