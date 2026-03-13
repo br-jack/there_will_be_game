@@ -656,6 +656,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da6b6db3271f4634fa28cf7ffae649db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &302018693 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7153221024716543719, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &377037374
 GameObject:
   m_ObjectHideFlags: 0
@@ -4190,6 +4195,34 @@ PrefabInstance:
       propertyPath: velocityKnockbackMultiplier
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1749109603447590390, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: maxLength
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1749109603447590390, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: restLength
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1749109603447590390, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: dampingCoef
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1749109603447590390, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: sensitivity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1749109603447590390, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: pivotTransform
+      value: 
+      objectReference: {fileID: 302018693}
+    - target: {fileID: 2054389984600951766, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_Drag
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2054389984600951766, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3243528490933531595, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: livesBar
       value: 
@@ -4228,7 +4261,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_ActionName
-      value: 'Player/Restart[/Keyboard/r,/XInputControllerWindows/buttonNorth]'
+      value: Player/Restart[/Keyboard/r,/XInputControllerWindows/buttonNorth]
       objectReference: {fileID: 0}
     - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.size
@@ -4268,6 +4301,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7249934875220445088, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: velocityKnockbackMultiplier
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5535217082639667215, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5535217082639667215, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5535217082639667215, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5535217082639667215, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5535217082639667215, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5535217082639667215, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalPosition.z
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
