@@ -44,7 +44,7 @@ namespace Hammer
                 string port = null;
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
                 {
-                    port = "COM6";
+                    port = "COM3";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
@@ -88,10 +88,11 @@ namespace Hammer
 
             string recievedData = null;
 
-
+            while (stream.BytesToRead > 0) {
             try
             {
-                recievedData = stream.ReadExisting();
+                //recievedData = stream.ReadExisting();
+                recievedData = stream.ReadLine();
             }
             catch (Exception ex)
             {
@@ -100,10 +101,12 @@ namespace Hammer
             }
 
             Debug.Log(recievedData);
-            string[] streamLines = recievedData.Split('\n');
-            foreach (string line in streamLines)
-            {
-                string[] parsedData = line.Trim().Split(':');
+            //string[] streamLines = recievedData.Split('\n');
+            //foreach (string line in streamLines)
+            //{
+                //string[] parsedData = line.Trim().Split(':');
+                string[] parsedData = recievedData.Trim().Split(':');
+
 
                 if (parsedData[0] == "a")
                 {
