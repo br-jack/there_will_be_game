@@ -167,7 +167,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public void KilledBy(Collider other)
+    public void KilledBy(Collider other, AttackHitbox attack)
     {
         //Grey out enemy to signify that it's dead
         gameObject.GetComponent<Renderer>().material.color = Color.gray;
@@ -177,11 +177,15 @@ public class EnemyMovement : MonoBehaviour
             spawner.RemoveEnemy(this);
         }
 
-        float knockbackForce = 40f;
+        // Get velocity-based knockback force from the attack
+        float knockbackForce = attack != null ? attack.GetKnockbackForce() : 30f;
         
         //Knock away from what killed it
         Vector3 knockbackDirection = transform.position - other.transform.position;
-        knockbackDirection.y = 1.0f;
+        
+        // Scale upward force based on knockback strength
+        float upwardForceRatio = Mathf.Clamp(knockbackForce / 75f, 0.2f, 1.5f);
+        knockbackDirection.y = upwardForceRatio;
         knockbackDirection.Normalize();
 
         ApplyKnockback(knockbackDirection * knockbackForce);
