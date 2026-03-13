@@ -6,7 +6,6 @@ public class EnemySpawner : MonoBehaviour
 {
     /**
     aliveEnemies: stores enemies currently in play.
-    spawnInterval: time interval between enemies spawning.
     formationColumns: max cols in formation (rows decided automatically).
     formationSpacing: spacing between enemies in formation.
     attackRingRadius: how far from players do the enemies stop to attack?
@@ -15,8 +14,6 @@ public class EnemySpawner : MonoBehaviour
     */
     public List<EnemyMovement> aliveEnemies = new List<EnemyMovement>();
     public GameObject enemyPrefab;
-    public float spawnInterval = 0.25f;
-    public int maxEnemies = 50;
     private Transform _playerTransformRef;
 
     [Header("Formation")]
@@ -29,11 +26,11 @@ public class EnemySpawner : MonoBehaviour
     public float anchorStandoffBuffer = 1.5f;
 
     [Header("Spawn")]
+    [SerializeField] private int spawnCount = 25;
     public float spawnJitter = 0.75f;
     public float spawnRadius = 0.5f;
 
     private Vector3 _formationAnchor;
-    private float _spawnTimer = 0.0f;
     private float _formationCheckTimer = 0.0f;
     private float _formationCheckInterval = 0.1f;
 
@@ -47,20 +44,14 @@ public class EnemySpawner : MonoBehaviour
         _formationAnchor = transform.position;
         GameObject _playerRef = GameObject.FindWithTag("Player");
         if (_playerRef != null) _playerTransformRef = _playerRef.transform;
+
+        SpawnFormation(spawnCount, transform.position);
     }
 
     void Update()
     {
-
-        // Update and react to timers.
-        _spawnTimer += Time.deltaTime;
         _formationCheckTimer += Time.deltaTime;
 
-        if (_spawnTimer >= spawnInterval)
-        {
-            SpawnEnemy();
-            _spawnTimer = 0.0f;
-        }
         if (_formationCheckTimer >= _formationCheckInterval)
         {
             UpdateFormationTargets();
@@ -98,18 +89,33 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void SpawnEnemy()
+    public void SpawnFormation(int count, Vector3 spawnPosition)
     {
-        if (aliveEnemies.Count >= maxEnemies) return;
+        _formationAnchor = spawnPosition;
 
-        Vector3 spawnPosition = GetSpawnPosition(aliveEnemies.Count);
+        Vector3 forward = transform.forward;
+        if (_playerTransformRef != null)
+        {
+            Vector3 toPlayer = _playerTransformRef.position - _formationAnchor;
+            if (toPlayer.sqrMagnitude > 0.001f) forward = toPlayer.normalized;
+        }
 
-        // Set up the enemy: link it to the spawner, add it to the list of alive enemies, re-calculate the formation
-        GameObject enemy = Instantiate(enemyPrefab, spawnPosition, transform.rotation);
-        EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
-        if (enemyMovement == null) return;
-        enemyMovement.spawner = this;
-        aliveEnemies.Add(enemyMovement);
+        var (cols, rows) = GetFormationDimensions(count);
+
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 offset = GetGridSpacing(i, count, forward, cols, rows);
+            Vector2 noise = Random.insideUnitCircle * spawnJitter;
+            Vector3 pos = _formationAnchor + offset + new Vector3(noise.x, 0f, noise.y);
+            pos.y = spawnPosition.y;
+
+            GameObject enemy = Instantiate(enemyPrefab, pos, transform.rotation);
+            EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
+            if (enemyMovement == null) continue;
+            enemyMovement.spawner = this;
+            aliveEnemies.Add(enemyMovement);
+        }
+
         UpdateFormationTargets();
     }
 
@@ -178,24 +184,6 @@ public class EnemySpawner : MonoBehaviour
         Vector3 right = Vector3.Cross(Vector3.up, forwardDirection).normalized;
         Vector3 forward = forwardDirection;
         return right * centreX + forward * centreZ;
-    }
-
-    private Vector3 GetSpawnPosition(int index)
-    {
-        Vector2 noise = Random.insideUnitCircle * spawnJitter;
-
-        // anchorToPlayer represents the forward direction of the formation.
-        // If anchorToPlayer is not available or nonsense, use fallback.
-        Vector3 anchorToPlayer = transform.forward;
-        if (_playerTransformRef != null) anchorToPlayer = _playerTransformRef.position - _formationAnchor;
-        if (anchorToPlayer.sqrMagnitude < 0.001f) anchorToPlayer = Vector3.forward;
-
-        var (cols, rows) = GetFormationDimensions(Mathf.Max(index + 1, formationColumns));
-        Vector3 offset = GetGridSpacing(index, Mathf.Max(index + 1, cols * rows), anchorToPlayer, cols, rows);
-
-        Vector3 spawn = _formationAnchor + offset + new Vector3(noise.x, 0f, noise.y);
-        spawn.y = transform.position.y;
-        return spawn;
     }
 
     private float GetAnchorStopRadius()
