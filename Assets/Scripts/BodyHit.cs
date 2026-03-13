@@ -1,9 +1,19 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BodyHit : MonoBehaviour
 {
     public LayerMask shieldMask;
     public hitSound hitSounds;
+
+    [SerializeField] private float speedThreshold = 5f;
+    [SerializeField] private int baseScore = 10;
+    [SerializeField] private int speedBonusScore = 30;
+    [SerializeField] private int lowHealthBonusScore = 20;
+    [SerializeField] private int lowHealthThreshold = 30;
+    [SerializeField] private int airBonusScore = 25;
+    [SerializeField] private int shieldBypassBonusScore = 40;
+
     void OnTriggerEnter(Collider other)
     {
         // Check if hit by attack
@@ -40,8 +50,56 @@ public class BodyHit : MonoBehaviour
         }
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
         hitSounds.PlaySFX();
+
+        AwardScore(enemy);
      
         // No shield blocking - kill the enemy
         enemy.KilledBy(other, attack);
+    }
+
+    private void AwardScore(EnemyMovement enemy)
+    {   
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player == null) return;
+        
+        HorseMovement horseMovement = player.GetComponent<HorseMovement>();
+        if (horseMovement == null) return;
+
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+        
+        List<ScoreComponent> scoreComponents = new List<ScoreComponent>();
+        
+        // Base score
+        scoreComponents.Add(new ScoreComponent(baseScore, ScoreType.Base));
+        
+        // Speed bonus
+        if (horseMovement.CurrentSpeed >= speedThreshold)
+        {
+            scoreComponents.Add(new ScoreComponent(speedBonusScore, ScoreType.Speed));
+        }
+        
+        // Low health bonus
+        if (playerHealth != null)
+        {
+            float healthPercent = (float)playerHealth.Current / playerHealth.Max * 100f;
+            if (healthPercent <= lowHealthThreshold)
+            {
+                scoreComponents.Add(new ScoreComponent(lowHealthBonusScore, ScoreType.LowHealth));
+            }
+        }
+        
+        // Air bonus
+        if (!horseMovement.IsGrounded)
+        {
+            scoreComponents.Add(new ScoreComponent(airBonusScore, ScoreType.Air));
+        }
+
+        // Shield bypass bonus
+        if (enemy != null && enemy.HasShield())
+        {
+            scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
+        }
+        
+        ScoreManager.Instance.AddScore(scoreComponents);
     }
 }
