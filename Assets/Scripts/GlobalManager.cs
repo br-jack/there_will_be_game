@@ -89,7 +89,19 @@ public class GlobalManager : MonoBehaviour
 
         GameState prev = CurState;
         CurState = next;
+    }
 
+    // Call this function to Pause and Resume the Game
+    public void TogglePause()
+    {
+        if (CurState == GameState.Playing)
+        {
+            SetState(GameState.Paused);
+        }
+        else if (CurState == GameState.Paused)
+        {
+            SetState(GameState.Playing);
+        }
     }
 
     private void NewSceneJustLoaded(Scene scene, LoadSceneMode mode)
@@ -114,6 +126,17 @@ public class GlobalManager : MonoBehaviour
     {
         GameState prev = CurState;
         CurState = next;
+    }
+
+    private void EnableSpawners()
+    {
+        if (_spawners == null) return;
+
+        foreach (EnemySpawner spawner in _spawners)
+        {
+            if (spawner == null) return;
+            spawner.spawningEnabled = true;
+        }
     }
 
 }

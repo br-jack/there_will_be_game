@@ -33,6 +33,7 @@ public class EnemySpawner : MonoBehaviour
     private float _spawnTimer = 0.0f;
     private float _formationCheckTimer = 0.0f;
     private float _formationCheckInterval = 0.1f;
+    public bool spawningEnabled = true;
 
     public enum FormationType
     {
@@ -46,19 +47,22 @@ public class EnemySpawner : MonoBehaviour
     }
     void Update()
     {
-        // Update timers
-        _spawnTimer += Time.deltaTime;
-        _formationCheckTimer += Time.deltaTime;
+        if (spawningEnabled)
+        {
+            // Update timers
+            _spawnTimer += Time.deltaTime;
+            _formationCheckTimer += Time.deltaTime;
 
-        if (_spawnTimer >= spawnInterval)
-        {
-            SpawnEnemy();
-            _spawnTimer = 0.0f;
-        }
-        if (_formationCheckTimer >= _formationCheckInterval)
-        {
-            UpdateFormationTargets();
-            _formationCheckTimer = 0.0f;
+            if (_spawnTimer >= spawnInterval)
+            {
+                SpawnEnemy();
+                _spawnTimer = 0.0f;
+            }
+            if (_formationCheckTimer >= _formationCheckInterval)
+            {
+                UpdateFormationTargets();
+                _formationCheckTimer = 0.0f;
+            }
         }
         
         if (_playerTransformRef != null)
