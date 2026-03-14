@@ -44,11 +44,13 @@ public class HorseMovement : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed) {
             _jumpPressed = true;
             _jumpHeld = true;
-        if (context.canceled) 
+        }
+        if (context.canceled) { 
             _jumpHeld = false;
+        }
     }
 
     public void onSteer(InputAction.CallbackContext context)
