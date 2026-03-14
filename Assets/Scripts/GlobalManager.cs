@@ -44,18 +44,18 @@ public class GlobalManager : MonoBehaviour
     {
         if (CurState == GameState.Playing)
         {
-            ElapsedRunTime += Time.deltaTime;
+            playTimeSoFar += Time.deltaTime;
         }
     }
 
     public void OnEnable()
     {
-        SceneManager.sceneLoaded += HandleSceneLoaded;
+        SceneManager.sceneLoaded += NewSceneJustLoaded;
     }
 
     public void OnDisable()
     {
-        SceneManager.sceneLoaded -= HandleSceneLoaded;
+        SceneManager.sceneLoaded -= NewSceneJustLoaded;
     }
 
     public void SetState(GameState next)
@@ -77,18 +77,50 @@ public class GlobalManager : MonoBehaviour
             // Valid Transitions from Calibration
             (GameState.Calibration, GameState.Menu) => true,
             // Valid Transitions from PreRun
-            (GameState.BeforePlay, GameState.Running) => true,
+            (GameState.BeforePlay, GameState.Playing) => true,
             _ => false
         };
 
         if (!isValid)
         {
-            Debug.LogWarning($"{CurrentState} -> {next} is an invalid game state transition.");
+            Debug.LogWarning($"{CurState} -> {next} is an invalid game state transition.");
             return;
         }
 
         GameState prev = CurState;
         CurState = next;
+
+        ExitState(prev);
+        EnterState(next);
+    }
+
+    private void ExitState(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.Paused:
+                ExitPaused();
+                break;
+        }
+    }
+
+    private void EnterState(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.BeforePlay:
+                EnterBeforePlaying();
+                break;
+            case GameState.Playing:
+                EnterPlaying();
+                break;
+            case GameState.Paused:
+                EnterPaused();
+                break;
+            case GameState.GameOver:
+                EnterGameOver();
+                break;
+        }
     }
 
     // Call this function to Pause and Resume the Game
@@ -111,13 +143,13 @@ public class GlobalManager : MonoBehaviour
         switch (scene.name)
         {
             case "MainScene":
-                SetState(GameState.PreRun);
+                OverrideGameState(GameState.PreRun);
                 break;
             case "MainMenu":
                 OverrideGameState(GameState.Menu);
                 break;
             case "hammerTest":
-                OverrideGameState(GameState.calibration);
+                OverrideGameState(GameState.Calibration);
                 break;
         }
     }
@@ -130,7 +162,7 @@ public class GlobalManager : MonoBehaviour
 
     private void EnableSpawning()
     {
-        if (_spawners == null) return;
+        if (_EnemySpawners == null) return;
 
         foreach (EnemySpawner spawner in _spawners)
         {
@@ -161,7 +193,7 @@ public class GlobalManager : MonoBehaviour
     private void EnterPlaying()
     {
         Time.timeScale = 1f;
-        DisableSpawning();
+        EnableSpawning();
 
         _pausePanel?.SetActive(false);
     }
@@ -169,9 +201,10 @@ public class GlobalManager : MonoBehaviour
     private void EnterPaused()
     {
         Time.timeScale = 0f;
+        DisableSpawning();
         SetPlayerInputEnabled(false);
 
-        if (_pausePanel != null) _pausePanel.SetActive(false);
+        if (_pausePanel != null) _pausePanel.SetActive(true);
     }
 
     private void EnterGameOver()
