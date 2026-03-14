@@ -18,8 +18,14 @@ public class GlobalManager : MonoBehaviour
 
     public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
     public static HammerBehaviour HammerBehaviour { get; private set; }
-    public GameState curState { get; private set; }
+    public GameState CurState { get; private set; }
     public float playTimeSoFar { get; private set; }
+
+    // Scene references
+    private PlayerLives _playerLives;
+    private HorseMovement _horseMovement;
+    private EnemySpawner[] _EnemySpawners;
+    private GameObject _pausePanel;
 
 
     private void Awake()
@@ -36,7 +42,7 @@ public class GlobalManager : MonoBehaviour
 
     private void Update()
     {
-        if (curState == GameState.Playing)
+        if (CurState == GameState.Playing)
         {
             ElapsedRunTime += Time.deltaTime;
         }
@@ -54,7 +60,7 @@ public class GlobalManager : MonoBehaviour
 
     public void SetState(GameState next)
     {
-        bool isValid = (curState, next) switch
+        bool isValid = (CurState, next) switch
         {
             // Valid Transitions from Running
             (GameState.Playing, GameState.Paused) => true,
@@ -81,8 +87,8 @@ public class GlobalManager : MonoBehaviour
             return;
         }
 
-        GameState prev = curState;
-        curState = next;
+        GameState prev = CurState;
+        CurState = next;
 
     }
 
@@ -106,7 +112,8 @@ public class GlobalManager : MonoBehaviour
 
     private void OverrideGameState(GameState next)
     {
-        
+        GameState prev = CurState;
+        CurState = next;
     }
 
 }
