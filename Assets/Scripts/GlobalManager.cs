@@ -94,6 +94,8 @@ public class GlobalManager : MonoBehaviour
         EnterState(next);
     }
 
+
+    // General functions for entering and exiting states.
     private void ExitState(GameState state)
     {
         switch (state)
@@ -138,8 +140,8 @@ public class GlobalManager : MonoBehaviour
 
     private void NewSceneJustLoaded(Scene scene, LoadSceneMode mode)
     {
-        // If a scene just loaded, force the state to match the scene
-        // This has no transition unlike calling SetState()
+        // If a scene just loaded, force the state to match the scene.
+        // This has no transition unlike calling SetState().
         switch (scene.name)
         {
             case "MainScene":
@@ -171,6 +173,8 @@ public class GlobalManager : MonoBehaviour
         }
     }
 
+
+    // Enable and Disable the spawners (mainly used as helper functions)
     private void DisableSpawning()
     {
         if (_spawners == null) return;
@@ -182,20 +186,21 @@ public class GlobalManager : MonoBehaviour
         }
     }
 
-    private void EnterBeforePlaying()
-    {
-        Time.timeScale = 1f;
-        ElapsedRunTime = 0f;
-
-        EnableSpawning();
-    }
-
+    // Functions for entering specific GameStates
     private void EnterPlaying()
     {
         Time.timeScale = 1f;
         EnableSpawning();
 
         _pausePanel?.SetActive(false);
+    }
+
+    private void EnterBeforePlaying()
+    {
+        Time.timeScale = 1f;
+        ElapsedRunTime = 0f;
+
+        EnableSpawning();
     }
 
     private void EnterPaused()
@@ -207,6 +212,11 @@ public class GlobalManager : MonoBehaviour
         if (_pausePanel != null) _pausePanel.SetActive(true);
     }
 
+    private void ExitPaused()
+    {
+        Time.timeScale = 1f;
+        if (_pausePanel != null) _pausePanel.SetActive(false);
+    }
     private void EnterGameOver()
     {
         Time.timeScale = 0f;
