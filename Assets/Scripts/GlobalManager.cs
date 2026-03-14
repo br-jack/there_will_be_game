@@ -166,8 +166,17 @@ public class GlobalManager : MonoBehaviour
         _pausePanel?.SetActive(false);
     }
 
-    private IEnumerator CountdownCoroutine()
+    private void EnterPaused()
     {
-        float rem = 
+        Time.timeScale = 0f;
+        SetPlayerInputEnabled(false);
+
+        if (_pausePanel != null) _pausePanel.SetActive(false);
+    }
+
+    private void EnterGameOver()
+    {
+        Time.timeScale = 0f;
+        DisableSpawning();
     }
 }
