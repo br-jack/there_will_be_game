@@ -128,7 +128,7 @@ public class GlobalManager : MonoBehaviour
         CurState = next;
     }
 
-    private void EnableSpawners()
+    private void EnableSpawning()
     {
         if (_spawners == null) return;
 
@@ -139,4 +139,35 @@ public class GlobalManager : MonoBehaviour
         }
     }
 
+    private void DisableSpawning()
+    {
+        if (_spawners == null) return;
+
+        foreach (EnemySpawner spawner in _spawners)
+        {
+            if (spawner == null) return;
+            spawner.spawningEnabled = false;
+        }
+    }
+
+    private void EnterBeforePlaying()
+    {
+        Time.timeScale = 1f;
+        ElapsedRunTime = 0f;
+
+        EnableSpawning();
+    }
+
+    private void EnterPlaying()
+    {
+        Time.timeScale = 1f;
+        DisableSpawning();
+
+        _pausePanel?.SetActive(false);
+    }
+
+    private IEnumerator CountdownCoroutine()
+    {
+        float rem = 
+    }
 }
