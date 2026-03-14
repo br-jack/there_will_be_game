@@ -21,6 +21,7 @@ public class GlobalManager : MonoBehaviour
     public GameState curState { get; private set; }
     public float playTimeSoFar { get; private set; }
 
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -87,18 +88,25 @@ public class GlobalManager : MonoBehaviour
 
     private void NewSceneJustLoaded(Scene scene, LoadSceneMode mode)
     {
+        // If a scene just loaded, force the state to match the scene
+        // This has no transition unlike calling SetState()
         switch (scene.name)
         {
             case "MainScene":
                 SetState(GameState.PreRun);
                 break;
             case "MainMenu":
-                ForceState(GameState.Menu);
+                OverrideGameState(GameState.Menu);
                 break;
             case "hammerTest":
-                ForceState(GameState.calibration);
+                OverrideGameState(GameState.calibration);
                 break;
         }
+    }
+
+    private void OverrideGameState(GameState next)
+    {
+        
     }
 
 }
