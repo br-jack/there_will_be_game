@@ -72,6 +72,7 @@ namespace Hammer
                 stream.Open();
                 stream.ReadTimeout = timeoutMs;
                 portOpen = true;
+                // if youre connected but not getting any data you may have another serial monitor open for this port
                 Debug.Log("Connected (allegedly)");
             }
             catch (System.Exception e)
