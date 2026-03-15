@@ -2564,14 +2564,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aliveEnemies: []
   enemyPrefab: {fileID: 611199081197747249, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
-  spawnInterval: 0.25
-  maxEnemies: 1
   formationType: 0
   formationColumns: 5
-  formationSpacing: {x: 3, y: 3}
+  formationSpacing: {x: 2, y: 2}
   attackRingRadius: 2
   joinFormationDistance: 32
   breakFormationDistance: 2
+  anchorStandoffBuffer: 1.5
+  spawnCount: 25
+  spawnJitter: 0.75
+  spawnRadius: 0.5
 --- !u!4 &1353685249
 Transform:
   m_ObjectHideFlags: 0
