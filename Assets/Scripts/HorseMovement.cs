@@ -33,10 +33,10 @@ public class HorseMovement : MonoBehaviour
     private float _turnInput;
     private float _brakeInput;
 
-    public float jumpForce = 8f;
+    public float jumpForce = 5f; // originally 8f
     private bool _jumpHeld;
-    public float fallMultiplier = 2.5f;
-    public float lowJumpMultiplier = 2f;
+    public float fallMultiplier = 7.5f; // originally 2.5f
+    public float lowJumpMultiplier = 4f; // originally 2f
     public LayerMask groundMask;
     [SerializeField] [Range(0f, 1f)] private float groundCheckDistance = 0.3f;
 
