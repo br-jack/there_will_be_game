@@ -151,6 +151,7 @@ namespace Hammer
                                                 );
                         // TODO change to impulse or something (persist across frames)
                         if (acceleration.magnitude > frameAcceleration.magnitude) frameAcceleration = acceleration;
+
                     }
                     catch
                     {
@@ -163,10 +164,12 @@ namespace Hammer
                 {
                     try
                     {
-                        gameRotationVector = new Quaternion(float.Parse(parsedData[2]),
+                        Quaternion possibleQuaternion = new Quaternion(-float.Parse(parsedData[3]),
                             -float.Parse(parsedData[4]),
-                            float.Parse(parsedData[3]),
+                            float.Parse(parsedData[2]),
                             float.Parse(parsedData[1]));
+                        gameRotationVector = possibleQuaternion;
+
                     }
                     catch
                     {
@@ -184,7 +187,13 @@ namespace Hammer
 
         void UpdateRotation()
         {
-            transform.localRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;
+            Quaternion newRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;
+            float diff = Quaternion.Angle(newRotation, gameRotationVector);
+            if (diff < 160.0f)
+            {
+                transform.localRotation = newRotation;
+            }
+
         }
 
         void UpdatePosition()
@@ -221,7 +230,9 @@ namespace Hammer
             ParseStream();
             UpdateRotation();
             UpdatePosition();
-            frameAcceleration = Vector3.zero;
+
+            // this completely breaks momentum but whatever
+            frameAcceleration = new Vector3(0,0,0);
         }
 
 
