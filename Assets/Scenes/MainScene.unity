@@ -3653,6 +3653,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3114475922334642641, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_AngularDrag
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114475922334642641, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114475922334642641, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_ImplicitTensor
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3243528490933531595, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: livesBar
       value: 
@@ -3765,6 +3777,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: maxSpeed
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: horseVisual
+      value: 
+      objectReference: {fileID: 5061453144199501981}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: steerTorque
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: driftSteerThreshold
+      value: 0.8
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7176289254400105866, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
     m_RemovedGameObjects:
@@ -3772,6 +3800,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+--- !u!4 &5061453144199501981 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7518415703454089516, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
