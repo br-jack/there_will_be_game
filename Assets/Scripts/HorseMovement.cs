@@ -134,6 +134,23 @@ public class HorseMovement : MonoBehaviour
         {
             ApplyDriftPhysics();
             targetLean = _turnInput * 30f;
+
+            if (_brakeInput > 0f)
+            {
+                _currentSpeed -= brake * 0.7f * Time.fixedDeltaTime;
+                driftLateralFriction = Mathf.Lerp(driftLateralFriction, 0.6f, Time.fixedDeltaTime * 2f);
+            }
+            else
+            {
+                driftLateralFriction = 0.3f;
+            }
+
+            if (_throttleInput == 0f && _brakeInput == 0f)
+            {
+                _currentSpeed -= deceleration * 0.5f * Time.fixedDeltaTime;
+                _currentLean = Mathf.Lerp(_currentLean, 0f, Time.deltaTime * 0.8f);
+                driftLateralFriction = 0.3f;
+            }
         }
         else if (grounded)
         {
@@ -143,6 +160,16 @@ public class HorseMovement : MonoBehaviour
         else
         {
             targetLean = _currentLean;
+        }
+
+        float driftAngle = _turnInput;
+        if (_isDrifting)
+        {
+            if (Mathf.Abs(_turnInput) > 0.1f)
+                _currentLean = driftAngle * 30f;
+
+            if (_brakeInput > 0f)
+                _currentLean = Mathf.Lerp(_currentLean, 0f, Time.deltaTime * 1.5f);
         }
 
         _currentLean = Mathf.Lerp(_currentLean, targetLean, Time.deltaTime * 5f);
