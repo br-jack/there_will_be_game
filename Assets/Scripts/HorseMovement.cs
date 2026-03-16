@@ -39,6 +39,7 @@ public class HorseMovement : MonoBehaviour
     public float lowJumpMultiplier = 4f; // originally 2f
     public LayerMask groundMask;
     [SerializeField] [Range(0f, 1f)] private float groundCheckDistance = 0.3f;
+    [SerializeField] private float pullToGroundWhenNearSpeed = 25f;
 
     [SerializeField] [Range(0f, 1f)] private float wallCheckDistance = 0.40f;
     [SerializeField] private LayerMask wallCheckMask;
@@ -173,6 +174,10 @@ public class HorseMovement : MonoBehaviour
             _groundedTimer += Time.fixedDeltaTime;
 
             CalculateSpeed();
+
+            // Pulls the horse down towards y = 0 by a small step each second (maximum of 'pullToGroundWhenNearSpeed' units per second)
+            float newSmallBumpY = Mathf.MoveTowards(_rb.linearVelocity.y, 0f, pullToGroundWhenNearSpeed * Time.fixedDeltaTime);
+            _rb.linearVelocity = new Vector3();
         } else
         {
             _groundedTimer = 0f;
