@@ -7,16 +7,39 @@ namespace Hammer
     public class HammerBehaviour : MonoBehaviour
     {
 
-        Quaternion imuData;
+        Quaternion gameRotationVector;
+        Vector3 frameAcceleration;
         SerialPort stream;
 
-        private bool portOpen;
-        private readonly int timeoutMs = 50;
+
+        [SerializeField] float extension;
+        float extensionVelocity;
+        [SerializeField] float k = 20f;
+        [SerializeField] float dampingCoef = 3f;
+        [SerializeField] float restLength = 1;
+        [SerializeField] float maxLength = 20;
+        [SerializeField] float sensitivity = 2;
+        [SerializeField] float momentumDecay = 0.92f;
+
+
+        private float momentum = 0;
+
+        [SerializeField] Transform pivotTransform;
+        private bool portOpen = false;
+        private readonly int timeoutMs = 30;
+
+     
+
+
+        public Rigidbody rigidBody;
 
         void Start()
         {
             Connect();
+            rigidBody = GetComponent<Rigidbody>();
+            Application.targetFrameRate = 60;
         }
+
 
         private void Connect()
         {
@@ -40,13 +63,14 @@ namespace Hammer
 
                 if (!string.IsNullOrEmpty(port))
                 {
-                    stream = new SerialPort(port, 9600)
+                    stream = new SerialPort(port, 19200)
                     {
                         ReadTimeout = timeoutMs
                     };
                 }
                 stream.DtrEnable = true;
                 stream.Open();
+                stream.ReadTimeout = timeoutMs;
                 portOpen = true;
                 Debug.Log("Connected (allegedly)");
             }
@@ -59,10 +83,107 @@ namespace Hammer
         }
         public void CalibrateHammer()
         {
-            GlobalManager.Instance.CalibrationQuaternion = imuData;
+            GlobalManager.Instance.CalibrationQuaternion = Quaternion.Inverse(gameRotationVector);
+
         }
+
+        void ParseStream()
+        {
+
+            string recievedData = null;
+
+            while (stream.BytesToRead > 0)
+            {
+                try
+                {
+                    //recievedData = stream.ReadExisting();
+                    recievedData = stream.ReadLine();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"Error reading data: {ex.Message}");
+                    return;
+                }
+
+                Debug.Log(recievedData);
+                //string[] streamLines = recievedData.Split('\n');
+                //foreach (string line in streamLines)
+                //{
+                //string[] parsedData = line.Trim().Split(':');
+                string[] parsedData = recievedData.Trim().Split(':');
+
+
+                if (parsedData[0] == "a")
+                {
+                    try
+                    {
+                        Vector3 acceleration = new(
+                                                float.Parse(parsedData[3]),
+                                                float.Parse(parsedData[1]),
+                                                float.Parse(parsedData[2])
+                                                );
+                        // TODO change to impulse or something (persist across frames)
+                        if (acceleration.magnitude > frameAcceleration.magnitude) frameAcceleration = acceleration;
+                    }
+                    catch
+                    {
+
+                    }
+
+                }
+
+                if (parsedData[0] == "q")
+                {
+                    try
+                    {
+                        gameRotationVector = new Quaternion(float.Parse(parsedData[2]),
+                            -float.Parse(parsedData[4]),
+                            float.Parse(parsedData[3]),
+                            float.Parse(parsedData[1]));
+                    }
+                    catch
+                    {
+
+                    }
+
+
+                }
+            }
+
+
+        }
+
+
+
+        void UpdateRotation()
+        {
+            transform.localRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;
+        }
+
+        void UpdatePosition()
+        {
+            Vector3 worldForward = transform.rotation * Vector3.forward;
+            float radialAcceleration = Vector3.Dot(frameAcceleration, worldForward);
+            float force = Mathf.Abs(radialAcceleration) < 0.1f ? 0f : radialAcceleration;
+
+            momentum += force * Time.deltaTime;
+            momentum *= momentumDecay;
+
+
+            float spring = -k * (extension - restLength);
+            float damping = -dampingCoef * extensionVelocity;
+            float acceleration = spring + damping + momentum * sensitivity;
+
+            extensionVelocity += acceleration * Time.deltaTime;
+            extension += extensionVelocity * Time.deltaTime;
+            extension = Mathf.Clamp(extension, 0, maxLength);
+
+            transform.position = pivotTransform.position + transform.rotation * Vector3.forward * extension;
+        }
+
         void Update()
         {
+
 
             if (!stream.IsOpen)
             {
@@ -70,41 +191,14 @@ namespace Hammer
                 return;
             }
 
-            try
-            {
-                stream.ReadTimeout = timeoutMs;
-                string receivedData = stream.ReadLine();
-                Debug.Log($"Received: {receivedData}");
-                Debug.Log(receivedData.Trim());
-
-                string[] quaternionString = receivedData.Split(':');
-                if (quaternionString[0] != "q")
-                {
-                    return;
-                }
-
-                imuData = new Quaternion(float.Parse(quaternionString[1]),
-                                             float.Parse(quaternionString[3]),
-                                             float.Parse(quaternionString[2]),
-                                             float.Parse(quaternionString[4]));
-
-                Quaternion incorrectRotation = (Quaternion.Inverse(GlobalManager.Instance.CalibrationQuaternion) * imuData);
-                Quaternion correctedRotation = new(-incorrectRotation.x, incorrectRotation.y, -incorrectRotation.z, incorrectRotation.w);
-
-                transform.localRotation = correctedRotation;
-
-            }
-            catch (TimeoutException)
-            {
-                Debug.LogWarning("Timeout occurred while reading data.");
-                return;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning($"Error reading data: {ex.Message}");
-                return;
-            }
+            ParseStream();
+            UpdateRotation();
+            UpdatePosition();
+            frameAcceleration = Vector3.zero;
         }
+
+
+
         public void OnCollisionEnter(Collision collision)
         {
 
