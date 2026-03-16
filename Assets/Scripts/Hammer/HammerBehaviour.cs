@@ -48,7 +48,7 @@ namespace Hammer
                 string port = null;
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
                 {
-                    port = "COM3";
+                    port = "COM4";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
