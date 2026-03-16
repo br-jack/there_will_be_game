@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,9 +46,11 @@ public class HorseMovement : MonoBehaviour
     public float normalLateralFriction = 1.0f;  // normal grip
     public float driftAngularBoost = 2.0f;      // extra rotation force during drift
     public float driftKickoutForce = 5f;        // sideways push
-    public float driftSteerThreshold = 0.8f;    // how hard the player must steer
-    public float driftSpeedThreshold = 30f;      // minimum speed to drift
+    public float driftSteerThreshold = 0.7f;    // how hard the player must steer
+    public float driftSpeedThreshold = 20f;      // minimum speed to drift
     private float driftTimer = 0f; // hard turn must be held to drift
+
+    private float _currentLean = 0f;
 
     
     public void OnMove(InputAction.CallbackContext context)
@@ -117,20 +120,32 @@ public class HorseMovement : MonoBehaviour
 
     private void FixedUpdate()  
     {
-        float targetLean = 0f;
+        bool grounded = Physics.Raycast(
+            transform.position + Vector3.up * 0.2f,
+            Vector3.down,
+            groundCheckDistance,
+            groundMask
+        );
 
         HandleMovement();
 
-        if (_isDrifting)
+        float targetLean;
+        if (_isDrifting && grounded)
         {
             ApplyDriftPhysics();
             targetLean = _turnInput * 30f;
         }
-        else
+        else if (grounded)
         {
             RestoreNormalGrip();
+            targetLean = 0f;
+        }
+        else
+        {
+            targetLean = _currentLean;
         }
 
+        _currentLean = Mathf.Lerp(_currentLean, targetLean, Time.deltaTime * 5f);
         Quaternion leanRot = Quaternion.Euler(0f, targetLean, 0f);
         horseVisual.localRotation = Quaternion.Lerp(
             horseVisual.localRotation,
@@ -206,13 +221,13 @@ public class HorseMovement : MonoBehaviour
             driftTimer += Time.fixedDeltaTime;
             if (driftTimer > 0.2f) _isDrifting = true;
         }
-        else
+        else if (grounded)
         {
             driftTimer = 0f;
             _isDrifting = false;
         }
 
-        if (_isDrifting && Mathf.Abs(_turnInput) < 0.5f) //drift stops as turn relaxes
+        if (_isDrifting && Mathf.Abs(_turnInput) < 0.5f && grounded) //drift stops as turn relaxes
         {
             _isDrifting = false;
         }
