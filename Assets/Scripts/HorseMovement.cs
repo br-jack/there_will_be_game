@@ -12,9 +12,18 @@ public class HorseMovement : MonoBehaviour
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
     
-    [SerializeField] private float _currentSpeed = 0f;
+    private float _currentSpeed = 0f;
+    public float CurrentSpeed => _currentSpeed;
+
+    private bool _isGrounded = false;
+    public bool IsGrounded => _isGrounded;
 
     private float speedPercent;
+    
+    public float GetCurrentSpeed()
+    {
+        return Mathf.Abs(_currentSpeed);
+    }
 
     private float scaledJumpForce;
 
@@ -158,6 +167,7 @@ public class HorseMovement : MonoBehaviour
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
         bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
+        _isGrounded = grounded;
 
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
@@ -167,7 +177,7 @@ public class HorseMovement : MonoBehaviour
         if (grounded) //prevents accelerating and decelerating whilst midair
         {
             _groundedTimer += Time.fixedDeltaTime;
-
+            
             runParticles.Play();
 
             CalculateSpeed();
