@@ -1,6 +1,8 @@
 using System;
 using System.IO.Ports;
 using UnityEngine;
+using System.Collections.Concurrent;
+using System.Threading;
 
 namespace Hammer
 {
@@ -10,6 +12,9 @@ namespace Hammer
         Quaternion gameRotationVector;
         Vector3 frameAcceleration;
         SerialPort stream;
+        private Thread ioThread;
+        private bool running;
+        private ConcurrentQueue<string> dataQueue = new ConcurrentQueue<string>();
 
 
         [SerializeField] float extension;
@@ -28,7 +33,7 @@ namespace Hammer
         private bool portOpen = false;
         private readonly int timeoutMs = 30;
 
-     
+
 
 
         public Rigidbody rigidBody;
@@ -38,6 +43,16 @@ namespace Hammer
             Connect();
             rigidBody = GetComponent<Rigidbody>();
             Application.targetFrameRate = 60;
+
+
+            running = true;
+
+            // Start the background I/O thread
+            ioThread = new Thread(IOThreadLoop)
+            {
+                IsBackground = true
+            };
+            ioThread.Start();
         }
 
 
@@ -82,6 +97,36 @@ namespace Hammer
                 Debug.LogWarning(e);
             }
         }
+
+
+        private void IOThreadLoop()
+        {
+            try
+            {
+                while (running)
+                {
+                    string recievedData = null;
+
+                    // get data from port
+                    try
+                    {
+                        recievedData = stream.ReadLine();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning($"Error reading data: {ex.Message}");
+                        return;
+                    }
+
+                    dataQueue.Enqueue(recievedData);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[IO Thread] Error: {ex.Message}");
+            }
+        }
+
         public void CalibrateHammer()
         {
             GlobalManager.Instance.CalibrationQuaternion = Quaternion.Inverse(gameRotationVector);
@@ -90,28 +135,10 @@ namespace Hammer
 
         void ParseStream()
         {
-
-            string recievedData = null;
-
-            while (stream.BytesToRead > 0)
+            while (dataQueue.TryDequeue(out string data))
             {
-                try
-                {
-                    //recievedData = stream.ReadExisting();
-                    recievedData = stream.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogWarning($"Error reading data: {ex.Message}");
-                    return;
-                }
-
-                Debug.Log(recievedData);
-                //string[] streamLines = recievedData.Split('\n');
-                //foreach (string line in streamLines)
-                //{
-                //string[] parsedData = line.Trim().Split(':');
-                string[] parsedData = recievedData.Trim().Split(':');
+                Debug.Log($"[Main Thread] Received: {data}");
+                string[] parsedData = data.Trim().Split(':');
 
 
                 if (parsedData[0] == "a")
@@ -150,7 +177,6 @@ namespace Hammer
 
                 }
             }
-
 
         }
 
@@ -192,6 +218,7 @@ namespace Hammer
                 return;
             }
 
+
             ParseStream();
             UpdateRotation();
             UpdatePosition();
@@ -216,6 +243,14 @@ namespace Hammer
             Debug.Log("Port closed");
         }
 
+        private void OnDestroy()
+        {
+            running = false;
+            if (ioThread != null && ioThread.IsAlive)
+            {
+                ioThread.Join();
+            }
+        }
     }
 
 }

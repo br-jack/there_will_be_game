@@ -2,6 +2,7 @@
 // Basic demo for readings from Adafruit BNO08x
 // Install this manually
 #include <Adafruit_BNO08x.h>
+#include <string.h>
 
 // For SPI mode, we need a CS pin
 #define BNO08X_CS 10
@@ -32,7 +33,7 @@ void setup(void) {
   // BT.print("AT+ROLE0");
   // BT.end();
   BT.begin(19200);
-  
+
   while (!BT) delay(5);
   BT.println("Adafruit BNO08x test!");
 
@@ -77,7 +78,7 @@ void setReports(void) {
 
 void loop() {  // run over and over
 
-  delay(10);
+  delay(5);
 
   // if (BT.available()) {
   //   Serial.write(BT.read());
@@ -97,27 +98,34 @@ void loop() {  // run over and over
   switch (sensorValue.sensorId) {
 
     case SH2_GAME_ROTATION_VECTOR:
+      {
+        String q;
+        q.concat("q:");
+        q.concat(sensorValue.un.gameRotationVector.real);
+        q.concat(":");
+        q.concat(sensorValue.un.gameRotationVector.i);
+        q.concat(":");
+        q.concat(sensorValue.un.gameRotationVector.j);
+        q.concat(":");
+        q.concat(sensorValue.un.gameRotationVector.k);
 
-      float r = sensorValue.un.gameRotationVector.real;
-      float i = sensorValue.un.gameRotationVector.i;
-      float j = sensorValue.un.gameRotationVector.j;
-      float k = sensorValue.un.gameRotationVector.k;
-      char q[]; 
-      q[0] = "a";
-      q[1] = ":";s
-      dtostrf(value, 3, 2, q);
-      q[]
 
-      BT.println();
-      break;
+        BT.println(q);
+        break;
+      }
+
 
     case SH2_LINEAR_ACCELERATION:
-
-      float x = sensorValue.un.linearAcceleration.x;
-      float y = sensorValue.un.linearAcceleration.y;
-      float x = sensorValue.un.linearAcceleration.z;
-
-      BT.println();
-      break;
+      {
+        String q;
+        q.concat("a:");
+        q.concat(sensorValue.un.linearAcceleration.x);
+        q.concat(":");
+        q.concat(sensorValue.un.linearAcceleration.y);
+        q.concat(":");
+        q.concat(sensorValue.un.linearAcceleration.z);
+        BT.println(q);
+        break;
+      }
   }
 }
