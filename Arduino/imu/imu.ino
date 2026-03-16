@@ -32,7 +32,7 @@ void setup(void) {
   // BT.begin(9600);
   // BT.print("AT+ROLE0");
   // BT.end();
-  BT.begin(19200);
+  BT.begin(115200);
 
   while (!BT) delay(5);
   BT.println("Adafruit BNO08x test!");

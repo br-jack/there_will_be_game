@@ -31,7 +31,7 @@ namespace Hammer
 
         [SerializeField] Transform pivotTransform;
         private bool portOpen = false;
-        private readonly int timeoutMs = 30;
+        private readonly int timeoutMs = 50;
 
 
 
@@ -78,7 +78,7 @@ namespace Hammer
 
                 if (!string.IsNullOrEmpty(port))
                 {
-                    stream = new SerialPort(port, 19200)
+                    stream = new SerialPort(port, 115200)
                     {
                         ReadTimeout = timeoutMs
                     };
@@ -111,14 +111,13 @@ namespace Hammer
                     try
                     {
                         recievedData = stream.ReadLine();
+                        dataQueue.Enqueue(recievedData);
                     }
                     catch (Exception ex)
                     {
                         Debug.LogWarning($"Error reading data: {ex.Message}");
-                        return;
                     }
 
-                    dataQueue.Enqueue(recievedData);
                 }
             }
             catch (Exception ex)
@@ -155,7 +154,7 @@ namespace Hammer
                     }
                     catch
                     {
-
+                        Debug.LogWarning("Incorrect acceleration format.");
                     }
 
                 }
@@ -171,6 +170,7 @@ namespace Hammer
                     }
                     catch
                     {
+                        Debug.LogWarning("Incorrect quaternion format.");
 
                     }
 
@@ -217,7 +217,6 @@ namespace Hammer
                 Debug.Log("Port is not open for reading.");
                 return;
             }
-
 
             ParseStream();
             UpdateRotation();

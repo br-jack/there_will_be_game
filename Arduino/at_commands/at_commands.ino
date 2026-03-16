@@ -1,10 +1,10 @@
 #include <SoftwareSerial.h>
 
 // hub 
-SoftwareSerial BT(10,11); // RX, TX
+//SoftwareSerial BT(10,11); // RX, TX
 
 // imu
-// SoftwareSerial BT(D8, D9);  // RX, TX
+ SoftwareSerial BT(D8, D9);  // RX, TX
 
 void setup() {
   // Open serial communications and wait for port to open:
