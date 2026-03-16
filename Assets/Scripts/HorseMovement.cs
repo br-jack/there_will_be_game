@@ -39,10 +39,11 @@ public class HorseMovement : MonoBehaviour
     public float lowJumpMultiplier = 4f; // originally 2f
     public LayerMask groundMask;
     [SerializeField] [Range(0f, 1f)] private float groundCheckDistance = 0.3f;
-    [SerializeField] private float pullToGroundWhenNearSpeed = 25f;
 
     [SerializeField] [Range(0f, 1f)] private float wallCheckDistance = 0.40f;
     [SerializeField] private LayerMask wallCheckMask;
+
+    [SerializeField] [Range(0.5f, 3f)] private float bumpVelocityThreshold = 6.0f;
 
     private float _groundedTimer = 0f;
 
@@ -164,6 +165,14 @@ public class HorseMovement : MonoBehaviour
         bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
         _isGrounded = grounded;
 
+        // If there's a small bump, there's only a small upwards velocity, so zero the velocity
+        if (grounded && _rb.linearVelocity.y > 0f && _rb.linearVelocity.y < bumpVelocityThreshold)
+        {
+            Vector3 v = _rb.linearVelocity;
+            v.y = 0f;
+            _rb.linearVelocity = v;
+        }
+
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
         
@@ -174,10 +183,6 @@ public class HorseMovement : MonoBehaviour
             _groundedTimer += Time.fixedDeltaTime;
 
             CalculateSpeed();
-
-            // Pulls the horse down towards y = 0 by a small step each second (maximum of 'pullToGroundWhenNearSpeed' units per second)
-            float newSmallBumpY = Mathf.MoveTowards(_rb.linearVelocity.y, 0f, pullToGroundWhenNearSpeed * Time.fixedDeltaTime);
-            _rb.linearVelocity = new Vector3();
         } else
         {
             _groundedTimer = 0f;
