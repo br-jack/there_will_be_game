@@ -24,6 +24,8 @@ public class HorseMovement : MonoBehaviour
     private float _turnInput;
     private float _brakeInput;
 
+    [SerializeField] private ParticleSystem runParticles;
+
     [SerializeField] private ParticleSystem jumpParticles;
     public float jumpForce = 8f;
     private bool _jumpHeld;
@@ -166,10 +168,14 @@ public class HorseMovement : MonoBehaviour
         {
             _groundedTimer += Time.fixedDeltaTime;
 
+            runParticles.Play();
+
             CalculateSpeed();
         } else
         {
             _groundedTimer = 0f;
+            
+            runParticles.Stop();;
         }
 
         Turn(grounded);

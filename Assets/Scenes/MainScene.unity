@@ -6106,6 +6106,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5061453144199501981}
     m_Modifications:
+    - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
+      propertyPath: stopAction
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7460813865729099286, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -7934,6 +7938,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!198 &1809950553 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
+  m_PrefabInstance: {fileID: 755131451}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1854216392
 GameObject:
   m_ObjectHideFlags: 0
@@ -8634,6 +8643,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: runParticles
+      value: 
+      objectReference: {fileID: 1809950553}
     - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: jumpParticles
       value: 
