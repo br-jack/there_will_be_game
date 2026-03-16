@@ -98,24 +98,26 @@ void loop() {  // run over and over
 
     case SH2_GAME_ROTATION_VECTOR:
 
-      BT.print("q:");
-      BT.print(sensorValue.un.gameRotationVector.real);
-      BT.print(":");
-      BT.print(sensorValue.un.gameRotationVector.i);
-      BT.print(":");
-      BT.print(sensorValue.un.gameRotationVector.j);
-      BT.print(":");
-      BT.println(sensorValue.un.gameRotationVector.k);
+      float r = sensorValue.un.gameRotationVector.real;
+      float i = sensorValue.un.gameRotationVector.i;
+      float j = sensorValue.un.gameRotationVector.j;
+      float k = sensorValue.un.gameRotationVector.k;
+      char q[]; 
+      q[0] = "a";
+      q[1] = ":";s
+      dtostrf(value, 3, 2, q);
+      q[]
+
+      BT.println();
       break;
 
     case SH2_LINEAR_ACCELERATION:
 
-      BT.print("a:");
-      BT.print(sensorValue.un.linearAcceleration.x);
-      BT.print(":");
-      BT.print(sensorValue.un.linearAcceleration.y);
-      BT.print(":");
-      BT.println(sensorValue.un.linearAcceleration.z);
+      float x = sensorValue.un.linearAcceleration.x;
+      float y = sensorValue.un.linearAcceleration.y;
+      float x = sensorValue.un.linearAcceleration.z;
+
+      BT.println();
       break;
   }
 }
