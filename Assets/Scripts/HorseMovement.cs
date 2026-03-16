@@ -46,7 +46,7 @@ public class HorseMovement : MonoBehaviour
     public float normalLateralFriction = 1.0f;  // normal grip
     public float driftAngularBoost = 2.0f;      // extra rotation force during drift
     public float driftKickoutForce = 5f;        // sideways push
-    public float driftSteerThreshold = 0.7f;    // how hard the player must steer
+    public float driftSteerThreshold = 0.8f;    // how hard the player must steer
     public float driftSpeedThreshold = 20f;      // minimum speed to drift
     private float driftTimer = 0f; // hard turn must be held to drift
 
@@ -227,9 +227,13 @@ public class HorseMovement : MonoBehaviour
             _isDrifting = false;
         }
 
-        if (_isDrifting && Mathf.Abs(_turnInput) < 0.5f && grounded) //drift stops as turn relaxes
+        if (_isDrifting)
         {
-            _isDrifting = false;
+            if (_currentSpeed < driftSpeedThreshold * 0.6f && Mathf.Abs(_turnInput) < 0.4f) //drift stops as turn relaxes
+            {
+                _isDrifting = false;
+                driftTimer = 0f;
+            }
         }
             
         Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
