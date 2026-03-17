@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Concurrent;
 using System.IO.Ports;
+using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Hammer
@@ -10,7 +13,9 @@ namespace Hammer
         Quaternion gameRotationVector;
         Vector3 frameAcceleration;
         SerialPort stream;
-
+        private Thread ioThread;
+        private bool running;
+        private ConcurrentQueue<string> dataQueue = new ConcurrentQueue<string>();
 
         [SerializeField] float extension;
         float extensionVelocity;
@@ -21,23 +26,40 @@ namespace Hammer
         [SerializeField] float sensitivity = 2;
         [SerializeField] float momentumDecay = 0.92f;
 
-
         private float momentum = 0;
 
         [SerializeField] Transform pivotTransform;
         private bool portOpen = false;
-        private readonly int timeoutMs = 30;
-
-     
-
+        private readonly int timeoutMs = 50;
 
         public Rigidbody rigidBody;
 
         void Start()
         {
+            int attempts = 0;
+            while (GlobalManager.Instance.port.IsUnityNull())
+            {
+                GlobalManager.Instance.SearchPorts();
+                attempts++;
+                if (attempts == 5)
+                {
+                    Debug.LogWarning("Could not find port.");
+                    running = false;
+                    return;
+                }
+            }
+
             Connect();
             rigidBody = GetComponent<Rigidbody>();
-            Application.targetFrameRate = 60;
+
+            running = true;
+
+            // Start the background I/O thread
+            ioThread = new Thread(IOThreadLoop)
+            {
+                IsBackground = true
+            };
+            ioThread.Start();
         }
 
 
@@ -45,33 +67,16 @@ namespace Hammer
         {
             try
             {
-                string port = null;
-                if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
+                stream = new SerialPort(GlobalManager.Instance.port, 115200)
                 {
-                    port = "COM3";
-                }
+                    ReadTimeout = timeoutMs
+                };
 
-                if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
-                {
-                    port = "/dev/cu.usbmodem101";
-                }
-
-                if (Application.platform.Equals(RuntimePlatform.LinuxPlayer) || Application.platform.Equals(RuntimePlatform.LinuxServer))
-                {
-                    port = "/dev/ttyACM0";
-                }
-
-                if (!string.IsNullOrEmpty(port))
-                {
-                    stream = new SerialPort(port, 19200)
-                    {
-                        ReadTimeout = timeoutMs
-                    };
-                }
                 stream.DtrEnable = true;
                 stream.Open();
                 stream.ReadTimeout = timeoutMs;
                 portOpen = true;
+                // if youre connected but not getting any data you may have another serial monitor open for this port
                 Debug.Log("Connected (allegedly)");
             }
             catch (System.Exception e)
@@ -81,6 +86,33 @@ namespace Hammer
                 Debug.LogWarning(e);
             }
         }
+
+
+        private void IOThreadLoop()
+        {
+            try
+            {
+                while (running)
+                {
+                    string recievedData = null;
+                    try
+                    {
+                        recievedData = stream.ReadLine();
+                        dataQueue.Enqueue(recievedData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning($"Error reading data: {ex.Message}");
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[IO Thread] Error: {ex.Message}");
+            }
+        }
+
         public void CalibrateHammer()
         {
             GlobalManager.Instance.CalibrationQuaternion = Quaternion.Inverse(gameRotationVector);
@@ -89,28 +121,10 @@ namespace Hammer
 
         void ParseStream()
         {
-
-            string recievedData = null;
-
-            while (stream.BytesToRead > 0)
+            while (dataQueue.TryDequeue(out string data))
             {
-                try
-                {
-                    //recievedData = stream.ReadExisting();
-                    recievedData = stream.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogWarning($"Error reading data: {ex.Message}");
-                    return;
-                }
-
-                Debug.Log(recievedData);
-                //string[] streamLines = recievedData.Split('\n');
-                //foreach (string line in streamLines)
-                //{
-                //string[] parsedData = line.Trim().Split(':');
-                string[] parsedData = recievedData.Trim().Split(':');
+                Debug.Log($"[Main Thread] Received: {data}");
+                string[] parsedData = data.Trim().Split(':');
 
 
                 if (parsedData[0] == "a")
@@ -124,10 +138,11 @@ namespace Hammer
                                                 );
                         // TODO change to impulse or something (persist across frames)
                         if (acceleration.magnitude > frameAcceleration.magnitude) frameAcceleration = acceleration;
+
                     }
                     catch
                     {
-
+                        Debug.LogWarning("Incorrect acceleration format.");
                     }
 
                 }
@@ -136,13 +151,20 @@ namespace Hammer
                 {
                     try
                     {
-                        gameRotationVector = new Quaternion(float.Parse(parsedData[2]),
+                        //Quaternion possibleQuaternion = new Quaternion(-float.Parse(parsedData[3]),
+                        //    -float.Parse(parsedData[4]),
+                        //    float.Parse(parsedData[2]),
+                        //    float.Parse(parsedData[1]));
+                        Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[2]),
                             -float.Parse(parsedData[4]),
                             float.Parse(parsedData[3]),
                             float.Parse(parsedData[1]));
+                        gameRotationVector = possibleQuaternion;
+
                     }
                     catch
                     {
+                        Debug.LogWarning("Incorrect quaternion format.");
 
                     }
 
@@ -150,14 +172,19 @@ namespace Hammer
                 }
             }
 
-
         }
 
 
 
         void UpdateRotation()
         {
-            transform.localRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;
+            Quaternion newRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;
+            float diff = Quaternion.Angle(newRotation, gameRotationVector);
+            if (diff < 160.0f)
+            {
+                transform.localRotation = newRotation;
+            }
+
         }
 
         void UpdatePosition()
@@ -184,20 +211,19 @@ namespace Hammer
         void Update()
         {
 
-
             if (!stream.IsOpen)
             {
-                Debug.Log("Port is not open for reading.");
+                Debug.LogWarning("Port is not open for reading.");
                 return;
             }
 
             ParseStream();
             UpdateRotation();
             UpdatePosition();
-            frameAcceleration = Vector3.zero;
+
+            // this completely breaks momentum but whatever
+            frameAcceleration = new Vector3(0, 0, 0);
         }
-
-
 
         public void OnCollisionEnter(Collision collision)
         {
@@ -215,6 +241,14 @@ namespace Hammer
             Debug.Log("Port closed");
         }
 
+        private void OnDestroy()
+        {
+            running = false;
+            if (ioThread != null && ioThread.IsAlive)
+            {
+                ioThread.Join();
+            }
+        }
     }
 
 }
