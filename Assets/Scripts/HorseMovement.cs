@@ -50,6 +50,7 @@ public class HorseMovement : MonoBehaviour
     private Vector3 _groundNormal = Vector3.up;
 
     private float _groundedTimer = 0f;
+    [SerializeField] [Range(0.05f, 0.5f)] private float groundProbeRadius = 0.18f;
 
     private bool _jumpPressed;
     
@@ -221,6 +222,17 @@ public class HorseMovement : MonoBehaviour
         // AccelerateTo(_rb, forwardMovement, 100.0f);
         //Looking into another way to get around it
         // _rb.MovePosition(_rb.position + forwardMovement);
+    }
+
+    private bool CheckForGroundBelow(Vector3 rayOrigin, float maxDistance, out RaycastHit groundHit)
+    {
+        if (Physics.SphereCast(rayOrigin, groundProbeRadius, Vector3.down, out groundHit, castDistance, groundMask, QueryTriggerInteraction.Ignore))
+        {
+            if (Vector3.Angle(groundHit.normal, Vector3.up) <= maxGroundAngle) return true;
+        }
+
+        groundHit = default;
+        return false;
     }
 
     private bool PullToGround(out RaycastHit groundHit)
