@@ -82,7 +82,7 @@ public class EnemyMeleeAttack : MonoBehaviour
     private void PerformAttack()
     {
         // Logs attack in console, performs attack, sets cooldown
-        Debug.Log($"EnemyMeleeAttack: the enemy deals {damage} damage to {playerHealth?.name} at this time: {Time.time}");
+        Debug.Log($"EnemyMeleeAttack: Enemy performs ATTACK.");
         playerHealth.TakeDamage(damage);
         nextAttackTime = Time.time + attackCooldown;
     }
