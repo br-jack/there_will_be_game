@@ -248,13 +248,23 @@ public class HorseMovement : MonoBehaviour
         }
         
         Vector3 desiredVelocity = movementDirection * _currentSpeed;
-
         Vector3 currentPlanarVelocity = Vector3.ProjectOnPlane(_rb.linearVelocity, directionOfMovement);
-
         Vector3 accel = (desiredVelocity - currentPlanarVelocity) / Time.fixedDeltaTime;
         accel.y = 0.0f;
-        
         _rb.AddForce(accel, ForceMode.Acceleration);
+
+        // Extra ground adhesion to stop the horse jumping when it reaches small steps etc.
+        if (ground)
+        {
+            float upSpeed = Vector3.Dot(_rb.linearVelocity, _groundNormal);
+
+            if (upSpeed > 0f && separatingSpeed < bumpVelocityThreshold)
+            {
+                _rb.linearVelocity -= groundNormal * separatingSpeed;
+            }
+
+            _rb.AddForce(-_groundNormal * pull, ForceMode.Acceleration);
+        }
         
         // _rb.linearVelocity += forwardMovement; //#Shay: doing this fixes clipping into walls but breaks everything else.
         // AccelerateTo(_rb, forwardMovement, 100.0f);
@@ -317,14 +327,8 @@ public class HorseMovement : MonoBehaviour
     {
         float upSpeed = Vector3.Dot(_rb.linearVelocity, groundHit.normal);
 
-        if (_timerSinceOnGround > maxTimeToPullToGround)
-        {
-            return false
-        }
-        if (upSpeed > maxUpSpeedToPullToGround)
-        {
-            return false;
-        }
+        if (_timerSinceOnGround > maxTimeToPullToGround) return false;
+        if (upSpeed > maxUpSpeedToPullToGround) return false;
 
         // Otherwise, it should pull the player to the ground.
         if (separatingSpeed > 0f)
