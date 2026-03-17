@@ -172,7 +172,7 @@ public class HorseMovement : MonoBehaviour
     private void HandleMovement()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
-        bool grounded = Physics.Raycast(rayOrigin, Vector3.down, groundCheckDistance, groundMask);
+        bool grounded = CheckForGroundBelow(out RaycastHit groundHit, groundCheckDistance);
         _isGrounded = grounded;
 
         // If there's a small bump, there's only a small upwards velocity, so zero the velocity
@@ -245,6 +245,22 @@ public class HorseMovement : MonoBehaviour
         float castDistance = groundProbeStartHeight + extraDistance;
 
         if (RayToGroundBelow(rayOrigin, castDistance, out groundHit)) return true;
+
+        // Checks for ground a little bit forward in the direction of movement.
+        if (forwardGroundProbeOffset > 0f && Mathf.Abs(_currentSpeed) >= 0.05f)
+        {
+            Vector3 flatForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+
+            if (flatForward.sqrMagnitude > 0.0001f)
+            {
+                Vector3 forwardOffset = flatForward.normalized * (forwardGroundProbeOffset * Mathf.Sign(_currentSpeed));
+
+                if (TryGroundCast(rayOrigin + forwardOffset, castDistance, out groundHit))
+                {
+                    return true;
+                }
+            }
+        }
 
         return false;
     }
