@@ -155,7 +155,7 @@ public class HorseMovement : MonoBehaviour
 
         _currentSpeed += netForce * Time.fixedDeltaTime;
 
-        if (_throttleInput == 0.0f && _brakeInput == 0.0f)
+        if (Mathf.Abs(_throttleInput) < 0.01f && Mathf.Abs(_brakeInput) < 0.01f)
         {
             if (_currentSpeed > 0f)
             {
