@@ -1,9 +1,9 @@
 using System;
-using System.IO.Ports;
-using UnityEngine;
 using System.Collections.Concurrent;
+using System.IO.Ports;
 using System.Threading;
 using Unity.VisualScripting;
+using UnityEngine;
 
 namespace Hammer
 {
@@ -17,7 +17,6 @@ namespace Hammer
         private bool running;
         private ConcurrentQueue<string> dataQueue = new ConcurrentQueue<string>();
 
-
         [SerializeField] float extension;
         float extensionVelocity;
         [SerializeField] float k = 20f;
@@ -27,15 +26,11 @@ namespace Hammer
         [SerializeField] float sensitivity = 2;
         [SerializeField] float momentumDecay = 0.92f;
 
-
         private float momentum = 0;
 
         [SerializeField] Transform pivotTransform;
         private bool portOpen = false;
         private readonly int timeoutMs = 50;
-
-
-
 
         public Rigidbody rigidBody;
 
@@ -212,7 +207,6 @@ namespace Hammer
         void Update()
         {
 
-
             if (!stream.IsOpen)
             {
                 Debug.LogWarning("Port is not open for reading.");
@@ -226,8 +220,6 @@ namespace Hammer
             // this completely breaks momentum but whatever
             frameAcceleration = new Vector3(0, 0, 0);
         }
-
-
 
         public void OnCollisionEnter(Collision collision)
         {
