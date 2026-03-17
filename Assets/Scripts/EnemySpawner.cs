@@ -29,7 +29,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int spawnCount = 25;
     public float spawnJitter = 0.75f;
     public float spawnRadius = 0.5f;
-
     private Vector3 _formationAnchor;
     private float _formationCheckTimer = 0.0f;
     private float _formationCheckInterval = 0.1f;
