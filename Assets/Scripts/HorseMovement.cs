@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,8 @@ public class HorseMovement : MonoBehaviour
     public float deceleration = 2f; //ambient deceleration when no acceleration or braking/reverse
 
     public float brake = 20f;
-    public float maxSpeed = 14f;
+    public float maxSpeed = 30f;
+    public float steerTorque = 10f;
 
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
@@ -32,6 +34,8 @@ public class HorseMovement : MonoBehaviour
     private float scaledJumpForce;
 
     private Rigidbody _rb;
+
+    public Transform horseVisual;
     
     private float _throttleInput;
     private float _turnInput;
@@ -58,6 +62,22 @@ public class HorseMovement : MonoBehaviour
     private float _groundedTimer = 0f;
 
     private bool _jumpPressed;
+
+    //drifting
+    private bool _isDrifting;
+
+    private bool _driftPressed;
+
+    public float driftLateralFriction = 0.3f;   // how slippery sideways movement becomes
+    public float normalLateralFriction = 1.0f;  // normal grip
+    public float driftAngularBoost = 2.0f;      // extra rotation force during drift
+    public float driftKickoutForce = 20f;        // sideways push
+    public float driftSteerThreshold = 0.8f;    // how hard the player must steer
+    public float driftSpeedThreshold = 20f;      // minimum speed to drift
+    private float driftTimer = 0f; // hard turn must be held to drift
+
+    private float _currentLean = 0f;
+
     
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -95,6 +115,30 @@ public class HorseMovement : MonoBehaviour
         _brakeInput = context.ReadValue<float>();
     }
 
+    public void onDrift(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            _driftPressed = true;
+        if (context.canceled) 
+            _driftPressed = false;
+    }
+
+    private void ApplyDriftPhysics()
+    {
+        Vector3 localVel = transform.InverseTransformDirection(_rb.linearVelocity);
+        localVel.x *= driftLateralFriction;
+        _rb.linearVelocity = transform.TransformDirection(localVel);
+
+        _rb.AddForce(transform.right * _turnInput * driftKickoutForce, ForceMode.Acceleration);
+    }
+
+    private void RestoreNormalGrip()
+    {
+        Vector3 localVel = transform.InverseTransformDirection(_rb.linearVelocity);
+        localVel.x *= normalLateralFriction;
+        _rb.linearVelocity = transform.TransformDirection(localVel);
+    }
+
     private void Awake() 
     {
     }
@@ -102,11 +146,12 @@ public class HorseMovement : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        SkinnedMeshRenderer _hm = player.GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     private void Update()
     {
-        //_jumpHeld = Input.GetButton("Jump");
     }
 
     private void FixedUpdate()  
@@ -117,6 +162,53 @@ public class HorseMovement : MonoBehaviour
         }
 
         HandleMovement();
+        
+        float targetLean;
+        if (_isDrifting && _isGrounded  && _driftPressed)
+        {
+            ApplyDriftPhysics();
+            targetLean = _turnInput * 30f;
+
+            float driftAngle = _turnInput;
+            
+            if (Mathf.Abs(_turnInput) > 0.1f)
+                _currentLean = driftAngle * 30f;
+
+            if (_brakeInput > 0f)
+            {
+                _currentSpeed -= brake * 0.7f * Time.fixedDeltaTime;
+                driftLateralFriction = Mathf.Lerp(driftLateralFriction, 0.6f, Time.fixedDeltaTime * 2f);
+                _currentLean = Mathf.Lerp(_currentLean, 0f, Time.deltaTime * 1.5f);
+            }
+            else
+            {
+                driftLateralFriction = 0.3f;
+            }
+
+            if (_throttleInput == 0f && _brakeInput == 0f)
+            {
+                _currentSpeed -= deceleration * 0.5f * Time.fixedDeltaTime;
+                _currentLean = Mathf.Lerp(_currentLean, 0f, Time.deltaTime * 0.8f);
+                driftLateralFriction = 0.3f;
+            }
+        }
+        else if (_isGrounded)
+        {
+            RestoreNormalGrip();
+            targetLean = 0f;
+        }
+        else
+        {
+            targetLean = _currentLean;
+        }
+
+        _currentLean = Mathf.Lerp(_currentLean, targetLean, Time.deltaTime * 5f);
+        Quaternion leanRot = Quaternion.Euler(0f, targetLean, 0f);
+        horseVisual.localRotation = Quaternion.Lerp(
+            horseVisual.localRotation,
+            leanRot,
+            Time.deltaTime * 5f
+        );
 
         if (!_isGrounded && _rb.linearVelocity.y < 0f) //speed up fall for feel  
         { 
@@ -175,10 +267,16 @@ public class HorseMovement : MonoBehaviour
         {
             effectiveTurnSpeed *= 0.2f;
         }
+
+        if (_isDrifting)
+        {
+            effectiveTurnSpeed *= 1.2f;
+        }
         
         Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
-
         _rb.MoveRotation(_rb.rotation * turnRotation);
+
+        //_rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * 0.05f, ForceMode.Acceleration); try only have torque added for drifting not when turning normally
     }
 
     // private void CalculateSpeed()
@@ -259,6 +357,26 @@ public class HorseMovement : MonoBehaviour
 
         grounded = grounded && !JumpedThisFrame;
         _isGrounded = grounded;
+
+        if (Mathf.Abs(_turnInput) > driftSteerThreshold && _currentSpeed > driftSpeedThreshold  && _driftPressed)
+        {
+            driftTimer += Time.fixedDeltaTime;
+            if (driftTimer > 0.2f) _isDrifting = true;
+        }
+        else if (grounded)
+        {
+            driftTimer = 0f;
+            _isDrifting = false;
+        }
+
+        if (_isDrifting && _driftPressed)
+        {
+            if (_currentSpeed < driftSpeedThreshold * 0.6f && Mathf.Abs(_turnInput) < 0.4f) //drift stops as turn relaxes
+            {
+                _isDrifting = false;
+                driftTimer = 0f;
+            }
+        }
 
         Turn(grounded);
         
