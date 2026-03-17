@@ -236,6 +236,11 @@ public class HorseMovement : MonoBehaviour
             return false;
         }
 
+        // Otherwise, it should pull the player to the ground.
+        if (separatingSpeed > 0f)
+        {
+            _rb.linearVelocity -= groundHit.normal * separatingSpeed;
+        }
         return true;
     }
 }
