@@ -16,7 +16,9 @@ public class HorseMovement : MonoBehaviour
     public float CurrentSpeed => _currentSpeed;
 
     private bool _isGrounded = false;
-    private maxUpSpeedToPullToGround = 2.5f;
+    private float maxUpSpeedToPullToGround = 2.5f;
+    private float maxTimeToPullToGround = 0.2f;
+    private float _timerSinceOnGround = Mathf.Infinity;
     public bool IsGrounded => _isGrounded;
 
     private float speedPercent;
@@ -130,6 +132,7 @@ public class HorseMovement : MonoBehaviour
 
         _isGrounded = false;
         _jumpPressed = false;
+        _timerSinceOnGround = Mathf.infinity;
     }
 
     private void Turn(bool grounded)
@@ -186,11 +189,12 @@ public class HorseMovement : MonoBehaviour
         if (grounded) //prevents accelerating and decelerating whilst midair
         {
             _groundedTimer += Time.fixedDeltaTime;
-
+            _timerSinceOnGround = 0f;
             CalculateSpeed();
         } else
         {
             _groundedTimer = 0f;
+            _timerSinceOnGround += Time.fixedDeltaTime;
         }
 
         Turn(grounded);
@@ -223,6 +227,10 @@ public class HorseMovement : MonoBehaviour
     {
         float upSpeed = Vector3.Dot(_rb.linearVelocity, groundHit.normal);
 
+        if (_timerSinceOnGround > maxTimeToPullToGround)
+        {
+            return false
+        }
         if (upSpeed > maxUpSpeedToPullToGround)
         {
             return false;
