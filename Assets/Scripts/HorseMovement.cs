@@ -18,6 +18,7 @@ public class HorseMovement : MonoBehaviour
     private bool _isGrounded = false;
     private float maxUpSpeedToPullToGround = 2.5f;
     private float maxTimeToPullToGround = 0.2f;
+    private float _ignoreGroundTimer = 0f;
     private float _timerSinceOnGround = Mathf.Infinity;
     public bool IsGrounded => _isGrounded;
 
@@ -224,7 +225,31 @@ public class HorseMovement : MonoBehaviour
         // _rb.MovePosition(_rb.position + forwardMovement);
     }
 
-    private bool CheckForGroundBelow(Vector3 rayOrigin, float maxDistance, out RaycastHit groundHit)
+    private bool CheckForGroundBlow(out RaycastHit groundHit, float extraDistance)
+    {
+        groundHit = default;
+
+        if (_ignoreGroundTimer > 0f) return false;
+
+        Vector3 rayOrigin;
+        
+        if (_rb != null)
+        {
+            rayOrigin = _rb.worldCenterOfMass + Vector3.up * groundProbeStartHeight;
+        }
+        else
+        {
+            rayOrigin = _rb.worldCenterOfMass + Vector3.up * groundProbeStartHeight;
+        }
+
+        float castDistance = groundProbeStartHeight + extraDistance;
+
+        if (RayToGroundBelow(rayOrigin, castDistance, out groundHit)) return true;
+
+        return false;
+    }
+
+    private bool RayToGroundBelow(Vector3 rayOrigin, float maxDistance, out RaycastHit groundHit)
     {
         if (Physics.SphereCast(rayOrigin, groundProbeRadius, Vector3.down, out groundHit, castDistance, groundMask, QueryTriggerInteraction.Ignore))
         {
