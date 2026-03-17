@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class SoldierSpawner : MonoBehaviour
 {
     public GameObject enemyPrefab; 
-    public float spawnInterval = 2f;
-    public int maxEnemies = 5;
-    public int currentEnemies = 0;
-    public int spawnRadius = 1;
+    [SerializeField] private float spawnInterval = 2f;
+    [SerializeField] private int maxEnemies = 5;
+    [SerializeField] private int currentEnemies = 0;
+    [SerializeField] private int spawnRadius = 1;
 
     private float timer = 0.0f;
 

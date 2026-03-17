@@ -1,10 +1,9 @@
 using System;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public class SoldierMovement : MonoBehaviour
 {
     public float speed;
-    
     private Health _playerHealthRef;
     private Transform _playerTransformRef;
 
