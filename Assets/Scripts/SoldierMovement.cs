@@ -6,7 +6,6 @@ public class SoldierMovement : MonoBehaviour
     [SerializeField] private float speed;
     [HideInInspector] public PlayerHealth _playerHealthRef;
     [HideInInspector] public Transform _playerTransformRef;
-    private Transform _playerTransformRef;
     private Rigidbody _rb;
     
     private void Start()
