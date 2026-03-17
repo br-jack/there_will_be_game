@@ -36,8 +36,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7518415703454089516}
-  - {fileID: 3621527934196132299}
-  - {fileID: 4899899540962466556}
   - {fileID: 3261977628211663459}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -51,7 +49,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 2
   m_CenterOfMass: {x: 0, y: -0.5, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -62,11 +60,11 @@ Rigidbody:
     serializedVersion: 2
     m_Bits: 0
   m_ImplicitCom: 0
-  m_ImplicitTensor: 1
+  m_ImplicitTensor: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!136 &1283039553650565241
 CapsuleCollider:
@@ -106,10 +104,11 @@ MonoBehaviour:
   acceleration: 12
   deceleration: 6
   brake: 20
-  maxSpeed: 30
+  maxSpeed: 32
+  steerTorque: 10
   turnSpeed: 130
   turnSpeedAtZero: 100
-  horseVisual: {fileID: 0}
+  horseVisual: {fileID: 7518415703454089516}
   jumpForce: 8.5
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
@@ -117,16 +116,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   groundCheckDistance: 0.3
-  driftLateralFriction: 0.3
-  normalLateralFriction: 1
-  driftAngularBoost: 2
-  driftKickoutForce: 5
-  driftSteerThreshold: 0.7
-  driftSpeedThreshold: 6
   wallCheckDistance: 1
   wallCheckMask:
     serializedVersion: 2
     m_Bits: 1
+  driftLateralFriction: 0.3
+  normalLateralFriction: 1
+  driftAngularBoost: 2
+  driftKickoutForce: 5
+  driftSteerThreshold: 0.8
+  driftSpeedThreshold: 30
 --- !u!114 &3243528490933531595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,25 +329,28 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 1ec719fc-b88a-491b-a720-a3344f3d018f
     m_ActionName: 'Player/Restart[/Keyboard/r,/XInputControllerWindows/buttonNorth]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8174524514626147514}
+        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
+        m_MethodName: onDrift
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 78afaba4-6f2e-4667-bef2-234a0ad85bef
+    m_ActionName: 'Player/Drift[/XInputControllerWindows/dpad/left,/Keyboard/leftShift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &9012345678901234567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3304088472591636408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e4a969cf45b4a8f8e2ff1f88c1987f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
---- !u!114 &7176289254400105866
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -390,10 +392,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3621527934196132299}
   - {fileID: 4899899540962466556}
-  - {fileID: 5535217082639667215}
-  - {fileID: 8253894215088384144}
+  - {fileID: 3621527934196132299}
   m_Father: {fileID: 7672999536482783943}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &870075532609719192
@@ -1012,80 +1012,6 @@ CapsuleCollider:
   m_Height: 6.3681006
   m_Direction: 2
   m_Center: {x: -0.24913073, y: 2.2614594, z: 0.6592649}
---- !u!1001 &1831706109233432594
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 7518415703454089516}
-    m_Modifications:
-    - target: {fileID: 6256780460042021808, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_Name
-      value: hammer
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
---- !u!4 &4968837087464601880 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6746211926941413642, guid: 2aa00c4b19f05944fadc1e5a11baea98, type: 3}
-  m_PrefabInstance: {fileID: 1831706109233432594}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5767227098848654389
 PrefabInstance:
   m_ObjectHideFlags: 0

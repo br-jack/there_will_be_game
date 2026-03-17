@@ -233,8 +233,9 @@ public class HorseMovement : MonoBehaviour
         }
         
         Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
+        _rb.MoveRotation(_rb.rotation * turnRotation);
 
-        _rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * 0.05f, ForceMode.Acceleration);
+        //_rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * 0.05f, ForceMode.Acceleration); try only have torque added for drifting not when turning normally
     }
 
     private void CalculateSpeed()
