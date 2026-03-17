@@ -139,7 +139,7 @@ public class HorseMovement : MonoBehaviour
             return false;
         }
 
-        if (!grounded || _groundedTimer <= 0.1f || _currentSpeed <= 2f)
+        if (!grounded || _groundedTimer <= 0.1f)
         {
             _jumpPressed = false;
             return false;
@@ -180,6 +180,27 @@ public class HorseMovement : MonoBehaviour
 
         _rb.MoveRotation(_rb.rotation * turnRotation);
     }
+
+    // private void CalculateSpeed()
+    // {
+    //     if (_throttleInput > 0.0f)
+    //     {
+    //         _currentSpeed += acceleration * _throttleInput * Time.fixedDeltaTime;
+    //     }
+    //     else if (_throttleInput < 0.0f)
+    //     {
+    //         _currentSpeed -= deceleration * -_throttleInput * Time.fixedDeltaTime;
+    //     }
+
+    //     _currentSpeed -= brake * _brakeInput * Time.fixedDeltaTime;
+
+    //     if (Mathf.Abs(_throttleInput) < 0.01f && Mathf.Abs(_brakeInput) < 0.01f)
+    //     {
+    //         _currentSpeed = Mathf.MoveTowards(_currentSpeed, 0, deceleration * Time.fixedDeltaTime);
+    //     }
+        
+    //     _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
+    // }
 
     private void CalculateSpeed()
     {
@@ -222,19 +243,20 @@ public class HorseMovement : MonoBehaviour
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
         
-        if (grounded) //prevents accelerating and decelerating whilst midair
+        bool JumpedThisFrame = Jump(grounded);
+
+        if (grounded && !JumpedThisFrame) //prevents accelerating and decelerating whilst midair
         {
             _groundedTimer += Time.fixedDeltaTime;
             _timerSinceOnGround = 0f;
             CalculateSpeed();
         } 
-        else
+        else if (!grounded)
         {
             _groundedTimer = 0f;
             _timerSinceOnGround += Time.fixedDeltaTime;
         }
 
-        bool JumpedThisFrame = Jump(grounded);
         grounded = grounded && !JumpedThisFrame;
         _isGrounded = grounded;
 
@@ -312,7 +334,9 @@ public class HorseMovement : MonoBehaviour
         
         if (_rb != null)
         {
-            rayOrigin = _rb.worldCenterOfMass + Vector3.up * groundProbeStartHeight;
+            // Ensure the probe starts above the lowest point even when the centre of mass is offset.
+            float comAdjustment = Mathf.Max(0f, -_rb.centerOfMass.y);
+            rayOrigin = _rb.worldCenterOfMass + Vector3.up * (groundProbeStartHeight + comAdjustment);
         }
         else
         {
@@ -377,4 +401,3 @@ public class HorseMovement : MonoBehaviour
         return true;
     }
 }
-
