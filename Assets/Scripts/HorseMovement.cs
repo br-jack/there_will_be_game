@@ -173,6 +173,12 @@ public class HorseMovement : MonoBehaviour
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
         bool grounded = CheckForGroundBelow(out RaycastHit groundHit, groundCheckDistance);
+
+        if (!grounded)
+        {
+            grounded = PullToGround(out groundHit);
+        }
+
         _isGrounded = grounded;
 
         // If there's a small bump, there's only a small upwards velocity, so zero the velocity
@@ -199,22 +205,53 @@ public class HorseMovement : MonoBehaviour
             _timerSinceOnGround += Time.fixedDeltaTime;
         }
 
+        bool JumpedThisFrame = Jump(isGrounded);
+        bool grounded = isGrounded && !jumpedThisFrame;
+
         Turn(grounded);
         
         Vector3 movementDirection = transform.forward;
+
+        // If grounded, movement is projected along the slope rather than through it.
+        if (grounded)
+        {
+            moveDirection = Vector3.ProjectOnPlane(moveDirection, _groundNormal);
+            
+            if (moveDirection.sqrtMagnitude < 0.001f)
+            {
+                moveDirection = Vector3.Cross(transform.right, _groundNormal);
+            }
+
+            moveDirection = moveDirection.normalized;
+        }
         
         Vector3 wallDetectionRayOrigin = transform.position + Vector3.up * 1.0f;
+        
         bool wallHit = Physics.Raycast(wallDetectionRayOrigin, movementDirection, out RaycastHit hit, wallCheckDistance, wallCheckMask);
         // Debug.DrawRay(wallDetectionRayOrigin, movementDirection * wallCheckDistance, Color.blue);
         //Prevent shooting up walls when slamming into one by redirecting velocity against it
+        
+        Vector3 directionOfMovement = Vector3.up;
+            if (grounded) directionOfMovement = _groundNormal;
+        
         if (wallHit)
         {
-            movementDirection = Vector3.ProjectOnPlane(movementDirection, hit.normal).normalized;
+            // If we hit the wall, move along it instead of through it.
+            movementDirection = Vector3.ProjectOnPlane(movementDirection, wallHit.normal).normalized;
+
+            slideDirection = Vector3.ProjectOnPlane(slideDirection, directionOfMovement);
+
+            // If there's nowhere to move, stop trying to move.
+            if (slideDirection.sqrtMagnitude < 0.0001f) return;
+
+            moveDirection = slideDirection.normalized;
         }
         
         Vector3 desiredVelocity = movementDirection * _currentSpeed;
 
-        Vector3 accel = (desiredVelocity - _rb.linearVelocity) / Time.fixedDeltaTime;
+        Vector3 currentPlanarVelocity = Vector3.ProjectOnPlane(_rb.linearVelocity, directionOfMovement);
+
+        Vector3 accel = (desiredVelocity - currentPlanarVelocity) / Time.fixedDeltaTime;
         accel.y = 0.0f;
         
         _rb.AddForce(accel, ForceMode.Acceleration);
