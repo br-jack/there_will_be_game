@@ -1,5 +1,7 @@
+using System.Security;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class HorseMovement : MonoBehaviour
 {
@@ -7,12 +9,26 @@ public class HorseMovement : MonoBehaviour
     public float deceleration = 2f; //ambient deceleration when no acceleration or braking/reverse
 
     public float brake = 20f;
-    public float maxSpeed = 14f;
+    public float maxSpeed = 32f;
+
+    private float _currentMaxSpeed = 8f;
 
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
     
     private float _currentSpeed = 0f;
+    private float _currentAcceleration = 2f;
+
+    //Discrete Speeds
+    private (string name, float minSpeed, float acceleration)[] gears =
+    {
+        ("Walk", 0f, 2f),
+        ("Trot", 8f, 4f),
+        ("Canter", 16f, 8f),
+        ("Gallop", 24f, 12f)
+    };
+
+    private int _currentGear = 0;
 
     private float speedPercent;
 
@@ -66,6 +82,28 @@ public class HorseMovement : MonoBehaviour
         _brakeInput = context.ReadValue<float>();
     }
 
+    public void OnGearUp(InputAction.CallbackContext context)
+    {
+        if (context.performed && gears[_currentGear].name != "Gallop")
+        {
+            if (_currentSpeed >= gears[_currentGear+1].minSpeed)
+            {
+                _currentGear += 1;
+            }            
+        }
+        Debug.Log($"Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
+    }
+
+    public void OnGearDown(InputAction.CallbackContext context)
+    {
+        if (context.performed && gears[_currentGear].name != "Walk") {
+            if (_currentSpeed <= gears[_currentGear].minSpeed) {
+                _currentGear -= 1;
+            }
+        }
+        Debug.Log($"Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
+    }
+
     private void Awake() 
     {
     }
@@ -77,11 +115,14 @@ public class HorseMovement : MonoBehaviour
 
     private void Update()
     {
-        //_jumpHeld = Input.GetButton("Jump");
+        
     }
 
     private void FixedUpdate()  
     {
+        _currentMaxSpeed = gears[_currentGear].minSpeed + 8; //maybe need to do this better so differences in speedmax can be variable between different gears
+        _currentAcceleration = gears[_currentGear].acceleration;
+
         HandleMovement();
         if (_rb.linearVelocity.y < 0) //speed up fall for feel  
         { 
@@ -124,7 +165,7 @@ public class HorseMovement : MonoBehaviour
 
             float netForce = 0f;
 
-            netForce += acceleration * _throttleInput;
+            netForce += _currentAcceleration * _throttleInput;
             netForce -= brake * _brakeInput;
 
             _currentSpeed += netForce * Time.fixedDeltaTime;
@@ -139,7 +180,7 @@ public class HorseMovement : MonoBehaviour
                     _currentSpeed += deceleration * Time.fixedDeltaTime;
                 }
             }
-            _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
+            _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, _currentMaxSpeed);
         } else
         {
             _groundedTimer = 0f;
