@@ -117,7 +117,7 @@ public class HorseMovement : MonoBehaviour
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
-
+        _isGrounded = false;
         _jumpPressed = false;
     }
 
