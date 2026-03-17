@@ -54,6 +54,8 @@ public class HorseMovement : MonoBehaviour
     //drifting
     private bool _isDrifting;
 
+    private bool _driftPressed;
+
     public float driftLateralFriction = 0.3f;   // how slippery sideways movement becomes
     public float normalLateralFriction = 1.0f;  // normal grip
     public float driftAngularBoost = 2.0f;      // extra rotation force during drift
@@ -94,6 +96,14 @@ public class HorseMovement : MonoBehaviour
     public void onBrake(InputAction.CallbackContext context)
     {
         _brakeInput = context.ReadValue<float>();
+    }
+
+    public void onDrift(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            _driftPressed = true;
+        if (context.canceled) 
+            _driftPressed = false;
     }
 
     private void ApplyDriftPhysics()
@@ -142,7 +152,7 @@ public class HorseMovement : MonoBehaviour
         HandleMovement();
 
         float targetLean;
-        if (_isDrifting && grounded)
+        if (_isDrifting && grounded  && _driftPressed)
         {
             ApplyDriftPhysics();
             targetLean = _turnInput * 30f;
@@ -224,7 +234,7 @@ public class HorseMovement : MonoBehaviour
         
         Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
 
-        _rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * 0.03f, ForceMode.Acceleration);
+        _rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * 0.05f, ForceMode.Acceleration);
     }
 
     private void CalculateSpeed()
@@ -271,7 +281,7 @@ public class HorseMovement : MonoBehaviour
             _groundedTimer = 0f;
         }
 
-        if (Mathf.Abs(_turnInput) > driftSteerThreshold && _currentSpeed > driftSpeedThreshold)
+        if (Mathf.Abs(_turnInput) > driftSteerThreshold && _currentSpeed > driftSpeedThreshold  && _driftPressed)
         {
             driftTimer += Time.fixedDeltaTime;
             if (driftTimer > 0.2f) _isDrifting = true;
@@ -282,7 +292,7 @@ public class HorseMovement : MonoBehaviour
             _isDrifting = false;
         }
 
-        if (_isDrifting)
+        if (_isDrifting && _driftPressed)
         {
             if (_currentSpeed < driftSpeedThreshold * 0.6f && Mathf.Abs(_turnInput) < 0.4f) //drift stops as turn relaxes
             {
@@ -292,12 +302,6 @@ public class HorseMovement : MonoBehaviour
         }
 
         Turn(grounded);
-         
-        Vector3 vel = _rb.linearVelocity;
-        Vector3 forwardVel = transform.forward * _currentSpeed;
-        vel.x = forwardVel.x;
-        vel.z = forwardVel.z;
-        _rb.linearVelocity = vel;
         
         Vector3 movementDirection = transform.forward;
         
@@ -308,13 +312,17 @@ public class HorseMovement : MonoBehaviour
         if (wallHit)
         {
             movementDirection = Vector3.ProjectOnPlane(movementDirection, hit.normal).normalized;
-            Vector3 desiredVelocity = movementDirection * _currentSpeed;
-
-            Vector3 accel = (desiredVelocity - _rb.linearVelocity) / Time.fixedDeltaTime;
-            accel.y = 0.0f;
-            
-            _rb.AddForce(accel, ForceMode.Acceleration);
         }
+
+        // Vector3 accel = (desiredVelocity - _rb.linearVelocity) / Time.fixedDeltaTime;
+        // accel.y = 0.0f;            
+        // _rb.AddForce(accel, ForceMode.Acceleration);
+
+        Vector3 vel = _rb.linearVelocity;
+        Vector3 forwardVel = movementDirection * _currentSpeed;
+        vel.x = forwardVel.x;
+        vel.z = forwardVel.z;
+        _rb.linearVelocity = vel;
         
         // _rb.linearVelocity += forwardMovement; //#Shay: doing this fixes clipping into walls but breaks everything else.
         // AccelerateTo(_rb, forwardMovement, 100.0f);
