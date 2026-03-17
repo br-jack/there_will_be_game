@@ -38,7 +38,10 @@ public class HorseMovement : MonoBehaviour
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
     public LayerMask groundMask;
-    public float groundCheckDistance = 0.3f;
+    [SerializeField] [Range(0f, 1f)] private float groundCheckDistance = 0.3f;
+
+    [SerializeField] [Range(0f, 1f)] private float wallCheckDistance = 0.40f;
+    [SerializeField] private LayerMask wallCheckMask;
 
     private float _groundedTimer = 0f;
 
@@ -96,12 +99,64 @@ public class HorseMovement : MonoBehaviour
         HandleMovement();
         if (_rb.linearVelocity.y < 0) //speed up fall for feel  
         { 
-            _rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime; 
+            _rb.linearVelocity += Physics.gravity * ((fallMultiplier - 1) * Time.fixedDeltaTime); 
         }
         else if (_rb.linearVelocity.y > 0 && !_jumpHeld) //smaller jump when jump button not held
         { 
-            _rb.linearVelocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime; 
+            _rb.linearVelocity += Physics.gravity * ((lowJumpMultiplier - 1) * Time.fixedDeltaTime); 
         }
+    }
+
+    private void Jump(bool grounded)
+    {
+        /*Not currently using this:
+        scaledJumpForce = jumpForce * speedPercent * 1.2f;
+        scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);*/
+
+        if (_jumpPressed && grounded && _groundedTimer > 0.1f && _currentSpeed > 2f)
+        {
+            _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+
+        _jumpPressed = false;
+    }
+
+    private void Turn(bool grounded)
+    {
+        //restrict turning more at higher speeds
+        float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
+
+        if (!grounded)
+        {
+            effectiveTurnSpeed *= 0.2f;
+        }
+        
+        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
+
+        _rb.MoveRotation(_rb.rotation * turnRotation);
+    }
+
+    private void CalculateSpeed()
+    {
+        float netForce = 0f;
+
+        netForce += acceleration * _throttleInput;
+        netForce -= brake * _brakeInput;
+
+        _currentSpeed += netForce * Time.fixedDeltaTime;
+
+        if (_throttleInput == 0.0f && _brakeInput == 0.0f)
+        {
+            if (_currentSpeed > 0f)
+            {
+                _currentSpeed -= deceleration * Time.fixedDeltaTime;
+            } else if (_currentSpeed < 0f)
+            {
+                _currentSpeed += deceleration * Time.fixedDeltaTime;
+            }
+        }
+        
+        _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
     }
 
     private void HandleMovement()
@@ -112,59 +167,42 @@ public class HorseMovement : MonoBehaviour
 
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
-        scaledJumpForce = jumpForce * speedPercent * 1.2f;
-
-        scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);
-
-        if (_jumpPressed && grounded && _groundedTimer > 0.1f && _currentSpeed > 2f)
-        {
-            //_rb.AddForce(Vector3.up * scaledJumpForce, ForceMode.Impulse);
-            Vector3 v = _rb.linearVelocity;
-            v.y = jumpForce;
-            _rb.linearVelocity = v;
-
-        }
-
-        _jumpPressed = false;
-
-        //restrict turning more at higher speeds
-        float effectiveTurnSpeed = Mathf.Lerp(turnSpeedAtZero, turnSpeed, speedPercent);
-
+        
+        Jump(grounded);
+        
         if (grounded) //prevents accelerating and decelerating whilst midair
         {
             _groundedTimer += Time.fixedDeltaTime;
 
-            float netForce = 0f;
-
-            netForce += acceleration * _throttleInput;
-            netForce -= brake * _brakeInput;
-
-            _currentSpeed += netForce * Time.fixedDeltaTime;
-
-            if (_throttleInput == 0.0f && _brakeInput == 0.0f)
-            {
-                if (_currentSpeed > 0f)
-                {
-                    _currentSpeed -= deceleration * Time.fixedDeltaTime;
-                } else if (_currentSpeed < 0f)
-                {
-                    _currentSpeed += deceleration * Time.fixedDeltaTime;
-                }
-            }
-            _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
+            CalculateSpeed();
         } else
         {
             _groundedTimer = 0f;
-            effectiveTurnSpeed *= 0.2f;
         }
-            
-        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
 
-        _rb.MoveRotation(_rb.rotation * turnRotation);
+        Turn(grounded);
         
+        Vector3 movementDirection = transform.forward;
+        
+        Vector3 wallDetectionRayOrigin = transform.position + Vector3.up * 1.0f;
+        bool wallHit = Physics.Raycast(wallDetectionRayOrigin, movementDirection, out RaycastHit hit, wallCheckDistance, wallCheckMask);
+        // Debug.DrawRay(wallDetectionRayOrigin, movementDirection * wallCheckDistance, Color.blue);
+        //Prevent shooting up walls when slamming into one by redirecting velocity against it
+        if (wallHit)
+        {
+            movementDirection = Vector3.ProjectOnPlane(movementDirection, hit.normal).normalized;
+        }
+        
+        Vector3 desiredVelocity = movementDirection * _currentSpeed;
 
-        Vector3 forwardMovement = transform.forward * (_currentSpeed * Time.fixedDeltaTime); 
+        Vector3 accel = (desiredVelocity - _rb.linearVelocity) / Time.fixedDeltaTime;
+        accel.y = 0.0f;
         
-        _rb.MovePosition(_rb.position + forwardMovement);
+        _rb.AddForce(accel, ForceMode.Acceleration);
+        
+        // _rb.linearVelocity += forwardMovement; //#Shay: doing this fixes clipping into walls but breaks everything else.
+        // AccelerateTo(_rb, forwardMovement, 100.0f);
+        //Looking into another way to get around it
+        // _rb.MovePosition(_rb.position + forwardMovement);
     }
 }
