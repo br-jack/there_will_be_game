@@ -6,7 +6,7 @@ public class SoldierSpawner : MonoBehaviour
     [SerializeField] private float spawnInterval = 2f;
     [SerializeField] private int maxEnemies = 5;
     [SerializeField] private int currentEnemies = 0;
-    [SerializeField] private int spawnRadius = 1;
+    [SerializeField] private float spawnRadius = 1f;
 
     private float timer = 0.0f;
 
@@ -20,11 +20,18 @@ public class SoldierSpawner : MonoBehaviour
         }
     }
 
+    private Vector3 RandomOffsetHelper()
+    {
+        Vector3 offset = Random.insideUnitSphere * spawnRadius;
+        offset.y = 0;
+        return offset;
+    }
+
     void SpawnEnemy()
     {
         if (currentEnemies < maxEnemies)
         {
-            GameObject enemy = Instantiate(enemyPrefab, transform.position, transform.rotation);
+            GameObject enemy = Instantiate(enemyPrefab, transform.position + RandomOffsetHelper(), transform.rotation);
             currentEnemies++;
         }
     }
