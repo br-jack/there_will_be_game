@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class PowerUpSpawner : MonoBehaviour
 {
+
     public GameObject[] powerUpPrefabs;
 
-    // Defining the spawn area for the power ups
-    public float minX = -10.0f;
-    public float maxX = 10.0f;
-    public float minZ = -10.0f;
-    public float maxZ = 10.0f;
-    public float spawnHeight = 12.0f;
+    public Transform[] spawnPoints;
+    public float spawnHeightOffset = 10.0f;
 
     public float spawnInterval = 120.0f;
     public bool spawnImmediately = false;
 
-    // Gonna add this here but haven't actually added the text yet
     public TextMeshProUGUI boonText;
     public float messageDuration = 3.0f;
+
+    // keeping this here cause i eventually want to add a soundclip for this
+    public AudioClip boonFanfare;
+    public AudioSource audioSource;
 
     private void Start()
     {
@@ -35,6 +35,12 @@ public class PowerUpSpawner : MonoBehaviour
         if (spawnImmediately)
         {
             SpawnRandomPowerUp();
+
+            if (audioSource != null && boonFanfare != null)
+            {
+                audioSource.PlayOneShot(boonFanfare);
+            }
+
             yield return StartCoroutine(ShowBoonMessage());
         }
 
@@ -42,27 +48,32 @@ public class PowerUpSpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(spawnInterval);
 
-            yield return StartCoroutine(ShowBoonMessage());
             SpawnRandomPowerUp();
+
+            if (audioSource != null && boonFanfare != null)
+            {
+                audioSource.PlayOneShot(boonFanfare);
+            }
+
+            yield return StartCoroutine(ShowBoonMessage());
         }
     }
 
     private void SpawnRandomPowerUp()
     {
 
-        int randomIndex = Random.Range(0, powerUpPrefabs.Length);
+        int randomPowerUpIndex = Random.Range(0, powerUpPrefabs.Length);
+        int randomSpawnPointIndex = Random.Range(0, spawnPoints.Length);
 
-        float randomX = Random.Range(minX, maxX);
-        float randomZ = Random.Range(minZ, maxZ);
+        Transform chosenSpawnPoint = spawnPoints[randomSpawnPointIndex];
 
-        Vector3 spawnPosition = new Vector3(randomX, spawnHeight, randomZ);
+        Vector3 spawnPosition = chosenSpawnPoint.position + Vector3.up * spawnHeightOffset;
 
-        Instantiate(powerUpPrefabs[randomIndex], spawnPosition, Quaternion.identity);
+        Instantiate(powerUpPrefabs[randomPowerUpIndex], spawnPosition, Quaternion.identity);
     }
 
     private IEnumerator ShowBoonMessage()
     {
-        // Can delete this once i've actually added in the text in the UI
         if (boonText == null)
         {
             yield break;
