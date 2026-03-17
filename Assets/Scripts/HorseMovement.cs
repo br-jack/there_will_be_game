@@ -44,6 +44,7 @@ public class HorseMovement : MonoBehaviour
     [SerializeField] private LayerMask wallCheckMask;
 
     [SerializeField] [Range(0.5f, 3f)] private float bumpVelocityThreshold = 6.0f;
+    private Vector3 _groundNormal = Vector3.up;
 
     private float _groundedTimer = 0f;
 
@@ -117,6 +118,15 @@ public class HorseMovement : MonoBehaviour
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+
+        float seperatingSpeed = Vector3.Dot(_rb.linearVelocity, _groundNormal);
+
+        // Remove the component of speed perpendicular to the ground direction (if it's there).
+        if (separatingSpeed > 0f)
+        {
+            velocity -= _groundNormal * separatingSpeed;
+        }
+
         _isGrounded = false;
         _jumpPressed = false;
     }
