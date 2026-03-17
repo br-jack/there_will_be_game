@@ -116,10 +116,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   groundCheckDistance: 0.3
+  groundProbeRadius: 0.18
+  groundProbeStartHeight: 0.25
+  forwardGroundProbeOffset: 0.18
+  maxGroundAngle: 60
+  pull: 45
   wallCheckDistance: 1
   wallCheckMask:
     serializedVersion: 2
     m_Bits: 1
+  bumpVelocityThreshold: 3
   driftLateralFriction: 0.3
   normalLateralFriction: 1
   driftAngularBoost: 2

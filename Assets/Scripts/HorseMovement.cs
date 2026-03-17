@@ -71,7 +71,7 @@ public class HorseMovement : MonoBehaviour
     public float driftLateralFriction = 0.3f;   // how slippery sideways movement becomes
     public float normalLateralFriction = 1.0f;  // normal grip
     public float driftAngularBoost = 2.0f;      // extra rotation force during drift
-    public float driftKickoutForce = 5f;        // sideways push
+    public float driftKickoutForce = 20f;        // sideways push
     public float driftSteerThreshold = 0.8f;    // how hard the player must steer
     public float driftSpeedThreshold = 20f;      // minimum speed to drift
     private float driftTimer = 0f; // hard turn must be held to drift
@@ -130,8 +130,6 @@ public class HorseMovement : MonoBehaviour
         _rb.linearVelocity = transform.TransformDirection(localVel);
 
         _rb.AddForce(transform.right * _turnInput * driftKickoutForce, ForceMode.Acceleration);
-
-        _rb.AddTorque(Vector3.up * _turnInput * driftAngularBoost, ForceMode.Acceleration);
     }
 
     private void RestoreNormalGrip()
@@ -154,7 +152,6 @@ public class HorseMovement : MonoBehaviour
 
     private void Update()
     {
-        //_jumpHeld = Input.GetButton("Jump");
     }
 
     private void FixedUpdate()  
@@ -269,6 +266,11 @@ public class HorseMovement : MonoBehaviour
         if (!grounded)
         {
             effectiveTurnSpeed *= 0.2f;
+        }
+
+        if (_isDrifting)
+        {
+            effectiveTurnSpeed *= 1.2f;
         }
         
         Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
