@@ -288,15 +288,31 @@ public class HorseMovement : MonoBehaviour
         
         if (wallHit)
         {
-            // If we hit the wall, move along it instead of through it.
-            Vector3 slideDirection = Vector3.ProjectOnPlane(movementDirection, hit.normal);
+            // // If we hit the wall, move along it instead of through it.
+            // Vector3 slideDirection = Vector3.ProjectOnPlane(movementDirection, hit.normal);
 
-            slideDirection = Vector3.ProjectOnPlane(slideDirection, directionOfMovement);
+            // slideDirection = Vector3.ProjectOnPlane(slideDirection, directionOfMovement);
 
-            // If there's nowhere to move, stop trying to move.
-            if (slideDirection.sqrMagnitude < 0.0001f) return;
+            // // If there's nowhere to move, stop trying to move.
+            // if (slideDirection.sqrMagnitude < 0.0001f) return;
 
-            movementDirection = slideDirection.normalized;
+            // movementDirection = slideDirection.normalized;
+            Vector3 planeVelocity = Vector3.ProjectOnPlane(_rb.linearVelocity, directionOfMovement);
+            float speedIntoWall = Vector3.Dot(planeVelocity, -hit.normal);
+
+            if (speedIntoWall > 0f)
+            {
+                Vector3 wallNormal = hit.normal.normalized;
+                float intoWallAmount = Vector3.Dot(planeVelocity, -wallNormal);
+                if (intoWallAmount > 0f) {
+                    Vector3 velocityIntoWall = -wallNormal * intoWallAmount;
+                    _rb.linearVelocity -= velocityIntoWall;
+                }
+                _currentSpeed = 0f;
+            }
+            movementDirection = Vector3.zero;
+
+
         }
         
         Vector3 desiredVelocity = movementDirection * _currentSpeed;
