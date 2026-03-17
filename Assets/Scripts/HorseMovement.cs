@@ -224,7 +224,7 @@ public class HorseMovement : MonoBehaviour
         
         Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
 
-        _rb.MoveRotation(_rb.rotation * turnRotation);
+        _rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * 0.03f, ForceMode.Acceleration);
     }
 
     private void CalculateSpeed()
@@ -290,22 +290,14 @@ public class HorseMovement : MonoBehaviour
                 driftTimer = 0f;
             }
         }
-            
-        Quaternion turnRotation = Quaternion.Euler(0f, _turnInput * effectiveTurnSpeed * Time.fixedDeltaTime, 0f);
-        //_rb.MoveRotation(_rb.rotation * turnRotation);
-        _rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * 0.03f, ForceMode.Acceleration);
-        //_rb.AddTorque(Vector3.up * _turnInput * steerTorque, ForceMode.Acceleration);       
 
-        //Vector3 forwardMovement = transform.forward * (_currentSpeed * Time.fixedDeltaTime);
-        //_rb.MovePosition(_rb.position + forwardMovement);        
+        Turn(grounded);
+         
         Vector3 vel = _rb.linearVelocity;
         Vector3 forwardVel = transform.forward * _currentSpeed;
         vel.x = forwardVel.x;
         vel.z = forwardVel.z;
         _rb.linearVelocity = vel;
-
-
-        Turn(grounded);
         
         Vector3 movementDirection = transform.forward;
         
@@ -316,14 +308,13 @@ public class HorseMovement : MonoBehaviour
         if (wallHit)
         {
             movementDirection = Vector3.ProjectOnPlane(movementDirection, hit.normal).normalized;
-        }
-        
-        Vector3 desiredVelocity = movementDirection * _currentSpeed;
+            Vector3 desiredVelocity = movementDirection * _currentSpeed;
 
-        Vector3 accel = (desiredVelocity - _rb.linearVelocity) / Time.fixedDeltaTime;
-        accel.y = 0.0f;
-        
-        _rb.AddForce(accel, ForceMode.Acceleration);
+            Vector3 accel = (desiredVelocity - _rb.linearVelocity) / Time.fixedDeltaTime;
+            accel.y = 0.0f;
+            
+            _rb.AddForce(accel, ForceMode.Acceleration);
+        }
         
         // _rb.linearVelocity += forwardMovement; //#Shay: doing this fixes clipping into walls but breaks everything else.
         // AccelerateTo(_rb, forwardMovement, 100.0f);
