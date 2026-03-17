@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class SoldierMovement : MonoBehaviour
 {
-    public float speed;
-    private Health _playerHealthRef;
+    [SerializeField] private float speed;
+    [HideInInspector] public PlayerHealth _playerHealthRef;
+    [HideInInspector] public Transform _playerTransformRef;
     private Transform _playerTransformRef;
-
     private Rigidbody _rb;
     
     private void Start()

@@ -22,9 +22,8 @@ public class SoldierSpawner : MonoBehaviour
 
     private Vector3 RandomOffsetHelper()
     {
-        Vector3 offset = Random.insideUnitSphere * spawnRadius;
-        offset.y = 0;
-        return offset;
+        Vector3 offset = Random.insideUnitCircle * spawnRadius;
+        return new Vector3(offset.x, 0, offset.y);
     }
 
     void SpawnEnemy()
