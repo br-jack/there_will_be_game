@@ -34,6 +34,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        //Debug.Log($"TakeDamage activated.");
         if (playerLives.IsInvincible) return; // Don't let player take damage while invisible.
 
         // Don't put negative values for TakeDamage, use Heal() instead
