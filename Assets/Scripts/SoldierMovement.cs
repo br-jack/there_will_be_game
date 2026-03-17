@@ -7,18 +7,25 @@ public class SoldierMovement : MonoBehaviour
     [HideInInspector] public PlayerHealth _playerHealthRef;
     [HideInInspector] public Transform _playerTransformRef;
     private Rigidbody _rb;
+    [SerializeField] private int collisionDamage = 10;
     
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
 
         GameObject playerRef = GameObject.FindWithTag("Player");
-        _playerTransformRef = playerRef.transform;
-        _playerHealthRef = playerRef.GetComponent<Health>();
+        if (playerRef != null)
+        {
+            _playerTransformRef = playerRef.transform;
+            _playerHealthRef = playerRef.GetComponent<PlayerHealth>();
+        }
     }
 
     private void FixedUpdate()
     {
+        if (_rb == null) return;
+        if (_playerTransformRef == null) return;
+
         // TODO use A* pathfinding instead
         Vector3 playerPosition = _playerTransformRef.position;
         Vector3 direction = (playerPosition - transform.position).normalized;
@@ -29,7 +36,10 @@ public class SoldierMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            _playerHealthRef.LoseLife();
+            if (_playerHealthRef != null)
+            {
+                _playerHealthRef.TakeDamage(collisionDamage);
+            }
         }
     }
 }
