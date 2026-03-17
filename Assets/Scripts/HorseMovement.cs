@@ -20,12 +20,12 @@ public class HorseMovement : MonoBehaviour
     private float _currentAcceleration = 2f;
 
     //Discrete Speeds
-    private (string name, float minSpeed, float acceleration)[] gears =
+    private (string name, float minSpeed, float maxSpeed, float acceleration)[] gears =
     {
-        ("Walk", 0f, 2f),
-        ("Trot", 8f, 4f),
-        ("Canter", 16f, 8f),
-        ("Gallop", 24f, 12f)
+        ("Walk", 0f, 8f, 4f),
+        ("Trot", 8f, 16f, 6f),
+        ("Canter", 16f, 24f, 10f),
+        ("Gallop", 24f, 35f, 14f)
     };
 
     private int _currentGear = 0;
@@ -86,7 +86,7 @@ public class HorseMovement : MonoBehaviour
     {
         if (context.performed && gears[_currentGear].name != "Gallop")
         {
-            if (_currentSpeed >= gears[_currentGear+1].minSpeed)
+            //if (_currentSpeed >= gears[_currentGear+1].minSpeed) remove speedcheck to remove gear like functionality, just selectable speed levels with differnet accelreations and max speeds.
             {
                 _currentGear += 1;
             }            
@@ -97,7 +97,8 @@ public class HorseMovement : MonoBehaviour
     public void OnGearDown(InputAction.CallbackContext context)
     {
         if (context.performed && gears[_currentGear].name != "Walk") {
-            if (_currentSpeed <= gears[_currentGear].minSpeed) {
+            // if (_currentSpeed <= gears[_currentGear].minSpeed) 
+            {
                 _currentGear -= 1;
             }
         }
@@ -120,7 +121,15 @@ public class HorseMovement : MonoBehaviour
 
     private void FixedUpdate()  
     {
-        _currentMaxSpeed = gears[_currentGear].minSpeed + 8; //maybe need to do this better so differences in speedmax can be variable between different gears
+        // changed so can change gear without needing to be above or below speeds - remove Car gear vibe.
+        // for (int i = _currentGear; i >= 0; i--) { //auto downshifts if below minSpeed of currentGear, stand in for ptential "stall" where you cant move if you drop below speed of current gear and dont change gear
+        //     if (_currentSpeed < gears[_currentGear].minSpeed)
+        //     {
+        //         _currentGear -= 1;
+        //         Debug.Log($" AUTODOWNSHIFTED TOO SLOW, Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
+        //     }
+        // }
+        _currentMaxSpeed = gears[_currentGear].maxSpeed; //maybe need to do this better so differences in speedmax can be variable between different gears
         _currentAcceleration = gears[_currentGear].acceleration;
 
         HandleMovement();
