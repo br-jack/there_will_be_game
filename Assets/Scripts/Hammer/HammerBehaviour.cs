@@ -151,9 +151,13 @@ namespace Hammer
                 {
                     try
                     {
-                        Quaternion possibleQuaternion = new Quaternion(-float.Parse(parsedData[3]),
-                            -float.Parse(parsedData[4]),
-                            float.Parse(parsedData[2]),
+                        //Quaternion possibleQuaternion = new Quaternion(-float.Parse(parsedData[3]),
+                        //    -float.Parse(parsedData[4]),
+                        //    float.Parse(parsedData[2]),
+                        //    float.Parse(parsedData[1]));
+                        Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[2]),
+                            -float.Parse(parsedData[3]),
+                            float.Parse(parsedData[4]),
                             float.Parse(parsedData[1]));
                         gameRotationVector = possibleQuaternion;
 
