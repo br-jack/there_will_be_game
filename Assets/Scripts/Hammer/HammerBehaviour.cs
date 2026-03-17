@@ -3,6 +3,7 @@ using System.IO.Ports;
 using UnityEngine;
 using System.Collections.Concurrent;
 using System.Threading;
+using Unity.VisualScripting;
 
 namespace Hammer
 {
@@ -40,10 +41,21 @@ namespace Hammer
 
         void Start()
         {
+            int attempts = 0;
+            while (GlobalManager.Instance.port.IsUnityNull())
+            {
+                GlobalManager.Instance.SearchPorts();
+                attempts++;
+                if (attempts == 5)
+                {
+                    Debug.LogWarning("Could not find port.");
+                    running = false;
+                    return;
+                }
+            }
+
             Connect();
             rigidBody = GetComponent<Rigidbody>();
-            Application.targetFrameRate = 60;
-
 
             running = true;
 
@@ -60,29 +72,11 @@ namespace Hammer
         {
             try
             {
-                string port = null;
-                if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
+                stream = new SerialPort(GlobalManager.Instance.port, 115200)
                 {
-                    port = "COM4";
-                }
+                    ReadTimeout = timeoutMs
+                };
 
-                if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
-                {
-                    port = "/dev/cu.usbmodem101";
-                }
-
-                if (Application.platform.Equals(RuntimePlatform.LinuxPlayer) || Application.platform.Equals(RuntimePlatform.LinuxServer))
-                {
-                    port = "/dev/ttyACM0";
-                }
-
-                if (!string.IsNullOrEmpty(port))
-                {
-                    stream = new SerialPort(port, 115200)
-                    {
-                        ReadTimeout = timeoutMs
-                    };
-                }
                 stream.DtrEnable = true;
                 stream.Open();
                 stream.ReadTimeout = timeoutMs;
@@ -106,8 +100,6 @@ namespace Hammer
                 while (running)
                 {
                     string recievedData = null;
-
-                    // get data from port
                     try
                     {
                         recievedData = stream.ReadLine();
@@ -223,7 +215,7 @@ namespace Hammer
 
             if (!stream.IsOpen)
             {
-                Debug.Log("Port is not open for reading.");
+                Debug.LogWarning("Port is not open for reading.");
                 return;
             }
 
@@ -232,7 +224,7 @@ namespace Hammer
             UpdatePosition();
 
             // this completely breaks momentum but whatever
-            frameAcceleration = new Vector3(0,0,0);
+            frameAcceleration = new Vector3(0, 0, 0);
         }
 
 
