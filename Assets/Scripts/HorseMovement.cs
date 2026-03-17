@@ -16,6 +16,7 @@ public class HorseMovement : MonoBehaviour
     public float CurrentSpeed => _currentSpeed;
 
     private bool _isGrounded = false;
+    private maxUpSpeedToPullToGround = 2.5f;
     public bool IsGrounded => _isGrounded;
 
     private float speedPercent;
@@ -157,13 +158,7 @@ public class HorseMovement : MonoBehaviour
 
         if (Mathf.Abs(_throttleInput) < 0.01f && Mathf.Abs(_brakeInput) < 0.01f)
         {
-            if (_currentSpeed > 0f)
-            {
-                _currentSpeed -= deceleration * Time.fixedDeltaTime;
-            } else if (_currentSpeed < 0f)
-            {
-                _currentSpeed += deceleration * Time.fixedDeltaTime;
-            }
+            _currentSpeed = Mathf.MoveTowards(_currentSpeed, 0, deceleration * Time.fixedDeltaTime);
         }
         
         _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
@@ -223,4 +218,18 @@ public class HorseMovement : MonoBehaviour
         //Looking into another way to get around it
         // _rb.MovePosition(_rb.position + forwardMovement);
     }
+
+    private bool PullToGround(out RaycastHit groundHit)
+    {
+        float upSpeed = Vector3.Dot(_rb.linearVelocity, groundHit.normal);
+
+        if (upSpeed > maxUpSpeedToPullToGround)
+        {
+            return false;
+        }
+
+        return true;
+    }
 }
+
+
