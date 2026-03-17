@@ -43,6 +43,11 @@ public class HorseMovement : MonoBehaviour
     public float lowJumpMultiplier = 4f; // originally 2f
     public LayerMask groundMask;
     [SerializeField] [Range(0f, 1f)] private float groundCheckDistance = 0.3f;
+    [SerializeField] [Range(0.05f, 0.5f)] private float groundProbeRadius = 0.18f;
+    [SerializeField] [Range(0.05f, 0.75f)] private float groundProbeStartHeight = 0.25f;
+    [SerializeField] [Range(0f, 0.5f)] private float forwardGroundProbeOffset = 0.18f;
+    [SerializeField] [Range(0f, 75f)] private float maxGroundAngle = 60f;
+    [SerializeField] [Range(0f, 100f)] private float pull = 45f;
 
     [SerializeField] [Range(0f, 1f)] private float wallCheckDistance = 0.40f;
     [SerializeField] private LayerMask wallCheckMask;
@@ -51,7 +56,6 @@ public class HorseMovement : MonoBehaviour
     private Vector3 _groundNormal = Vector3.up;
 
     private float _groundedTimer = 0f;
-    [SerializeField] [Range(0.05f, 0.5f)] private float groundProbeRadius = 0.18f;
 
     private bool _jumpPressed;
     
@@ -65,10 +69,15 @@ public class HorseMovement : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed)
+        {
             _jumpPressed = true;
             _jumpHeld = true;
+        }
+
         if (context.canceled) 
+        {
             _jumpHeld = false;
+        }
     }
 
     public void onSteer(InputAction.CallbackContext context)
@@ -102,39 +111,59 @@ public class HorseMovement : MonoBehaviour
 
     private void FixedUpdate()  
     {
-        HandleMovement();
-        if (_rb.linearVelocity.y < 0) //speed up fall for feel  
-        { 
-            _rb.linearVelocity += Physics.gravity * ((fallMultiplier - 1) * Time.fixedDeltaTime); 
+        if (_ignoreGroundTimer > 0f)
+        {
+            _ignoreGroundTimer -= Time.fixedDeltaTime;
         }
-        else if (_rb.linearVelocity.y > 0 && !_jumpHeld) //smaller jump when jump button not held
+
+        HandleMovement();
+
+        if (!_isGrounded && _rb.linearVelocity.y < 0f) //speed up fall for feel  
         { 
-            _rb.linearVelocity += Physics.gravity * ((lowJumpMultiplier - 1) * Time.fixedDeltaTime); 
+            _rb.linearVelocity += Physics.gravity * ((fallMultiplier - 1f) * Time.fixedDeltaTime); 
+        }
+        else if (!_isGrounded && _rb.linearVelocity.y > 0f && !_jumpHeld) //smaller jump when jump button not held
+        { 
+            _rb.linearVelocity += Physics.gravity * ((lowJumpMultiplier - 1f) * Time.fixedDeltaTime); 
         }
     }
 
-    private void Jump(bool grounded)
+    private bool Jump(bool grounded)
     {
         /*Not currently using this:
         scaledJumpForce = jumpForce * speedPercent * 1.2f;
         scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);*/
 
-        if (_jumpPressed && grounded && _groundedTimer > 0.1f && _currentSpeed > 2f)
+        if (!_jumpPressed)
         {
-            _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            return false;
         }
 
-        float seperatingSpeed = Vector3.Dot(_rb.linearVelocity, _groundNormal);
+        if (!grounded || _groundedTimer <= 0.1f || _currentSpeed <= 2f)
+        {
+            _jumpPressed = false;
+            return false;
+        }
+
+        Vector3 velocity = _rb.linearVelocity;
+        float seperatingSpeed = Vector3.Dot(velocity, _groundNormal);
 
         // Remove the component of speed perpendicular to the ground direction (if it's there).
-        if (separatingSpeed > 0f)
+        if (seperatingSpeed > 0f)
         {
-            velocity -= _groundNormal * separatingSpeed;
+            velocity -= _groundNormal * seperatingSpeed;
         }
 
+        _rb.linearVelocity = velocity;
+        _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
         _isGrounded = false;
+        _groundedTimer = 0f;
         _jumpPressed = false;
-        _timerSinceOnGround = Mathf.infinity;
+        _ignoreGroundTimer = 0.15f;
+        _timerSinceOnGround = Mathf.Infinity;
+
+        return true;
     }
 
     private void Turn(bool grounded)
@@ -180,6 +209,7 @@ public class HorseMovement : MonoBehaviour
         }
 
         _isGrounded = grounded;
+        _groundNormal = grounded ? groundHit.normal : Vector3.up;
 
         // If there's a small bump, there's only a small upwards velocity, so zero the velocity
         if (grounded && _rb.linearVelocity.y > 0f && _rb.linearVelocity.y < bumpVelocityThreshold)
@@ -192,21 +222,21 @@ public class HorseMovement : MonoBehaviour
         //scale jumping to speed
         speedPercent = _currentSpeed / maxSpeed;
         
-        Jump(grounded);
-        
         if (grounded) //prevents accelerating and decelerating whilst midair
         {
             _groundedTimer += Time.fixedDeltaTime;
             _timerSinceOnGround = 0f;
             CalculateSpeed();
-        } else
+        } 
+        else
         {
             _groundedTimer = 0f;
             _timerSinceOnGround += Time.fixedDeltaTime;
         }
 
-        bool JumpedThisFrame = Jump(isGrounded);
-        bool grounded = isGrounded && !jumpedThisFrame;
+        bool JumpedThisFrame = Jump(grounded);
+        grounded = grounded && !JumpedThisFrame;
+        _isGrounded = grounded;
 
         Turn(grounded);
         
@@ -215,14 +245,14 @@ public class HorseMovement : MonoBehaviour
         // If grounded, movement is projected along the slope rather than through it.
         if (grounded)
         {
-            moveDirection = Vector3.ProjectOnPlane(moveDirection, _groundNormal);
+            movementDirection = Vector3.ProjectOnPlane(movementDirection, _groundNormal);
             
-            if (moveDirection.sqrtMagnitude < 0.001f)
+            if (movementDirection.sqrMagnitude < 0.001f)
             {
-                moveDirection = Vector3.Cross(transform.right, _groundNormal);
+                movementDirection = Vector3.Cross(transform.right, _groundNormal);
             }
 
-            moveDirection = moveDirection.normalized;
+            movementDirection = movementDirection.normalized;
         }
         
         Vector3 wallDetectionRayOrigin = transform.position + Vector3.up * 1.0f;
@@ -232,19 +262,19 @@ public class HorseMovement : MonoBehaviour
         //Prevent shooting up walls when slamming into one by redirecting velocity against it
         
         Vector3 directionOfMovement = Vector3.up;
-            if (grounded) directionOfMovement = _groundNormal;
+        if (grounded) directionOfMovement = _groundNormal;
         
         if (wallHit)
         {
             // If we hit the wall, move along it instead of through it.
-            movementDirection = Vector3.ProjectOnPlane(movementDirection, wallHit.normal).normalized;
+            Vector3 slideDirection = Vector3.ProjectOnPlane(movementDirection, hit.normal);
 
             slideDirection = Vector3.ProjectOnPlane(slideDirection, directionOfMovement);
 
             // If there's nowhere to move, stop trying to move.
-            if (slideDirection.sqrtMagnitude < 0.0001f) return;
+            if (slideDirection.sqrMagnitude < 0.0001f) return;
 
-            moveDirection = slideDirection.normalized;
+            movementDirection = slideDirection.normalized;
         }
         
         Vector3 desiredVelocity = movementDirection * _currentSpeed;
@@ -254,13 +284,13 @@ public class HorseMovement : MonoBehaviour
         _rb.AddForce(accel, ForceMode.Acceleration);
 
         // Extra ground adhesion to stop the horse jumping when it reaches small steps etc.
-        if (ground)
+        if (grounded)
         {
             float upSpeed = Vector3.Dot(_rb.linearVelocity, _groundNormal);
 
-            if (upSpeed > 0f && separatingSpeed < bumpVelocityThreshold)
+            if (upSpeed > 0f && upSpeed < bumpVelocityThreshold)
             {
-                _rb.linearVelocity -= groundNormal * separatingSpeed;
+                _rb.linearVelocity -= _groundNormal * upSpeed;
             }
 
             _rb.AddForce(-_groundNormal * pull, ForceMode.Acceleration);
@@ -272,7 +302,7 @@ public class HorseMovement : MonoBehaviour
         // _rb.MovePosition(_rb.position + forwardMovement);
     }
 
-    private bool CheckForGroundBlow(out RaycastHit groundHit, float extraDistance)
+    private bool CheckForGroundBelow(out RaycastHit groundHit, float extraDistance)
     {
         groundHit = default;
 
@@ -286,7 +316,7 @@ public class HorseMovement : MonoBehaviour
         }
         else
         {
-            rayOrigin = _rb.worldCenterOfMass + Vector3.up * groundProbeStartHeight;
+            rayOrigin = transform.position + Vector3.up * groundProbeStartHeight;
         }
 
         float castDistance = groundProbeStartHeight + extraDistance;
@@ -302,7 +332,7 @@ public class HorseMovement : MonoBehaviour
             {
                 Vector3 forwardOffset = flatForward.normalized * (forwardGroundProbeOffset * Mathf.Sign(_currentSpeed));
 
-                if (TryGroundCast(rayOrigin + forwardOffset, castDistance, out groundHit))
+                if (RayToGroundBelow(rayOrigin + forwardOffset, castDistance, out groundHit))
                 {
                     return true;
                 }
@@ -314,7 +344,12 @@ public class HorseMovement : MonoBehaviour
 
     private bool RayToGroundBelow(Vector3 rayOrigin, float maxDistance, out RaycastHit groundHit)
     {
-        if (Physics.SphereCast(rayOrigin, groundProbeRadius, Vector3.down, out groundHit, castDistance, groundMask, QueryTriggerInteraction.Ignore))
+        if (Physics.SphereCast(rayOrigin, groundProbeRadius, Vector3.down, out groundHit, maxDistance, groundMask, QueryTriggerInteraction.Ignore))
+        {
+            if (Vector3.Angle(groundHit.normal, Vector3.up) <= maxGroundAngle) return true;
+        }
+
+        if (Physics.Raycast(rayOrigin, Vector3.down, out groundHit, maxDistance, groundMask, QueryTriggerInteraction.Ignore))
         {
             if (Vector3.Angle(groundHit.normal, Vector3.up) <= maxGroundAngle) return true;
         }
@@ -325,18 +360,21 @@ public class HorseMovement : MonoBehaviour
 
     private bool PullToGround(out RaycastHit groundHit)
     {
-        float upSpeed = Vector3.Dot(_rb.linearVelocity, groundHit.normal);
+        groundHit = default;
 
         if (_timerSinceOnGround > maxTimeToPullToGround) return false;
-        if (upSpeed > maxUpSpeedToPullToGround) return false;
+        if (!CheckForGroundBelow(out groundHit, groundCheckDistance * 3f)) return false;
+
+        float seperatingSpeed = Vector3.Dot(_rb.linearVelocity, groundHit.normal);
+
+        if (seperatingSpeed > maxUpSpeedToPullToGround) return false;
 
         // Otherwise, it should pull the player to the ground.
-        if (separatingSpeed > 0f)
+        if (seperatingSpeed > 0f)
         {
-            _rb.linearVelocity -= groundHit.normal * separatingSpeed;
+            _rb.linearVelocity -= groundHit.normal * seperatingSpeed;
         }
         return true;
     }
 }
-
 
