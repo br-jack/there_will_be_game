@@ -216,7 +216,7 @@ public class HorseMovement : MonoBehaviour
             _currentSpeed = Mathf.MoveTowards(_currentSpeed, 0, deceleration * Time.fixedDeltaTime);
         }
         
-        _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
+        _currentSpeed = Mathf.Clamp(_currentSpeed, -3.0f, maxSpeed);
     }
 
     private void HandleMovement()
