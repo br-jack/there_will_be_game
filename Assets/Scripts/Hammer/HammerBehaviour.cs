@@ -102,7 +102,7 @@ namespace Hammer
                     }
                     catch (Exception ex)
                     {
-                        dataQueue.Enqueue($"Error reading data: {ex.Message}");
+                        // Debug.Log($"Error reading data: {ex.Message}");
                     }
 
                 }
