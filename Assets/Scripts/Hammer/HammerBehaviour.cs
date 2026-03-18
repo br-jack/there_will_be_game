@@ -102,14 +102,14 @@ namespace Hammer
                     }
                     catch (Exception ex)
                     {
-                        // Debug.LogWarning($"Error reading data: {ex.Message}");
+                        // Debug.Log($"Error reading data: {ex.Message}");
                     }
 
                 }
             }
             catch (Exception ex)
             {
-                // Debug.LogError($"[IO Thread] Error: {ex.Message}");
+                // Debug.Log($"[IO Thread] Error: {ex.Message}");
             }
         }
 
