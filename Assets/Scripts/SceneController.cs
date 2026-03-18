@@ -21,6 +21,10 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene("MainScene");
     }
+        public static void LoadIntro()
+    {
+        SceneManager.LoadScene("IntroScene");
+    }
     
     public static void LoadCalibration()
     {

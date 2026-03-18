@@ -39,6 +39,8 @@ public class PlayerLives : MonoBehaviour
     private void Awake()
     {
         if (playerHealth == null) playerHealth = GetComponent<PlayerHealth>();
+        if (livesBar == null) livesBar = FindObjectOfType<DiscreteHealthBar>();
+        if (healthBar == null) healthBar = FindObjectOfType<ContinuousBar>();
     }
 
     private void Start()
