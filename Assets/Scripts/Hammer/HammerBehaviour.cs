@@ -1,161 +1,228 @@
 using System;
-using System.Globalization;
-using TMPro;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Assertions;
-using WiimoteApi;
-using UnityEngine.SceneManagement;
+using System.Collections.Concurrent;
+using System.IO.Ports;
+using System.Threading;
 using Unity.VisualScripting;
+using UnityEngine;
 
 namespace Hammer
 {
-    //probs should set up a mechanism for calibrating the accelerometer. 
-    // This will need the game to take the user through a short process.  
-    //currently just uses whatever calibration values are in there. 
-
     public class HammerBehaviour : MonoBehaviour
     {
 
-        //public Wiimote Wiimote { get; private set; }
+        Quaternion gameRotationVector;
+        Vector3 frameAcceleration;
+        SerialPort stream;
+        private Thread ioThread;
+        private bool running;
+        private ConcurrentQueue<string> dataQueue = new ConcurrentQueue<string>();
 
-        
-        //Hammer should start flat with Pitch = 0
-        public Quaternion StartingRotation { get; private set; }
+        [SerializeField] float extension;
+        float extensionVelocity;
+        [SerializeField] float k = 20f;
+        [SerializeField] float dampingCoef = 3f;
+        [SerializeField] float restLength = 1;
+        [SerializeField] float maxLength = 20;
+        [SerializeField] float sensitivity = 2;
+        [SerializeField] float momentumDecay = 0.92f;
 
-        private Quaternion attitude;
+        private float momentum = 0;
 
-        void ConnectWiimote() {
-            if (WiimoteManager.HasWiimote())
-            {
-                Debug.LogWarning("Attempting to find a Wiimote even though one is already connected!");
-            }
-            
-            WiimoteManager.FindWiimotes(); // Poll native bluetooth drivers to find Wiimotes
+        [SerializeField] Transform pivotTransform;
+        private bool portOpen = false;
+        private readonly int timeoutMs = 50;
 
-            if (WiimoteManager.HasWiimote())
-            {
-                Assert.IsTrue(WiimoteManager.Wiimotes.Count == 1, "Only one Wiimote should be connected at a time");
-                //Use the first wiimote: others ignored
-                WiimoteGlobal.wiimote = WiimoteManager.Wiimotes[0];
+        public Rigidbody rigidBody;
 
-                //If the wiimote wasn't connected through dolphin, it may still have blinking lights
-                //even though it actually is still connected
-                WiimoteGlobal.wiimote.SendPlayerLED(true, false, false, true);
-
-                if (WiimoteGlobal.wiimote.Type == WiimoteType.WIIMOTEPLUS)
-                {
-                    //Running RequestIdentifyWiiMotionPlus() on a Wiimote Plus unfortunately fails,
-                    //so we have to skip that check.
-                    Debug.Log("Wii Remote Plus detected, skipping Motion Plus check.");
-                    WiimoteGlobal.wiimote.ActivateWiiMotionPlus();
-                }
-                else
-                {
-                    WiimoteGlobal.wiimote.RequestIdentifyWiiMotionPlus();
-
-                    if (WiimoteGlobal.wiimote.wmp_attached)
-                    {
-                        Debug.Log("Connected with Wii Motion Plus Extension.");
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Wii remote doesn't have motion plus :(");
-                    }
-                    WiimoteGlobal.wiimote.ActivateWiiMotionPlus();
-                }
-                
-                //Default input mode only sends button data, so for accelerometer / gyro data 
-                //we need to request a mode with extension bytes
-                WiimoteGlobal.wiimote.SendDataReportMode(InputDataType.REPORT_BUTTONS_ACCEL_EXT16);
-            }
-        }
-        
-        private void CleanupWiimotes()
-        {
-            Debug.Log("Cleaning up Wiimote connections.");
-            
-            //Iterate from the end of the collection to prevent errors from the cleanup function removing each element
-            for (int index = WiimoteManager.Wiimotes.Count - 1; index >= 0; index--)
-            {
-                Wiimote remote = WiimoteManager.Wiimotes[index];
-                //TODO manually reset LED, rumble etc. before cleaning without it crashing
-                // remote.SendPlayerLED(true, false, false, false);
-                WiimoteManager.Cleanup(remote);
-            }
-
-            //Ensure reference to removed wiimote isn't used
-            WiimoteGlobal.wiimote = null;
-        }
-
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            int attempts = 0;
+            while (GlobalManager.Instance.port.IsUnityNull())
+            {
+                GlobalManager.Instance.SearchPorts();
+                attempts++;
+                if (attempts == 5)
+                {
+                    Debug.LogWarning("Could not find port.");
+                    running = false;
+                    return;
+                }
+            }
 
+            Connect();
+            rigidBody = GetComponent<Rigidbody>();
+
+            running = true;
+
+            // Start the background I/O thread
+            ioThread = new Thread(IOThreadLoop)
+            {
+                IsBackground = true
+            };
+            ioThread.Start();
         }
 
-        //Called once before start when the game starts
-        void Awake()
+
+        private void Connect()
         {
-            StartingRotation = transform.rotation;
-            ConnectWiimote();
+            try
+            {
+                stream = new SerialPort(GlobalManager.Instance.port, 115200)
+                {
+                    ReadTimeout = timeoutMs
+                };
+
+                stream.DtrEnable = true;
+                stream.Open();
+                stream.ReadTimeout = timeoutMs;
+                portOpen = true;
+                // if youre connected but not getting any data you may have another serial monitor open for this port
+                Debug.Log("Connected (allegedly)");
+            }
+            catch (System.Exception e)
+            {
+                portOpen = false;
+                Debug.LogWarning("Failed to connect to port: ");
+                Debug.LogWarning(e);
+            }
         }
 
-        // Update is called once per frame
+
+        private void IOThreadLoop()
+        {
+            try
+            {
+                while (running)
+                {
+                    string recievedData = null;
+                    try
+                    {
+                        recievedData = stream.ReadLine();
+                        dataQueue.Enqueue(recievedData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning($"Error reading data: {ex.Message}");
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[IO Thread] Error: {ex.Message}");
+            }
+        }
+
+        public void CalibrateHammer()
+        {
+            GlobalManager.Instance.CalibrationQuaternion = Quaternion.Inverse(gameRotationVector);
+
+        }
+
+        void ParseStream()
+        {
+            while (dataQueue.TryDequeue(out string data))
+            {
+                Debug.Log($"[Main Thread] Received: {data}");
+                string[] parsedData = data.Trim().Split(':');
+
+
+                if (parsedData[0] == "a")
+                {
+                    try
+                    {
+                        Vector3 acceleration = new(
+                                                float.Parse(parsedData[3]),
+                                                float.Parse(parsedData[1]),
+                                                float.Parse(parsedData[2])
+                                                );
+                        // TODO change to impulse or something (persist across frames)
+                        if (acceleration.magnitude > frameAcceleration.magnitude) frameAcceleration = acceleration;
+
+                    }
+                    catch
+                    {
+                        Debug.LogWarning("Incorrect acceleration format.");
+                    }
+
+                }
+
+                if (parsedData[0] == "q")
+                {
+                    try
+                    {
+                        //Quaternion possibleQuaternion = new Quaternion(-float.Parse(parsedData[3]),
+                        //    -float.Parse(parsedData[4]),
+                        //    float.Parse(parsedData[2]),
+                        //    float.Parse(parsedData[1]));
+                        Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[2]),
+                            -float.Parse(parsedData[4]),
+                            float.Parse(parsedData[3]),
+                            float.Parse(parsedData[1]));
+                        gameRotationVector = possibleQuaternion;
+
+                    }
+                    catch
+                    {
+                        Debug.LogWarning("Incorrect quaternion format.");
+
+                    }
+
+
+                }
+            }
+
+        }
+
+
+
+        void UpdateRotation()
+        {
+            Quaternion newRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;
+            float diff = Quaternion.Angle(newRotation, gameRotationVector);
+            if (diff < 160.0f)
+            {
+                transform.localRotation = newRotation;
+            }
+
+        }
+
+        void UpdatePosition()
+        {
+            Vector3 worldForward = transform.rotation * Vector3.forward;
+            float radialAcceleration = Vector3.Dot(frameAcceleration, worldForward);
+            float force = Mathf.Abs(radialAcceleration) < 0.1f ? 0f : radialAcceleration;
+
+            momentum += force * Time.deltaTime;
+            momentum *= momentumDecay;
+
+
+            float spring = -k * (extension - restLength);
+            float damping = -dampingCoef * extensionVelocity;
+            float acceleration = spring + damping + momentum * sensitivity;
+
+            extensionVelocity += acceleration * Time.deltaTime;
+            extension += extensionVelocity * Time.deltaTime;
+            extension = Mathf.Clamp(extension, 0, maxLength);
+
+            transform.position = pivotTransform.position + transform.rotation * Vector3.forward * extension;
+        }
+
         void Update()
         {
-            Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
 
-            //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
-            int ret;
-            Vector3 gyroOffset = Vector3.zero;
-            Vector3 accelOffset = Vector3.zero;
+            if (!stream.IsOpen)
+            {
+                Debug.LogWarning("Port is not open for reading.");
+                return;
+            }
 
-            do {
-                ret = WiimoteGlobal.wiimote.ReadWiimoteData();
+            ParseStream();
+            UpdateRotation();
+            UpdatePosition();
 
-                //ACCELEROMETER
-                
-                Vector3 accelDataForFrameTest = new Vector3(
-                    WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[0],
-                    WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[1],
-                    WiimoteGlobal.wiimote.Accel.GetCalibratedAccelData()[2]);
-                print("Accel data: "+accelDataForFrameTest);
-                accelOffset += accelDataForFrameTest;
-                
-                //this is a test basically
-
-                //GYROSCOPE
-                //add all detected rotations throughout the frame to gyroOffset
-                //we should integrate this! would give accurate total rotation
-                if (ret > 0 && WiimoteGlobal.wiimote.current_ext == ExtensionController.MOTIONPLUS) {
-                    gyroOffset += new Vector3(  -WiimoteGlobal.wiimote.MotionPlus.PitchSpeed,
-                                                    -WiimoteGlobal.wiimote.MotionPlus.RollSpeed,
-                                                    -WiimoteGlobal.wiimote.MotionPlus.YawSpeed);
-                }
-            } while (ret > 0);
-
-            gyroOffset /= 95f; //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
-                            //and speeds of rotations are sent in degrees per second (i think!)
-                            //would be cool to actually count the number of updates per second but I'm not sure how. 
-                            //i think that this is completely wrong. nothing like 95 messages sent per frame. but idk
-                            //oh wait yeah ofc its wrong, we are not 1 frame per second!! 
-
-
-
-            // ReadWiimoteData() returns 0 when nothing is left to read.
-            // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
-
-            transform.Rotate(gyroOffset, Space.Self);
-
-            //print("Total accel offset for frame: "+accelOffset);
-            //transform.Translate(accelOffset/95f, Space.Self);
-            //just using accel values/100 for translation - makes no sense but testing!
-
-            //Unity Remote
-            //transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);
-
+            // this completely breaks momentum but whatever
+            frameAcceleration = new Vector3(0, 0, 0);
         }
 
         public void OnCollisionEnter(Collision collision)
@@ -163,14 +230,24 @@ namespace Hammer
 
             if (collision.gameObject.CompareTag("Enemy"))
             {
-
                 Destroy(collision.gameObject);
             }
         }
 
-        void OnApplicationQuit()
+        void OnDisable()
         {
-            CleanupWiimotes();
+            portOpen = false;
+            stream.Close();
+            Debug.Log("Port closed");
+        }
+
+        private void OnDestroy()
+        {
+            running = false;
+            if (ioThread != null && ioThread.IsAlive)
+            {
+                ioThread.Join();
+            }
         }
     }
 
