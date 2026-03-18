@@ -137,6 +137,8 @@ public class HorseMovement : MonoBehaviour
                 _currentGear += 1;
             }            
         }
+        _currentMaxSpeed = gears[_currentGear].maxSpeed;
+        _currentAcceleration = gears[_currentGear].acceleration;
         Debug.Log($"Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
     }
 
@@ -148,6 +150,8 @@ public class HorseMovement : MonoBehaviour
                 _currentGear -= 1;
             }
         }
+        _currentMaxSpeed = gears[_currentGear].maxSpeed;
+        _currentAcceleration = gears[_currentGear].acceleration;
         Debug.Log($"Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
     }
     public void onDrift(InputAction.CallbackContext context)
@@ -199,8 +203,6 @@ public class HorseMovement : MonoBehaviour
         //         Debug.Log($" AUTODOWNSHIFTED TOO SLOW, Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
         //     }
         // }
-        _currentMaxSpeed = gears[_currentGear].maxSpeed; //maybe need to do this better so differences in speedmax can be variable between different gears
-        _currentAcceleration = gears[_currentGear].acceleration;
         if (_ignoreGroundTimer > 0f)
         {
             _ignoreGroundTimer -= Time.fixedDeltaTime;
@@ -359,7 +361,7 @@ public class HorseMovement : MonoBehaviour
             _currentSpeed = Mathf.MoveTowards(_currentSpeed, 0, deceleration * Time.fixedDeltaTime);
         }
         
-        _currentSpeed = Mathf.Clamp(_currentSpeed, -3.0f, maxSpeed);
+        _currentSpeed = Mathf.Clamp(_currentSpeed, -3.0f, _currentMaxSpeed);
     }
 
     private void HandleMovement()
