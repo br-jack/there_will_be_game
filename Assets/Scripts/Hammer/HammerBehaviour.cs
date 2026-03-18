@@ -102,14 +102,14 @@ namespace Hammer
                     }
                     catch (Exception ex)
                     {
-                        Debug.LogWarning($"Error reading data: {ex.Message}");
+                        // Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
 
                 }
             }
             catch (Exception ex)
             {
-                Debug.LogError($"[IO Thread] Error: {ex.Message}");
+                // Debug.LogError($"[IO Thread] Error: {ex.Message}");
             }
         }
 
@@ -213,7 +213,7 @@ namespace Hammer
 
             if (!stream.IsOpen)
             {
-                // Debug.LogWarning("Port is not open for reading.");
+                Debug.LogWarning("Port is not open for reading.");
                 return;
             }
 
