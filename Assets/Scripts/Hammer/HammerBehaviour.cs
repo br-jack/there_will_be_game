@@ -102,14 +102,14 @@ namespace Hammer
                     }
                     catch (Exception ex)
                     {
-                        // Debug.Log($"Error reading data: {ex.Message}");
+                        dataQueue.Enqueue($"Error reading data: {ex.Message}");
                     }
 
                 }
             }
             catch (Exception ex)
             {
-                // Debug.Log($"[IO Thread] Error: {ex.Message}");
+                throw new Exception($"[IO Thread] Error: {ex.Message}");
             }
         }
 
@@ -147,7 +147,7 @@ namespace Hammer
 
                 }
 
-                if (parsedData[0] == "q")
+                else if (parsedData[0] == "q")
                 {
                     try
                     {
