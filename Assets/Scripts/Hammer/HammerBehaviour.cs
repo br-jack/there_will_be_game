@@ -239,10 +239,7 @@ namespace Hammer
             portOpen = false;
             stream.Close();
             Debug.Log("Port closed");
-        }
-
-        private void OnDestroy()
-        {
+            
             running = false;
             if (ioThread != null && ioThread.IsAlive)
             {
