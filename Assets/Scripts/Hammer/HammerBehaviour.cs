@@ -103,14 +103,14 @@ namespace Hammer
                     catch (Exception ex)
                     {
                         //Seems to cause a memory leak, so only enable this when debugging Bluetooth
-                        // Debug.Log($"Error reading data: {ex.Message}");
+                        // Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
 
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"[IO Thread] Error: {ex.Message}");
+                Debug.LogError($"[IO Thread] Error: {ex.Message}");
             }
         }
 
@@ -237,15 +237,15 @@ namespace Hammer
 
         void OnDisable()
         {
-            portOpen = false;
-            stream.Close();
-            Debug.Log("Port closed");
-            
             running = false;
             if (ioThread != null && ioThread.IsAlive)
             {
                 ioThread.Join();
             }
+            
+            portOpen = false;
+            stream.Close();
+            Debug.Log("Port closed");
         }
     }
 
