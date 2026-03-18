@@ -102,6 +102,7 @@ namespace Hammer
                     }
                     catch (Exception ex)
                     {
+                        //Seems to cause a memory leak, so only enable this when debugging Bluetooth
                         // Debug.Log($"Error reading data: {ex.Message}");
                     }
 
