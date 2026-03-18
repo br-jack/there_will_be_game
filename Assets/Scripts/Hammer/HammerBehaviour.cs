@@ -213,7 +213,7 @@ namespace Hammer
 
             if (!stream.IsOpen)
             {
-                Debug.LogWarning("Port is not open for reading.");
+                // Debug.LogWarning("Port is not open for reading.");
                 return;
             }
 
