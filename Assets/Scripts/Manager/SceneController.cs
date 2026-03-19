@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    [SerializeField] private InputAction restartAction;
+    [SerializeField] private InputActionReference restartAction;
 
     void Awake()
     {
-        restartAction.performed += context => ReloadScene();
+        restartAction.action.performed += context => ReloadScene();
     }
     
     public static void ExitGame()
