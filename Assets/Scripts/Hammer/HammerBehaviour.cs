@@ -102,7 +102,8 @@ namespace Hammer
                     }
                     catch (Exception ex)
                     {
-                        Debug.LogWarning($"Error reading data: {ex.Message}");
+                        //Seems to cause a memory leak, so only enable this when debugging Bluetooth
+                        // Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
 
                 }
@@ -147,7 +148,7 @@ namespace Hammer
 
                 }
 
-                if (parsedData[0] == "q")
+                else if (parsedData[0] == "q")
                 {
                     try
                     {
@@ -230,18 +231,15 @@ namespace Hammer
 
         void OnDisable()
         {
-            portOpen = false;
-            stream.Close();
-            Debug.Log("Port closed");
-        }
-
-        private void OnDestroy()
-        {
             running = false;
             if (ioThread != null && ioThread.IsAlive)
             {
                 ioThread.Join();
             }
+            
+            portOpen = false;
+            stream.Close();
+            Debug.Log("Port closed");
         }
     }
 
