@@ -1,8 +1,9 @@
 using System;
-using System.IO.Ports;
-using UnityEngine;
 using System.Collections.Concurrent;
+using System.IO.Ports;
 using System.Threading;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace Hammer
 {
@@ -16,7 +17,6 @@ namespace Hammer
         private bool running;
         private ConcurrentQueue<string> dataQueue = new ConcurrentQueue<string>();
 
-
         [SerializeField] float extension;
         float extensionVelocity;
         [SerializeField] float k = 20f;
@@ -26,24 +26,31 @@ namespace Hammer
         [SerializeField] float sensitivity = 2;
         [SerializeField] float momentumDecay = 0.92f;
 
-
         private float momentum = 0;
 
         [SerializeField] Transform pivotTransform;
         private bool portOpen = false;
         private readonly int timeoutMs = 50;
 
-
-
-
         public Rigidbody rigidBody;
 
         void Start()
         {
+            int attempts = 0;
+            while (GlobalManager.Instance.port.IsUnityNull())
+            {
+                GlobalManager.Instance.SearchPorts();
+                attempts++;
+                if (attempts == 5)
+                {
+                    Debug.LogWarning("Could not find port.");
+                    running = false;
+                    return;
+                }
+            }
+
             Connect();
             rigidBody = GetComponent<Rigidbody>();
-            Application.targetFrameRate = 60;
-
 
             running = true;
 
@@ -60,29 +67,11 @@ namespace Hammer
         {
             try
             {
-                string port = null;
-                if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
+                stream = new SerialPort(GlobalManager.Instance.port, 115200)
                 {
-                    port = "COM4";
-                }
+                    ReadTimeout = timeoutMs
+                };
 
-                if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
-                {
-                    port = "/dev/cu.usbmodem101";
-                }
-
-                if (Application.platform.Equals(RuntimePlatform.LinuxPlayer) || Application.platform.Equals(RuntimePlatform.LinuxServer))
-                {
-                    port = "/dev/ttyACM0";
-                }
-
-                if (!string.IsNullOrEmpty(port))
-                {
-                    stream = new SerialPort(port, 115200)
-                    {
-                        ReadTimeout = timeoutMs
-                    };
-                }
                 stream.DtrEnable = true;
                 stream.Open();
                 stream.ReadTimeout = timeoutMs;
@@ -106,8 +95,6 @@ namespace Hammer
                 while (running)
                 {
                     string recievedData = null;
-
-                    // get data from port
                     try
                     {
                         recievedData = stream.ReadLine();
@@ -115,7 +102,8 @@ namespace Hammer
                     }
                     catch (Exception ex)
                     {
-                        Debug.LogWarning($"Error reading data: {ex.Message}");
+                        //Seems to cause a memory leak, so only enable this when debugging Bluetooth
+                        // Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
 
                 }
@@ -160,13 +148,17 @@ namespace Hammer
 
                 }
 
-                if (parsedData[0] == "q")
+                else if (parsedData[0] == "q")
                 {
                     try
                     {
-                        Quaternion possibleQuaternion = new Quaternion(-float.Parse(parsedData[3]),
+                        //Quaternion possibleQuaternion = new Quaternion(-float.Parse(parsedData[3]),
+                        //    -float.Parse(parsedData[4]),
+                        //    float.Parse(parsedData[2]),
+                        //    float.Parse(parsedData[1]));
+                        Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[2]),
                             -float.Parse(parsedData[4]),
-                            float.Parse(parsedData[2]),
+                            float.Parse(parsedData[3]),
                             float.Parse(parsedData[1]));
                         gameRotationVector = possibleQuaternion;
 
@@ -187,13 +179,7 @@ namespace Hammer
 
         void UpdateRotation()
         {
-            Quaternion newRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;
-            float diff = Quaternion.Angle(newRotation, gameRotationVector);
-            if (diff < 160.0f)
-            {
-                transform.localRotation = newRotation;
-            }
-
+            transform.localRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;;
         }
 
         void UpdatePosition()
@@ -220,10 +206,9 @@ namespace Hammer
         void Update()
         {
 
-
             if (!stream.IsOpen)
             {
-                Debug.Log("Port is not open for reading.");
+                Debug.LogWarning("Port is not open for reading.");
                 return;
             }
 
@@ -232,10 +217,8 @@ namespace Hammer
             UpdatePosition();
 
             // this completely breaks momentum but whatever
-            frameAcceleration = new Vector3(0,0,0);
+            frameAcceleration = new Vector3(0, 0, 0);
         }
-
-
 
         public void OnCollisionEnter(Collision collision)
         {
@@ -248,18 +231,15 @@ namespace Hammer
 
         void OnDisable()
         {
-            portOpen = false;
-            stream.Close();
-            Debug.Log("Port closed");
-        }
-
-        private void OnDestroy()
-        {
             running = false;
             if (ioThread != null && ioThread.IsAlive)
             {
                 ioThread.Join();
             }
+            
+            portOpen = false;
+            stream.Close();
+            Debug.Log("Port closed");
         }
     }
 

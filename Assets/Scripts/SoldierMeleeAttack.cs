@@ -1,7 +1,7 @@
 using UnityEngine;
 
-/// Melee attack component (Requires the EnemyMovement on the same GameObject).
-public class EnemyMeleeAttack : MonoBehaviour
+/// Melee attack component (Requires `SoldierMovement` on the same GameObject).
+public class SoldierMeleeAttack : MonoBehaviour
 {
     [Header("Melee Attack Settings")]
     [SerializeField] private int damage = 10;
@@ -9,8 +9,8 @@ public class EnemyMeleeAttack : MonoBehaviour
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private string playerTag = "Player";
 
-    // Requires {enemyMovement, playerHealth, playerTransform} to function.
-    private EnemyMovement enemyMovement;
+    // Requires {soldierMovement, playerHealth, playerTransform} to function.
+    private SoldierMovement soldierMovement;
     private PlayerHealth playerHealth;
     private Transform playerTransform;
     private float nextAttackTime;
@@ -18,22 +18,22 @@ public class EnemyMeleeAttack : MonoBehaviour
 
     private void Start()
     {
-        ResolveEnemyMovement();
+        ResolveSoldierMovement();
         ResolvePlayerRefs();
     }
 
-    private void ResolveEnemyMovement()
+    private void ResolveSoldierMovement()
     {
-        enemyMovement = GetComponent<EnemyMovement>();
-        if (enemyMovement == null) Debug.LogError("EnemyMeleeAttack.cs: missing `enemyMovement`.");
+        soldierMovement = GetComponent<SoldierMovement>();
+        if (soldierMovement == null) Debug.LogError("SoldierMeleeAttack.cs: missing `SoldierMovement`.");
     }
 
     private void ResolvePlayerRefs()
     {
-        if (enemyMovement != null)
+        if (soldierMovement != null)
         {
-            playerHealth = enemyMovement._playerHealthRef;
-            playerTransform = enemyMovement._playerTransformRef;
+            playerHealth = soldierMovement._playerHealthRef;
+            playerTransform = soldierMovement._playerTransformRef;
         }
 
         // There was some problems with missing playerRefs, hence this code.
@@ -45,10 +45,10 @@ public class EnemyMeleeAttack : MonoBehaviour
                 if (playerHealth == null) playerHealth = player.GetComponent<PlayerHealth>();
                 if (playerTransform == null) playerTransform = player.transform;
             }
-            if (playerHealth != null && playerTransform != null && enemyMovement != null)
+            if (playerHealth != null && playerTransform != null && soldierMovement != null)
             {
-                enemyMovement._playerHealthRef = playerHealth;
-                enemyMovement._playerTransformRef = playerTransform;
+                soldierMovement._playerHealthRef = playerHealth;
+                soldierMovement._playerTransformRef = playerTransform;
             }
         }
     }
@@ -82,7 +82,7 @@ public class EnemyMeleeAttack : MonoBehaviour
     private void PerformAttack()
     {
         // Logs attack in console, performs attack, sets cooldown
-        Debug.Log($"EnemyMeleeAttack: Enemy performs ATTACK.");
+        Debug.Log($"SoldierMeleeAttack: soldier deals {damage} damage to {playerHealth?.name} at time {Time.time}");
         playerHealth.TakeDamage(damage);
         nextAttackTime = Time.time + attackCooldown;
     }
@@ -94,7 +94,8 @@ public class EnemyMeleeAttack : MonoBehaviour
 
         hasWarnedMissingPlayerRefs = true;
         Debug.LogWarning(
-            $"EnemyMeleeAttack on {gameObject.name} still cannot find Player refs after 2.0s. " + $"Check that the Player exists, is active, has tag '{playerTag}', and has PlayerHealth."
+            $"SoldierMeleeAttack on {gameObject.name} still cannot find Player refs after 2.0s. " +
+            $"Check that the Player exists, is active, has tag '{playerTag}', and has PlayerHealth."
         );
     }
 }
