@@ -179,13 +179,7 @@ namespace Hammer
 
         void UpdateRotation()
         {
-            Quaternion newRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;
-            float diff = Quaternion.Angle(newRotation, gameRotationVector);
-            if (diff < 160.0f)
-            {
-                transform.localRotation = newRotation;
-            }
-
+            transform.localRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;;
         }
 
         void UpdatePosition()
