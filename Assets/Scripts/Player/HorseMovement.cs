@@ -41,6 +41,7 @@ public class HorseMovement : MonoBehaviour
     private float _turnInput;
     private float _brakeInput;
 
+    [SerializeField] private TrailRenderer jumpTrail;
     [SerializeField] private ParticleSystem runParticles;
 
     [SerializeField] private ParticleSystem jumpParticles;
@@ -150,7 +151,8 @@ public class HorseMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        SkinnedMeshRenderer _hm = player.GetComponentInChildren<SkinnedMeshRenderer>();
+
+        jumpTrail.emitting = false;
     }
 
     private void Update()
@@ -353,6 +355,8 @@ public class HorseMovement : MonoBehaviour
         {
             _groundedTimer += Time.fixedDeltaTime;
             _timerSinceOnGround = 0f;
+
+            jumpTrail.emitting = false;
             
             runParticles.Play();
 
@@ -362,6 +366,8 @@ public class HorseMovement : MonoBehaviour
         {
             _groundedTimer = 0f;
             _timerSinceOnGround += Time.fixedDeltaTime;
+            
+            jumpTrail.emitting = true;
             
             runParticles.Stop();;
         }
