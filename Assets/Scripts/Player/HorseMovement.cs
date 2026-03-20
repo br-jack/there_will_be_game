@@ -366,8 +366,6 @@ public class HorseMovement : MonoBehaviour
         {
             _groundedTimer = 0f;
             _timerSinceOnGround += Time.fixedDeltaTime;
-            
-            runParticles.Stop();;
         }
 
         grounded = grounded && !JumpedThisFrame;

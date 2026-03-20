@@ -8,15 +8,44 @@ public class PlayerParticles : MonoBehaviour
     
     [SerializeField] private HorseMovement horseMovement;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        jumpTrail.emitting = false;
+        if (jumpTrail == null)
+        {
+            jumpTrail.emitting = false;
+        }
+    }
+    
+    public void OnEnable()
+    {
+        horseMovement.jumpStarted += TriggerJumpParticles;
+    }
+
+    public void OnDisable()
+    {
+        horseMovement.jumpStarted -= TriggerJumpParticles;
+    }
+
+    private void TriggerJumpParticles()
+    {
+        jumpParticles.Play();
+
+        if (jumpTrail != null)
+        {
+            jumpTrail.emitting = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (horseMovement.IsGrounded)
+        {
+            runParticles.Play();
+        }
+        else
+        {
+            runParticles.Stop();
+        }
     }
 }

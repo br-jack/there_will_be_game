@@ -15151,6 +15151,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9142e78439d28a040a07c1a3e24d7442, type: 3}
+--- !u!96 &610577112 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 4307735588763940856, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &610654678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 321969995781021086, guid: 5498d1783ad7b524283abb271971c9ba, type: 3}
@@ -31290,6 +31295,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 167402519963028638, guid: d6f24e6773313fe48b93baf74ad6ad53, type: 3}
   m_PrefabInstance: {fileID: 1238024208}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1256564723 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7022321905512896264, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1257504427
 PrefabInstance:
@@ -48518,6 +48528,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3304088472591636408, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
   m_PrefabInstance: {fileID: 5061453144199501980}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1880543609 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880543604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb7a804801d03942a77f491fe72194f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1880543612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48530,6 +48551,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11985d5709ec2814a8aa100afef68f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpTrail: {fileID: 610577112}
+  runParticles: {fileID: 1985903817}
+  jumpParticles: {fileID: 1256564723}
+  horseMovement: {fileID: 1880543609}
 --- !u!4 &1881600539 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2984141970668843418, guid: f819d73a293814f48b8fd7d880e8572f, type: 3}
@@ -51841,6 +51866,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7010024144754228842, guid: 7018112f2cb987149a450595033be5e0, type: 3}
   m_PrefabInstance: {fileID: 481906164}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1985903817 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8481436098113573260, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1986215645 stripped
 Transform:
