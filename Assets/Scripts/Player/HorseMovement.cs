@@ -36,18 +36,19 @@ public class HorseMovement : MonoBehaviour
 
     private Rigidbody _rb;
 
+    public Action running;
+    public Action jumpStarted;
+    public Action landed;
+
     public Transform horseVisual;
     
     private float _throttleInput;
     private float _turnInput;
     private float _brakeInput;
 
-    [SerializeField] private TrailRenderer jumpTrail;
-    [SerializeField] private ParticleSystem runParticles;
-
-    [SerializeField] private ParticleSystem jumpParticles;
     public float jumpForce = 8f;
-    private bool _jumpHeld;
+    private bool _jumpButtonPressed;
+    private bool _jumpButtonHeld;
     public float fallMultiplier = 7.5f; // originally 2.5f
     public float lowJumpMultiplier = 4f; // originally 2f
     public LayerMask groundMask;
@@ -65,12 +66,10 @@ public class HorseMovement : MonoBehaviour
     private Vector3 _groundNormal = Vector3.up;
 
     private float _groundedTimer = 0f;
-
-    private bool _jumpPressed;
-
+    
     //drifting
     private bool _isDrifting;
-    private bool _driftPressed;
+    private bool _driftButtonPressed;
     private float _driftTimer = 0f; // hard turn must be held to drift
 
     private float _currentLean = 0f;
@@ -100,13 +99,13 @@ public class HorseMovement : MonoBehaviour
     {
         if (context.performed)
         {
-            _jumpPressed = true;
-            _jumpHeld = true;
+            _jumpButtonPressed = true;
+            _jumpButtonHeld = true;
         }
 
         if (context.canceled) 
         {
-            _jumpHeld = false;
+            _jumpButtonHeld = false;
         }
     }
 
@@ -128,9 +127,9 @@ public class HorseMovement : MonoBehaviour
     public void onDrift(InputAction.CallbackContext context)
     {
         if (context.performed)
-            _driftPressed = true;
+            _driftButtonPressed = true;
         if (context.canceled) 
-            _driftPressed = false;
+            _driftButtonPressed = false;
     }
 
     private void ApplyDriftPhysics()
@@ -157,8 +156,6 @@ public class HorseMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        jumpTrail.emitting = false;
     }
 
     private void Update()
@@ -175,7 +172,7 @@ public class HorseMovement : MonoBehaviour
         HandleMovement();
         
         float targetLean;
-        if (_isDrifting && _isGrounded  && _driftPressed)
+        if (_isDrifting && _isGrounded  && _driftButtonPressed)
         {
             ApplyDriftPhysics();
             targetLean = _turnInput * 30f;
@@ -225,7 +222,7 @@ public class HorseMovement : MonoBehaviour
         { 
             _rb.linearVelocity += Physics.gravity * ((fallMultiplier - 1f) * Time.fixedDeltaTime); 
         }
-        else if (!_isGrounded && _rb.linearVelocity.y > 0f && !_jumpHeld) //smaller jump when jump button not held
+        else if (!_isGrounded && _rb.linearVelocity.y > 0f && !_jumpButtonHeld) //smaller jump when jump button not held
         { 
             _rb.linearVelocity += Physics.gravity * ((lowJumpMultiplier - 1f) * Time.fixedDeltaTime); 
         }
@@ -237,21 +234,18 @@ public class HorseMovement : MonoBehaviour
         scaledJumpForce = jumpForce * speedPercent * 1.2f;
         scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);*/
 
-        if (!_jumpPressed)
+        if (!_jumpButtonPressed)
         {
             return false;
         }
 
         if (!grounded || _groundedTimer <= 0.1f)
         {
-            _jumpPressed = false;
+            _jumpButtonPressed = false;
             return false;
         }
         
-        jumpParticles.gameObject.SetActive(true);
-        jumpParticles.Play();
-        
-        jumpTrail.emitting = true;
+        jumpStarted?.Invoke();
 
         Vector3 velocity = _rb.linearVelocity;
         float seperatingSpeed = Vector3.Dot(velocity, _groundNormal);
@@ -267,7 +261,7 @@ public class HorseMovement : MonoBehaviour
 
         _isGrounded = false;
         _groundedTimer = 0f;
-        _jumpPressed = false;
+        _jumpButtonPressed = false;
         _ignoreGroundTimer = 0.15f;
         _timerSinceOnGround = Mathf.Infinity;
 
@@ -364,9 +358,7 @@ public class HorseMovement : MonoBehaviour
             _groundedTimer += Time.fixedDeltaTime;
             _timerSinceOnGround = 0f;
 
-            jumpTrail.emitting = false;
-            
-            runParticles.Play();
+            landed?.Invoke();
 
             CalculateSpeed();
         } 
@@ -381,7 +373,7 @@ public class HorseMovement : MonoBehaviour
         grounded = grounded && !JumpedThisFrame;
         _isGrounded = grounded;
 
-        if (Mathf.Abs(_turnInput) > driftSettings.driftSteerThreshold && _currentSpeed > driftSettings.driftSpeedThreshold  && _driftPressed)
+        if (Mathf.Abs(_turnInput) > driftSettings.driftSteerThreshold && _currentSpeed > driftSettings.driftSpeedThreshold  && _driftButtonPressed)
         {
             _driftTimer += Time.fixedDeltaTime;
             if (_driftTimer > 0.2f) _isDrifting = true;
@@ -392,7 +384,7 @@ public class HorseMovement : MonoBehaviour
             _isDrifting = false;
         }
 
-        if (_isDrifting && _driftPressed)
+        if (_isDrifting && _driftButtonPressed)
         {
             if (_currentSpeed < driftSettings.driftSpeedThreshold * 0.6f && Mathf.Abs(_turnInput) < 0.4f) //drift stops as turn relaxes
             {
