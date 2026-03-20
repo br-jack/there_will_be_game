@@ -67,6 +67,8 @@ namespace Hammer
         {
             try
             {
+                // SHAY GET RID OF THIS LINE
+                GlobalManager.Instance.port = "COM3";
                 stream = new SerialPort(GlobalManager.Instance.port, 115200)
                 {
                     ReadTimeout = timeoutMs
