@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 4326658757732828232}
   - component: {fileID: 9012345678901234567}
   - component: {fileID: 2677247790769911592}
+  - component: {fileID: 8421909672179317857}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -189,9 +190,6 @@ MonoBehaviour:
   turnSpeed: 170
   turnSpeedAtZero: 100
   horseVisual: {fileID: 7518415703454089516}
-  jumpTrail: {fileID: 4307735588763940856}
-  runParticles: {fileID: 8481436098113573260}
-  jumpParticles: {fileID: 7022321905512896264}
   jumpForce: 8.5
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
@@ -450,7 +448,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   horseMovement: {fileID: 8174524514626147514}
+  playerParticles: {fileID: 8421909672179317857}
   playerHealth: {fileID: 9012345678901234567}
+  jumpBoostParticles: {fileID: 626240191960291259}
+  jumpBoostTrail: {fileID: 4307735588763940856}
+--- !u!114 &8421909672179317857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3304088472591636408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11985d5709ec2814a8aa100afef68f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpTrail: {fileID: 0}
+  runParticles: {fileID: 8481436098113573260}
+  jumpParticles: {fileID: 7022321905512896264}
+  horseMovement: {fileID: 8174524514626147514}
 --- !u!1 &3919838540913894575
 GameObject:
   m_ObjectHideFlags: 0
@@ -2216,6 +2233,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5822287279554356044, guid: 47faa122081fa744ba7db42b7be51849, type: 3}
+      propertyPath: m_Emitting
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2288,6 +2309,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf756e2c8333cc547b046fb5d486dd57, type: 3}
+--- !u!198 &626240191960291259 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8351251384218476847, guid: cf756e2c8333cc547b046fb5d486dd57, type: 3}
+  m_PrefabInstance: {fileID: 8887080641175844500}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2707097348678680374 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6828805533557688738, guid: cf756e2c8333cc547b046fb5d486dd57, type: 3}

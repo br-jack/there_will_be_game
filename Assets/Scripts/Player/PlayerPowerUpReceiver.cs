@@ -4,12 +4,20 @@ using UnityEngine;
 public class PlayerPowerUpReceiver : MonoBehaviour
 {
     public HorseMovement horseMovement;
+    
+    public PlayerParticles playerParticles;
 
     public PlayerHealth playerHealth;
 
     private float defaultMaxSpeed;
     private float defaultAcceleration;
     private float defaultJumpForce;
+    
+    
+    public ParticleSystem jumpBoostParticles;
+    public TrailRenderer jumpBoostTrail;
+    private ParticleSystem defaultJumpParticles;
+    private TrailRenderer defaultJumpTrail;
 
     private Coroutine speedBoostCoroutine;
     private Coroutine jumpBoostCoroutine;
@@ -21,6 +29,12 @@ public class PlayerPowerUpReceiver : MonoBehaviour
             defaultMaxSpeed = horseMovement.maxSpeed;
             defaultAcceleration = horseMovement.acceleration;
             defaultJumpForce = horseMovement.jumpForce;
+        }
+
+        if (playerParticles != null)
+        {
+            defaultJumpParticles = playerParticles.jumpParticles;
+            defaultJumpTrail = playerParticles.jumpTrail;
         }
     }
 
@@ -71,6 +85,11 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         {
             StopCoroutine(jumpBoostCoroutine);
             horseMovement.jumpForce = defaultJumpForce;
+            if (playerParticles != null)
+            {
+                playerParticles.jumpParticles = defaultJumpParticles;
+                playerParticles.jumpTrail = defaultJumpTrail;
+            }
         }
 
         jumpBoostCoroutine = StartCoroutine(JumpBoostRoutine(multiplier, duration));
@@ -80,9 +99,21 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     {
         horseMovement.jumpForce = defaultJumpForce * multiplier;
 
+        if (playerParticles != null)
+        {
+            playerParticles.jumpParticles = jumpBoostParticles;
+            playerParticles.jumpTrail = jumpBoostTrail;
+        }
+
         yield return new WaitForSeconds(duration);
 
         horseMovement.jumpForce = defaultJumpForce;
+        if (playerParticles != null)
+        {
+            playerParticles.jumpParticles = defaultJumpParticles;
+            playerParticles.jumpTrail = defaultJumpTrail;
+        }
+
         jumpBoostCoroutine = null;
     }
 

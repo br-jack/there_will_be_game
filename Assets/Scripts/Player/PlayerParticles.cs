@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PlayerParticles : MonoBehaviour
 {
-    [SerializeField] private TrailRenderer jumpTrail;
-    [SerializeField] private ParticleSystem runParticles;
-    [SerializeField] private ParticleSystem jumpParticles;
+    public TrailRenderer jumpTrail;
+    public ParticleSystem runParticles;
+    public ParticleSystem jumpParticles;
     
     [SerializeField] private HorseMovement horseMovement;
     
