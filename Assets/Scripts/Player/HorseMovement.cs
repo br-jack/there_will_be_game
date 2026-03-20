@@ -244,6 +244,8 @@ public class HorseMovement : MonoBehaviour
         
         jumpParticles.gameObject.SetActive(true);
         jumpParticles.Play();
+        
+        jumpTrail.emitting = true;
 
         Vector3 velocity = _rb.linearVelocity;
         float seperatingSpeed = Vector3.Dot(velocity, _groundNormal);
@@ -366,8 +368,6 @@ public class HorseMovement : MonoBehaviour
         {
             _groundedTimer = 0f;
             _timerSinceOnGround += Time.fixedDeltaTime;
-            
-            jumpTrail.emitting = true;
             
             runParticles.Stop();;
         }
