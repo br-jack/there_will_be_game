@@ -468,6 +468,7 @@ MonoBehaviour:
   jumpTrail: {fileID: 0}
   runParticles: {fileID: 8481436098113573260}
   jumpParticles: {fileID: 7022321905512896264}
+  maxSpeedParticles: {fileID: 3709358718370700225}
   horseMovement: {fileID: 8174524514626147514}
 --- !u!1 &3919838540913894575
 GameObject:
@@ -764,6 +765,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 055ef4a9862132b438ad917701139135, type: 3}
+--- !u!198 &3709358718370700225 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4024644146848240619, guid: 055ef4a9862132b438ad917701139135, type: 3}
+  m_PrefabInstance: {fileID: 333304437659748394}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5772664817659822942 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
