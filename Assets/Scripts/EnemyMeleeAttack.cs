@@ -82,7 +82,7 @@ public class EnemyMeleeAttack : MonoBehaviour
     private void PerformAttack()
     {
         // Logs attack in console, performs attack, sets cooldown
-        Debug.Log($"EnemyMeleeAttack: Enemy performs ATTACK.");
+        Debug.Log($"EnemyMeleeAttack: Enemy performs ATTACK");
         playerHealth.TakeDamage(damage);
         nextAttackTime = Time.time + attackCooldown;
     }
@@ -93,8 +93,6 @@ public class EnemyMeleeAttack : MonoBehaviour
         if (Time.time < 2.0f) return;
 
         hasWarnedMissingPlayerRefs = true;
-        Debug.LogWarning(
-            $"EnemyMeleeAttack on {gameObject.name} still cannot find Player refs after 2.0s. " + $"Check that the Player exists, is active, has tag '{playerTag}', and has PlayerHealth."
-        );
+        Debug.LogWarning($"EnemyMeleeAttack on {gameObject.name} still cannot find Player refs after 2.0s. " + $"Check that the Player exists, is active, has tag '{playerTag}', and has PlayerHealth.");
     }
 }
