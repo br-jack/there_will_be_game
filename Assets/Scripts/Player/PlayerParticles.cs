@@ -10,7 +10,7 @@ public class PlayerParticles : MonoBehaviour
     
     void Awake()
     {
-        if (jumpTrail == null)
+        if (jumpTrail != null)
         {
             jumpTrail.emitting = false;
         }
@@ -42,6 +42,10 @@ public class PlayerParticles : MonoBehaviour
         if (horseMovement.IsGrounded)
         {
             runParticles.Play();
+            if (jumpTrail != null)
+            {
+                jumpTrail.emitting = false;
+            }
         }
         else
         {
