@@ -35,6 +35,9 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         {
             defaultJumpParticles = playerParticles.jumpParticles;
             defaultJumpTrail = playerParticles.jumpTrail;
+            
+            jumpBoostParticles.gameObject.SetActive(false);
+            jumpBoostTrail.gameObject.SetActive(false);
         }
     }
 
@@ -93,7 +96,9 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
         if (playerParticles != null)
         {
-            playerParticles.jumpTrail.emitting = false;
+            jumpBoostParticles.gameObject.SetActive(true);
+            jumpBoostTrail.gameObject.SetActive(true);
+            
             playerParticles.jumpParticles = jumpBoostParticles;
             playerParticles.jumpTrail = jumpBoostTrail;
         }
@@ -107,6 +112,9 @@ public class PlayerPowerUpReceiver : MonoBehaviour
             playerParticles.jumpTrail.emitting = false;
             playerParticles.jumpParticles = defaultJumpParticles;
             playerParticles.jumpTrail = defaultJumpTrail;
+            
+            jumpBoostParticles.gameObject.SetActive(false);
+            jumpBoostTrail.gameObject.SetActive(false);
         }
 
         jumpBoostCoroutine = null;
