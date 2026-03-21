@@ -475,12 +475,12 @@ public class HorseMovement : MonoBehaviour
 
     private void CheckIfMaxSpeed()
     {
-        if (!_isMaxSpeed && _currentSpeed > (maxSpeed - 0.2f))
+        if (!_isMaxSpeed && Mathf.Approximately(_currentSpeed, maxSpeed))
         {
             reachedMaxSpeed?.Invoke();
             _isMaxSpeed = true;
         }
-        else if (_isMaxSpeed && _currentSpeed < (maxSpeed - 0.3f))
+        else if (_isMaxSpeed && _currentSpeed < maxSpeed)
         {
             _isMaxSpeed = false;
         }
