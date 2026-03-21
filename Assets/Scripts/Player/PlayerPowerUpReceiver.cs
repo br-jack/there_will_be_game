@@ -54,14 +54,25 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         }
     }
 
+    private void StartSpeedBoostEffects(float multiplier)
+    {
+        horseMovement.maxSpeed = defaultMaxSpeed;
+        horseMovement.acceleration = defaultAcceleration;
+    }
+
+    private void EndSpeedBoostEffects()
+    {
+        horseMovement.maxSpeed = defaultMaxSpeed;
+        horseMovement.acceleration = defaultAcceleration;
+        speedBoostCoroutine = null;
+    }
+
     private void ApplySpeedBoost(float multiplier, float duration)
     {
         if (speedBoostCoroutine != null && horseMovement != null)
         {
             StopCoroutine(speedBoostCoroutine);
-
-            horseMovement.maxSpeed = defaultMaxSpeed;
-            horseMovement.acceleration = defaultAcceleration;
+            EndSpeedBoostEffects();
         }
 
         speedBoostCoroutine = StartCoroutine(SpeedBoostRoutine(multiplier, duration));
@@ -69,14 +80,36 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     private IEnumerator SpeedBoostRoutine(float multiplier, float duration)
     {
-        horseMovement.maxSpeed = defaultMaxSpeed * multiplier;
-        horseMovement.acceleration = defaultAcceleration * multiplier;
+        StartSpeedBoostEffects(multiplier);
 
         yield return new WaitForSeconds(duration);
 
-        horseMovement.maxSpeed = defaultMaxSpeed;
-        horseMovement.acceleration = defaultAcceleration;
-        speedBoostCoroutine = null;
+        EndSpeedBoostEffects();
+    }
+
+    private void StartJumpBoostEffects(float multiplier)
+    {
+        horseMovement.jumpForce = defaultJumpForce * multiplier;
+
+        if (playerParticles != null)
+        {
+            playerParticles.jumpTrail.emitting = false;
+            playerParticles.jumpParticles = jumpBoostParticles;
+            playerParticles.jumpTrail = jumpBoostTrail;
+        }
+    }
+
+    private void EndJumpBoostEffects()
+    {
+        horseMovement.jumpForce = defaultJumpForce;
+        if (playerParticles != null)
+        {
+            playerParticles.jumpTrail.emitting = false;
+            playerParticles.jumpParticles = defaultJumpParticles;
+            playerParticles.jumpTrail = defaultJumpTrail;
+        }
+
+        jumpBoostCoroutine = null;
     }
 
     private void ApplyJumpBoost(float multiplier, float duration)
@@ -84,12 +117,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         if (jumpBoostCoroutine != null && horseMovement != null)
         {
             StopCoroutine(jumpBoostCoroutine);
-            horseMovement.jumpForce = defaultJumpForce;
-            if (playerParticles != null)
-            {
-                playerParticles.jumpParticles = defaultJumpParticles;
-                playerParticles.jumpTrail = defaultJumpTrail;
-            }
+            EndJumpBoostEffects();
         }
 
         jumpBoostCoroutine = StartCoroutine(JumpBoostRoutine(multiplier, duration));
@@ -97,24 +125,11 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     private IEnumerator JumpBoostRoutine(float multiplier, float duration)
     {
-        horseMovement.jumpForce = defaultJumpForce * multiplier;
-
-        if (playerParticles != null)
-        {
-            playerParticles.jumpParticles = jumpBoostParticles;
-            playerParticles.jumpTrail = jumpBoostTrail;
-        }
+        StartJumpBoostEffects(multiplier);
 
         yield return new WaitForSeconds(duration);
-
-        horseMovement.jumpForce = defaultJumpForce;
-        if (playerParticles != null)
-        {
-            playerParticles.jumpParticles = defaultJumpParticles;
-            playerParticles.jumpTrail = defaultJumpTrail;
-        }
-
-        jumpBoostCoroutine = null;
+        
+        EndJumpBoostEffects();
     }
 
     private void ApplyHeal(float amount)
