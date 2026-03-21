@@ -13,6 +13,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
+      propertyPath: SizeBySpeedModule.range.y
+      value: 6.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
       propertyPath: EmissionModule.m_BurstCount
       value: 1
       objectReference: {fileID: 0}
@@ -121,6 +125,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
+      propertyPath: SizeBySpeedModule.curve.maxCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].repeatInterval
       value: 0.1
       objectReference: {fileID: 0}
@@ -131,6 +139,26 @@ PrefabInstance:
     - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minScalar
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
+      propertyPath: SizeBySpeedModule.curve.maxCurve.m_Curve.Array.data[1].time
+      value: 0.21349445
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
+      propertyPath: SizeBySpeedModule.curve.maxCurve.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
+      propertyPath: SizeBySpeedModule.curve.maxCurve.m_Curve.Array.data[0].value
+      value: 0.4676895
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
+      propertyPath: SizeBySpeedModule.curve.maxCurve.m_Curve.Array.data[1].value
+      value: 0.6138516
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
+      propertyPath: SizeBySpeedModule.curve.maxCurve.m_Curve.Array.data[2].value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1262017888263555094, guid: f9dc8cedbbf31c44d8fcd6d3e63c9631, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_PreInfinity
