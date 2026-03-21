@@ -468,7 +468,6 @@ MonoBehaviour:
   jumpTrail: {fileID: 0}
   runParticles: {fileID: 8481436098113573260}
   jumpParticles: {fileID: 7022321905512896264}
-  maxSpeedParticles: {fileID: 3709358718370700225}
   horseMovement: {fileID: 8174524514626147514}
 --- !u!1 &3919838540913894575
 GameObject:
@@ -708,73 +707,6 @@ MonoBehaviour:
     m_HintWeight: 1
     m_MaintainTargetPositionOffset: 0
     m_MaintainTargetRotationOffset: 0
---- !u!1001 &333304437659748394
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 3621527934196132299}
-    m_Modifications:
-    - target: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7197177035814819465, guid: 055ef4a9862132b438ad917701139135, type: 3}
-      propertyPath: m_Name
-      value: Max Speed Particle System
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 055ef4a9862132b438ad917701139135, type: 3}
---- !u!198 &3709358718370700225 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4024644146848240619, guid: 055ef4a9862132b438ad917701139135, type: 3}
-  m_PrefabInstance: {fileID: 333304437659748394}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &5772664817659822942 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6105898749136407412, guid: 055ef4a9862132b438ad917701139135, type: 3}
-  m_PrefabInstance: {fileID: 333304437659748394}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &870075532609719192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1313,9 +1245,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4490477375474901587, guid: 0cc90c063a9ad424a8cd297b90045d41, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5500333314503032709}
-    - targetCorrespondingSourceObject: {fileID: 4490477375474901587, guid: 0cc90c063a9ad424a8cd297b90045d41, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5772664817659822942}
     - targetCorrespondingSourceObject: {fileID: 4490477375474901587, guid: 0cc90c063a9ad424a8cd297b90045d41, type: 3}
       insertIndex: -1
       addedObject: {fileID: 269557414821945228}

@@ -37,10 +37,6 @@ public class HorseMovement : MonoBehaviour
     private Rigidbody _rb;
 
     public Action jumpStarted;
-    //Invoked when the player has newly reached max speed
-    public Action reachedMaxSpeed;
-
-    private bool _isMaxSpeed;
 
     public Transform horseVisual;
     
@@ -465,25 +461,10 @@ public class HorseMovement : MonoBehaviour
             _rb.AddForce(-_groundNormal * pull, ForceMode.Acceleration);
         }
         
-        CheckIfMaxSpeed();
-        
         // _rb.linearVelocity += forwardMovement; //#Shay: doing this fixes clipping into walls but breaks everything else.
         // AccelerateTo(_rb, forwardMovement, 100.0f);
         //Looking into another way to get around it
         // _rb.MovePosition(_rb.position + forwardMovement);
-    }
-
-    private void CheckIfMaxSpeed()
-    {
-        if (!_isMaxSpeed && Mathf.Approximately(_currentSpeed, maxSpeed))
-        {
-            reachedMaxSpeed?.Invoke();
-            _isMaxSpeed = true;
-        }
-        else if (_isMaxSpeed && _currentSpeed < maxSpeed)
-        {
-            _isMaxSpeed = false;
-        }
     }
 
     private bool CheckForGroundBelow(out RaycastHit groundHit, float extraDistance)

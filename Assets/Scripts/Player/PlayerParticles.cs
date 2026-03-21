@@ -5,7 +5,6 @@ public class PlayerParticles : MonoBehaviour
     public TrailRenderer jumpTrail;
     public ParticleSystem runParticles;
     public ParticleSystem jumpParticles;
-    public ParticleSystem maxSpeedParticles;
     
     [SerializeField] private HorseMovement horseMovement;
     
@@ -20,18 +19,11 @@ public class PlayerParticles : MonoBehaviour
     public void OnEnable()
     {
         horseMovement.jumpStarted += TriggerJumpParticles;
-        horseMovement.reachedMaxSpeed += TriggerMaxSpeedParticles;
     }
 
     public void OnDisable()
     {
         horseMovement.jumpStarted -= TriggerJumpParticles; 
-        horseMovement.reachedMaxSpeed -= TriggerMaxSpeedParticles;
-    }
-
-    private void TriggerMaxSpeedParticles()
-    {
-        maxSpeedParticles.Play();
     }
 
     private void TriggerJumpParticles()
