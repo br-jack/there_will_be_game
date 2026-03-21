@@ -46,7 +46,7 @@ public class HorseMovement : MonoBehaviour
     private float _turnInput;
     private float _brakeInput;
 
-    public float jumpForce = 8f;
+    public float jumpForce = 5f; // originally 8f
     private bool _jumpButtonPressed;
     private bool _jumpButtonHeld;
     public float fallMultiplier = 7.5f; // originally 2.5f
