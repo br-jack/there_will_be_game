@@ -19,6 +19,10 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     private ParticleSystem defaultJumpParticles;
     private TrailRenderer defaultJumpTrail;
 
+    public ParticleSystem speedBoostParticles;
+    private ParticleSystem defaultSpeedParticles;
+    
+
     private Coroutine speedBoostCoroutine;
     private Coroutine jumpBoostCoroutine;
 
@@ -33,9 +37,12 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
         if (playerParticles != null)
         {
+            defaultSpeedParticles = playerParticles.runParticles;
+            
             defaultJumpParticles = playerParticles.jumpParticles;
             defaultJumpTrail = playerParticles.jumpTrail;
             
+            speedBoostParticles.gameObject.SetActive(false);
             jumpBoostParticles.gameObject.SetActive(false);
             jumpBoostTrail.gameObject.SetActive(false);
         }
@@ -61,12 +68,26 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     {
         horseMovement.maxSpeed = defaultMaxSpeed * multiplier;
         horseMovement.acceleration = defaultAcceleration * multiplier;
+        
+        if (playerParticles != null)
+        {
+            playerParticles.runParticles.Stop();
+            speedBoostParticles.gameObject.SetActive(true);
+            playerParticles.runParticles = speedBoostParticles;
+        }
     }
 
     private void EndSpeedBoostEffects()
     {
         horseMovement.maxSpeed = defaultMaxSpeed;
         horseMovement.acceleration = defaultAcceleration;
+
+        if (playerParticles != null)
+        {
+            playerParticles.runParticles = defaultSpeedParticles;
+            speedBoostParticles.gameObject.SetActive(false);
+        }
+
         speedBoostCoroutine = null;
     }
 

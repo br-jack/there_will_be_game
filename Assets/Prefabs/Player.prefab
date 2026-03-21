@@ -452,6 +452,7 @@ MonoBehaviour:
   playerHealth: {fileID: 9012345678901234567}
   jumpBoostParticles: {fileID: 626240191960291259}
   jumpBoostTrail: {fileID: 4307735588763940856}
+  speedBoostParticles: {fileID: 1760775016109340485}
 --- !u!114 &8421909672179317857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1253,6 +1254,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4490477375474901587, guid: 0cc90c063a9ad424a8cd297b90045d41, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3381029722012572377}
+    - targetCorrespondingSourceObject: {fileID: 4490477375474901587, guid: 0cc90c063a9ad424a8cd297b90045d41, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7955102656704330053}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3826566328499337449, guid: 0cc90c063a9ad424a8cd297b90045d41, type: 3}
       insertIndex: -1
@@ -1334,6 +1338,73 @@ CapsuleCollider:
   m_Height: 6.3681006
   m_Direction: 2
   m_Center: {x: -0.24913073, y: 2.2614594, z: 0.6592649}
+--- !u!1001 &3202516000418627463
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3621527934196132299}
+    m_Modifications:
+    - target: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5881833071769266080, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+      propertyPath: m_Name
+      value: Super Run Particle System
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+--- !u!198 &1760775016109340485 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3755466463400462530, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+  m_PrefabInstance: {fileID: 3202516000418627463}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7955102656704330053 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4762465219053373122, guid: 1779183ed8c62a942b56d93c0a7cb228, type: 3}
+  m_PrefabInstance: {fileID: 3202516000418627463}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4706999562427795723
 PrefabInstance:
   m_ObjectHideFlags: 0
