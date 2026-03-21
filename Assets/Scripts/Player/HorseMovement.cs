@@ -36,9 +36,7 @@ public class HorseMovement : MonoBehaviour
 
     private Rigidbody _rb;
 
-    public Action running;
     public Action jumpStarted;
-    public Action landed;
 
     public Transform horseVisual;
     
@@ -357,9 +355,7 @@ public class HorseMovement : MonoBehaviour
         {
             _groundedTimer += Time.fixedDeltaTime;
             _timerSinceOnGround = 0f;
-
-            landed?.Invoke();
-
+            
             CalculateSpeed();
         } 
         else if (!grounded)
