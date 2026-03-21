@@ -59,8 +59,8 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     private void StartSpeedBoostEffects(float multiplier)
     {
-        horseMovement.maxSpeed = defaultMaxSpeed;
-        horseMovement.acceleration = defaultAcceleration;
+        horseMovement.maxSpeed = defaultMaxSpeed * multiplier;
+        horseMovement.acceleration = defaultAcceleration * multiplier;
     }
 
     private void EndSpeedBoostEffects()
