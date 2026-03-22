@@ -51,6 +51,8 @@ public class StandardEnemyAI : MonoBehaviour
     private void NavMeshAgentSetup()
     {
         agent = GetComponent<NavMeshAgent>();
+        var capsule = GetComponent<CapsuleCollider>();
+
         if (agent == null)
         {
             Debug.Log("No NavMesh agent found for the StandardEnemyAI");
@@ -62,6 +64,12 @@ public class StandardEnemyAI : MonoBehaviour
         agent.angularSpeed   = 0f;
         agent.speed = speed;
         agent.stoppingDistance = attackRange * 0.7f; // Enemy stops within attacking range of player.
+
+        // Make the NavMesh agent the same size as the Enemy capsule collider
+        agent.radius = capsule.radius;
+        agent.height = capsule.height;
+        agent.baseOffset = capsule.center.y - capsule.height * 0.5f;
+
     }
 
     // Update is called once per frame
