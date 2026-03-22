@@ -96,7 +96,20 @@ public class StandardEnemyAI : MonoBehaviour
         if (IsKnockedBack) return;
         if (_playerTransformRef == null) return;
 
+        // MOVEMENT
+        Vector3 toPlayer = _playerTransformRef.position - transform.position;
+        toPlayer.y = 0f;
 
+        // toPlayerDir is nonsense if the vector is too small.
+        Vector3 toPlayerDir;
+        if (toPlayer.magnitude > 0.01f)
+        {
+            toPlayerDir = toPlayer / toPlayer.magnitude;
+        }
+        else
+        {
+            toPlayerDir = Vector3.zero;
+        }
     }
 
     private void HandleKnockback()
