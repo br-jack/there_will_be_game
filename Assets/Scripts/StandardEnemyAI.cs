@@ -134,6 +134,16 @@ public class StandardEnemyAI : MonoBehaviour
         {
             moveDir = toPlayerDir;
         }
+        
+        moveDir = new Vector3(moveDir.x, 0f, moveDir.z);
+
+        if (moveDir.magnitude > 0.01f)
+        {
+            Quaternion finalRotation = Quaternion.LookRotation(moveDir.normalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, Time.fixedDeltaTime * rotationSpeed);
+        }
+
+        Vector3 desired = moveDir * speed;
 
     }
 
