@@ -110,7 +110,33 @@ public class StandardEnemyAI : MonoBehaviour
         {
             toPlayerDir = Vector3.zero;
         }
+
+        bool IsNavMeshAvail = agent != null && agent.enabled && agent.isOnNavMesh;
+        Vector3 moveDir;
+
+        // Use NavMesh for pathfinding if available, otherise use the straight line fallback (terrible).
+        if (IsNavMeshAvail)
+        {
+            agent.SetDestination(_playerTransformRef.position);
+            moveDir = agent.desiredVelocity;
+            moveDir.y = 0
+            if (moveDir.magnitude > 0.01f)
+            {
+                moveDir = moveDir.normalized;
+            }
+            else // Fallback if the vector is too short, then it's nonsence.
+            {
+                moveDir = toPlayerDir;
+            }
+        }
+        // Fallback if there's no NavMesh
+        else
+        {
+            moveDir = toPlayerDir;
+        }
+
     }
+
 
     private void HandleKnockback()
     {
