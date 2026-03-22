@@ -2,7 +2,12 @@ using UnityEngine;
 public struct EnemyAttack
 public class StandardEnemyAI : MonoBehaviour
 {
+    // References
     public GameObject shield;
+    private Rigidbody rb;
+    private AudioSource _shieldBreakAudioSource;
+    private StandardEnemySpawner spawner;
+
     [Header("Movement")]
     [SerializeField] private float speed = 5f;
 
@@ -10,8 +15,17 @@ public class StandardEnemyAI : MonoBehaviour
     [SerializeField] private float stopFromPlayerDistance = 1.5f;
     [SerializeField] private float smoothVelocity = 0.35f;
     [SerializeField] private float rotationSpeed = 8f;
-    
 
+    public bool IsKnockedBack { get; private set; }
+    public bool IsDying { get; private set; }
+    public bool ShieldWasJustHit { get; private set; }
+    public event Action OnDied;
+    
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        _shieldBreakAudioSource = GetComponent<AudioSource>();
+    }
     void Start()
     {
         
@@ -22,4 +36,6 @@ public class StandardEnemyAI : MonoBehaviour
     {
         
     }
+
+    
 }
