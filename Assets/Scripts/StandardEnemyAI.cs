@@ -34,8 +34,26 @@ public class StandardEnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (IsDying)
+        {
+            KillEnemy();
+            return;
+        }
+
+        if (IsKnockedBack)
+        {
+            HandleKnockback();
+            return;
+        }
+    }
+
+    private void HandleKnockback()
+    {
         
     }
 
-    
+    private void KillEnemy()
+    {
+        
+    }
 }
