@@ -27,30 +27,7 @@ namespace Hammer
 
         void Start()
         {
-            int attempts = 0;
-            while (GlobalManager.Instance.port.IsUnityNull())
-            {
-                GlobalManager.Instance.SearchPorts();
-                attempts++;
-                if (attempts == 5)
-                {
-                    Debug.LogWarning("Could not find port.");
-                    running = false;
-                    return;
-                }
-            }
-
-            Connect();
             rigidBody = GetComponent<Rigidbody>();
-
-            running = true;
-
-            // Start the background I/O thread
-            ioThread = new Thread(IOThreadLoop)
-            {
-                IsBackground = true
-            };
-            ioThread.Start();
         }
 
         public void CalibrateHammer()
@@ -88,12 +65,6 @@ namespace Hammer
         void Update()
         {
 
-            if (!stream.IsOpen)
-            {
-                Debug.LogWarning("Port is not open for reading.");
-                return;
-            }
-
             ParseStream();
             UpdateRotation();
             UpdatePosition();
@@ -113,15 +84,7 @@ namespace Hammer
 
         void OnDisable()
         {
-            running = false;
-            if (ioThread != null && ioThread.IsAlive)
-            {
-                ioThread.Join();
-            }
             
-            portOpen = false;
-            stream.Close();
-            Debug.Log("Port closed");
         }
     }
 

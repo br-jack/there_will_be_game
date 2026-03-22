@@ -71,6 +71,19 @@ namespace Hammer
         
         public void Connect()
         {
+            int attempts = 0;
+            while (port == null)
+            {
+                SearchPorts();
+                attempts++;
+                if (attempts == 5)
+                {
+                    Debug.LogWarning("Could not find port.");
+                    running = false;
+                    return;
+                }
+            }
+            
             try
             {
                 stream = new SerialPort(port, 115200)
@@ -91,6 +104,16 @@ namespace Hammer
                 Debug.LogWarning("Failed to connect to port: ");
                 Debug.LogWarning(e);
             }
+            
+            
+            running = true;
+
+            // Start the background I/O thread
+            ioThread = new Thread(IOThreadLoop)
+            {
+                IsBackground = true
+            };
+            ioThread.Start();
         }
         
         private void IOThreadLoop()
@@ -176,7 +199,11 @@ namespace Hammer
 
         public void Update()
         {
-            throw new System.NotImplementedException();
+            if (!stream.IsOpen)
+            {
+                Debug.LogWarning("Port is not open for reading.");
+                return;
+            }
         }
 
         public Vector3 GetAttitude()
@@ -191,7 +218,15 @@ namespace Hammer
 
         public void Cleanup()
         {
-            throw new System.NotImplementedException();
+            running = false;
+            if (ioThread != null && ioThread.IsAlive)
+            {
+                ioThread.Join();
+            }
+            
+            portOpen = false;
+            stream.Close();
+            Debug.Log("Port closed");
         }
     }
 }
