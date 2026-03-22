@@ -1,10 +1,10 @@
 using UnityEngine;
 public struct EnemyAttack
 {
-    public int damage;
+    public float damage;
     public float range;
     public float cooldown;
-    public float windup;
+    public float chargeTime;
 }
 public class StandardEnemyAI : MonoBehaviour
 {
@@ -19,6 +19,14 @@ public class StandardEnemyAI : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float speed = 5f;
+
+    private EnemyAttack attack = new EnemyAttack
+    {
+        damage = 10f,
+        range = 2.5f,
+        cooldown = 2f,
+        chargeTime = 0.25f
+    };
 
     // The distance the Enemy stops at the player should be less than the player's attack range.
     [SerializeField] private float stopFromPlayerDistance = 1.5f;
