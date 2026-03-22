@@ -20,7 +20,6 @@ public class GlobalManager : MonoBehaviour
         Application.targetFrameRate = 60;
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        SearchPorts();
     }
     
 }

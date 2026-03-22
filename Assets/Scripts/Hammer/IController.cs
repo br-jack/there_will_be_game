@@ -8,7 +8,7 @@ namespace Hammer
         
         public void Update();
 
-        public Vector3 GetAttitude();
+        public Quaternion GetAttitude();
 
         public Vector3 GetAcceleration();
 

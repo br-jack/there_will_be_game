@@ -25,6 +25,9 @@ namespace Hammer
 
         public Rigidbody rigidBody;
 
+        private Quaternion attitude;
+        private Vector3 frameAcceleration;
+
         void Start()
         {
             rigidBody = GetComponent<Rigidbody>();
@@ -32,13 +35,13 @@ namespace Hammer
 
         public void CalibrateHammer()
         {
-            GlobalManager.Instance.CalibrationQuaternion = Quaternion.Inverse(gameRotationVector);
+            GlobalManager.Instance.CalibrationQuaternion = Quaternion.Inverse(attitude);
 
         }
 
         void UpdateRotation()
         {
-            transform.localRotation = gameRotationVector * GlobalManager.Instance.CalibrationQuaternion;;
+            transform.localRotation = attitude * GlobalManager.Instance.CalibrationQuaternion;;
         }
 
         void UpdatePosition()
@@ -64,8 +67,6 @@ namespace Hammer
 
         void Update()
         {
-
-            ParseStream();
             UpdateRotation();
             UpdatePosition();
 
@@ -75,7 +76,6 @@ namespace Hammer
 
         public void OnCollisionEnter(Collision collision)
         {
-
             if (collision.gameObject.CompareTag("Enemy"))
             {
                 Destroy(collision.gameObject);

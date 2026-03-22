@@ -204,16 +204,18 @@ namespace Hammer
                 Debug.LogWarning("Port is not open for reading.");
                 return;
             }
+            
+            ParseStream();
         }
 
-        public Vector3 GetAttitude()
+        public Quaternion GetAttitude()
         {
-            throw new System.NotImplementedException();
+            return gameRotationVector;
         }
 
         public Vector3 GetAcceleration()
         {
-            throw new System.NotImplementedException();
+            return frameAcceleration;
         }
 
         public void Cleanup()
