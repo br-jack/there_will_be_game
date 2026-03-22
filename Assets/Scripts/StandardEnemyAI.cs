@@ -44,6 +44,8 @@ public class StandardEnemyAI : MonoBehaviour
     private float knockbackTimer;
     private float knockbackTime;
     private float attackTimer;
+    private float deathTime = 0.5f;
+    private float deathTimer;
 
     // Thresholds
     private float groundDistanceThreshold;
@@ -204,6 +206,21 @@ public class StandardEnemyAI : MonoBehaviour
 
     private void KillEnemy()
     {
-        
+        deathTimer -= Time.deltaTime;
+
+        if (IsKnockedBack)
+        {
+            knockbackTimer -= Time.deltaTime;
+
+            if (knockbackTimer <= 0f)
+            {
+                bool grounded = IsGroundedHelper();
+            }
+        }
+    }
+
+    private bool IsGroundedHelper()
+    {
+        return Physics.Raycast(transform.position + Vector3.up * 0.15f, Vector3.down, groundDistanceThreshold + 0.15f);
     }
 }
