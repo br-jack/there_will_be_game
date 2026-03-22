@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1686391742984204268}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -56,7 +56,6 @@ MonoBehaviour:
   hoverHeight: 0.2
   hoverSpeed: 2
   rotationSpeed: 60
-  landed: 0
 --- !u!135 &816484171470824573
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -76,7 +75,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &2318525545383422034
 Rigidbody:
@@ -193,8 +192,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7
-  m_Height: 2
+  m_Radius: 1.1
+  m_Height: 2.8
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!4 &947877973419931602 stripped
