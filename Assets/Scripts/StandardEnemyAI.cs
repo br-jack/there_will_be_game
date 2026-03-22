@@ -9,6 +9,7 @@ public class StandardEnemyAI : MonoBehaviour
     private StandardEnemySpawner spawner;
     [HideInInspector] public PlayerHealth _playerHealthRef;
     [HideInInspector] public Transform _playerTransformRef;
+    private NavMeshAgent agent;
 
     [Header("Movement")]
     [SerializeField] private float speed = 5f;
@@ -30,6 +31,18 @@ public class StandardEnemyAI : MonoBehaviour
     }
     void Start()
     {
+        
+    }
+
+    private void NavMeshAgentSetup()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            Debug.Log("No NavMesh agent found for the StandardEnemyAI");
+        }
+
+        // Disable the automatic movement
         
     }
 
@@ -56,6 +69,8 @@ public class StandardEnemyAI : MonoBehaviour
         if (IsDying) return;
         if (IsKnockedBack) return;
         if (_playerTransformRef == null) return;
+
+
     }
 
     private void HandleKnockback()
