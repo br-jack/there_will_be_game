@@ -1,5 +1,11 @@
 using UnityEngine;
 public struct EnemyAttack
+{
+    public int damage;
+    public float range;
+    public float cooldown;
+    public float windup;
+}
 public class StandardEnemyAI : MonoBehaviour
 {
     // References
@@ -43,7 +49,11 @@ public class StandardEnemyAI : MonoBehaviour
         }
 
         // Disable the automatic movement
-        
+        agent.updatePosition = false;
+        agent.updateRotation = false;
+        agent.angularSpeed   = 0f;
+        agent.speed = speed;
+        agent.stoppingDistance = attackRange * 0.7f; // Enemy stops within attacking range of player.
     }
 
     // Update is called once per frame
