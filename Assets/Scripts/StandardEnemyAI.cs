@@ -145,6 +145,24 @@ public class StandardEnemyAI : MonoBehaviour
 
         Vector3 desired = moveDir * speed;
 
+        if (rb != null)
+        {
+            Vector3 cur = rb.linearVelocity;
+
+            rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, new Vector3(desired.x, rb.linearVelocity.y, desired.z), smoothVelocity);
+        }
+        else
+        {
+            transform.position += desired * Time.fixedDeltaTime;
+        }
+    }
+
+    public void BreakShield()
+    {
+        if (shield == null) return;
+        Destroy(shield);
+        shield = null;
+        _shieldBreakAudioSource?.Play();
     }
 
 
