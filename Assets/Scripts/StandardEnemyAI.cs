@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.AI;
+
 public struct EnemyAttack
 {
     public float damage;
@@ -37,6 +39,14 @@ public class StandardEnemyAI : MonoBehaviour
     public bool IsDying { get; private set; }
     public bool ShieldWasJustHit { get; private set; }
     public event Action OnDied;
+
+    // Timers
+    private float knockbackTimer;
+    private float knockbackTime;
+    private float attackTimer;
+
+    // Thresholds
+    private float groundDistanceThreshold;
     
     void Awake()
     {
@@ -168,7 +178,28 @@ public class StandardEnemyAI : MonoBehaviour
 
     private void HandleKnockback()
     {
+        knockbackTimer -= Time.deltaTime;
+
+        if (knockbackTimer > 0f) return;
+
+        bool grounded = Physics.Raycast(transform.position + Vector3.up * 0.15f, Vector3.down, groundDistanceThreshold + 0.15f);
         
+        if (!grounded) return;
+
+        // The player is back on the ground (aka knockback has FINISHED).
+        IsKnockedBack = false;
+        knockbackTimer = knockbackTime;
+
+        // The agent is disabled during knockback. Enable it back now that knockback is finished.
+        if (agent != null)
+        {
+            agent.enabled = true;
+
+            if (!agent.isOnNavMesh)
+            {
+                if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 3f, NavMesh.AllAreas)) agent.Warp(hit.position);
+            }
+        }
     }
 
     private void KillEnemy()
