@@ -43,7 +43,7 @@ public class StandardEnemyAI : MonoBehaviour
     // Timers
     private float knockbackTimer;
     private float knockbackTime;
-    private float attackTimer;
+    private float timeOfNextAttack;
     private float deathTime = 0.5f;
     private float deathTimer;
 
@@ -182,6 +182,14 @@ public class StandardEnemyAI : MonoBehaviour
         if (_playerHealthRef == null) return;
         if (_playerTransformRef == null) return;
         if (_playerHealthRef.IsDead) return;
+
+        Vector3 toPlayer = _playerTransformRef.position - transform.position;
+        toPlayer.y = 0f;
+
+        if (toPlayer.magnitude > attack.range) return;
+
+        timeOfNextAttack += attack.cooldown;
+
     }
 
 
