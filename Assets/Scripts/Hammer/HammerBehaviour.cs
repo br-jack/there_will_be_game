@@ -28,9 +28,16 @@ namespace Hammer
         private Quaternion attitude;
         private Vector3 frameAcceleration;
 
-        void Start()
+        private IController _controllerRef;
+
+        void Awake()
         {
             rigidBody = GetComponent<Rigidbody>();
+        }
+
+        void Start()
+        {
+            _controllerRef = GlobalManager.Instance.hammerController;
         }
 
         public void CalibrateHammer()
@@ -67,6 +74,10 @@ namespace Hammer
 
         void Update()
         {
+            _controllerRef.Update();
+            attitude = _controllerRef.GetAttitude();
+            frameAcceleration = _controllerRef.GetAcceleration();
+            
             UpdateRotation();
             UpdatePosition();
 

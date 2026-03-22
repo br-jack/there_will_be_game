@@ -14,7 +14,7 @@ namespace Hammer
             throw new System.NotImplementedException();
         }
 
-        public Vector3 GetAttitude()
+        public Quaternion GetAttitude()
         {
             throw new System.NotImplementedException();
         }

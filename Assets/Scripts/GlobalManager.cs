@@ -1,12 +1,13 @@
-using Hammer;
 using System;
 using System.IO.Ports;
+using Hammer;
 using UnityEngine;
 
 public class GlobalManager : MonoBehaviour
 {
     public static GlobalManager Instance { get; private set; }
 
+    public Hammer.IController hammerController = new IMUController();
 
     public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
 
@@ -20,6 +21,8 @@ public class GlobalManager : MonoBehaviour
         Application.targetFrameRate = 60;
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        hammerController.Connect();
     }
     
 }
