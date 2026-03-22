@@ -54,8 +54,15 @@ public class BodyHit : MonoBehaviour
 
         if (hitEffectPrefab != null)
         {
-            Vector3 hitPoint = other.ClosestPoint(transform.position);
-            Instantiate(hitEffectPrefab, hitPoint, Quaternion.identity);
+            Collider bodyCollider = GetComponent<Collider>();
+            Vector3 hitPosition = transform.position;
+
+            if (bodyCollider != null)
+            {
+                hitPosition = bodyCollider.bounds.center;
+            }
+
+            Instantiate(hitEffectPrefab, hitPosition, Quaternion.identity);
         }
 
         AwardScore(enemy);
