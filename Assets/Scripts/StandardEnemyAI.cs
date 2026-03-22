@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public struct EnemyAttack
 {
-    public float damage;
+    public int damage;
     public float range;
     public float cooldown;
     public float chargeTime;
@@ -190,6 +190,21 @@ public class StandardEnemyAI : MonoBehaviour
 
         timeOfNextAttack += attack.cooldown;
 
+    }
+
+    private void DoDamage()
+    {
+        if (_playerHealthRef == null) return;
+        if (IsDying) return;
+
+        Vector3 toPlayer = _playerTransformRef.position - transform.position;
+        toPlayer.y = 0;
+
+        // Damage is only done if the player is within range after the attack animation finishes.
+        if (toPlayer.magnitude <= attack.range)
+        {
+            _playerHealthRef.TakeDamage(attack.damage);
+        }
     }
 
 
