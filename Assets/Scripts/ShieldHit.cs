@@ -2,16 +2,8 @@ using UnityEngine;
 
 public class ShieldHit : MonoBehaviour
 {
-    public float knockbackForce = 20f;
-    public AudioSource audioSource;
     void OnTriggerEnter(Collider other)
     {
-           audioSource = GetComponent<AudioSource>();
-
-        if (audioSource == null)
-        {
-            Debug.LogError("man there's no audio source");
-        }
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
         if (attack == null)
         {
@@ -23,10 +15,23 @@ public class ShieldHit : MonoBehaviour
         {
             return;
         }
+        if (enemy.IsKnockedBack)
+        {
+            return;
+        }
+        Debug.Log($"ShieldHit triggered by {other.gameObject.name}");
 
         enemy.MarkShieldHit();
+        
+        // Calculate knockback based on attack velocity
+        float knockbackForce = attack.GetKnockbackForce();
+        
+        //Stagger enemy
         Vector3 knockbackDirection = enemy.transform.position - other.transform.position;
-        knockbackDirection.y = 0.5f;
+        
+        // Faster hits launch enemies higher so they travel farther
+        float upwardForceRatio = Mathf.Clamp(knockbackForce / 75f, 0.2f, 1.5f);
+        knockbackDirection.y = upwardForceRatio;
         knockbackDirection.Normalize();
 
         enemy.ApplyKnockback(knockbackDirection * knockbackForce);

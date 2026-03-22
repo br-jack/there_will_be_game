@@ -1,13 +1,21 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BodyHit : MonoBehaviour
 {
     public LayerMask shieldMask;
     public hitSound hitSounds;
+
+    [SerializeField] private float speedThreshold = 5f;
+    [SerializeField] private int baseScore = 10;
+    [SerializeField] private int speedBonusScore = 30;
+    [SerializeField] private int lowHealthBonusScore = 20;
+    [SerializeField] private int lowHealthThreshold = 30;
+    [SerializeField] private int airBonusScore = 25;
+    [SerializeField] private int shieldBypassBonusScore = 40;
+
     void OnTriggerEnter(Collider other)
     {
-
-
         // Check if hit by attack
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
         if (attack == null)
@@ -19,13 +27,12 @@ public class BodyHit : MonoBehaviour
         {
             return;
         }
-
-        if (enemy.isKnockedback)
+        if (enemy.IsKnockedBack)
         {
             return;
         }
         // If shield was already hit this frame, ignore body hit
-        if (enemy.shieldWasJustHit)
+        if (enemy.ShieldWasJustHit)
         {
             return;
         }
@@ -38,13 +45,61 @@ public class BodyHit : MonoBehaviour
 
         if (Physics.Raycast(attackPosition, direction, distance, shieldMask))
         {
-            // Sheild is blocking
+            // Shield is blocking
             return;
         }
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
         hitSounds.PlaySFX();
+
+        AwardScore(enemy);
      
         // No shield blocking - kill the enemy
-        enemy.Die();
+        enemy.KilledBy(other, attack);
+    }
+
+    private void AwardScore(EnemyMovement enemy)
+    {   
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player == null) return;
+        
+        HorseMovement horseMovement = player.GetComponent<HorseMovement>();
+        if (horseMovement == null) return;
+
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+        
+        List<ScoreComponent> scoreComponents = new List<ScoreComponent>();
+        
+        // Base score
+        scoreComponents.Add(new ScoreComponent(baseScore, ScoreType.Base));
+        
+        // Speed bonus
+        if (horseMovement.CurrentSpeed >= speedThreshold)
+        {
+            scoreComponents.Add(new ScoreComponent(speedBonusScore, ScoreType.Speed));
+        }
+        
+        // Low health bonus
+        if (playerHealth != null)
+        {
+            float healthPercent = (float)playerHealth.Current / playerHealth.Max * 100f;
+            if (healthPercent <= lowHealthThreshold)
+            {
+                scoreComponents.Add(new ScoreComponent(lowHealthBonusScore, ScoreType.LowHealth));
+            }
+        }
+        
+        // Air bonus
+        if (!horseMovement.IsGrounded)
+        {
+            scoreComponents.Add(new ScoreComponent(airBonusScore, ScoreType.Air));
+        }
+
+        // Shield bypass bonus
+        if (enemy != null && enemy.HasShield())
+        {
+            scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
+        }
+        
+        ScoreManager.Instance.AddScore(scoreComponents);
     }
 }
