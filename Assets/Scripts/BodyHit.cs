@@ -13,6 +13,7 @@ public class BodyHit : MonoBehaviour
     [SerializeField] private int lowHealthThreshold = 30;
     [SerializeField] private int airBonusScore = 25;
     [SerializeField] private int shieldBypassBonusScore = 40;
+    [SerializeField] private GameObject hitEffectPrefab;
 
     void OnTriggerEnter(Collider other)
     {
@@ -50,6 +51,12 @@ public class BodyHit : MonoBehaviour
         }
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
         hitSounds.PlaySFX();
+
+        if (hitEffectPrefab != null)
+        {
+            Vector3 hitPoint = other.ClosestPoint(transform.position);
+            Instantiate(hitEffectPrefab, hitPoint, Quaternion.identity);
+        }
 
         AwardScore(enemy);
      
