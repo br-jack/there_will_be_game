@@ -7,6 +7,8 @@ public class StandardEnemyAI : MonoBehaviour
     private Rigidbody rb;
     private AudioSource _shieldBreakAudioSource;
     private StandardEnemySpawner spawner;
+    [HideInInspector] public PlayerHealth _playerHealthRef;
+    [HideInInspector] public Transform _playerTransformRef;
 
     [Header("Movement")]
     [SerializeField] private float speed = 5f;
@@ -45,6 +47,15 @@ public class StandardEnemyAI : MonoBehaviour
             HandleKnockback();
             return;
         }
+    }
+
+    void FixedUpdate()
+    {
+        ShieldWasJustHit = false;
+
+        if (IsDying) return;
+        if (IsKnockedBack) return;
+        if (_playerTransformRef == null) return;
     }
 
     private void HandleKnockback()
