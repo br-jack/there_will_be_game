@@ -48,7 +48,7 @@ namespace Hammer
 
         void UpdateRotation()
         {
-            transform.localRotation = attitude * GlobalManager.Instance.CalibrationQuaternion;;
+            transform.localRotation = attitude * GlobalManager.Instance.CalibrationQuaternion;
         }
 
         void UpdatePosition()

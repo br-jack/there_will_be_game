@@ -6,27 +6,27 @@ namespace Hammer
     {
         public void Connect()
         {
-            throw new System.NotImplementedException();
+            Input.gyro.enabled = true;
         }
 
         public void Update()
         {
-            throw new System.NotImplementedException();
+            if (Input.touchCount > 0) Input.gyro.enabled = true;
         }
 
         public Quaternion GetAttitude()
         {
-            throw new System.NotImplementedException();
+            return Input.gyro.attitude;
         }
 
         public Vector3 GetAcceleration()
         {
-            throw new System.NotImplementedException();
+            return Input.acceleration;
         }
 
         public void Cleanup()
         {
-            throw new System.NotImplementedException();
+            Input.gyro.enabled = false;
         }
     }
 }
