@@ -184,7 +184,7 @@ public class StandardEnemyAI : MonoBehaviour
 
         if (knockbackTimer > 0f) return;
 
-        bool grounded = Physics.Raycast(transform.position + Vector3.up * 0.15f, Vector3.down, groundDistanceThreshold + 0.15f);
+        bool grounded = IsGroundedHelper();
         
         if (!grounded) return;
 
@@ -215,8 +215,11 @@ public class StandardEnemyAI : MonoBehaviour
             if (knockbackTimer <= 0f)
             {
                 bool grounded = IsGroundedHelper();
+                if (grounded) IsKnockedBack = false;
             }
         }
+
+        if (!IsKnockedBack || deathTimer <= 0) Destroy(gameObject);
     }
 
     private bool IsGroundedHelper()
