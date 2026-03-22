@@ -176,6 +176,13 @@ public class StandardEnemyAI : MonoBehaviour
         shield = null;
         _shieldBreakAudioSource?.Play();
     }
+    
+    private void MeleeAttack()
+    {
+        if (_playerHealthRef == null) return;
+        if (_playerTransformRef == null) return;
+        if (_playerHealthRef.IsDead) return;
+    }
 
 
     private void HandleKnockback()
@@ -202,6 +209,32 @@ public class StandardEnemyAI : MonoBehaviour
                 if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 3f, NavMesh.AllAreas)) agent.Warp(hit.position);
             }
         }
+    }
+
+    public void KilledBy(Collider other, AttackHitBox hitBox)
+    {
+        IsDying = true;
+        IsKnockedBack = true;
+        knockbackTimer = knockbackTime;
+        deathTimer = deathTime;
+
+        // Remove Navmesh control.
+        if (agent != null) agent.enabled = false;
+
+        // Grey out the enemy.
+        Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
+        if (r != null) r.material.color = Color.gray;
+
+        float force = 30f;
+        if (attack) force = attack.GetKnockBackForce();
+        Vector3 knockDirection = (transform.position - other.transform.position).normalized;
+        float upward = Mathf.Clamp(force/75f, 0.2f, 1.5f);
+        knockDirection.Normalize();
+
+        rb.linearVelocity = Vector3.zero;
+        rb.AddForce(knockDirection * force, ForceMode.Impulse);
+
+        OnDied?.Invoke();
     }
 
     private void KillEnemy()
