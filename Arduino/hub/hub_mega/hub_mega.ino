@@ -1,3 +1,5 @@
+bool atStarted = false;
+
 void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(115200);
@@ -9,13 +11,22 @@ void setup() {
   while (!Serial1) {
     ; // wait for serial1 port to connect. Needed for Bluetooth
   }
-  // BT.print("AT+ROLE1");
+
   Serial1.print("AT+START");
 }
 
 void loop() { // run over and over
   if (Serial1.available()) {
+    if (atStarted) {
+      // BT.print("AT+ROLE1");
+      Serial1.print("AT+START");
+      atStarted = true;
+    }
+       
     Serial.write(Serial1.read());
+  }
+  if (!Serial1) {
+    atStarted = false;
   }
   if (Serial.available()) {
     Serial1.write(Serial.read());
