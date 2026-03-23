@@ -46172,6 +46172,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d636a10bb6aca3949bbe2c2116802989, type: 3}
+--- !u!1 &1766029162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5101081793428669751, guid: 73d99aec624448d40ba586fdd7268e71, type: 3}
+  m_PrefabInstance: {fileID: 2057619608}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1767357036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3411100825764721443, guid: 5b00d78aaada3da48953f612de79cc4e, type: 3}
@@ -54348,13 +54353,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5101081793428669751, guid: 73d99aec624448d40ba586fdd7268e71, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2057619613}
   m_SourcePrefab: {fileID: 100100000, guid: 73d99aec624448d40ba586fdd7268e71, type: 3}
 --- !u!4 &2057619609 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5584884040222580621, guid: 73d99aec624448d40ba586fdd7268e71, type: 3}
   m_PrefabInstance: {fileID: 2057619608}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2057619613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1766029162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fragmentsPrefab: {fileID: 413421386670872646, guid: 925ea1ac42c89454a9cffee2500eee25, type: 3}
+  breakForceThreshold: 5
+  explosionForce: 300
+  explosionRadius: 3
 --- !u!1001 &2058389431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57447,6 +57471,10 @@ PrefabInstance:
     - target: {fileID: 2685238824458530283, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2742428231631341785, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_TagString
+      value: Hammer
       objectReference: {fileID: 0}
     - target: {fileID: 3304088472591636408, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_Name
