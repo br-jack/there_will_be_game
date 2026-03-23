@@ -12,6 +12,7 @@ Connected to PlayerLives (which gives it the healthbar UI).
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 100;
+    [SerializeField] private DamageVignetteFlash damageFlash;
 
     private int current;
 
@@ -45,6 +46,11 @@ public class PlayerHealth : MonoBehaviour
         if (Current < 0) Current = 0;
 
         OnHealthChanged?.Invoke(Current, Max);
+
+        if (damageFlash != null)
+        {
+            damageFlash.Flash();
+        }
 
         if (IsDead) OnDeath?.Invoke();
     }
