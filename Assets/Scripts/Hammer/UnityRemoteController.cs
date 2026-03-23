@@ -31,6 +31,8 @@ namespace Hammer
             {
                 InputSystem.EnableDevice(_attitudeSensor);
             }
+            
+            InputSystem.EnableDevice(LinearAccelerationSensor.current);
         }
 
         public void Update()
@@ -43,12 +45,12 @@ namespace Hammer
 
         public Quaternion GetAttitude()
         {
-            return _attitudeSensor.attitude.value;
+            return _attitudeSensor.attitude.ReadValue();
         }
 
         public Vector3 GetAcceleration()
         {
-            return Input.acceleration;
+            return LinearAccelerationSensor.current.acceleration.ReadValue();
         }
 
         public void Cleanup()
