@@ -21,13 +21,13 @@ SoftwareSerial BT(D8, D9);  // RX, TX
 
 void setup(void) {
   //Without this inital delay it will usually never connect until you press the reset button
-  delay(100);
+  delay(300);
 
   // Open serial communications and wait for port to open:
-  // Serial.begin(19200);
-  // while (!Serial) {
-  //   ; // wait for serial port to connect. Needed for native USB port only
-  // }
+  Serial.begin(115200);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
 
   // BT.begin(9600);
   // BT.print("AT+ROLE0");
@@ -82,17 +82,17 @@ void setReports(void) {
 
 void loop() {  // run over and over
 
-  delay(5);
+  delay(10);
 
-  // if (BT.available()) {
-  //   Serial.write(BT.read());
-  // }
-  // if (Serial.available()) {
-  //   BT.write(Serial.read());
-  // }
+  if (BT.available()) {
+    Serial.write(BT.read());
+  }
+  if (Serial.available()) {
+    BT.write(Serial.read());
+  }
 
   if (bno08x.wasReset()) {
-    BT.print("sensor was reset ");
+    Serial.print("sensor was reset ");
     setReports();
   }
 
@@ -114,7 +114,7 @@ void loop() {  // run over and over
         q.concat(sensorValue.un.gameRotationVector.k);
 
 
-        BT.println(q);
+        Serial.println(q);
         break;
       }
 
@@ -128,7 +128,7 @@ void loop() {  // run over and over
         q.concat(sensorValue.un.linearAcceleration.y);
         q.concat(":");
         q.concat(sensorValue.un.linearAcceleration.z);
-        BT.println(q);
+        Serial.println(q);
         break;
       }
   }
