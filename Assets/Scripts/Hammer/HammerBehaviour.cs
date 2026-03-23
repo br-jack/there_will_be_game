@@ -92,11 +92,6 @@ namespace Hammer
                 Destroy(collision.gameObject);
             }
         }
-
-        void OnDisable()
-        {
-            
-        }
     }
 
 }
