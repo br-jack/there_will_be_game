@@ -52,10 +52,13 @@ public class StandardEnemyAI : MonoBehaviour
     // Thresholds
     private float groundDistanceThreshold;
 
-
-    // Anti-clumping
     [SerializeField] private Animator anim;
     [SerializeField] private bool useDamageAnimEvent = false;
+    [SerializeField] private Animator anim;
+    [SerializeField] private string speedParam = "Speed";
+    [SerializeField] private string attackTrigger = "Attack";
+    [SerializeField] private string hitTrigger = "Hit";
+    [SerializeField] private string deadTrigger = "Die";
     
     void Awake()
     {
@@ -69,6 +72,23 @@ public class StandardEnemyAI : MonoBehaviour
     void Start()
     {
         
+    }
+
+    public void ApplyKnockback(Vector3 force)
+    {
+        IsKnockedBack  = true;
+        knockbackTimer = knockbackTime;
+
+        // let physics own the body
+        if (agent != null) agent.enabled = false;
+ 
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.AddForce(force, ForceMode.Impulse);
+        }
+ 
+        if (anim != null && !string.IsNullOrEmpty(hitTrigger)) anim.SetTrigger(hitTrigger);
     }
 
     private void SetupNavMesh()
@@ -287,6 +307,18 @@ public class StandardEnemyAI : MonoBehaviour
         }
 
         if (!IsKnockedBack || deathTimer <= 0) Destroy(gameObject);
+    }
+
+    private void UpdateAnim()
+    {
+        if (anim == null || string.IsNullOrEmpty(speedParam)) return;
+
+        float animSpeed = 0f;
+        if (rb != null)
+        {
+            animSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude;
+        }
+        anim.SetFloat(speedParam, animSpeed);
     }
 
     private bool IsGroundedHelper()
