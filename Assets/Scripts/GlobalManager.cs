@@ -6,8 +6,8 @@ using UnityEngine;
 public class GlobalManager : MonoBehaviour
 {
     public static GlobalManager Instance { get; private set; }
-
-    public Hammer.IController hammerController = new UnityRemoteController();
+    
+    public Hammer.IController hammerController;
 
     public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
 
@@ -21,6 +21,13 @@ public class GlobalManager : MonoBehaviour
         Application.targetFrameRate = 60;
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        
+// Caligula is a PC game, this is only for Unity Remote        
+#if (UNITY_IOS || UNITY_ANDROID)
+        hammerController = new UnityRemoteController();
+#else
+        hammerController = new IMUController();
+#endif
         
         hammerController.Connect();
     }
