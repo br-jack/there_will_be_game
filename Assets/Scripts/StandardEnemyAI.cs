@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +10,6 @@ public struct EnemyAttack
     public float range;
     public float cooldown;
     public float chargeTime;
-    public float windup;
 }
 
 
@@ -27,40 +29,55 @@ public class StandardEnemyAI : MonoBehaviour
 
     private EnemyAttack attack = new EnemyAttack
     {
-        damage = 10f,
+        damage = 10,
         range = 2.5f,
         cooldown = 2f,
         chargeTime = 0.25f
     };
 
-    // The distance the Enemy stops at the player should be less than the player's attack range.
-    [SerializeField] private float stopFromPlayerDistance = 1.5f;
+    [SerializeField] private float stopFromPlayerDistance = 1.5f; // The distance the Enemy stops at the player should be less than the player's attack range.
     [SerializeField] private float smoothVelocity = 0.35f;
     [SerializeField] private float rotationSpeed = 8f;
+
+    [Header("Knockback & Death")]
+    [SerializeField] private float maxDeathTime = 4f;
+    private float groundCheckDistance = 0.4f;
+
+    [Header("Animation (optional)")]
+    [SerializeField] private Animator anim;
+    [SerializeField] private string speedParam = "Speed";
+    [SerializeField] private string attackTrigger = "Attack";
+    [SerializeField] private string hitTrigger = "Hit";
+    [SerializeField] private string deadTrigger = "Die";
+    [SerializeField] private bool useDamageAnimEvent = false;
 
     public bool IsKnockedBack { get; private set; }
     public bool IsDying { get; private set; }
     public bool ShieldWasJustHit { get; private set; }
     public event Action OnDied;
 
+    public bool HasShield() => shield != null;
+
+    public void MarkShieldHit()
+    {
+        ShieldWasJustHit = true;
+    }
+
     // Timers
     private float knockbackTimer;
-    private float knockbackTime;
+    private float knockbackTime = 0.5f;
     private float timeOfNextAttack;
-    private float deathTime = 0.5f;
     private float deathTimer;
 
-    // Thresholds
-    private float groundDistanceThreshold;
+    // State
+    private bool hasWarnedMissingPlayer;
 
-    [SerializeField] private Animator anim;
-    [SerializeField] private bool useDamageAnimEvent = false;
-    [SerializeField] private Animator anim;
-    [SerializeField] private string speedParam = "Speed";
-    [SerializeField] private string attackTrigger = "Attack";
-    [SerializeField] private string hitTrigger = "Hit";
-    [SerializeField] private string deadTrigger = "Die";
     
+    public void Initialize(StandardEnemySpawner spawnerRef)
+    {
+        spawner = spawnerRef;
+    }
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -70,26 +87,21 @@ public class StandardEnemyAI : MonoBehaviour
 
         if (anim == null) anim = GetComponentInChildren<Animator>();
     }
+
     void Start()
     {
-        
+        ResolvePlayerRefs();
     }
 
-    public void ApplyKnockback(Vector3 force)
+    private void ResolvePlayerRefs()
     {
-        IsKnockedBack  = true;
-        knockbackTimer = knockbackTime;
+        if (_playerHealthRef != null && _playerTransformRef != null) return;
 
-        // let physics own the body
-        if (agent != null) agent.enabled = false;
- 
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.AddForce(force, ForceMode.Impulse);
-        }
- 
-        if (anim != null && !string.IsNullOrEmpty(hitTrigger)) anim.SetTrigger(hitTrigger);
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+
+        if (_playerTransformRef == null) _playerTransformRef = player.transform;
+        if (_playerHealthRef == null) _playerHealthRef = player.GetComponent<PlayerHealth>();
     }
 
     private void SetupNavMesh()
@@ -100,24 +112,25 @@ public class StandardEnemyAI : MonoBehaviour
         if (agent == null)
         {
             Debug.Log("No NavMesh agent found for the StandardEnemyAI");
+            return;
         }
 
         // Disable the automatic movement
         agent.updatePosition = false;
         agent.updateRotation = false;
-        agent.angularSpeed   = 0f;
+        agent.angularSpeed = 0f;
         agent.speed = speed;
-        agent.stoppingDistance = attackRange * 0.7f; // Enemy stops within attacking range of player.
-        agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+        agent.stoppingDistance = attack.range * 0.7f; // Enemy stops within attacking range of player.
 
-        // Make the NavMesh agent the same size as the Enemy capsule collider
+        // Auto-size the agent cylinder from the physical CapsuleCollider so that
+        // the path clearance matches the enemy's actual body size.
         if (capsule != null)
         {
+            // Make the NavMesh agent the same size as the Enemy capsule collider
             agent.radius = capsule.radius;
             agent.height = capsule.height;
             agent.baseOffset = capsule.center.y - capsule.height * 0.5f;
         }
-
     }
 
     // Update is called once per frame
@@ -132,6 +145,16 @@ public class StandardEnemyAI : MonoBehaviour
         if (IsKnockedBack)
         {
             HandleKnockback();
+            return;
+        }
+
+        if (_playerHealthRef == null || _playerTransformRef == null)
+        {
+            ResolvePlayerRefs();
+            if (!hasWarnedMissingPlayer && Time.time > 2f)
+            {
+                hasWarnedMissingPlayer = true;
+            }
             return;
         }
 
@@ -152,10 +175,11 @@ public class StandardEnemyAI : MonoBehaviour
         toPlayer.y = 0f;
 
         // toPlayerDir is nonsense if the vector is too small.
+        float distToPlayer = toPlayer.magnitude;
         Vector3 toPlayerDir;
-        if (toPlayer.magnitude > 0.01f)
+        if (distToPlayer > 0.01f)
         {
-            toPlayerDir = toPlayer / toPlayer.magnitude;
+            toPlayerDir = toPlayer / distToPlayer;
         }
         else
         {
@@ -170,7 +194,7 @@ public class StandardEnemyAI : MonoBehaviour
         {
             agent.SetDestination(_playerTransformRef.position);
             moveDir = agent.desiredVelocity;
-            moveDir.y = 0
+            moveDir.y = 0f;
             if (moveDir.magnitude > 0.01f)
             {
                 moveDir = moveDir.normalized;
@@ -194,7 +218,22 @@ public class StandardEnemyAI : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, Time.fixedDeltaTime * rotationSpeed);
         }
 
-        Vector3 desired = moveDir * speed;
+        // Arrive / stop speed ramp — slow down as we enter attack range
+        float currentSpeed   = speed;
+        float stopDist       = attack.range * 0.7f;
+        float arriveDist     = attack.range + stopFromPlayerDistance;
+
+        if (distToPlayer < stopDist)
+        {
+            currentSpeed = 0f;
+        }
+        else if (distToPlayer < arriveDist)
+        {
+            float t = (distToPlayer - stopDist) / (arriveDist - stopDist);
+            currentSpeed *= t;
+        }
+
+        Vector3 desired = moveDir * currentSpeed;
 
         if (rb != null)
         {
@@ -207,10 +246,7 @@ public class StandardEnemyAI : MonoBehaviour
             transform.position += desired * Time.fixedDeltaTime;
         }
 
-        if (agent != null && agent.enabled && agent.isOnNavMesh)
-        {
-            agent.nextPosition = transform.position;
-        }
+        if (agent != null && agent.enabled && agent.isOnNavMesh) agent.nextPosition = transform.position;
     }
 
     public void BreakShield()
@@ -220,29 +256,30 @@ public class StandardEnemyAI : MonoBehaviour
         shield = null;
         _shieldBreakAudioSource?.Play();
     }
-    
+
     private void MeleeAttack()
     {
         if (_playerHealthRef == null) return;
         if (_playerTransformRef == null) return;
         if (_playerHealthRef.IsDead) return;
+        if (Time.time < timeOfNextAttack) return;
 
         Vector3 toPlayer = _playerTransformRef.position - transform.position;
         toPlayer.y = 0f;
 
-        if (toPlayer.magnitude > attack.range) return;
+        if (toPlayer.sqrMagnitude > attack.range * attack.range) return;
 
-        timeOfNextAttack += attack.cooldown;
+        timeOfNextAttack = Time.time + attack.cooldown;
 
         if (anim != null && !string.IsNullOrEmpty(attackTrigger)) anim.SetTrigger(attackTrigger);
-        if (!damageFromAnimEvent) StartCoroutine(WindupThenDamage());
+
+        if (!useDamageAnimEvent) StartCoroutine(ChargeUpThenDamage());
     }
 
-    private IEnumerator WindupThenDamage()
+    private IEnumerator ChargeUpThenDamage()
     {
-        if (attack.windup > 0f)
-            yield return new WaitForSeconds(attack.windup);
-        DealDamage();
+        if (attack.chargeTime > 0f) yield return new WaitForSeconds(attack.chargeTime);
+        DoDamage();
     }
 
     private void DoDamage()
@@ -254,12 +291,37 @@ public class StandardEnemyAI : MonoBehaviour
         toPlayer.y = 0;
 
         // Damage is only done if the player is within range after the attack animation finishes.
-        if (toPlayer.magnitude <= attack.range)
+        if (toPlayer.sqrMagnitude <= attack.range * attack.range)
         {
             _playerHealthRef.TakeDamage(attack.damage);
         }
     }
 
+    /// <summary>Called from an attack animation event at the hit frame.</summary>
+    public void AnimDealDamage()
+    {
+        if (!useDamageAnimEvent) return;
+        DoDamage();
+    }
+
+    public void ApplyKnockback(Vector3 force)
+    {
+        IsKnockedBack  = true;
+        knockbackTimer = knockbackTime;
+
+        if (agent != null) agent.enabled = false;   // let physics own the body
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.AddForce(force, ForceMode.Impulse);
+        }
+
+        if (anim != null && !string.IsNullOrEmpty(hitTrigger))
+        {
+            anim.SetTrigger(hitTrigger);
+        }
+    }
 
     private void HandleKnockback()
     {
@@ -287,12 +349,14 @@ public class StandardEnemyAI : MonoBehaviour
         }
     }
 
-    public void KilledBy(Collider other, AttackHitBox hitBox)
+    public void KilledBy(Collider other, AttackHitbox hitBox)
     {
+        if (IsDying) return;
+
         IsDying = true;
         IsKnockedBack = true;
         knockbackTimer = knockbackTime;
-        deathTimer = deathTime;
+        deathTimer = maxDeathTime;
 
         // Remove Navmesh control.
         if (agent != null) agent.enabled = false;
@@ -301,15 +365,23 @@ public class StandardEnemyAI : MonoBehaviour
         Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
         if (r != null) r.material.color = Color.gray;
 
-        float force = 30f;
-        if (attack) force = attack.GetKnockBackForce();
-        Vector3 knockDirection = (transform.position - other.transform.position).normalized;
-        float upward = Mathf.Clamp(force/75f, 0.2f, 1.5f);
+        float force = hitBox != null ? hitBox.GetKnockbackForce() : 30f;
+        Vector3 knockDirection = transform.position - other.transform.position;
+        knockDirection.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
         knockDirection.Normalize();
 
-        rb.linearVelocity = Vector3.zero;
-        rb.AddForce(knockDirection * force, ForceMode.Impulse);
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.AddForce(knockDirection * force, ForceMode.Impulse);
+        }
 
+        if (anim != null && !string.IsNullOrEmpty(deadTrigger))
+        {
+            anim.SetTrigger(deadTrigger);
+        }
+
+        spawner?.RemoveEnemy(this);
         OnDied?.Invoke();
     }
 
@@ -328,7 +400,7 @@ public class StandardEnemyAI : MonoBehaviour
             }
         }
 
-        if (!IsKnockedBack || deathTimer <= 0) Destroy(gameObject);
+        if (!IsKnockedBack || deathTimer <= 0f) Destroy(gameObject);
     }
 
     private void UpdateAnim()
@@ -338,14 +410,15 @@ public class StandardEnemyAI : MonoBehaviour
         float animSpeed = 0f;
         if (rb != null)
         {
-            animSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude;
+            Vector3 v = rb.linearVelocity;
+            animSpeed = new Vector3(v.x, 0f, v.z).magnitude;
         }
         anim.SetFloat(speedParam, animSpeed);
     }
 
     private bool IsGroundedHelper()
     {
-        return Physics.Raycast(transform.position + Vector3.up * 0.15f, Vector3.down, groundDistanceThreshold + 0.15f);
+        return Physics.Raycast(transform.position + Vector3.up * 0.2f, Vector3.down, groundCheckDistance + 0.2f);
     }
 
     private void OnDisable()
