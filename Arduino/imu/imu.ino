@@ -42,7 +42,11 @@ void setup(void) {
     //if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte UART buffer!
     //if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
     BT.println("Failed to find BNO08x chip");
-    while (1) { delay(5); }
+    while (1) {
+      delay(120); 
+      //see https://github.com/adafruit/Adafruit_BNO08x/issues/34#issuecomment-2533685723
+      rp2040.reboot();
+    }
   }
   BT.println("BNO08x Found!");
 
