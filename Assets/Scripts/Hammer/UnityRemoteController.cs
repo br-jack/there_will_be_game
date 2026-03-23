@@ -1,25 +1,46 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Android;
+using Gyroscope = UnityEngine.InputSystem.Gyroscope;
 
 namespace Hammer
 {
     public class UnityRemoteController : IController
     {
+        private AttitudeSensor _attitudeSensor;
+        
         public void Connect()
         {
-            Input.gyro.enabled = true;
+            // Determine if a Gyroscope sensor device is present.
+            if (Gyroscope.current != null)
+                Debug.Log("Gyroscope present");
+            InputSystem.EnableDevice(Gyroscope.current);
+            
+            _attitudeSensor = InputSystem.GetDevice<AndroidRotationVector>();
+            if (_attitudeSensor == null)
+            {
+                _attitudeSensor = InputSystem.GetDevice<AndroidGameRotationVector>();
+                if (_attitudeSensor == null)
+                    Debug.LogError("AttitudeSensor is not available");
+            }
+
+            if (_attitudeSensor != null)
+            {
+                InputSystem.EnableDevice(_attitudeSensor);
+            }
         }
 
         public void Update()
         {
             if (Input.touchCount > 0)
             {
-                Input.gyro.enabled = true;
+                InputSystem.EnableDevice(_attitudeSensor);
             }
         }
 
         public Quaternion GetAttitude()
         {
-            return Input.gyro.attitude;
+            return _attitudeSensor.attitude.value;
         }
 
         public Vector3 GetAcceleration()
@@ -29,7 +50,7 @@ namespace Hammer
 
         public void Cleanup()
         {
-            Input.gyro.enabled = false;
+            InputSystem.DisableDevice(Gyroscope.current);
         }
     }
 }
