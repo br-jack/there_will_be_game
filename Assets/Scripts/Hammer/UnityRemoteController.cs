@@ -12,18 +12,21 @@ namespace Hammer
         public void Connect()
         {
             // Determine if a Gyroscope sensor device is present.
-            if (Gyroscope.current != null)
-                Debug.Log("Gyroscope present");
-            InputSystem.EnableDevice(Gyroscope.current);
+            // if (Gyroscope.current != null)
+                // Debug.Log("Gyroscope present");
+            // InputSystem.EnableDevice(Gyroscope.current);
             
             _attitudeSensor = InputSystem.GetDevice<AndroidRotationVector>();
             if (_attitudeSensor == null)
             {
                 _attitudeSensor = InputSystem.GetDevice<AndroidGameRotationVector>();
                 if (_attitudeSensor == null)
+                {
                     Debug.LogError("AttitudeSensor is not available");
+                    _attitudeSensor = AttitudeSensor.current;
+                }
             }
-
+            
             if (_attitudeSensor != null)
             {
                 InputSystem.EnableDevice(_attitudeSensor);
@@ -34,7 +37,7 @@ namespace Hammer
         {
             if (Input.touchCount > 0)
             {
-                InputSystem.EnableDevice(_attitudeSensor);
+                Connect();
             }
         }
 
