@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Android;
 using Gyroscope = UnityEngine.InputSystem.Gyroscope;
@@ -9,6 +10,9 @@ namespace Hammer
     {
         private AttitudeSensor _attitudeSensor;
         private LinearAccelerationSensor _linearAccelerationSensor;
+        private Gyroscope _gyroscope;
+
+        private Vector3 _rotation;
         
         public void Connect()
         {
@@ -25,11 +29,12 @@ namespace Hammer
                 _attitudeSensor = InputSystem.GetDevice<AndroidRotationVector>();
                 if (_attitudeSensor == null)
                 {
-                    _attitudeSensor = InputSystem.GetDevice<AttitudeSensor>();
+                    _attitudeSensor = AndroidGameRotationVector.current;
+
+                    // _attitudeSensor = InputSystem.GetDevice<AttitudeSensor>();
                     if (_attitudeSensor == null)
                     {
                         Debug.LogError("AttitudeSensor is not available");
-                        _attitudeSensor = AttitudeSensor.current;
                     }
                 }
             }
@@ -49,6 +54,11 @@ namespace Hammer
             {
                 InputSystem.EnableDevice(_linearAccelerationSensor);
             }
+            
+            _gyroscope = InputSystem.GetDevice<Gyroscope>();
+            InputSystem.EnableDevice(_gyroscope);
+
+            _rotation = Vector3.zero;
         }
 
         public void Update()
@@ -57,11 +67,12 @@ namespace Hammer
             {
                 Connect();
             }
+            _rotation += _gyroscope.angularVelocity.ReadValue();
         }
 
         public Quaternion GetAttitude()
         {
-            return _attitudeSensor.attitude.ReadValue();
+            return Quaternion.Euler(_rotation);
         }
 
         public Vector3 GetAcceleration()
