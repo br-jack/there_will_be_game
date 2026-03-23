@@ -35,6 +35,9 @@ void setup(void) {
   BT.begin(115200);
 
   while (!BT) delay(5);
+
+  delay(20);
+
   BT.println("Adafruit BNO08x test!");
 
   // Try to initialize!
