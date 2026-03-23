@@ -8,6 +8,8 @@ public struct EnemyAttack
     public float cooldown;
     public float chargeTime;
 }
+
+
 public class StandardEnemyAI : MonoBehaviour
 {
     // References
@@ -49,18 +51,27 @@ public class StandardEnemyAI : MonoBehaviour
 
     // Thresholds
     private float groundDistanceThreshold;
+
+
+    // Anti-clumping
+    [SerializeField] private Animator anim;
+    [SerializeField] private bool useDamageAnimEvent = false;
     
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         _shieldBreakAudioSource = GetComponent<AudioSource>();
+
+        SetupNavMesh();
+
+
     }
     void Start()
     {
         
     }
 
-    private void NavMeshAgentSetup()
+    private void SetupNavMesh()
     {
         agent = GetComponent<NavMeshAgent>();
         var capsule = GetComponent<CapsuleCollider>();
@@ -281,5 +292,10 @@ public class StandardEnemyAI : MonoBehaviour
     private bool IsGroundedHelper()
     {
         return Physics.Raycast(transform.position + Vector3.up * 0.15f, Vector3.down, groundDistanceThreshold + 0.15f);
+    }
+
+    private void OnDisable()
+    {
+        if (!IsDying) spawner?.RemoveEnemy(this);
     }
 }
