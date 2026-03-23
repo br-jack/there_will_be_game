@@ -15,7 +15,7 @@ public class PowerUpPickup : MonoBehaviour
     public float rotationSpeed = 60f;
 
     private Rigidbody rb;
-    private bool landed = false;
+    private bool landed = false; 
     private Vector3 basePosition;
     private float spawnTime;
 

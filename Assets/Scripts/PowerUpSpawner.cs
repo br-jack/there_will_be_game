@@ -10,7 +10,7 @@ public class PowerUpSpawner : MonoBehaviour
     public Transform[] spawnPoints;
     public float spawnHeightOffset = 10.0f;
 
-    public float spawnInterval = 120.0f;
+    public float spawnInterval = 5.0f;
     public bool spawnImmediately = false;
 
     public TextMeshProUGUI boonText;
