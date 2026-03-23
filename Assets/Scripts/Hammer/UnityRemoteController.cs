@@ -11,7 +11,10 @@ namespace Hammer
 
         public void Update()
         {
-            if (Input.touchCount > 0) Input.gyro.enabled = true;
+            if (Input.touchCount > 0)
+            {
+                Input.gyro.enabled = true;
+            }
         }
 
         public Quaternion GetAttitude()

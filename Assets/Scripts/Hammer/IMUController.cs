@@ -15,7 +15,7 @@ namespace Hammer
         
         private Thread _ioThread;
         private bool _running;
-        private ConcurrentQueue<string> _dataQueue = new ConcurrentQueue<string>();
+        private readonly ConcurrentQueue<string> _dataQueue = new ConcurrentQueue<string>();
         
         private bool _portOpen = false;
         private const int TimeoutMs = 50;
@@ -225,6 +225,9 @@ namespace Hammer
             {
                 _ioThread.Join();
             }
+            _ioThread = null;
+            
+            _dataQueue.Clear();
             
             _portOpen = false;
             _stream.Close();
