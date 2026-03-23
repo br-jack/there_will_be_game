@@ -10,20 +10,20 @@ namespace Hammer
     public class HammerBehaviour : MonoBehaviour
     {
 
-        [SerializeField] float extension;
-        float extensionVelocity;
-        [SerializeField] float k = 20f;
-        [SerializeField] float dampingCoef = 3f;
-        [SerializeField] float restLength = 1;
-        [SerializeField] float maxLength = 20;
-        [SerializeField] float sensitivity = 2;
-        [SerializeField] float momentumDecay = 0.92f;
+        [SerializeField] private float extension;
+        private float extensionVelocity;
+        [SerializeField] private float k = 20f;
+        [SerializeField] private float dampingCoef = 3f;
+        [SerializeField] private float restLength = 1;
+        [SerializeField] private float maxLength = 20;
+        [SerializeField] private float sensitivity = 2;
+        [SerializeField] private float momentumDecay = 0.92f;
 
         private float momentum = 0;
 
-        [SerializeField] Transform pivotTransform;
+        [SerializeField] private Transform pivotTransform;
 
-        public Rigidbody rigidBody;
+        private Rigidbody _rb;
 
         private Quaternion attitude;
         private Vector3 frameAcceleration;
@@ -32,7 +32,7 @@ namespace Hammer
 
         void Awake()
         {
-            rigidBody = GetComponent<Rigidbody>();
+            _rb = GetComponent<Rigidbody>();
         }
 
         void Start()
@@ -91,11 +91,6 @@ namespace Hammer
             {
                 Destroy(collision.gameObject);
             }
-        }
-
-        void OnDisable()
-        {
-            
         }
     }
 

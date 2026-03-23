@@ -7,7 +7,7 @@ public class GlobalManager : MonoBehaviour
 {
     public static GlobalManager Instance { get; private set; }
 
-    public Hammer.IController hammerController = new UnityRemoteController();
+    public Hammer.IController hammerController = new IMUController();
 
     public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
 
@@ -24,5 +24,9 @@ public class GlobalManager : MonoBehaviour
         
         hammerController.Connect();
     }
-    
+
+    public void OnDisable()
+    {
+        hammerController.Cleanup();
+    }
 }

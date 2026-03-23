@@ -8,32 +8,32 @@ namespace Hammer
 {
     public class IMUController : IController
     {
-        private Quaternion gameRotationVector;
-        private Vector3 frameAcceleration;
+        private Quaternion _gameRotationVector;
+        private Vector3 _frameAcceleration;
         
-        private SerialPort stream;
+        private SerialPort _stream;
         
-        private Thread ioThread;
-        private bool running;
-        private ConcurrentQueue<string> dataQueue = new ConcurrentQueue<string>();
+        private Thread _ioThread;
+        private bool _running;
+        private readonly ConcurrentQueue<string> _dataQueue = new ConcurrentQueue<string>();
         
-        private bool portOpen = false;
-        private readonly int timeoutMs = 50;
+        private bool _portOpen = false;
+        private const int TimeoutMs = 50;
         
-        public string port = null;
+        private string _port = null;
         
-        public void SearchPorts()
+        private void SearchPorts()
         {
             try
             {
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
                 {
-                    port = "/dev/cu.usbmodem101";
+                    _port = "/dev/cu.usbmodem101";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.LinuxPlayer) || Application.platform.Equals(RuntimePlatform.LinuxServer))
                 {
-                    port = "/dev/ttyACM0";
+                    _port = "/dev/ttyACM0";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
@@ -51,8 +51,8 @@ namespace Hammer
 
                         if (!string.IsNullOrEmpty(portNames[1]))
                         {
-                            port = portNames[1];
-                            Debug.Log(port);
+                            _port = portNames[1];
+                            Debug.Log(_port);
                         }
                     }
                     catch (Exception ex)
@@ -72,61 +72,61 @@ namespace Hammer
         public void Connect()
         {
             int attempts = 0;
-            while (port == null)
+            while (_port == null)
             {
                 SearchPorts();
                 attempts++;
                 if (attempts == 5)
                 {
                     Debug.LogWarning("Could not find port.");
-                    running = false;
+                    _running = false;
                     return;
                 }
             }
             
             try
             {
-                stream = new SerialPort(port, 115200)
+                _stream = new SerialPort(_port, 115200)
                 {
-                    ReadTimeout = timeoutMs
+                    ReadTimeout = TimeoutMs
                 };
 
-                stream.DtrEnable = true;
-                stream.Open();
-                stream.ReadTimeout = timeoutMs;
-                portOpen = true;
+                _stream.DtrEnable = true;
+                _stream.Open();
+                _stream.ReadTimeout = TimeoutMs;
+                _portOpen = true;
                 // if youre connected but not getting any data you may have another serial monitor open for this port
                 Debug.Log("Connected (allegedly)");
             }
             catch (System.Exception e)
             {
-                portOpen = false;
+                _portOpen = false;
                 Debug.LogWarning("Failed to connect to port: ");
                 Debug.LogWarning(e);
             }
             
             
-            running = true;
+            _running = true;
 
             // Start the background I/O thread
-            ioThread = new Thread(IOThreadLoop)
+            _ioThread = new Thread(IOThreadLoop)
             {
                 IsBackground = true
             };
-            ioThread.Start();
+            _ioThread.Start();
         }
         
         private void IOThreadLoop()
         {
             try
             {
-                while (running)
+                while (_running)
                 {
                     string recievedData = null;
                     try
                     {
-                        recievedData = stream.ReadLine();
-                        dataQueue.Enqueue(recievedData);
+                        recievedData = _stream.ReadLine();
+                        _dataQueue.Enqueue(recievedData);
                     }
                     catch (Exception ex)
                     {
@@ -144,7 +144,7 @@ namespace Hammer
 
         private void ParseStream()
         {
-            while (dataQueue.TryDequeue(out string data))
+            while (_dataQueue.TryDequeue(out string data))
             {
                 Debug.Log($"[Main Thread] Received: {data}");
                 string[] parsedData = data.Trim().Split(':');
@@ -160,7 +160,7 @@ namespace Hammer
                                                 float.Parse(parsedData[2])
                                                 );
                         // TODO change to impulse or something (persist across frames)
-                        if (acceleration.magnitude > frameAcceleration.magnitude) frameAcceleration = acceleration;
+                        if (acceleration.magnitude > _frameAcceleration.magnitude) _frameAcceleration = acceleration;
 
                     }
                     catch
@@ -182,7 +182,7 @@ namespace Hammer
                             -float.Parse(parsedData[4]),
                             float.Parse(parsedData[3]),
                             float.Parse(parsedData[1]));
-                        gameRotationVector = possibleQuaternion;
+                        _gameRotationVector = possibleQuaternion;
 
                     }
                     catch
@@ -199,7 +199,7 @@ namespace Hammer
 
         public void Update()
         {
-            if (!stream.IsOpen)
+            if (!_stream.IsOpen)
             {
                 Debug.LogWarning("Port is not open for reading.");
                 return;
@@ -210,24 +210,27 @@ namespace Hammer
 
         public Quaternion GetAttitude()
         {
-            return gameRotationVector;
+            return _gameRotationVector;
         }
 
         public Vector3 GetAcceleration()
         {
-            return frameAcceleration;
+            return _frameAcceleration;
         }
 
         public void Cleanup()
         {
-            running = false;
-            if (ioThread != null && ioThread.IsAlive)
+            _running = false;
+            if (_ioThread != null && _ioThread.IsAlive)
             {
-                ioThread.Join();
+                _ioThread.Join();
             }
+            _ioThread = null;
             
-            portOpen = false;
-            stream.Close();
+            _dataQueue.Clear();
+            
+            _portOpen = false;
+            _stream.Close();
             Debug.Log("Port closed");
         }
     }
