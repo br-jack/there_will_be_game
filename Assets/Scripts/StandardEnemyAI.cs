@@ -7,6 +7,7 @@ public struct EnemyAttack
     public float range;
     public float cooldown;
     public float chargeTime;
+    public float windup;
 }
 
 
@@ -67,7 +68,7 @@ public class StandardEnemyAI : MonoBehaviour
 
         SetupNavMesh();
 
-
+        if (anim == null) anim = GetComponentInChildren<Animator>();
     }
     void Start()
     {
@@ -107,11 +108,15 @@ public class StandardEnemyAI : MonoBehaviour
         agent.angularSpeed   = 0f;
         agent.speed = speed;
         agent.stoppingDistance = attackRange * 0.7f; // Enemy stops within attacking range of player.
+        agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
 
         // Make the NavMesh agent the same size as the Enemy capsule collider
-        agent.radius = capsule.radius;
-        agent.height = capsule.height;
-        agent.baseOffset = capsule.center.y - capsule.height * 0.5f;
+        if (capsule != null)
+        {
+            agent.radius = capsule.radius;
+            agent.height = capsule.height;
+            agent.baseOffset = capsule.center.y - capsule.height * 0.5f;
+        }
 
     }
 
@@ -129,6 +134,9 @@ public class StandardEnemyAI : MonoBehaviour
             HandleKnockback();
             return;
         }
+
+        MeleeAttack();
+        UpdateAnim();
     }
 
     void FixedUpdate()
@@ -198,6 +206,11 @@ public class StandardEnemyAI : MonoBehaviour
         {
             transform.position += desired * Time.fixedDeltaTime;
         }
+
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.nextPosition = transform.position;
+        }
     }
 
     public void BreakShield()
@@ -221,6 +234,15 @@ public class StandardEnemyAI : MonoBehaviour
 
         timeOfNextAttack += attack.cooldown;
 
+        if (anim != null && !string.IsNullOrEmpty(attackTrigger)) anim.SetTrigger(attackTrigger);
+        if (!damageFromAnimEvent) StartCoroutine(WindupThenDamage());
+    }
+
+    private IEnumerator WindupThenDamage()
+    {
+        if (attack.windup > 0f)
+            yield return new WaitForSeconds(attack.windup);
+        DealDamage();
     }
 
     private void DoDamage()
