@@ -32,7 +32,7 @@ public class DestructibleObject : MonoBehaviour
         {
             rb.isKinematic = false;
             rb.AddExplosionForce(explosionForce, impactPoint, explosionRadius, 1f);
-            Destroy(rb.gameObject, 4f);
+            Destroy(rb.gameObject, 10f);
         }
 
         Destroy(gameObject);

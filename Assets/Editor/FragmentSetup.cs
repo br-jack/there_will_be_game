@@ -45,10 +45,11 @@ public class FragmentSetup : EditorWindow
             {
                 // Fix MeshCollider convex first
                 MeshCollider mc = child.GetComponent<MeshCollider>();
-                if (mc != null)
+                if (mc == null)
                 {
-                    mc.convex = true;
+                    mc = child.gameObject.AddComponent<MeshCollider>();
                 }
+                mc.convex = true;
 
                 // Add Rigidbody if missing
                 if (child.GetComponent<Rigidbody>() == null)
@@ -77,7 +78,12 @@ public class FragmentSetup : EditorWindow
             foreach (Transform child in fragmentParent.transform)
             {
                 MeshCollider mc = child.GetComponent<MeshCollider>();
-                if (mc != null && !mc.convex)
+                if (mc == null)
+                {
+                    mc = child.gameObject.AddComponent<MeshCollider>();
+                    count++;
+                }
+                if (!mc.convex)
                 {
                     mc.convex = true;
                     count++;
