@@ -106,6 +106,7 @@ public class HorseMovement : MonoBehaviour
         if (context.canceled) 
         {
             _jumpButtonHeld = false;
+            jumpReleased.Invoke();
         }
     }
 
@@ -224,7 +225,6 @@ public class HorseMovement : MonoBehaviour
         }
         else if (!_isGrounded && _rb.linearVelocity.y > 0f && !_jumpButtonHeld) //smaller jump when jump button not held
         { 
-            jumpReleased.Invoke();
             _rb.linearVelocity += Physics.gravity * ((lowJumpMultiplier - 1f) * Time.fixedDeltaTime); 
         }
     }
