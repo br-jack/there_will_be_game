@@ -14,6 +14,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private DamageVignetteFlash damageFlash;
 
+    [SerializeField] private PlayerInvulnerabilityFlash invulnerabilityFlash;
+
     private int current;
 
     public int Current
@@ -50,6 +52,16 @@ public class PlayerHealth : MonoBehaviour
         if (damageFlash != null)
         {
             damageFlash.Flash();
+        }
+
+        if (invulnerabilityFlash != null)
+        {
+            invulnerabilityFlash.PlayFlash();
+            playerLives.MakeInvincibleFor(invulnerabilityFlash.FlashDuration);
+        }
+        else
+        {
+            playerLives.MakeInvincibleFor(1f);
         }
 
         if (IsDead) OnDeath?.Invoke();
