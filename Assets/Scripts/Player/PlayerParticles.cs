@@ -30,6 +30,25 @@ public class PlayerParticles : MonoBehaviour
         horseMovement.jumpStarted -= TriggerJumpParticles; 
     }
 
+    private IEnumerator PlayJumpParticles()
+    {
+        jumpParticles.Play();
+        
+        if (jumpTrail != null)
+        {
+            jumpTrail.emitting = true;
+        }
+
+        //Reduce particle lifetime and size if jump button is released early
+        
+        yield return new WaitForSeconds(0.1f);
+
+        if (!horseMovement.JumpButtonHeld)
+        {
+            DecreaseParticles(jumpParticles);
+        }
+    }
+    
     private void DecreaseParticles(ParticleSystem pSystem)
     {
         if (_particleBuffer == null || _particleBuffer.Length < pSystem.main.maxParticles)
@@ -50,27 +69,9 @@ public class PlayerParticles : MonoBehaviour
         pSystem.SetParticles(_particleBuffer, numAliveParticles);
     }
 
-    private IEnumerator SetJumpParticles()
-    {
-        jumpParticles.Play();
-        
-        if (jumpTrail != null)
-        {
-            jumpTrail.emitting = true;
-        }
-
-        yield return new WaitForSeconds(0.1f);
-
-        if (!horseMovement.JumpButtonHeld)
-        {
-            Debug.Log("Test");
-            DecreaseParticles(jumpParticles);
-        }
-    }
-
     private void TriggerJumpParticles()
     {
-        StartCoroutine(SetJumpParticles());
+        StartCoroutine(PlayJumpParticles());
     }
 
     // Update is called once per frame
