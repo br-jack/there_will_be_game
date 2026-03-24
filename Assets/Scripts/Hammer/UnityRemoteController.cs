@@ -61,7 +61,11 @@ namespace Hammer
 
         public Quaternion GetAttitude()
         {
-            return _attitudeSensor.attitude.ReadValue();
+            Quaternion attitude = _attitudeSensor.attitude.ReadValue();
+            return Quaternion.identity *
+                   Quaternion.AngleAxis(attitude.eulerAngles.y, Vector3.up) *
+                   Quaternion.AngleAxis(attitude.eulerAngles.z, Vector3.forward) *
+                   Quaternion.AngleAxis(attitude.eulerAngles.x, Vector3.right);
         }
 
         public Vector3 GetAcceleration()
