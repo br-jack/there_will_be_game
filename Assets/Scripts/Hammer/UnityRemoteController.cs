@@ -25,8 +25,7 @@ namespace Hammer
             int indexSentToXInOuputQuaternion,
             int indexSentToYInOuputQuaternion,
             int indexSentToZInOuputQuaternion
-        )
-        {
+        ) {
             _flipXInAttitudeQuaternion = flipXInAttitudeQuaternion;
             _flipYInAttitudeQuaternion = flipYInAttitudeQuaternion;
             _flipZInAttitudeQuaternion = flipZInAttitudeQuaternion;
