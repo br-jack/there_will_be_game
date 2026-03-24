@@ -10,6 +10,8 @@ public class PlayerParticles : MonoBehaviour
     [SerializeField] private HorseMovement horseMovement;
 
     [SerializeField] private ParticleSystem.MinMaxCurve lowJumpCurve;
+
+    private ParticleSystem.MinMaxCurve _normalCurve;
     
     void Awake()
     {
@@ -17,6 +19,8 @@ public class PlayerParticles : MonoBehaviour
         {
             jumpTrail.emitting = false;
         }
+
+        _normalCurve = jumpParticles.sizeOverLifetime.size;
     }
     
     public void OnEnable()
@@ -57,6 +61,9 @@ public class PlayerParticles : MonoBehaviour
     {
         if (horseMovement.IsGrounded)
         {
+            var sizeOverLifetime = jumpParticles.sizeOverLifetime;
+            sizeOverLifetime.size = _normalCurve;
+            
             runParticles.Play();
             if (jumpTrail != null)
             {
