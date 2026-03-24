@@ -469,6 +469,50 @@ MonoBehaviour:
   runParticles: {fileID: 8481436098113573260}
   jumpParticles: {fileID: 7022321905512896264}
   horseMovement: {fileID: 8174524514626147514}
+  lowJumpCurve:
+    m_Mode: 1
+    m_CurveMultiplier: 1
+    m_CurveMin:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_CurveMax:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0.10516982
+        value: 0.8569861
+        inSlope: 0.0011781189
+        outSlope: 0.0011781189
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.2970693
+        value: 0.8572122
+        inSlope: -0.0031836554
+        outSlope: -0.0031836554
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.79719055
+        value: 0.85343856
+        inSlope: -0.0075454297
+        outSlope: -0.0075454297
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ConstantMin: 0
+    m_ConstantMax: 0
 --- !u!1 &3919838540913894575
 GameObject:
   m_ObjectHideFlags: 0

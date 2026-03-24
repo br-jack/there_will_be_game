@@ -9,7 +9,9 @@ public class PlayerParticles : MonoBehaviour
     
     [SerializeField] private HorseMovement horseMovement;
 
-    private ParticleSystem.Particle[] _particleBuffer;
+    [SerializeField] private ParticleSystem.MinMaxCurve lowJumpCurve;
+
+    private ParticleSystem.MinMaxCurve _normalCurve;
     
     void Awake()
     {
@@ -18,6 +20,7 @@ public class PlayerParticles : MonoBehaviour
             jumpTrail.emitting = false;
         }
 
+        _normalCurve = jumpParticles.sizeOverLifetime.size;
     }
     
     public void OnEnable()
@@ -28,26 +31,6 @@ public class PlayerParticles : MonoBehaviour
     public void OnDisable()
     {
         horseMovement.jumpStarted -= TriggerJumpParticles; 
-    }
-
-    private void DecreaseParticles(ParticleSystem pSystem)
-    {
-        if (_particleBuffer == null || _particleBuffer.Length < pSystem.main.maxParticles)
-        {
-            _particleBuffer = new ParticleSystem.Particle[pSystem.main.maxParticles];
-        }
-
-        // GetParticles is allocation free because we reuse the m_Particles buffer between updates
-        int numAliveParticles = pSystem.GetParticles(_particleBuffer);
-        
-        // Change only the particles that are alive
-        for (int i = 0; i < numAliveParticles; i++)
-        {
-            _particleBuffer[i].remainingLifetime /= 2;
-            _particleBuffer[i].startSize -= 2.5f;
-        }
-
-        pSystem.SetParticles(_particleBuffer, numAliveParticles);
     }
 
     private IEnumerator SetJumpParticles()
@@ -63,8 +46,8 @@ public class PlayerParticles : MonoBehaviour
 
         if (!horseMovement.JumpButtonHeld)
         {
-            Debug.Log("Test");
-            DecreaseParticles(jumpParticles);
+            var sizeOverLifetime = jumpParticles.sizeOverLifetime;
+            sizeOverLifetime.size = lowJumpCurve;
         }
     }
 
@@ -79,7 +62,7 @@ public class PlayerParticles : MonoBehaviour
         if (horseMovement.IsGrounded)
         {
             // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
-            // sizeOverLifetime.sizeMultiplier = 1;
+            // sizeOverLifetime.size = _normalCurve;
             
             runParticles.Play();
             if (jumpTrail != null)
