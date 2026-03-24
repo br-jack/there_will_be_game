@@ -8,7 +8,7 @@ namespace Hammer
     {
 
         private Wiimote _wiimote;
-        private Quaternion attitude;
+        private Vector3 _gyroOffset;
         
         public void Connect()
         {
@@ -65,7 +65,7 @@ namespace Hammer
 
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;
-            Vector3 gyroOffset = Vector3.zero;
+            _gyroOffset = Vector3.zero;
             Vector3 accelOffset = Vector3.zero;
 
             do {
@@ -86,13 +86,13 @@ namespace Hammer
                 //add all detected rotations throughout the frame to gyroOffset
                 //we should integrate this! would give accurate total rotation
                 if (ret > 0 && _wiimote.current_ext == ExtensionController.MOTIONPLUS) {
-                    gyroOffset += new Vector3(  -_wiimote.MotionPlus.PitchSpeed,
+                    _gyroOffset += new Vector3(  -_wiimote.MotionPlus.PitchSpeed,
                                                     -_wiimote.MotionPlus.RollSpeed,
-                                                    -_wiimote.MotionPlus.YawSpeed);
+                                                    -_wiimote.MotionPlus.YawSpeed) / 95f;
                 }
             } while (ret > 0);
 
-            gyroOffset /= 95f; //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
+            // _gyroOffset /= 95f; //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
                             //and speeds of rotations are sent in degrees per second (i think!)
                             //would be cool to actually count the number of updates per second but I'm not sure how. 
                             //i think that this is completely wrong. nothing like 95 messages sent per frame. but idk
@@ -102,9 +102,7 @@ namespace Hammer
 
             // ReadWiimoteData() returns 0 when nothing is left to read.
             // So by doing this we continue to update the Wiimote's attitude until it is "up to date."
-
-            transform.Rotate(gyroOffset, Space.Self);
-
+            
             //print("Total accel offset for frame: "+accelOffset);
             //transform.Translate(accelOffset/95f, Space.Self);
             //just using accel values/100 for translation - makes no sense but testing!
@@ -115,12 +113,12 @@ namespace Hammer
 
         public Quaternion GetAttitude()
         {
-            throw new System.NotImplementedException();
+            return Quaternion.Euler(_gyroOffset);
         }
 
         public Vector3 GetAcceleration()
         {
-            throw new System.NotImplementedException();
+            return Vector3.zero;
         }
 
         public void Cleanup()
