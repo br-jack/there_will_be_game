@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerParticles : MonoBehaviour
@@ -28,16 +29,27 @@ public class PlayerParticles : MonoBehaviour
         horseMovement.jumpStarted -= TriggerJumpParticles; 
     }
 
-    private void TriggerJumpParticles()
+    private IEnumerator SetJumpParticles()
     {
         jumpParticles.Play();
-        var sizeOverLifetime = jumpParticles.sizeOverLifetime;
-        sizeOverLifetime.size = lowJumpCurve;
         
         if (jumpTrail != null)
         {
             jumpTrail.emitting = true;
         }
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (!horseMovement.JumpButtonHeld)
+        {
+            var sizeOverLifetime = jumpParticles.sizeOverLifetime;
+            sizeOverLifetime.size = lowJumpCurve;
+        }
+    }
+
+    private void TriggerJumpParticles()
+    {
+        StartCoroutine(SetJumpParticles());
     }
 
     // Update is called once per frame
