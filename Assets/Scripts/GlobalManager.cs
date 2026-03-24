@@ -1,6 +1,3 @@
-using System;
-using System.IO.Ports;
-using Hammer;
 using UnityEngine;
 
 public class GlobalManager : MonoBehaviour
@@ -24,16 +21,20 @@ public class GlobalManager : MonoBehaviour
         
 // Caligula is a PC game, this is only for Unity Remote        
 #if (UNITY_IOS || UNITY_ANDROID)
-        hammerController = new UnityRemoteController();
+        hammerController = new Hammer.UnityRemoteController();
 #else
-        hammerController = new IMUController();
+        hammerController = new Hammer.IMUController();
 #endif
         
         hammerController.Connect();
     }
 
-    public void OnDisable()
+    private void OnDestroy()
     {
-        hammerController.Cleanup();
+        if (hammerController != null)
+        {
+            hammerController.Cleanup();
+            hammerController = null;
+        }
     }
 }
