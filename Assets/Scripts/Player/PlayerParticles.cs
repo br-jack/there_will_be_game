@@ -43,8 +43,8 @@ public class PlayerParticles : MonoBehaviour
         // Change only the particles that are alive
         for (int i = 0; i < numAliveParticles; i++)
         {
-            _particleBuffer[i].remainingLifetime /= 2f;
-            // _particleBuffer[i].startSize -= 10;
+            _particleBuffer[i].remainingLifetime /= 2;
+            _particleBuffer[i].startSize -= 2.5f;
         }
 
         pSystem.SetParticles(_particleBuffer, numAliveParticles);
