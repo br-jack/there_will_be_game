@@ -44,6 +44,7 @@ public class PlayerParticles : MonoBehaviour
         for (int i = 0; i < numAliveParticles; i++)
         {
             _particleBuffer[i].remainingLifetime /= 2f;
+            _particleBuffer[i].startSize -= 10;
         }
 
         pSystem.SetParticles(_particleBuffer, numAliveParticles);
