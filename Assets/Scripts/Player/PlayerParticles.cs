@@ -43,7 +43,7 @@ public class PlayerParticles : MonoBehaviour
         // Change only the particles that are alive
         for (int i = 0; i < numAliveParticles; i++)
         {
-            _particleBuffer[i].startSize *= 5f;
+            _particleBuffer[i].remainingLifetime /= 2f;
         }
 
         pSystem.SetParticles(_particleBuffer, numAliveParticles);
@@ -58,10 +58,11 @@ public class PlayerParticles : MonoBehaviour
             jumpTrail.emitting = true;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
 
         if (!horseMovement.JumpButtonHeld)
         {
+            Debug.Log("Test");
             DecreaseParticles(jumpParticles);
         }
     }
