@@ -78,17 +78,6 @@ namespace Hammer
                     _hasCalibrated = false;
                 }
             }
-
-            if (_wiimote.Button.a)
-            {
-                if (!_hasCalibrated)
-                {
-                    CalibrateWMP();
-
-                    _hasCalibrated = true;
-                    _calibrationTimer = 500;
-                }
-            }
             
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;
@@ -104,7 +93,7 @@ namespace Hammer
                     _wiimote.Accel.GetCalibratedAccelData()[0],
                     _wiimote.Accel.GetCalibratedAccelData()[1],
                     _wiimote.Accel.GetCalibratedAccelData()[2]);
-                Debug.Log("Accel data: "+accelDataForFrameTest);
+                // Debug.Log("Accel data: "+accelDataForFrameTest);
                 accelOffset += accelDataForFrameTest;
                 
                 //this is a test basically
@@ -118,6 +107,17 @@ namespace Hammer
                                                     -_wiimote.MotionPlus.YawSpeed) / 95f;
                 }
             } while (ret > 0);
+            
+            if (_wiimote.Button.a)
+            {
+                if (!_hasCalibrated)
+                {
+                    CalibrateWMP();
+
+                    _hasCalibrated = true;
+                    _calibrationTimer = 500;
+                }
+            }
 
             // _gyroOffset /= 95f; //divide by 95 because of the average rate of sending messages of the wiimote is 95Hz
                             //and speeds of rotations are sent in degrees per second (i think!)
