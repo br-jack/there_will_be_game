@@ -49,6 +49,13 @@ namespace Hammer
             {
                 InputSystem.EnableDevice(_linearAccelerationSensor);
             }
+
+            if (Touchscreen.current != null)
+            {
+                //While it can navigate the UI, the touch screen can also interfere with horse movement
+                //so it's better to disable it.
+                InputSystem.DisableDevice(Touchscreen.current);
+            }
         }
 
         public void Update()
