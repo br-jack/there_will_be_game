@@ -61,23 +61,7 @@ namespace Hammer
 
         public Quaternion GetAttitude()
         {
-            return ConvertSensorToUnreal(_attitudeSensor.attitude.ReadValue());
-        }
-        
-        Quaternion ConvertSensorToUnreal(Quaternion q)
-        {
-            return ConvertSensorToUnreal(q.x, q.y, q.z, q.w);
-        }
-        
-        Quaternion ConvertSensorToUnreal(float x, float y, float z, float w) {
-
-            Quaternion output;
-            output.x = -y;
-            output.y = x;
-            output.z = -z;
-            output.w = w;
-
-            return output;
+            return _attitudeSensor.attitude.ReadValue();
         }
 
         public Vector3 GetAcceleration()
