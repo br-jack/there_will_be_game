@@ -23,13 +23,11 @@ public class PlayerParticles : MonoBehaviour
     public void OnEnable()
     {
         horseMovement.jumpStarted += TriggerJumpParticles;
-        horseMovement.jumpReleased += LowerJumpParticles;
     }
 
     public void OnDisable()
     {
         horseMovement.jumpStarted -= TriggerJumpParticles; 
-        horseMovement.jumpReleased -= LowerJumpParticles;
     }
 
     private void DecreaseParticles(ParticleSystem pSystem)
@@ -51,12 +49,7 @@ public class PlayerParticles : MonoBehaviour
         pSystem.SetParticles(_particleBuffer, numAliveParticles);
     }
 
-    private void LowerJumpParticles()
-    {
-        DecreaseParticles(jumpParticles);
-    }
-
-    private void TriggerJumpParticles()
+    private IEnumerator SetJumpParticles()
     {
         jumpParticles.Play();
         
@@ -64,6 +57,19 @@ public class PlayerParticles : MonoBehaviour
         {
             jumpTrail.emitting = true;
         }
+
+        yield return new WaitForSeconds(0.1f);
+
+        if (!horseMovement.JumpButtonHeld)
+        {
+            Debug.Log("Test");
+            DecreaseParticles(jumpParticles);
+        }
+    }
+
+    private void TriggerJumpParticles()
+    {
+        StartCoroutine(SetJumpParticles());
     }
 
     // Update is called once per frame
