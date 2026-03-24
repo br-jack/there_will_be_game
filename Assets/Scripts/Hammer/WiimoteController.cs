@@ -7,6 +7,9 @@ namespace Hammer
     public class WiimoteController : IController
     {
 
+        private int _calibrationTimer;
+        private bool _hasCalibrated;
+
         private Wiimote _wiimote;
         private Vector3 _gyroOffset;
         
@@ -57,12 +60,36 @@ namespace Hammer
             }
         }
 
+        private void CalibrateWMP()
+        {
+            Debug.Log("Calibrating Wii Motion Plus.");
+            _wiimote.MotionPlus.SetZeroValues();
+        }
+
         public void Update()
         {
             Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
-            
-            Assert.IsTrue(WiimoteManager.HasWiimote(), "A Wiimote must be connected");
 
+            if (_hasCalibrated)
+            {
+                _calibrationTimer--;
+                if (_calibrationTimer == 0)
+                {
+                    _hasCalibrated = false;
+                }
+            }
+
+            if (_wiimote.Button.a)
+            {
+                if (!_hasCalibrated)
+                {
+                    CalibrateWMP();
+
+                    _hasCalibrated = true;
+                    _calibrationTimer = 500;
+                }
+            }
+            
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;
             // _gyroOffset = Vector3.zero;
