@@ -156,7 +156,6 @@ GameObject:
   - component: {fileID: 3243528490933531595}
   - component: {fileID: 4326658757732828232}
   - component: {fileID: 9012345678901234567}
-  - component: {fileID: 8065944605424494270}
   - component: {fileID: 7439884306161422662}
   - component: {fileID: 2677247790769911592}
   - component: {fileID: 8421909672179317857}
@@ -501,24 +500,6 @@ MonoBehaviour:
   maxHealth: 100
   damageFlash: {fileID: 0}
   invulnerabilityFlash: {fileID: 7439884306161422662}
---- !u!114 &8065944605424494270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3304088472591636408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1b13ebfc4a457448928064c7ed3eb1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  horseMovement: {fileID: 8174524514626147514}
-  playerParticles: {fileID: 0}
-  playerHealth: {fileID: 9012345678901234567}
-  jumpBoostParticles: {fileID: 0}
-  jumpBoostTrail: {fileID: 0}
-  speedBoostParticles: {fileID: 0}
 --- !u!114 &7439884306161422662
 MonoBehaviour:
   m_ObjectHideFlags: 0
