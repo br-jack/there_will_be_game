@@ -65,7 +65,7 @@ namespace Hammer
 
             //TODO As well as making this more efficient, we can probs use the "slow mode" booleans to improve accuracy
             int ret;
-            _gyroOffset = Vector3.zero;
+            // _gyroOffset = Vector3.zero;
             Vector3 accelOffset = Vector3.zero;
 
             do {
