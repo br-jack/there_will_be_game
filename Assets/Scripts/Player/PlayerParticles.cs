@@ -7,6 +7,8 @@ public class PlayerParticles : MonoBehaviour
     public ParticleSystem jumpParticles;
     
     [SerializeField] private HorseMovement horseMovement;
+
+    [SerializeField] private ParticleSystem.MinMaxCurve lowJumpCurve;
     
     void Awake()
     {
@@ -29,7 +31,6 @@ public class PlayerParticles : MonoBehaviour
     private void TriggerJumpParticles()
     {
         jumpParticles.Play();
-
         if (jumpTrail != null)
         {
             jumpTrail.emitting = true;
