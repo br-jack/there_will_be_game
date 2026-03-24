@@ -8,6 +8,33 @@ namespace Hammer
     {
         private AttitudeSensor _attitudeSensor;
         private LinearAccelerationSensor _linearAccelerationSensor;
+
+        bool _flipXInAttitudeQuaternion;
+        bool _flipYInAttitudeQuaternion;
+        bool _flipZInAttitudeQuaternion;
+        int _indexSentToXInOuputQuaternion;
+        int _indexSentToYInOuputQuaternion;
+        int _indexSentToZInOuputQuaternion;
+
+
+        //for testing only
+        public void UpdateTestQuaternionVariables(
+            bool flipXInAttitudeQuaternion,
+            bool flipYInAttitudeQuaternion,
+            bool flipZInAttitudeQuaternion,
+            int indexSentToXInOuputQuaternion,
+            int indexSentToYInOuputQuaternion,
+            int indexSentToZInOuputQuaternion
+        )
+        {
+            _flipXInAttitudeQuaternion = flipXInAttitudeQuaternion;
+            _flipYInAttitudeQuaternion = flipYInAttitudeQuaternion;
+            _flipZInAttitudeQuaternion = flipZInAttitudeQuaternion;
+            _indexSentToXInOuputQuaternion = indexSentToXInOuputQuaternion;
+            _indexSentToYInOuputQuaternion = indexSentToYInOuputQuaternion;
+            _indexSentToZInOuputQuaternion = indexSentToZInOuputQuaternion;
+            return;
+        }   
         
         public void Connect()
         {
@@ -55,6 +82,7 @@ namespace Hammer
                 //so it's better to disable it.
                 InputSystem.DisableDevice(Touchscreen.current);
             }
+        
         }
 
         public void Update()
@@ -75,8 +103,18 @@ namespace Hammer
             {
                 return Quaternion.identity;
             }
-            
-            return _attitudeSensor.attitude.ReadValue();
+
+            float xMult,yMult,zMult = yMult = xMult = 1.0f;
+            if (_flipXInAttitudeQuaternion) xMult = -1.0f;
+            if (_flipYInAttitudeQuaternion) yMult = -1.0f;
+            if (_flipZInAttitudeQuaternion) zMult = -1.0f;
+
+            Quaternion sensorData = _attitudeSensor.attitude.ReadValue();
+            return new Quaternion(
+                xMult * sensorData[_indexSentToXInOuputQuaternion],
+                yMult * sensorData[_indexSentToYInOuputQuaternion],
+                zMult * sensorData[_indexSentToZInOuputQuaternion],
+                sensorData.w);
         }
 
         public Vector3 GetAcceleration()

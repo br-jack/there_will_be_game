@@ -21,7 +21,12 @@ namespace Hammer
         private const int TimeoutMs = 50;
         
         private string _port = null;
-        
+        public void UpdateTestQuaternionVariables(bool flipXInAttitudeQuaternion,
+            bool flipYInAttitudeQuaternion,
+            bool flipZInAttitudeQuaternion,
+            int indexSentToXInOuputQuaternion,
+            int indexSentToYInOuputQuaternion,
+            int indexSentToZInOuputQuaternion) {} //remove this
         private void SearchPorts()
         {
             try
