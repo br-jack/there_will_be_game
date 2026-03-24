@@ -42,8 +42,9 @@ namespace Hammer
 
         public void CalibrateHammer()
         {
+            _controllerRef.Update();
+            attitude = _controllerRef.GetAttitude();
             GlobalManager.Instance.CalibrationQuaternion = Quaternion.Inverse(attitude);
-
         }
 
         void UpdateRotation()
