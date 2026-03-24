@@ -9,31 +9,31 @@ namespace Hammer
         private AttitudeSensor _attitudeSensor;
         private LinearAccelerationSensor _linearAccelerationSensor;
 
-        bool _flipXInAttitudeQuaternion;
-        bool _flipYInAttitudeQuaternion;
-        bool _flipZInAttitudeQuaternion;
-        int _indexSentToXInOuputQuaternion;
-        int _indexSentToYInOuputQuaternion;
-        int _indexSentToZInOuputQuaternion;
-
+        private const bool _flipXInAttitudeQuaternion = true;
+        private const bool _flipYInAttitudeQuaternion = true;
+        private const bool _flipZInAttitudeQuaternion = true;
+        private const int _indexSentToXInOutputQuaternion = 0;
+        private const int _indexSentToYInOutputQuaternion = 2;
+        private const int _indexSentToZInOutputQuaternion = 1;
 
         //for testing only
-        public void UpdateTestQuaternionVariables(
+        //allows changing axis alignment in the editor at runtime if the axes get in a mess
+        /*public void UpdateTestQuaternionVariables(
             bool flipXInAttitudeQuaternion,
             bool flipYInAttitudeQuaternion,
             bool flipZInAttitudeQuaternion,
-            int indexSentToXInOuputQuaternion,
-            int indexSentToYInOuputQuaternion,
-            int indexSentToZInOuputQuaternion
+            int indexSentToXInOutputQuaternion,
+            int indexSentToYInOutputQuaternion,
+            int indexSentToZInOutputQuaternion
         ) {
             _flipXInAttitudeQuaternion = flipXInAttitudeQuaternion;
             _flipYInAttitudeQuaternion = flipYInAttitudeQuaternion;
             _flipZInAttitudeQuaternion = flipZInAttitudeQuaternion;
-            _indexSentToXInOuputQuaternion = indexSentToXInOuputQuaternion;
-            _indexSentToYInOuputQuaternion = indexSentToYInOuputQuaternion;
-            _indexSentToZInOuputQuaternion = indexSentToZInOuputQuaternion;
+            _indexSentToXInOutputQuaternion = indexSentToXInOutputQuaternion;
+            _indexSentToYInOutputQuaternion = indexSentToYInOutputQuaternion;
+            _indexSentToZInOutputQuaternion = indexSentToZInOutputQuaternion;
             return;
-        }   
+        }   */
         
         public void Connect()
         {
@@ -110,9 +110,9 @@ namespace Hammer
 
             Quaternion sensorData = _attitudeSensor.attitude.ReadValue();
             return new Quaternion(
-                xMult * sensorData[_indexSentToXInOuputQuaternion],
-                yMult * sensorData[_indexSentToYInOuputQuaternion],
-                zMult * sensorData[_indexSentToZInOuputQuaternion],
+                xMult * sensorData[_indexSentToXInOutputQuaternion],
+                yMult * sensorData[_indexSentToYInOutputQuaternion],
+                zMult * sensorData[_indexSentToZInOutputQuaternion],
                 sensorData.w);
         }
 

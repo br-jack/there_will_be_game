@@ -6,25 +6,27 @@ public class GlobalManager : MonoBehaviour
     
     public Hammer.IController hammerController;
     
-    //FOR TEST ONLY, UNNEEDED, REMOVE
+    /* for testing Unity Remote
     public bool flipXInAttitudeQuaternion;
     public bool flipYInAttitudeQuaternion;
     public bool flipZInAttitudeQuaternion;
-    public int indexSentToXInOuputQuaternion = 0;
-    public int indexSentToYInOuputQuaternion = 1;
-    public int indexSentToZInOuputQuaternion = 2;
+    public int indexSentToXInOutputQuaternion = 0;
+    public int indexSentToYInOutputQuaternion = 1;
+    public int indexSentToZInOutputQuaternion = 2;
 
-    //THIS FUNCTION IS TEST ONLY TOO: 
     private void Update()
     {
-        hammerController.UpdateTestQuaternionVariables(
-            flipXInAttitudeQuaternion,
-            flipYInAttitudeQuaternion,
-            flipZInAttitudeQuaternion,
-            indexSentToXInOuputQuaternion,
-            indexSentToYInOuputQuaternion,
-            indexSentToZInOuputQuaternion);
-    }
+        if (hammerController is Hammer.UnityRemoteController unityRemoteController)
+        {
+            unityRemoteController.UpdateTestQuaternionVariables(
+                flipXInAttitudeQuaternion,
+                flipYInAttitudeQuaternion,
+                flipZInAttitudeQuaternion,
+                indexSentToXInOutputQuaternion,
+                indexSentToYInOutputQuaternion,
+                indexSentToZInOutputQuaternion);
+        }
+    }*/
 
     public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
 
