@@ -37,6 +37,7 @@ public class HorseMovement : MonoBehaviour
     private Rigidbody _rb;
 
     public Action jumpStarted;
+    public Action jumpReleased;
 
     public Transform horseVisual;
     
@@ -47,7 +48,6 @@ public class HorseMovement : MonoBehaviour
     public float jumpForce = 5f; // originally 8f
     private bool _jumpButtonPressed;
     private bool _jumpButtonHeld;
-    public bool JumpButtonHeld => _jumpButtonHeld;
     
     public float fallMultiplier = 7.5f; // originally 2.5f
     public float lowJumpMultiplier = 4f; // originally 2f
@@ -106,6 +106,7 @@ public class HorseMovement : MonoBehaviour
         if (context.canceled) 
         {
             _jumpButtonHeld = false;
+            jumpReleased.Invoke();
         }
     }
 
