@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Android;
-using Gyroscope = UnityEngine.InputSystem.Gyroscope;
 
 namespace Hammer
 {
@@ -28,7 +27,7 @@ namespace Hammer
                     _attitudeSensor = InputSystem.GetDevice<AttitudeSensor>();
                     if (_attitudeSensor == null)
                     {
-                        Debug.LogError("AttitudeSensor is not available");
+                        Debug.LogWarning("AttitudeSensor is not available");
                         _attitudeSensor = AttitudeSensor.current;
                     }
                 }
@@ -41,7 +40,7 @@ namespace Hammer
             _linearAccelerationSensor = InputSystem.GetDevice<LinearAccelerationSensor>();
             if (_linearAccelerationSensor == null)
             {
-                Debug.LogError("LinearAccelerationSensor is not available");
+                Debug.LogWarning("LinearAccelerationSensor is not available");
                 _linearAccelerationSensor = LinearAccelerationSensor.current;
             }
 
@@ -72,11 +71,21 @@ namespace Hammer
 
         public Quaternion GetAttitude()
         {
+            if (_attitudeSensor == null)
+            {
+                return Quaternion.identity;
+            }
+            
             return _attitudeSensor.attitude.ReadValue();
         }
 
         public Vector3 GetAcceleration()
         {
+            if (_linearAccelerationSensor == null)
+            {
+                return Vector3.zero;
+            }
+            
             return _linearAccelerationSensor.acceleration.ReadValue();
         }
 
