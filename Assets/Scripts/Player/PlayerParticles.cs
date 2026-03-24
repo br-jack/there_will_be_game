@@ -31,6 +31,9 @@ public class PlayerParticles : MonoBehaviour
     private void TriggerJumpParticles()
     {
         jumpParticles.Play();
+        var sizeOverLifetime = jumpParticles.sizeOverLifetime;
+        sizeOverLifetime.size = lowJumpCurve;
+        
         if (jumpTrail != null)
         {
             jumpTrail.emitting = true;
