@@ -8,6 +8,8 @@ public class PlayerParticles : MonoBehaviour
     public ParticleSystem jumpParticles;
     
     [SerializeField] private HorseMovement horseMovement;
+
+    private ParticleSystem.Particle[] _particleBuffer;
     
     void Awake()
     {
@@ -28,6 +30,25 @@ public class PlayerParticles : MonoBehaviour
         horseMovement.jumpStarted -= TriggerJumpParticles; 
     }
 
+    private void DecreaseParticles(ParticleSystem pSystem)
+    {
+        if (_particleBuffer == null || _particleBuffer.Length < pSystem.main.maxParticles)
+        {
+            _particleBuffer = new ParticleSystem.Particle[pSystem.main.maxParticles];
+        }
+
+        // GetParticles is allocation free because we reuse the m_Particles buffer between updates
+        int numAliveParticles = pSystem.GetParticles(_particleBuffer);
+        
+        // Change only the particles that are alive
+        for (int i = 0; i < numAliveParticles; i++)
+        {
+            _particleBuffer[i].startSize *= 5f;
+        }
+
+        pSystem.SetParticles(_particleBuffer, numAliveParticles);
+    }
+
     private IEnumerator SetJumpParticles()
     {
         jumpParticles.Play();
@@ -41,10 +62,7 @@ public class PlayerParticles : MonoBehaviour
 
         if (!horseMovement.JumpButtonHeld)
         {
-            jumpParticles.Pause();
-            var sizeOverLifetime = jumpParticles.sizeOverLifetime;
-            sizeOverLifetime.sizeMultiplier = 0.25f;
-            jumpParticles.Play();
+            DecreaseParticles(jumpParticles);
         }
     }
 
@@ -58,8 +76,8 @@ public class PlayerParticles : MonoBehaviour
     {
         if (horseMovement.IsGrounded)
         {
-            var sizeOverLifetime = jumpParticles.sizeOverLifetime;
-            sizeOverLifetime.sizeMultiplier = 1;
+            // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
+            // sizeOverLifetime.sizeMultiplier = 1;
             
             runParticles.Play();
             if (jumpTrail != null)
