@@ -53,7 +53,11 @@ namespace Hammer
 
         public void Update()
         {
-            if (Touchscreen.current.primaryTouch.press.isPressed)
+            //Unity Remote doesn't immediately connect we keep running connect until it has
+            if (_attitudeSensor == null ||
+                _linearAccelerationSensor == null ||
+                !_attitudeSensor.enabled ||
+                !_linearAccelerationSensor.enabled)
             {
                 Connect();
             }
