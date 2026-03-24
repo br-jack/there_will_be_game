@@ -23,7 +23,7 @@ public class GlobalManager : MonoBehaviour
 #if (UNITY_IOS || UNITY_ANDROID)
         hammerController = new Hammer.UnityRemoteController();
 #else
-        hammerController = new Hammer.IMUController();
+        hammerController = new Hammer.WiimoteController();
 #endif
         
         hammerController.Connect();
