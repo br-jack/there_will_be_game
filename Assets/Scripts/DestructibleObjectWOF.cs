@@ -18,9 +18,9 @@ public class DestructibleObjectWOF : MonoBehaviour
     }
 
     public void Break(Vector3 impactPoint) {
-        GetComponent<Fracture>().fractureOptions.asynchronous = false;
-
-        GetComponent<Fracture>().CauseFracture();
+        foreach (Fracture f in GetComponentsInChildren<Fracture>()) {
+            f.CauseFracture();
+        }
 
         StartCoroutine(HandleRespawn());
     }

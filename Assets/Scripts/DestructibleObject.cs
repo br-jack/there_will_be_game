@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class DestructibleObject : MonoBehaviour
 {
@@ -7,6 +8,13 @@ public class DestructibleObject : MonoBehaviour
     public float explosionForce = 300f;
     public float explosionRadius = 3f;
     private bool broken = false;
+    private MeshRenderer myRenderer;
+    private Collider myCollider;
+
+    void Start() {
+        myRenderer = GetComponent<MeshRenderer>();
+        myCollider = GetComponent<Collider>();
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -35,6 +43,16 @@ public class DestructibleObject : MonoBehaviour
             Destroy(rb.gameObject, 10f);
         }
 
-        Destroy(gameObject);
+        StartCoroutine(HandleRespawn());
+        myRenderer.enabled = false;
+        myCollider.enabled = false;
+    }
+
+    IEnumerator HandleRespawn()
+    {
+        yield return new WaitForSeconds(60f);
+        myRenderer.enabled = true;
+        myCollider.enabled = true;
+        broken = false;
     }
 }
