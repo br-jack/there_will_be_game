@@ -53,7 +53,7 @@ namespace Hammer
 
         public void Update()
         {
-            if (Input.touchCount > 0)
+            if (Touchscreen.current.primaryTouch.press.isPressed)
             {
                 Connect();
             }
