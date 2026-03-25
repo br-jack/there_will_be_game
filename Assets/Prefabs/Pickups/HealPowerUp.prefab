@@ -172,7 +172,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 9698a6cdf01947e409251ac130400981, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: -393441808662264803, guid: cf7eb3a88a3fff44abac0905f5c5d193, type: 3}
+      objectReference: {fileID: 2100000, guid: 8975d2e3ad53ad74fbd58b3233152ca9, type: 2}
     - target: {fileID: -5754084199372789682, guid: 9698a6cdf01947e409251ac130400981, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -231,8 +231,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 5346472347501852122}
     m_Modifications:
     - target: {fileID: 244987264555897272, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.b
+      value: 0.081003495
+      objectReference: {fileID: 0}
+    - target: {fileID: 244987264555897272, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.g
-      value: 0.048994135
+      value: 0.06603757
+      objectReference: {fileID: 0}
+    - target: {fileID: 244987264555897272, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1107569812293912732, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: m_Name
@@ -284,11 +292,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6744558521323299373, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxColor.b
-      value: 0
+      value: 0.081003495
       objectReference: {fileID: 0}
     - target: {fileID: 6744558521323299373, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxColor.g
-      value: 0.048994135
+      value: 0.06603757
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744558521323299373, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxColor.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

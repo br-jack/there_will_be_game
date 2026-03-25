@@ -210,6 +210,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5346472347501852122}
     m_Modifications:
+    - target: {fileID: 56170818231661185, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.8948704
+      objectReference: {fileID: 0}
+    - target: {fileID: 244987264555897272, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.g
+      value: 0.8948704
+      objectReference: {fileID: 0}
     - target: {fileID: 1107569812293912732, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: m_Name
       value: PowerUpParticleEffects
@@ -253,6 +261,22 @@ PrefabInstance:
     - target: {fileID: 4770006652411594474, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744558521323299373, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744558521323299373, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.8948704
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744558521323299373, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744558521323299373, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: TrailModule.colorOverLifetime.maxColor.g
+      value: 0.8948704
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
