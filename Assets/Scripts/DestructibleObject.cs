@@ -19,7 +19,7 @@ public class DestructibleObject : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (broken) return;
-        if (!collision.gameObject.CompareTag("Player")) return;
+        if (!collision.gameObject.CompareTag("Hammer")) return;
 
         float impactSpeed = collision.relativeVelocity.magnitude;
         if (impactSpeed < breakForceThreshold) return;

@@ -44,7 +44,7 @@ public class DestructibleObjectWOF : MonoBehaviour
     {
         if (broken) return;
 
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Hammer"))
         {
             Fracture fractureScript = GetComponent<Fracture>();
 
