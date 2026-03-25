@@ -81,9 +81,6 @@ namespace Hammer
             
             UpdateRotation();
             UpdatePosition();
-
-            // this completely breaks momentum but whatever
-            frameAcceleration = new Vector3(0, 0, 0);
         }
 
         public void OnCollisionEnter(Collision collision)

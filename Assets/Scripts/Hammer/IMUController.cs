@@ -205,6 +205,9 @@ namespace Hammer
                 return;
             }
             
+            // this completely breaks momentum but whatever
+            _frameAcceleration = new Vector3(0, 0, 0);
+            
             ParseStream();
         }
 
