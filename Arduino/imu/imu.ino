@@ -100,6 +100,7 @@ void loop() {  // run over and over
   }
 
   if (!bno08x.getSensorEvent(&sensorValue)) {
+    BT.println("Unable to get sensor event!");
     return;
   }
   switch (sensorValue.sensorId) {
