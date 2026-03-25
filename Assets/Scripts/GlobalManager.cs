@@ -30,6 +30,11 @@ public class GlobalManager : MonoBehaviour
 
     public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
 
+    public void resetHammerControllerAxes()
+    {
+        hammerController.resetAxes();
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -41,12 +46,12 @@ public class GlobalManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         
-// Caligula is a PC game, this is only for Unity Remote        
-#if (UNITY_IOS || UNITY_ANDROID)
-        hammerController = new Hammer.UnityRemoteController();
-#else
-        hammerController = new Hammer.IMUController();
-#endif
+        // Caligula is a PC game, this is only for testing with Unity Remote        
+        #if (UNITY_IOS || UNITY_ANDROID)
+            hammerController = new Hammer.UnityRemoteController();
+        #else
+            hammerController = new Hammer.IMUController();
+        #endif
         
         hammerController.Connect();
     }

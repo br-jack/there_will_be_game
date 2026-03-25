@@ -47,6 +47,7 @@ namespace Hammer
             GlobalManager.Instance.CalibrationQuaternion = Quaternion.Inverse(attitude);
         }
 
+       
         void UpdateRotation()
         {
             transform.localRotation = attitude * GlobalManager.Instance.CalibrationQuaternion;
