@@ -109,12 +109,11 @@ namespace Hammer
             if (_flipZInAttitudeQuaternion) zMult = -1.0f;
 
             Quaternion sensorData = _attitudeSensor.attitude.ReadValue();
-            return GyroToUnity(sensorData);
-        }
-        
-        private static Quaternion GyroToUnity(Quaternion q)
-        {
-            return new Quaternion(q.x, q.y, -q.z, -q.w);
+            return new Quaternion(
+                xMult * sensorData[_indexSentToXInOutputQuaternion],
+                yMult * sensorData[_indexSentToYInOutputQuaternion],
+                zMult * sensorData[_indexSentToZInOutputQuaternion],
+                sensorData.w);
         }
 
         public Vector3 GetAcceleration()
