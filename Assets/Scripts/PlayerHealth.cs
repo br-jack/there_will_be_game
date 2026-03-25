@@ -12,6 +12,9 @@ Connected to PlayerLives (which gives it the healthbar UI).
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 100;
+    [SerializeField] private DamageVignetteFlash damageFlash;
+
+    [SerializeField] private PlayerInvulnerabilityFlash invulnerabilityFlash;
 
     private int current;
 
@@ -45,6 +48,21 @@ public class PlayerHealth : MonoBehaviour
         if (Current < 0) Current = 0;
 
         OnHealthChanged?.Invoke(Current, Max);
+
+        if (damageFlash != null)
+        {
+            damageFlash.Flash();
+        }
+
+        if (invulnerabilityFlash != null)
+        {
+            invulnerabilityFlash.PlayFlash();
+            playerLives.MakeInvincibleFor(invulnerabilityFlash.FlashDuration);
+        }
+        else
+        {
+            playerLives.MakeInvincibleFor(1f);
+        }
 
         if (IsDead) OnDeath?.Invoke();
     }
