@@ -1,13 +1,12 @@
 using UnityEngine;
 using System.Collections;
-
 public class DestructibleObjectWOF : MonoBehaviour
 {
     private bool broken = false;
-    public float breakForceThreshold = 5f;
+    public float breakForceThreshold = 10f;
     public float explosionForce = 300f;
     public float explosionRadius = 3f;
-    public float respawnTime = 60f;
+    public float respawnTime = 30f;
     public float debrisCleanupTime = 10f;
     private MeshRenderer myRenderer;
     private Collider myCollider;
@@ -18,8 +17,13 @@ public class DestructibleObjectWOF : MonoBehaviour
     }
 
     public void Break(Vector3 impactPoint) {
-        foreach (Fracture f in GetComponentsInChildren<Fracture>()) {
-            f.CauseFracture();
+        Fracture fractureScript = GetComponent<Fracture>();
+
+        // foreach (Fracture f in GetComponentsInChildren<Fracture>()) {
+        //     f.CauseFracture();
+        // }
+        if (fractureScript != null) {
+            fractureScript.CauseFracture();
         }
 
         StartCoroutine(HandleRespawn());
@@ -46,6 +50,9 @@ public class DestructibleObjectWOF : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Hammer"))
         {
+            float impactSpeed = collision.relativeVelocity.magnitude;
+            Debug.Log("ImpactSpeed" + impactSpeed);
+            if (impactSpeed < breakForceThreshold) return;
             Fracture fractureScript = GetComponent<Fracture>();
 
             if (fractureScript != null)

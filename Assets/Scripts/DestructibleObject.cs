@@ -4,7 +4,7 @@ using System.Collections;
 public class DestructibleObject : MonoBehaviour
 {
     public GameObject fragmentsPrefab;
-    public float breakForceThreshold = 5f;
+    public float breakForceThreshold = 15f;
     public float explosionForce = 300f;
     public float explosionRadius = 3f;
     private bool broken = false;
@@ -50,7 +50,7 @@ public class DestructibleObject : MonoBehaviour
 
     IEnumerator HandleRespawn()
     {
-        yield return new WaitForSeconds(60f);
+        yield return new WaitForSeconds(30f);
         myRenderer.enabled = true;
         myCollider.enabled = true;
         broken = false;

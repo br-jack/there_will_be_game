@@ -220,15 +220,6 @@ namespace Hammer
             frameAcceleration = new Vector3(0, 0, 0);
         }
 
-        public void OnCollisionEnter(Collision collision)
-        {
-
-            if (collision.gameObject.CompareTag("Enemy"))
-            {
-                Destroy(collision.gameObject);
-            }
-        }
-
         void OnDisable()
         {
             running = false;
