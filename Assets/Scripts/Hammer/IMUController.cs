@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 
@@ -10,18 +11,18 @@ namespace Hammer
     {
         private Quaternion _gameRotationVector;
         private Vector3 _frameAcceleration;
-        
+
         private SerialPort _stream;
-        
+
         private Thread _ioThread;
         private bool _running;
         private readonly ConcurrentQueue<string> _dataQueue = new ConcurrentQueue<string>();
-        
+
         private bool _portOpen = false;
         private const int TimeoutMs = 50;
-        
+
         private string _port = null;
-        
+
         private void SearchPorts()
         {
             try
@@ -41,19 +42,19 @@ namespace Hammer
 
                     try
                     {
-                        string[] portNames = SerialPort.GetPortNames();
+                        var availablePorts = SerialPort.GetPortNames()
+                            .Where(p => !p.Equals("COM1"))
+                            .ToArray();
 
-                        if (portNames.Length < 2)
+                        if (availablePorts.Length == 0)
                         {
-                            Console.WriteLine("No COM ports found.");
+                            Console.WriteLine("No usable COM ports found (if the hub is COM1 that's weird and also not my problem sorry).");
                             return;
                         }
 
-                        if (!string.IsNullOrEmpty(portNames[1]))
-                        {
-                            _port = portNames[1];
-                            Debug.Log(_port);
-                        }
+                        _port = availablePorts[0];
+                        Debug.Log(_port);
+
                     }
                     catch (Exception ex)
                     {
@@ -68,7 +69,7 @@ namespace Hammer
                 Debug.LogWarning(e);
             }
         }
-        
+
         public void Connect()
         {
             int attempts = 0;
@@ -83,7 +84,7 @@ namespace Hammer
                     return;
                 }
             }
-            
+
             try
             {
                 _stream = new SerialPort(_port, 115200)
@@ -104,8 +105,8 @@ namespace Hammer
                 Debug.LogWarning("Failed to connect to port: ");
                 Debug.LogWarning(e);
             }
-            
-            
+
+
             _running = true;
 
             // Start the background I/O thread
@@ -115,7 +116,7 @@ namespace Hammer
             };
             _ioThread.Start();
         }
-        
+
         private void IOThreadLoop()
         {
             try
@@ -174,10 +175,6 @@ namespace Hammer
                 {
                     try
                     {
-                        //Quaternion possibleQuaternion = new Quaternion(-float.Parse(parsedData[3]),
-                        //    -float.Parse(parsedData[4]),
-                        //    float.Parse(parsedData[2]),
-                        //    float.Parse(parsedData[1]));
                         Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[2]),
                             -float.Parse(parsedData[4]),
                             float.Parse(parsedData[3]),
@@ -204,10 +201,10 @@ namespace Hammer
                 Debug.LogWarning("Port is not open for reading.");
                 return;
             }
-            
+
             // this completely breaks momentum but whatever
             _frameAcceleration = new Vector3(0, 0, 0);
-            
+
             ParseStream();
         }
 
@@ -229,9 +226,9 @@ namespace Hammer
                 _ioThread.Join();
             }
             _ioThread = null;
-            
+
             _dataQueue.Clear();
-            
+
             _portOpen = false;
             _stream.Close();
             Debug.Log("Port closed");
