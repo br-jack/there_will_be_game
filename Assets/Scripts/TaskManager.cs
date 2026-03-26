@@ -17,7 +17,7 @@ public class TaskManager : MonoBehaviour
         if (!activeTasks.Contains(task))
         {
             activeTasks.Add(task);
-            //TaskHUD.Instance.AddTaskToUI(task);
+            TaskHUD.Instance.AddTaskToUI(task);
             Debug.Log($"Task registered: {task.taskName}");
         }
     }
@@ -25,7 +25,8 @@ public class TaskManager : MonoBehaviour
     public void OnTaskCompleted(BaseTask task)
     {
         activeTasks.Remove(task);
-        //TaskHUD.Instance.RemoveTaskFromUI(task);
+        TaskHUD.Instance.RemoveTaskFromUI(task); //remove and add back checked as complete
+        TaskHUD.Instance.AddTaskToUI(task);
         //RewardSystem.Instance.GrantReward(task);
         Debug.Log($"Task complete: {task.taskName}");
     }

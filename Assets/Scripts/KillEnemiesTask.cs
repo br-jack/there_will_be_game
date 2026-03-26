@@ -8,7 +8,7 @@ public class KillEnemiesTask : BaseTask
     void Start()
     {
         taskName = "Kill 3 enemies";
-        taskDescription = $"Kill {EnemiesRequired} enemies";
+        taskDescription = $"{EnemiesKilled}/{EnemiesRequired} Killed";
         StartTask();
     }
 

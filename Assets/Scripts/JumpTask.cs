@@ -8,7 +8,7 @@ public class JumpTask : BaseTask
     void Start()
     {
         taskName = "Jump 3 times";
-        taskDescription = $"Jump {JumpsRequired} times";
+        taskDescription = $"{Jumps}/{JumpsRequired} Done";
         StartTask();
     }
 
@@ -16,6 +16,8 @@ public class JumpTask : BaseTask
     {
         Jumps++;
         Debug.Log($"Jumps done: {Jumps}/{JumpsRequired}");
+        taskDescription = $"{Jumps}/{JumpsRequired} Done";
+        TaskHUD.Instance.RefreshUI();
         CheckCompletion();
     }
 
