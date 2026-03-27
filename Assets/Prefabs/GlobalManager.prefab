@@ -74,8 +74,7 @@ Transform:
   m_LocalPosition: {x: -0.1064464, y: 2.8439984, z: 0.3351362}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3068211283932824850}
+  m_Children: [{fileID: 3068211283932824850}]
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &889244070202556962
@@ -90,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef8d03cb85749594fa76aef92d20d1c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CalibrationQuaternion: {x: 1, y: 1, z: 1, w: 1}
+  CalibrationQuaternion: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
   port: 
 --- !u!1001 &9140064071778681868
 PrefabInstance:
