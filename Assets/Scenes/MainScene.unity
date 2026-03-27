@@ -53080,6 +53080,7 @@ GameObject:
   - component: {fileID: 1980488917}
   - component: {fileID: 1980488919}
   - component: {fileID: 1980488918}
+  - component: {fileID: 1980488920}
   m_Layer: 5
   m_Name: TaskPanel
   m_TagString: Untagged
@@ -53146,6 +53147,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980488916}
   m_CullTransparentMesh: 1
+--- !u!114 &1980488920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980488916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d9f7e83a2eef984da6e9ee7a7e9cf92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskListText: {fileID: 1322352137}
 --- !u!4 &1984088427 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8569224710082652142, guid: 2bf0761a3b0a74d42a0c6c3c8c8f489f, type: 3}
