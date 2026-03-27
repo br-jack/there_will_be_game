@@ -258,6 +258,8 @@ public class HorseMovement : MonoBehaviour
 
         _rb.linearVelocity = velocity;
         _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        JumpTask task = FindFirstObjectByType<JumpTask>();
+        if (task != null) task.JumpDone();
 
         _isGrounded = false;
         _groundedTimer = 0f;
