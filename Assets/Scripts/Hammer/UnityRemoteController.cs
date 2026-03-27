@@ -9,16 +9,16 @@ namespace Hammer
         private AttitudeSensor _attitudeSensor;
         private LinearAccelerationSensor _linearAccelerationSensor;
 
-        private const bool _flipXInAttitudeQuaternion = true;
-        private const bool _flipYInAttitudeQuaternion = true;
-        private const bool _flipZInAttitudeQuaternion = true;
-        private const int _indexSentToXInOutputQuaternion = 0;
-        private const int _indexSentToYInOutputQuaternion = 2;
-        private const int _indexSentToZInOutputQuaternion = 1;
+        private bool _flipXInAttitudeQuaternion = true;
+        private bool _flipYInAttitudeQuaternion = true;
+        private bool _flipZInAttitudeQuaternion = false;
+        private int _indexSentToXInOutputQuaternion = 0;
+        private int _indexSentToYInOutputQuaternion = 1;
+        private int _indexSentToZInOutputQuaternion = 2;
 
-        //for testing only
-        //allows changing axis alignment in the editor at runtime if the axes get in a mess
-        /*public void UpdateTestQuaternionVariables(
+        //uncomment along with some code in global manager to do axis flips and switches in the editor
+        /*
+        public void UpdateTestQuaternionVariables(
             bool flipXInAttitudeQuaternion,
             bool flipYInAttitudeQuaternion,
             bool flipZInAttitudeQuaternion,
@@ -33,7 +33,8 @@ namespace Hammer
             _indexSentToYInOutputQuaternion = indexSentToYInOutputQuaternion;
             _indexSentToZInOutputQuaternion = indexSentToZInOutputQuaternion;
             return;
-        }   */
+        }   
+        */
         
         public void Connect()
         {
@@ -103,6 +104,8 @@ namespace Hammer
                 return Quaternion.identity;
             }
 
+            //these variables should be removed eventually! 
+            //they are here to do axis flips and switches when testing, we can remove later
             float xMult,yMult,zMult = yMult = xMult = 1.0f;
             if (_flipXInAttitudeQuaternion) xMult = -1.0f;
             if (_flipYInAttitudeQuaternion) yMult = -1.0f;
@@ -126,19 +129,7 @@ namespace Hammer
             return _linearAccelerationSensor.acceleration.ReadValue();
         }
 
-        public void resetAxes()
-        {
-            Debug.Log("resetting axes!");
-            if (AttitudeSensor.current == null)
-            {
-                Debug.Log("Connected Unity Remote does not have a sensor to reset axes for!");
-            } else {
-                Debug.Log("pretty sure this has axes to reset :)");
-                Cleanup();
-                
-            }
-            //perhaps need code here to do the same for the acceleration sensor?
-        }
+    
 
         public void Cleanup()
         {
