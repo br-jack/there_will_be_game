@@ -6,7 +6,7 @@ public class GlobalManager : MonoBehaviour
     
     public Hammer.IController hammerController;
     
-    /* for testing Unity Remote
+    //for testing Unity Remote
     public bool flipXInAttitudeQuaternion;
     public bool flipYInAttitudeQuaternion;
     public bool flipZInAttitudeQuaternion;
@@ -26,7 +26,7 @@ public class GlobalManager : MonoBehaviour
                 indexSentToYInOutputQuaternion,
                 indexSentToZInOutputQuaternion);
         }
-    }*/
+    }
 
     public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
 

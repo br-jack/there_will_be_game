@@ -9,16 +9,16 @@ namespace Hammer
         private AttitudeSensor _attitudeSensor;
         private LinearAccelerationSensor _linearAccelerationSensor;
 
-        private const bool _flipXInAttitudeQuaternion = true;
-        private const bool _flipYInAttitudeQuaternion = true;
-        private const bool _flipZInAttitudeQuaternion = true;
-        private const int _indexSentToXInOutputQuaternion = 0;
-        private const int _indexSentToYInOutputQuaternion = 2;
-        private const int _indexSentToZInOutputQuaternion = 1;
+        private bool _flipXInAttitudeQuaternion = true;
+        private bool _flipYInAttitudeQuaternion = true;
+        private bool _flipZInAttitudeQuaternion = true;
+        private int _indexSentToXInOutputQuaternion = 0;
+        private int _indexSentToYInOutputQuaternion = 2;
+        private int _indexSentToZInOutputQuaternion = 1;
 
         //for testing only
         //allows changing axis alignment in the editor at runtime if the axes get in a mess
-        /*public void UpdateTestQuaternionVariables(
+        public void UpdateTestQuaternionVariables(
             bool flipXInAttitudeQuaternion,
             bool flipYInAttitudeQuaternion,
             bool flipZInAttitudeQuaternion,
@@ -33,7 +33,7 @@ namespace Hammer
             _indexSentToYInOutputQuaternion = indexSentToYInOutputQuaternion;
             _indexSentToZInOutputQuaternion = indexSentToZInOutputQuaternion;
             return;
-        }   */
+        }   
         
         public void Connect()
         {
@@ -128,7 +128,7 @@ namespace Hammer
 
         public void resetAxes()
         {
-            Debug.Log("resetting axes!");
+            Debug.Log("resetting axes! Just going to disconnect and reconnect remote");
             if (AttitudeSensor.current == null)
             {
                 Debug.Log("Connected Unity Remote does not have a sensor to reset axes for!");
