@@ -126,19 +126,7 @@ namespace Hammer
             return _linearAccelerationSensor.acceleration.ReadValue();
         }
 
-        public void resetAxes()
-        {
-            Debug.Log("resetting axes! Just going to disconnect and reconnect remote");
-            if (AttitudeSensor.current == null)
-            {
-                Debug.Log("Connected Unity Remote does not have a sensor to reset axes for!");
-            } else {
-                Debug.Log("pretty sure this has axes to reset :)");
-                Cleanup();
-                
-            }
-            //perhaps need code here to do the same for the acceleration sensor?
-        }
+    
 
         public void Cleanup()
         {

@@ -30,10 +30,7 @@ public class GlobalManager : MonoBehaviour
 
     public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
 
-    public void resetHammerControllerAxes()
-    {
-        hammerController.resetAxes();
-    }
+    
 
     private void Awake()
     {
