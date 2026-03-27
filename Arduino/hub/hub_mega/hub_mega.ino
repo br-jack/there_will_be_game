@@ -9,15 +9,18 @@ void setup() {
   while (!Serial1) {
     ; // wait for serial1 port to connect. Needed for Bluetooth
   }
+
+  delay(20);
+
   // BT.print("AT+ROLE1");
   Serial1.print("AT+START");
 }
 
 void loop() { // run over and over
-  if (Serial1.available()) {
+  if (Serial1.available() > 0) {
     Serial.write(Serial1.read());
   }
-  if (Serial.available()) {
+  if (Serial.available() > 0) {
     Serial1.write(Serial.read());
   }
 }
