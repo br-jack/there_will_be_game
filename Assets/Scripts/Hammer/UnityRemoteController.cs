@@ -11,13 +11,13 @@ namespace Hammer
 
         private bool _flipXInAttitudeQuaternion = true;
         private bool _flipYInAttitudeQuaternion = true;
-        private bool _flipZInAttitudeQuaternion = true;
+        private bool _flipZInAttitudeQuaternion = false;
         private int _indexSentToXInOutputQuaternion = 0;
-        private int _indexSentToYInOutputQuaternion = 2;
-        private int _indexSentToZInOutputQuaternion = 1;
+        private int _indexSentToYInOutputQuaternion = 1;
+        private int _indexSentToZInOutputQuaternion = 2;
 
-        //for testing only
-        //allows changing axis alignment in the editor at runtime if the axes get in a mess
+        //uncomment along with some code in global manager to do axis flips and switches in the editor
+        /*
         public void UpdateTestQuaternionVariables(
             bool flipXInAttitudeQuaternion,
             bool flipYInAttitudeQuaternion,
@@ -34,6 +34,7 @@ namespace Hammer
             _indexSentToZInOutputQuaternion = indexSentToZInOutputQuaternion;
             return;
         }   
+        */
         
         public void Connect()
         {
@@ -103,6 +104,8 @@ namespace Hammer
                 return Quaternion.identity;
             }
 
+            //these variables should be removed eventually! 
+            //they are here to do axis flips and switches when testing, we can remove later
             float xMult,yMult,zMult = yMult = xMult = 1.0f;
             if (_flipXInAttitudeQuaternion) xMult = -1.0f;
             if (_flipYInAttitudeQuaternion) yMult = -1.0f;

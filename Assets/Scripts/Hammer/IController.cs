@@ -5,7 +5,6 @@ namespace Hammer
 {
     public interface IController
     {
-      
         
         public void Connect();
         

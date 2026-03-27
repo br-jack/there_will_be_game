@@ -6,16 +6,18 @@ public class GlobalManager : MonoBehaviour
     
     public Hammer.IController hammerController;
     
-    //for testing Unity Remote
-    public bool flipXInAttitudeQuaternion;
-    public bool flipYInAttitudeQuaternion;
-    public bool flipZInAttitudeQuaternion;
+    //for testing, you can uncomment this to do axis flips and switches for unity remote
+    /*
+    public bool flipXInAttitudeQuaternion = true;
+    public bool flipYInAttitudeQuaternion = true;
+    public bool flipZInAttitudeQuaternion = false;
     public int indexSentToXInOutputQuaternion = 0;
     public int indexSentToYInOutputQuaternion = 1;
     public int indexSentToZInOutputQuaternion = 2;
 
     private void Update()
     {
+        /*
         if (hammerController is Hammer.UnityRemoteController unityRemoteController)
         {
             unityRemoteController.UpdateTestQuaternionVariables(
@@ -26,7 +28,8 @@ public class GlobalManager : MonoBehaviour
                 indexSentToYInOutputQuaternion,
                 indexSentToZInOutputQuaternion);
         }
-    }
+    } 
+    */
 
     public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
 
