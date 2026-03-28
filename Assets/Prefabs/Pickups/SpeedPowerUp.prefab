@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -73717415239798203}
   - component: {fileID: 816484171470824573}
   - component: {fileID: 2318525545383422034}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SpeedPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,6 +156,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2a4560059f16739479be5e52f7ee82a8, type: 3}
       propertyPath: m_Name
       value: MercuryPowerup
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2a4560059f16739479be5e52f7ee82a8, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2a4560059f16739479be5e52f7ee82a8, type: 3}
       propertyPath: m_IsActive

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5092099294027859948}
   - component: {fileID: 2210636957149786834}
   - component: {fileID: 1068342860076482874}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SecondAura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4854,7 +4854,7 @@ GameObject:
   - component: {fileID: -73717415239798203}
   - component: {fileID: 816484171470824573}
   - component: {fileID: 2318525545383422034}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: JumpPowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5011,9 +5011,21 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8513424388201257645, guid: 16d6186af4585ba42920600cce2a9374, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -3957782524123411102, guid: 16d6186af4585ba42920600cce2a9374, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 16d6186af4585ba42920600cce2a9374, type: 3}
       propertyPath: m_Name
       value: NeptunePowerUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 16d6186af4585ba42920600cce2a9374, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5084,6 +5096,10 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.5330089
       objectReference: {fileID: 0}
+    - target: {fileID: 210279025399192078, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 244987264555897272, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: TrailModule.colorOverLifetime.maxGradient.key1.b
       value: 0.5302339
@@ -5099,6 +5115,14 @@ PrefabInstance:
     - target: {fileID: 1107569812293912732, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: m_Name
       value: PowerUpParticleEffects
+      objectReference: {fileID: 0}
+    - target: {fileID: 1107569812293912732, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175321605754426163, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2175321605754426163, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: m_IsActive
@@ -5143,6 +5167,10 @@ PrefabInstance:
     - target: {fileID: 4770006652411594474, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5199716509427636139, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5324200807437331003, guid: fc894e782f435c640ab6f3a1fe096e3b, type: 3}
       propertyPath: prewarm
