@@ -3,7 +3,12 @@ guid: 16d6186af4585ba42920600cce2a9374
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: neptune_blue
+    second: {fileID: 2100000, guid: 5b9841644fef0a14ca9fa059215c15cd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -88,7 +93,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.84999996
+    globalScale: 85
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
