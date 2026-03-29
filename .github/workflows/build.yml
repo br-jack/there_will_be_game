@@ -3,7 +3,17 @@
 # https://game.ci/docs/github/getting-started#simple-example-with-git-lfs
 # https://game.ci/docs/github/getting-started#advanced-il2cpp-example
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+  workflow_dispatch:
+    
+#allow only one run at a time on each branch
+#https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency#example-using-concurrency-and-the-default-behavior
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   linux-build-test:
