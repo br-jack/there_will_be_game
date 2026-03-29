@@ -6,6 +6,8 @@ public class BrazierProximityIgnite : MonoBehaviour
     [SerializeField] private HammerFireController hammerFireController;
     [SerializeField] private float igniteDistance = 10f;
 
+    [SerializeField] private FireTask fireTask;
+
     private bool hasIgnited = false;
 
     private void Update()
@@ -21,6 +23,7 @@ public class BrazierProximityIgnite : MonoBehaviour
         if (distance <= igniteDistance)
         {
             hammerFireController.IgniteHammer();
+            fireTask.HammerIgnited();
             hasIgnited = true;
         }
     }

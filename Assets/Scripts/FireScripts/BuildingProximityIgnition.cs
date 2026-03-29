@@ -8,6 +8,8 @@ public class BuildingProximityIgnition : MonoBehaviour
     [SerializeField] private BurnableBuilding burnableBuilding;
     [SerializeField] private float igniteDistance = 10f;
 
+    [SerializeField] private FireTask fireTask;
+
 
     private bool hasIgnited = false;
 
@@ -27,6 +29,7 @@ public class BuildingProximityIgnition : MonoBehaviour
         if (distance <= igniteDistance)
         {
             burnableBuilding.IgniteBuilding();
+            fireTask.BuildingBurned();
             hasIgnited = true;
         }
     }
