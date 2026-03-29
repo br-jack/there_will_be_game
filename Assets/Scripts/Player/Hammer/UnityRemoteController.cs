@@ -47,26 +47,28 @@ namespace Hammer
             // if (Gyroscope.current != null)
                 // Debug.Log("Gyroscope present");
             // InputSystem.EnableDevice(Gyroscope.current);
-
-            _attitudeSensor = null;
+            
+            _attitudeSensor = InputSystem.GetDevice<AttitudeSensor>();
+            if (_attitudeSensor == null)
+            {
+                Debug.LogWarning("AttitudeSensor is not available");
+                _attitudeSensor = AttitudeSensor.current;
+            }
             
 #if UNITY_ANDROID
-            _attitudeSensor = InputSystem.GetDevice<AndroidGameRotationVector>();
-            if (_attitudeSensor == null)
+            //attempt to get android game rotation vector
+            //This unfortunately doesn't seem to work with Android Unity Remote
+            AttitudeSensor androidSensor = InputSystem.GetDevice<AndroidGameRotationVector>();
+            if (androidSensor == null)
             {
-                _attitudeSensor = InputSystem.GetDevice<AndroidRotationVector>();
+                androidSensor = InputSystem.GetDevice<AndroidRotationVector>();
+            }
+
+            if (androidSensor != null)
+            {
+                _attitudeSensor = androidSensor;
             }
 #endif
-            
-            if (_attitudeSensor == null)
-            {
-                _attitudeSensor = InputSystem.GetDevice<AttitudeSensor>();
-                if (_attitudeSensor == null)
-                {
-                    Debug.LogWarning("AttitudeSensor is not available");
-                    _attitudeSensor = AttitudeSensor.current;
-                }
-            }
             
             if (_attitudeSensor != null)
             {
