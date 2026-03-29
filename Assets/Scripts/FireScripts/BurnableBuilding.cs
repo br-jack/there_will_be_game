@@ -1,0 +1,34 @@
+using UnityEngine;
+
+public class BurnableBuilding : MonoBehaviour
+{
+    [SerializeField] private GameObject buildingFireVisual;
+    [SerializeField] private ParticleSystem buildingFireParticles;
+
+    private bool isBurning = false;
+    public bool IsBurning => isBurning;
+
+    private void Start()
+    {
+        if (buildingFireVisual != null)
+            buildingFireVisual.SetActive(false);
+
+        if (buildingFireParticles != null)
+            buildingFireParticles.Stop();
+    }
+
+    public void IgniteBuilding()
+    {
+        if (isBurning) return;
+
+        isBurning = true;
+
+        if (buildingFireVisual != null)
+            buildingFireVisual.SetActive(true);
+
+        if (buildingFireParticles != null)
+            buildingFireParticles.Play();
+
+        Debug.Log("Building has been set on fire");
+    }
+}
