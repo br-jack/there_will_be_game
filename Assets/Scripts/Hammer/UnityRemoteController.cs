@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿#if (UNITY_IOS || UNITY_ANDROID) 
+using UnityEngine;
 using UnityEngine.InputSystem;
+#if UNITY_ANDROID
 using UnityEngine.InputSystem.Android;
+#endif
 
 namespace Hammer
 {
@@ -44,21 +47,27 @@ namespace Hammer
             // if (Gyroscope.current != null)
                 // Debug.Log("Gyroscope present");
             // InputSystem.EnableDevice(Gyroscope.current);
+
+            _attitudeSensor = null;
             
+#if UNITY_ANDROID
             _attitudeSensor = InputSystem.GetDevice<AndroidGameRotationVector>();
             if (_attitudeSensor == null)
             {
                 _attitudeSensor = InputSystem.GetDevice<AndroidRotationVector>();
+            }
+#endif
+            
+            if (_attitudeSensor == null)
+            {
+                _attitudeSensor = InputSystem.GetDevice<AttitudeSensor>();
                 if (_attitudeSensor == null)
                 {
-                    _attitudeSensor = InputSystem.GetDevice<AttitudeSensor>();
-                    if (_attitudeSensor == null)
-                    {
-                        Debug.LogWarning("AttitudeSensor is not available");
-                        _attitudeSensor = AttitudeSensor.current;
-                    }
+                    Debug.LogWarning("AttitudeSensor is not available");
+                    _attitudeSensor = AttitudeSensor.current;
                 }
             }
+            
             if (_attitudeSensor != null)
             {
                 InputSystem.EnableDevice(_attitudeSensor);
@@ -140,3 +149,4 @@ namespace Hammer
         }
     }
 }
+#endif
