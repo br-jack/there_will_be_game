@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 359376451663064704}
   - component: {fileID: 4634095490424179219}
   - component: {fileID: 3166288667827106132}
+  - component: {fileID: 6151267105047134313}
   m_Layer: 0
   m_Name: SM_flower_04
   m_TagString: Untagged
@@ -59,6 +60,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -106,3 +110,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 31b191e3a0942b14c9f29fa0ab83b623, type: 3}
+--- !u!205 &6151267105047134313
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5761356402748753467}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.02527691, y: 0.20826614, z: 0}
+  m_Size: 0.5548825
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 4634095490424179219}
+  m_Enabled: 1
