@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6430297718554377326}
   - component: {fileID: 629068381093378923}
   - component: {fileID: 2522482184252646252}
+  - component: {fileID: -7274885238361756411}
   m_Layer: 0
   m_Name: SM_tree_cypress_03
   m_TagString: Untagged
@@ -59,6 +60,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -107,3 +111,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 8a8fa0b29a38dcd4da01e38bead28a97, type: 3}
+--- !u!205 &-7274885238361756411
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2237603610037188717}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.11485863, y: 3.1875443, z: 0.043850183}
+  m_Size: 6.673337
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 629068381093378923}
+  m_Enabled: 1

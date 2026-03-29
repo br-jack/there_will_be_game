@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5697140503601516774}
   - component: {fileID: 7839647334989134407}
   - component: {fileID: 5438251621981293344}
+  - component: {fileID: -5232198075573759147}
   m_Layer: 0
   m_Name: SM_trunk_dead_03
   m_TagString: Untagged
@@ -59,6 +60,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -107,3 +111,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 689a0368c4a861c4a91813e3d2bba159, type: 3}
+--- !u!205 &-5232198075573759147
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4609375218493372895}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.012024403, y: 0.43021876, z: 0.057724476}
+  m_Size: 3.1966124
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 7839647334989134407}
+  m_Enabled: 1

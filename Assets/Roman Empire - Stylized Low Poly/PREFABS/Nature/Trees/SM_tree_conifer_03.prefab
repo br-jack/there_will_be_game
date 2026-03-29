@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 873712674892051708}
   - component: {fileID: 5668702721696779538}
   - component: {fileID: 7801048689441663123}
+  - component: {fileID: 357132650539227668}
   m_Layer: 0
   m_Name: SM_tree_conifer_03
   m_TagString: Untagged
@@ -59,6 +60,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -107,3 +111,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 55571756987e47340a38037476169491, type: 3}
+--- !u!205 &357132650539227668
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9015773976683589860}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.11177063, y: 4.1355114, z: -0.19786263}
+  m_Size: 8.773453
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 5668702721696779538}
+  m_Enabled: 1

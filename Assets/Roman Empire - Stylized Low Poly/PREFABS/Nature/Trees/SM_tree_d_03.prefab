@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 332336973131473273}
   - component: {fileID: 6684185319907333309}
   - component: {fileID: 3791219166386979709}
+  - component: {fileID: -3579676329697416497}
   m_Layer: 0
   m_Name: SM_tree_d_03
   m_TagString: Untagged
@@ -59,6 +60,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -107,3 +111,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: f2e5fa142986962409110d6218f1c906, type: 3}
+--- !u!205 &-3579676329697416497
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368464055571854433}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.37215424, y: 4.7626534, z: 0.06516147}
+  m_Size: 10.035599
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 6684185319907333309}
+  m_Enabled: 1
