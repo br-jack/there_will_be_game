@@ -14,7 +14,7 @@
 #define BNO08X_RESET -1
 #define FAST_MODE
 
-const int motor1SPDPin = A0;  // Motor 1 Direction pin of dual motor driver connected to digital pin 26
+const int motor1DIRPin = A0;  // Motor 1 Direction pin of dual motor driver connected to digital pin 26
 const int motor1SPDPin = A1;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 27
 const int motor2SPDPin = A2;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 28
 const int motor2DIRPin = A3;  // Motor 2 Direction pin of dual motor driver connected to digital pin 29
@@ -71,6 +71,10 @@ void setup(void) {
   setReports();
 
   Serial1.println("Reading events");
+
+  pinMode(motor1DIRPin, OUTPUT);
+  pinMode(motor2DIRPin, OUTPUT);
+
   delay(100);
 }
 
@@ -88,6 +92,7 @@ void setReports(void) {
 void vibrate() {
   // fade in from min to max in increments of 5 points:
   for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
+    digitalWrite(motor1DIRPin, HIGH);
     // sets the value (range from 0 to 255):
     analogWrite(motor1SPDPin, fadeValue);
     // wait for 30 milliseconds to see the dimming effect
