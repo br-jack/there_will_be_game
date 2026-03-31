@@ -220,6 +220,7 @@ namespace Hammer
 
         public void Rumble()
         {
+            Debug.Log("Sending Vibration Request");
             _stream.Write("V");
         }
 

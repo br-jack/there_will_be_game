@@ -84,7 +84,7 @@ namespace Hammer
             UpdatePosition();
         }
 
-        public void OnCollisionEnter(Collision collision)
+        public void OnTriggerEnter(Collider other)
         {
             _controllerRef.Rumble();
         }
