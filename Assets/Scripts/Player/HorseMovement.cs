@@ -168,6 +168,7 @@ public class HorseMovement : MonoBehaviour
     {
         if (context.performed)
             _driftButtonPressed = true;
+            Debug.Log($"drift pressed");
         if (context.canceled) 
             _driftButtonPressed = false;
     }
