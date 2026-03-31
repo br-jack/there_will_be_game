@@ -1,41 +1,51 @@
 /*
-Fading
+  Software serial multiple serial test
 
-  This example shows how to fade an LED using the analogWrite() function.
+ Receives from the hardware serial, sends to software serial.
+ Receives from software serial, sends to hardware serial.
 
-  The circuit:
-  - LED attached from digital pin 9 to ground through 220 ohm resistor.
+ The circuit:
+ * RX is digital pin 10 (connect to TX of other device)
+ * TX is digital pin 11 (connect to RX of other device)
 
-  created 1 Nov 2008
-  by David A. Mellis
-  modified 30 Aug 2011
-  by Tom Igoe
+ Note:
+ Not all pins on the Mega and Mega 2560 support change interrupts,
+ so only the following can be used for RX:
+ 10, 11, 12, 13, 50, 51, 52, 53, 62, 63, 64, 65, 66, 67, 68, 69
 
-  This example code is in the public domain.
+ Not all pins on the Leonardo and Micro support change interrupts,
+ so only the following can be used for RX:
+ 8, 9, 10, 11, 14 (MISO), 15 (SCK), 16 (MOSI).
 
-  https://docs.arduino.cc/built-in-examples/analog/Fading/
-*/
+ created back in the mists of time
+ modified 25 May 2012
+ by Tom Igoe
+ based on Mikal Hart's example
 
-int ledPin = 5;  // LED connected to digital pin 9
+ This example code is in the public domain.
+
+ */
+#include <SoftwareSerial.h>
+
+SoftwareSerial BT(10,11); // RX, TX
 
 void setup() {
-  // nothing happens in setup
+  // Open serial communications and wait for port to open:
+  Serial.begin(115200);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+  // set the data rate for the SoftwareSerial port
+  BT.begin(115200);
+  // BT.print("AT+ROLE1");
+  BT.print("AT+START");
 }
 
-void loop() {
-  // fade in from min to max in increments of 5 points:
-  for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
-    // sets the value (range from 0 to 255):
-    analogWrite(ledPin, fadeValue);
-    // wait for 30 milliseconds to see the dimming effect
-    delay(30);
+void loop() { // run over and over
+  if (BT.available()) {
+    Serial.write(BT.read());
   }
-
-  // fade out from max to min in increments of 5 points:
-  for (int fadeValue = 255; fadeValue >= 0; fadeValue -= 5) {
-    // sets the value (range from 0 to 255):
-    analogWrite(ledPin, fadeValue);
-    // wait for 30 milliseconds to see the dimming effect
-    delay(30);
+  if (Serial.available()) {
+    BT.write(Serial.read());
   }
 }
