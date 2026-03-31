@@ -22,6 +22,7 @@ public class HorseMovement : MonoBehaviour
     
     //TODO could maybe include deceleration in this as well if necessary
 
+    [Serializable]
     private struct Gear
     {
         public string name;
@@ -30,6 +31,7 @@ public class HorseMovement : MonoBehaviour
         public float acceleration;
     }
     
+    [SerializeField]
     private Gear[] gears =
     {
         new Gear{name = "Walk", minSpeed = 0f, maxSpeed = 8f, acceleration = 4f},
