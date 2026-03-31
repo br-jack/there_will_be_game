@@ -21,12 +21,21 @@ public class HorseMovement : MonoBehaviour
     //Discrete Speeds
     
     //TODO could maybe include deceleration in this as well if necessary
-    private (string name, float minSpeed, float maxSpeed, float acceleration)[] gears =
+
+    private struct Gear
     {
-        ("Walk", 0f, 8f, 4f),
-        ("Trot", 8f, 16f, 6f),
-        ("Canter", 16f, 24f, 10f),
-        ("Gallop", 24f, 35f, 14f)
+        public string name;
+        public float minSpeed;
+        public float maxSpeed;
+        public float acceleration;
+    }
+    
+    private Gear[] gears =
+    {
+        new Gear{name = "Walk", minSpeed = 0f, maxSpeed = 8f, acceleration = 4f},
+        new Gear{name = "Trot", minSpeed = 8f, maxSpeed = 16f, acceleration = 6f},
+        new Gear{name = "Canter", minSpeed = 16f, maxSpeed = 24f, acceleration = 10f},
+        new Gear{name = "Gallop", minSpeed = 24f, maxSpeed = 35f, acceleration = 14f}
     };
 
     private int _currentGear = 2;
