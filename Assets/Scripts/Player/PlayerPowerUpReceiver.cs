@@ -9,8 +9,8 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     public PlayerHealth playerHealth;
 
-    private float _defaultMaxSpeed;
-    private float _defaultAcceleration;
+    private float _defaultMaxSpeedMultiplier;
+    private float _defaultAccelerationMultiplier;
     private float _defaultJumpForce;
     
     
@@ -30,8 +30,8 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     {
         if (horseMovement != null)
         {
-            _defaultMaxSpeed = horseMovement.maxSpeed;
-            _defaultAcceleration = horseMovement.acceleration;
+            _defaultMaxSpeedMultiplier = horseMovement.maxSpeedMultiplier;
+            _defaultAccelerationMultiplier = horseMovement.accelerationMultiplier;
             _defaultJumpForce = horseMovement.jumpForce;
         }
 
@@ -66,8 +66,8 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     private void StartSpeedBoostEffects(float multiplier)
     {
-        horseMovement.maxSpeed = _defaultMaxSpeed * multiplier;
-        horseMovement.acceleration = _defaultAcceleration * multiplier;
+        horseMovement.maxSpeedMultiplier = multiplier;
+        horseMovement.accelerationMultiplier = multiplier;
         
         if (playerParticles != null)
         {
@@ -79,8 +79,8 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     private void EndSpeedBoostEffects()
     {
-        horseMovement.maxSpeed = _defaultMaxSpeed;
-        horseMovement.acceleration = _defaultAcceleration;
+        horseMovement.maxSpeedMultiplier = _defaultMaxSpeedMultiplier;
+        horseMovement.accelerationMultiplier = _defaultAccelerationMultiplier;
 
         if (playerParticles != null)
         {

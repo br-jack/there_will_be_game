@@ -1,21 +1,49 @@
-
+using System.Security;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class HorseMovement : MonoBehaviour
 {
-    public float acceleration = 12f;
+    [Range(0f, 5f)] public float accelerationMultiplier = 1.0f;
+    [Range(0f, 5f)] public float maxSpeedMultiplier = 1.0f;
     public float deceleration = 2f; //ambient deceleration when no acceleration or braking/reverse
 
     public float brake = 20f;
-    public float maxSpeed = 30f;
-    public float steerTorque = 10f;
+    
 
+    public float steerTorque = 10f;
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
-    
     private float _currentSpeed = 0f;
+
+    //Discrete Speeds
+    
+    //TODO could maybe include deceleration in this as well if necessary
+
+    [Serializable]
+    private struct Gear
+    {
+        public string name;
+        public float minSpeed;
+        public float maxSpeed;
+        public float acceleration;
+    }
+    
+    [SerializeField]
+    private Gear[] gears =
+    {
+        new Gear{name = "Walk", minSpeed = 0f, maxSpeed = 8f, acceleration = 4f},
+        new Gear{name = "Trot", minSpeed = 8f, maxSpeed = 16f, acceleration = 6f},
+        new Gear{name = "Canter", minSpeed = 16f, maxSpeed = 24f, acceleration = 10f},
+        new Gear{name = "Gallop", minSpeed = 24f, maxSpeed = 35f, acceleration = 14f}
+    };
+
+    private int _currentGear = 2;
+
+    private float _currentMaxSpeed = 24f;
+    private float _currentAcceleration = 10f;
     public float CurrentSpeed => _currentSpeed;
 
     private bool _isGrounded = false;
@@ -124,6 +152,32 @@ public class HorseMovement : MonoBehaviour
         _brakeInput = context.ReadValue<float>();
     }
 
+    public void OnGearUp(InputAction.CallbackContext context)
+    {
+        if (context.performed && gears[_currentGear].name != "Gallop")
+        {
+            //if (_currentSpeed >= gears[_currentGear+1].minSpeed) remove speedcheck to remove gear like functionality, just selectable speed levels with differnet accelreations and max speeds.
+            {
+                _currentGear += 1;
+            }            
+        }
+        _currentMaxSpeed = gears[_currentGear].maxSpeed;
+        _currentAcceleration = gears[_currentGear].acceleration;
+        Debug.Log($"Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
+    }
+
+    public void OnGearDown(InputAction.CallbackContext context)
+    {
+        if (context.performed && gears[_currentGear].name != "Walk") {
+            // if (_currentSpeed <= gears[_currentGear].minSpeed) 
+            {
+                _currentGear -= 1;
+            }
+        }
+        _currentMaxSpeed = gears[_currentGear].maxSpeed;
+        _currentAcceleration = gears[_currentGear].acceleration;
+        Debug.Log($"Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
+    }
     public void onDrift(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -164,6 +218,14 @@ public class HorseMovement : MonoBehaviour
 
     private void FixedUpdate()  
     {
+        // changed so can change gear without needing to be above or below speeds - remove Car gear vibe.
+        // for (int i = _currentGear; i >= 0; i--) { //auto downshifts if below minSpeed of currentGear, stand in for ptential "stall" where you cant move if you drop below speed of current gear and dont change gear
+        //     if (_currentSpeed < gears[_currentGear].minSpeed)
+        //     {
+        //         _currentGear -= 1;
+        //         Debug.Log($" AUTODOWNSHIFTED TOO SLOW, Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
+        //     }
+        // }
         if (_ignoreGroundTimer > 0f)
         {
             _ignoreGroundTimer -= Time.fixedDeltaTime;
@@ -316,7 +378,7 @@ public class HorseMovement : MonoBehaviour
     {
         float netForce = 0f;
 
-        netForce += acceleration * _throttleInput;
+        netForce += _currentAcceleration * accelerationMultiplier * _throttleInput;
         netForce -= brake * _brakeInput;
 
         _currentSpeed += netForce * Time.fixedDeltaTime;
@@ -326,7 +388,7 @@ public class HorseMovement : MonoBehaviour
             _currentSpeed = Mathf.MoveTowards(_currentSpeed, 0, deceleration * Time.fixedDeltaTime);
         }
         
-        _currentSpeed = Mathf.Clamp(_currentSpeed, -3.0f, maxSpeed);
+        _currentSpeed = Mathf.Clamp(_currentSpeed, -3.0f, _currentMaxSpeed * maxSpeedMultiplier);
     }
 
     private void HandleMovement()
@@ -351,7 +413,7 @@ public class HorseMovement : MonoBehaviour
         }
 
         //scale jumping to speed
-        speedPercent = _currentSpeed / maxSpeed;
+        speedPercent = _currentSpeed / (_currentMaxSpeed * maxSpeedMultiplier);
         
         bool JumpedThisFrame = Jump(grounded);
 
