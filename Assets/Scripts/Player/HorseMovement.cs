@@ -12,12 +12,10 @@ public class HorseMovement : MonoBehaviour
     public float brake = 20f;
     public float maxSpeed = 30f;
 
-    private float _currentMaxSpeed = 8f;
     public float steerTorque = 10f;
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
     private float _currentSpeed = 0f;
-    private float _currentAcceleration = 2f;
 
     //Discrete Speeds
     private (string name, float minSpeed, float maxSpeed, float acceleration)[] gears =
@@ -28,7 +26,10 @@ public class HorseMovement : MonoBehaviour
         ("Gallop", 24f, 35f, 14f)
     };
 
-    private int _currentGear = 0;
+    private int _currentGear = 2;
+
+    private float _currentMaxSpeed = 24f;
+    private float _currentAcceleration = 10f;
     public float CurrentSpeed => _currentSpeed;
 
     private bool _isGrounded = false;
