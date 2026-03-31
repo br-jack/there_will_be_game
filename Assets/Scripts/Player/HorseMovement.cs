@@ -6,11 +6,12 @@ using UnityEngine.Rendering;
 
 public class HorseMovement : MonoBehaviour
 {
-    public float acceleration = 12f;
+    [Range(0f, 5f)] public float accelerationMultiplier = 1.0f;
+    [Range(0f, 5f)] public float maxSpeedMultiplier = 1.0f;
     public float deceleration = 2f; //ambient deceleration when no acceleration or braking/reverse
 
     public float brake = 20f;
-    public float maxSpeed = 30f;
+    
 
     public float steerTorque = 10f;
     public float turnSpeed = 70f;
@@ -18,6 +19,8 @@ public class HorseMovement : MonoBehaviour
     private float _currentSpeed = 0f;
 
     //Discrete Speeds
+    
+    //TODO could maybe include deceleration in this as well if necessary
     private (string name, float minSpeed, float maxSpeed, float acceleration)[] gears =
     {
         ("Walk", 0f, 8f, 4f),
@@ -364,7 +367,7 @@ public class HorseMovement : MonoBehaviour
     {
         float netForce = 0f;
 
-        netForce += _currentAcceleration * _throttleInput;
+        netForce += _currentAcceleration * accelerationMultiplier * _throttleInput;
         netForce -= brake * _brakeInput;
 
         _currentSpeed += netForce * Time.fixedDeltaTime;
@@ -374,7 +377,7 @@ public class HorseMovement : MonoBehaviour
             _currentSpeed = Mathf.MoveTowards(_currentSpeed, 0, deceleration * Time.fixedDeltaTime);
         }
         
-        _currentSpeed = Mathf.Clamp(_currentSpeed, -3.0f, _currentMaxSpeed);
+        _currentSpeed = Mathf.Clamp(_currentSpeed, -3.0f, _currentMaxSpeed * maxSpeedMultiplier);
     }
 
     private void HandleMovement()
@@ -399,7 +402,7 @@ public class HorseMovement : MonoBehaviour
         }
 
         //scale jumping to speed
-        speedPercent = _currentSpeed / maxSpeed;
+        speedPercent = _currentSpeed / (_currentMaxSpeed * maxSpeedMultiplier);
         
         bool JumpedThisFrame = Jump(grounded);
 
