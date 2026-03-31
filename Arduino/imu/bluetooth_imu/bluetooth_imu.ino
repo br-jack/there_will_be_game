@@ -77,8 +77,6 @@ void setup(void) {
 
   digitalWrite(motor1DIRPin, HIGH);
 
-  analogWrite(motor1SPDPin, 255);
-
   delay(100);
 }
 
@@ -108,6 +106,8 @@ void vibrate() {
     // wait for 30 milliseconds to see the dimming effect
     // delay(120);
   // }
+
+  analogWrite(motor1SPDPin, 255);
 }
 
 
@@ -117,9 +117,12 @@ void loop() {  // run over and over
 
   vibrate();
 
-  // if (Serial1.available()) {
-  //   Serial.write(Serial1.read());
-  // }
+  if (Serial1.available() > 0) {
+    //Serial1.write(Serial.read());
+    Serial1.read();
+    Serial1.println("Vibration enabled.");
+    vibrate();
+  }
   // if (Serial.available()) {
   //   Serial1.write(Serial.read());
   // }

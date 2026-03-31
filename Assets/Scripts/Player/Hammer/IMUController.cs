@@ -220,7 +220,7 @@ namespace Hammer
 
         public void Rumble()
         {
-            
+            _stream.Write("V");
         }
 
         public void Cleanup()
