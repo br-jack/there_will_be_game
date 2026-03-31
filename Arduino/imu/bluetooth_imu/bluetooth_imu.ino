@@ -75,6 +75,8 @@ void setup(void) {
   pinMode(motor1DIRPin, OUTPUT);
   pinMode(motor2DIRPin, OUTPUT);
 
+  digitalWrite(motor1DIRPin, HIGH);
+
   delay(100);
 }
 
@@ -92,7 +94,6 @@ void setReports(void) {
 void vibrate() {
   // fade in from min to max in increments of 5 points:
   for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
-    digitalWrite(motor1DIRPin, HIGH);
     // sets the value (range from 0 to 255):
     analogWrite(motor1SPDPin, fadeValue);
     // wait for 30 milliseconds to see the dimming effect
