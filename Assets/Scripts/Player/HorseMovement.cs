@@ -1,4 +1,5 @@
 using System.Security;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -48,6 +49,8 @@ public class HorseMovement : MonoBehaviour
 
     private Rigidbody _rb;
 
+    public Action jumpStarted;
+
     public Transform horseVisual;
     
     private float _throttleInput;
@@ -55,7 +58,10 @@ public class HorseMovement : MonoBehaviour
     private float _brakeInput;
 
     public float jumpForce = 5f; // originally 8f
-    private bool _jumpHeld;
+    private bool _jumpButtonPressed;
+    private bool _jumpButtonHeld;
+    public bool JumpButtonHeld => _jumpButtonHeld;
+    
     public float fallMultiplier = 7.5f; // originally 2.5f
     public float lowJumpMultiplier = 4f; // originally 2f
     public LayerMask groundMask;
@@ -73,23 +79,26 @@ public class HorseMovement : MonoBehaviour
     private Vector3 _groundNormal = Vector3.up;
 
     private float _groundedTimer = 0f;
-
-    private bool _jumpPressed;
-
+    
     //drifting
     private bool _isDrifting;
-
-    private bool _driftPressed;
-
-    public float driftLateralFriction = 0.3f;   // how slippery sideways movement becomes
-    public float normalLateralFriction = 1.0f;  // normal grip
-    public float driftAngularBoost = 2.0f;      // extra rotation force during drift
-    public float driftKickoutForce = 20f;        // sideways push
-    public float driftSteerThreshold = 0.8f;    // how hard the player must steer
-    public float driftSpeedThreshold = 20f;      // minimum speed to drift
-    private float driftTimer = 0f; // hard turn must be held to drift
+    private bool _driftButtonPressed;
+    private float _driftTimer = 0f; // hard turn must be held to drift
 
     private float _currentLean = 0f;
+
+    [Serializable]
+    public struct DriftSettings
+    {
+        public float driftLateralFriction;   // how slippery sideways movement becomes
+        public float normalLateralFriction;  // normal grip
+        public float driftAngularBoost;      // extra rotation force during drift
+        public float driftKickoutForce;        // sideways push
+        public float driftSteerThreshold;    // how hard the player must steer
+        public float driftSpeedThreshold;      // minimum speed to drift
+    }
+    
+    [SerializeField] private DriftSettings driftSettings;
 
     
     public void OnMove(InputAction.CallbackContext context)
@@ -103,13 +112,13 @@ public class HorseMovement : MonoBehaviour
     {
         if (context.performed)
         {
-            _jumpPressed = true;
-            _jumpHeld = true;
+            _jumpButtonPressed = true;
+            _jumpButtonHeld = true;
         }
 
         if (context.canceled) 
         {
-            _jumpHeld = false;
+            _jumpButtonHeld = false;
         }
     }
 
@@ -157,24 +166,24 @@ public class HorseMovement : MonoBehaviour
     public void onDrift(InputAction.CallbackContext context)
     {
         if (context.performed)
-            _driftPressed = true;
+            _driftButtonPressed = true;
         if (context.canceled) 
-            _driftPressed = false;
+            _driftButtonPressed = false;
     }
 
     private void ApplyDriftPhysics()
     {
         Vector3 localVel = transform.InverseTransformDirection(_rb.linearVelocity);
-        localVel.x *= driftLateralFriction;
+        localVel.x *= driftSettings.driftLateralFriction;
         _rb.linearVelocity = transform.TransformDirection(localVel);
 
-        _rb.AddForce(transform.right * _turnInput * driftKickoutForce, ForceMode.Acceleration);
+        _rb.AddForce(transform.right * _turnInput * driftSettings.driftKickoutForce, ForceMode.Acceleration);
     }
 
     private void RestoreNormalGrip()
     {
         Vector3 localVel = transform.InverseTransformDirection(_rb.linearVelocity);
-        localVel.x *= normalLateralFriction;
+        localVel.x *= driftSettings.normalLateralFriction;
         _rb.linearVelocity = transform.TransformDirection(localVel);
     }
 
@@ -186,7 +195,6 @@ public class HorseMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        SkinnedMeshRenderer _hm = player.GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     private void Update()
@@ -211,7 +219,7 @@ public class HorseMovement : MonoBehaviour
         HandleMovement();
         
         float targetLean;
-        if (_isDrifting && _isGrounded  && _driftPressed)
+        if (_isDrifting && _isGrounded  && _driftButtonPressed)
         {
             ApplyDriftPhysics();
             targetLean = _turnInput * 30f;
@@ -224,19 +232,19 @@ public class HorseMovement : MonoBehaviour
             if (_brakeInput > 0f)
             {
                 _currentSpeed -= brake * 0.7f * Time.fixedDeltaTime;
-                driftLateralFriction = Mathf.Lerp(driftLateralFriction, 0.6f, Time.fixedDeltaTime * 2f);
+                driftSettings.driftLateralFriction = Mathf.Lerp(driftSettings.driftLateralFriction, 0.6f, Time.fixedDeltaTime * 2f);
                 _currentLean = Mathf.Lerp(_currentLean, 0f, Time.deltaTime * 1.5f);
             }
             else
             {
-                driftLateralFriction = 0.3f;
+                driftSettings.driftLateralFriction = 0.3f;
             }
 
             if (_throttleInput == 0f && _brakeInput == 0f)
             {
                 _currentSpeed -= deceleration * 0.5f * Time.fixedDeltaTime;
                 _currentLean = Mathf.Lerp(_currentLean, 0f, Time.deltaTime * 0.8f);
-                driftLateralFriction = 0.3f;
+                driftSettings.driftLateralFriction = 0.3f;
             }
         }
         else if (_isGrounded)
@@ -261,7 +269,7 @@ public class HorseMovement : MonoBehaviour
         { 
             _rb.linearVelocity += Physics.gravity * ((fallMultiplier - 1f) * Time.fixedDeltaTime); 
         }
-        else if (!_isGrounded && _rb.linearVelocity.y > 0f && !_jumpHeld) //smaller jump when jump button not held
+        else if (!_isGrounded && _rb.linearVelocity.y > 0f && !_jumpButtonHeld) //smaller jump when jump button not held
         { 
             _rb.linearVelocity += Physics.gravity * ((lowJumpMultiplier - 1f) * Time.fixedDeltaTime); 
         }
@@ -273,16 +281,18 @@ public class HorseMovement : MonoBehaviour
         scaledJumpForce = jumpForce * speedPercent * 1.2f;
         scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);*/
 
-        if (!_jumpPressed)
+        if (!_jumpButtonPressed)
         {
             return false;
         }
 
         if (!grounded || _groundedTimer <= 0.1f)
         {
-            _jumpPressed = false;
+            _jumpButtonPressed = false;
             return false;
         }
+        
+        jumpStarted?.Invoke();
 
         Vector3 velocity = _rb.linearVelocity;
         float seperatingSpeed = Vector3.Dot(velocity, _groundNormal);
@@ -300,7 +310,7 @@ public class HorseMovement : MonoBehaviour
 
         _isGrounded = false;
         _groundedTimer = 0f;
-        _jumpPressed = false;
+        _jumpButtonPressed = false;
         _ignoreGroundTimer = 0.15f;
         _timerSinceOnGround = Mathf.Infinity;
 
@@ -396,6 +406,7 @@ public class HorseMovement : MonoBehaviour
         {
             _groundedTimer += Time.fixedDeltaTime;
             _timerSinceOnGround = 0f;
+            
             CalculateSpeed();
         } 
         else if (!grounded)
@@ -407,23 +418,23 @@ public class HorseMovement : MonoBehaviour
         grounded = grounded && !JumpedThisFrame;
         _isGrounded = grounded;
 
-        if (Mathf.Abs(_turnInput) > driftSteerThreshold && _currentSpeed > driftSpeedThreshold  && _driftPressed)
+        if (Mathf.Abs(_turnInput) > driftSettings.driftSteerThreshold && _currentSpeed > driftSettings.driftSpeedThreshold  && _driftButtonPressed)
         {
-            driftTimer += Time.fixedDeltaTime;
-            if (driftTimer > 0.2f) _isDrifting = true;
+            _driftTimer += Time.fixedDeltaTime;
+            if (_driftTimer > 0.2f) _isDrifting = true;
         }
         else if (grounded)
         {
-            driftTimer = 0f;
+            _driftTimer = 0f;
             _isDrifting = false;
         }
 
-        if (_isDrifting && _driftPressed)
+        if (_isDrifting && _driftButtonPressed)
         {
-            if (_currentSpeed < driftSpeedThreshold * 0.6f && Mathf.Abs(_turnInput) < 0.4f) //drift stops as turn relaxes
+            if (_currentSpeed < driftSettings.driftSpeedThreshold * 0.6f && Mathf.Abs(_turnInput) < 0.4f) //drift stops as turn relaxes
             {
                 _isDrifting = false;
-                driftTimer = 0f;
+                _driftTimer = 0f;
             }
         }
 

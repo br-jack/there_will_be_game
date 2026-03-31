@@ -146,8 +146,11 @@ public class ReactiveRider : MonoBehaviour
     void Start()
     {
         if (!HasReactiveRiderPrereqs()) return;
-        startRot = transform.parent.rotation;
-        transform.parent.rotation = Quaternion.identity;
+        //NOTE: this has been changed from transform.parent.rotation
+        //  as that resulted in the horse's local rotation being adjusted
+        //  to change its current world space rotation to what it was here
+        startRot = transform.parent.localRotation;
+        transform.parent.localRotation = Quaternion.identity;
         EnableIKRelayOnCharacter();
         PopulateSaddleBind();
         InstansiateIKTargets();
@@ -304,7 +307,10 @@ public class ReactiveRider : MonoBehaviour
         yield return new WaitForSeconds(1f);
         distanceCalcAtStartPosition = Vector3.Distance(riderRightHand.position, actualHorseHead.position);
         allowHandIKDisable = true;
-        transform.parent.rotation = startRot;
+        //NOTE: this has been changed from transform.parent.rotation
+        //  as that resulted in the horse's local rotation being adjusted
+        //  to change its current world space rotation to what it was in Start()
+        transform.parent.localRotation = startRot;
     }
     void PopulateStartCombinedHandPosition()
     {

@@ -20,3 +20,17 @@ The hammer is intended to be controlled with our custom arduino controller. Howe
 By default, Incitatus can be controlled with WASD or the arrow keys (Space to jump). 
 STEERING WHEEL EXPLANATION GOES HERE!
 
+## Unity Editor Game View Screenshots
+
+The recorder package should be installed when you open the project in Unity.
+
+You can use it to create screenshots (or video recordings) of the game view that get saved to the Assets/Recordings folder.
+
+To enable quick screenshots:
+1. go to Window -> General -> Recorder -> Recorder Settings
+2. Set Recording Mode to Single Frame
+3. (Optionally) Disable Exit Play Mode so that you can take multiple screenshots in one play
+4. Add Recorder -> Image Sequence (for screenshots)
+5. Set the Output Resolution to whatever you desire
+6. Now you should be able to use F10 to quickly take screenshots.
+You may want to move the Recorder window to the side so that it doesn't get in the way when taking multiple screenshots in succession.
