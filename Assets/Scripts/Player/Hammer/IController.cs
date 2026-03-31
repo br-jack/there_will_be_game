@@ -14,6 +14,8 @@ namespace Hammer
 
         public Vector3 GetAcceleration();
 
+        public void Rumble();
+
         public void Cleanup();
     }
 }

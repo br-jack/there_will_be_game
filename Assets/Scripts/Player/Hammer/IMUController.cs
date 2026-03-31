@@ -218,6 +218,11 @@ namespace Hammer
             return _frameAcceleration;
         }
 
+        public void Rumble()
+        {
+            
+        }
+
         public void Cleanup()
         {
             _running = false;
