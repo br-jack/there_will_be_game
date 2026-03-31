@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿#if (UNITY_IOS || UNITY_ANDROID) 
+using UnityEngine;
 using UnityEngine.InputSystem;
+#if UNITY_ANDROID
 using UnityEngine.InputSystem.Android;
+#endif
 
 namespace Hammer
 {
@@ -45,20 +48,28 @@ namespace Hammer
                 // Debug.Log("Gyroscope present");
             // InputSystem.EnableDevice(Gyroscope.current);
             
-            _attitudeSensor = InputSystem.GetDevice<AndroidGameRotationVector>();
+            _attitudeSensor = InputSystem.GetDevice<AttitudeSensor>();
             if (_attitudeSensor == null)
             {
-                _attitudeSensor = InputSystem.GetDevice<AndroidRotationVector>();
-                if (_attitudeSensor == null)
-                {
-                    _attitudeSensor = InputSystem.GetDevice<AttitudeSensor>();
-                    if (_attitudeSensor == null)
-                    {
-                        Debug.LogWarning("AttitudeSensor is not available");
-                        _attitudeSensor = AttitudeSensor.current;
-                    }
-                }
+                Debug.LogWarning("AttitudeSensor is not available");
+                _attitudeSensor = AttitudeSensor.current;
             }
+            
+#if UNITY_ANDROID
+            //attempt to get android game rotation vector
+            //This unfortunately doesn't seem to work with Android Unity Remote
+            AttitudeSensor androidSensor = InputSystem.GetDevice<AndroidGameRotationVector>();
+            if (androidSensor == null)
+            {
+                androidSensor = InputSystem.GetDevice<AndroidRotationVector>();
+            }
+
+            if (androidSensor != null)
+            {
+                _attitudeSensor = androidSensor;
+            }
+#endif
+            
             if (_attitudeSensor != null)
             {
                 InputSystem.EnableDevice(_attitudeSensor);
@@ -140,3 +151,4 @@ namespace Hammer
         }
     }
 }
+#endif
