@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Android;
-using UnityEngine.InputSystem.Haptics;
 
 namespace Hammer
 {
@@ -132,10 +131,7 @@ namespace Hammer
 
         public void Rumble()
         {
-            //unfortunately the new input system doesn't seem to have this for phones
-#if ENABLE_LEGACY_INPUT_MANAGER
-            Handheld.Vibrate();
-#endif
+            //Vibration unfortunately doesn't seem to be supported with Unity Remote
         }
 
         public void Cleanup()
