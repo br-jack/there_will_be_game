@@ -226,6 +226,7 @@ namespace Hammer
             }
             
             Debug.Log("Sending Vibration Request");
+            Debug.Log($"V{msDuration}{_stream.NewLine}");
             _stream.WriteLine($"V{msDuration}");
         }
 
