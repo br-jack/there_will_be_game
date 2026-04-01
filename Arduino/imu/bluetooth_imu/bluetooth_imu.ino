@@ -193,11 +193,11 @@ void loop() {  // run over and over
 
   if (Serial1.available() > 0) {
     //Serial1.write(Serial.read());
-    const String s = Serial1.readStringUntil('\n');
+    const String rumbleString = Serial1.readStringUntil('\n');
 
     //rumble string format: "Vx\n" where x is the duration in ms
-    if (s.startsWith("V")) {
-      const int duration = s.substring(1).toInt();  
+    if (rumbleString[0] == 'V') {
+      const int duration = rumbleString.substring(1).toInt();  
       startRumble(duration);
     }
   }
