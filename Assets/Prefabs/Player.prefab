@@ -224,13 +224,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfb7a804801d03942a77f491fe72194f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 12
+  accelerationMultiplier: 1
+  maxSpeedMultiplier: 1
   deceleration: 6
   brake: 20
-  maxSpeed: 32
   steerTorque: 10
   turnSpeed: 170
   turnSpeedAtZero: 100
+  gears:
+  - name: Walk
+    minSpeed: 0
+    maxSpeed: 8
+    acceleration: 4
+  - name: Trot
+    minSpeed: 8
+    maxSpeed: 16
+    acceleration: 6
+  - name: Canter
+    minSpeed: 16
+    maxSpeed: 24
+    acceleration: 10
+  - name: Gallop
+    minSpeed: 24
+    maxSpeed: 35
+    acceleration: 14
   horseVisual: {fileID: 7518415703454089516}
   jumpForce: 8.5
   fallMultiplier: 2.5
@@ -780,6 +797,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7672999536482783943}
     m_Modifications:
+    - target: {fileID: 269795941911052510, guid: e5b8cbff9289d6a40a84ee38ea7ef4e6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b2f25917cfb31374abc004c2d35a73eb, type: 2}
     - target: {fileID: 2443911395502521377, guid: e5b8cbff9289d6a40a84ee38ea7ef4e6, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.8

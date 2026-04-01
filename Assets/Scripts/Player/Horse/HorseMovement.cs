@@ -9,10 +9,7 @@ public class HorseMovement : MonoBehaviour
     [Range(0f, 5f)] public float accelerationMultiplier = 1.0f;
     [Range(0f, 5f)] public float maxSpeedMultiplier = 1.0f;
     public float deceleration = 2f; //ambient deceleration when no acceleration or braking/reverse
-
     public float brake = 20f;
-    
-
     public float steerTorque = 10f;
     public float turnSpeed = 70f;
     public float turnSpeedAtZero = 100f;
