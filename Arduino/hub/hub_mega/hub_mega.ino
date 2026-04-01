@@ -21,8 +21,7 @@ void loop() { // run over and over
     Serial.write(Serial1.read());
   }
   if (Serial.available() > 0) {
-    String s = Serial.readStringUntil(';');
-    s.concat(';')
-    Serial1.write(s);
+    String s = Serial.readStringUntil('\n');
+    Serial1.println(s);
   }
 }
