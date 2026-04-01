@@ -136,9 +136,9 @@ void endRumble() {
     // delay(120);
   // }
 
-  rumbleOn = false;
   rumbleStartMs = 0;
   rumbleDuration = 0;
+  rumbleOn = false;
   Serial1.println("Rumble deactivated.");
 
   analogWrite(motor1SPDPin, 0);
