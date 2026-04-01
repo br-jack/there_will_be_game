@@ -2,6 +2,8 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 
+namespace Score
+{
 public class ScoreUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
@@ -21,7 +23,7 @@ public class ScoreUI : MonoBehaviour
         {
             ScoreManager.Instance.OnScoreChanged += UpdateScoreDisplay;
             ScoreManager.Instance.OnScoreAdded += SpawnScorePopups;
-            UpdateScoreDisplay(ScoreManager.Instance.CurrentScore);
+            UpdateScoreDisplay(ScoreManager.Instance.FearScore);
         }
     }
     
@@ -65,3 +67,5 @@ public class ScoreUI : MonoBehaviour
         }
     }
 }
+}
+
