@@ -119,6 +119,30 @@ void startRumble(int duration) {
   analogWrite(motor1SPDPin, 255);
 }
 
+void endRumble() {
+  // fade in from min to max in increments of 5 points:
+  // for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
+    // sets the value (range from 0 to 255):
+    // wait for 30 milliseconds to see the dimming effect
+    // delay(120);
+  // }
+
+  // fade out from max to min in increments of 5 points:
+  // for (int fadeValue = 255; fadeValue >= 0; fadeValue -= 5) {
+    // sets the value (range from 0 to 255):
+    // analogWrite(motor1SPDPin, fadeValue);
+    // wait for 30 milliseconds to see the dimming effect
+    // delay(120);
+  // }
+
+  rumbleOn = false;
+  rumbleStartMs = 0;
+  rumbleDuration = 0;
+  Serial1.println("Rumble deactivated.");
+
+  analogWrite(motor1SPDPin, 0);
+}
+
 
 void loop() {  // run over and over
 
@@ -177,6 +201,13 @@ void loop() {  // run over and over
       startRumble(duration);
     }
   }
+
+  if (rumbleOn) {
+    if ((millis() - rumbleStartMs) >= rumbleDuration) {
+      endRumble();
+    }
+  }
+
   // if (Serial.available()) {
   //   Serial1.write(Serial.read());
   // }
