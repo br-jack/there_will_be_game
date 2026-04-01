@@ -204,7 +204,14 @@ void loop() {  // run over and over
   }
 
   if (rumbleOn) {
-    if ((millis() - rumbleStartMs) >= rumbleDuration) {
+    const unsigned long currentMs = millis();
+
+    //handle millis wrap around (unlikely to occur)
+    if (currentMs < rumbleStartMs) {
+      rumbleStartMs = 0;
+    }
+
+    if ((currentMs - rumbleStartMs) >= rumbleDuration) {
       endRumble();
     }
   }
