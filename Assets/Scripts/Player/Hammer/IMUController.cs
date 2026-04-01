@@ -218,10 +218,15 @@ namespace Hammer
             return _frameAcceleration;
         }
 
-        public void Rumble()
+        public void Rumble(int msDuration)
         {
+            if (msDuration < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(msDuration), "Rumble duration must be non-negative");
+            }
+            
             Debug.Log("Sending Vibration Request");
-            _stream.Write("V");
+            _stream.Write($"V{msDuration};");
         }
 
         public void Cleanup()
