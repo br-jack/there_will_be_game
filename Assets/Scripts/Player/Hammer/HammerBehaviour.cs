@@ -86,7 +86,7 @@ namespace Hammer
 
         public void OnTriggerEnter(Collider other)
         {
-            _controllerRef.Rumble(500);
+            _controllerRef.Rumble(5000);
         }
     }
 

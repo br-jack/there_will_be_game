@@ -20,8 +20,8 @@ const int motor2SPDPin = A1;  // Motor 2 Speed PWM pin of dual motor driver conn
 const int motor2DIRPin = A0;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
 
 bool rumbleOn = false;
-int rumbleStartMs;
-int rumbleDuration;
+unsigned long rumbleStartMs;
+unsigned long rumbleDuration;
 
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
@@ -113,6 +113,7 @@ void startRumble(int duration) {
 
   rumbleOn = true;
   rumbleStartMs = millis();
+  //NOTE: assume duration is unsigned
   rumbleDuration = duration;
   Serial1.println("Rumble activated.");
 
