@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 //assigns rigidbodies to all children of a Fragmented Object for the purpose of havign desctructible structures
 
@@ -9,6 +10,7 @@ public class FragmentSetup : EditorWindow
     private float mass = 1f;
     private float drag = 0.5f;
     private float angularDrag = 0.5f;
+    private GameObject sourcePrefab;
 
     [MenuItem("Tools/Fragment Setup")]
     public static void ShowWindow()
@@ -107,6 +109,80 @@ public class FragmentSetup : EditorWindow
                 Rigidbody rb = child.GetComponent<Rigidbody>();
                 if (rb != null) rb.isKinematic = true;
             }
+        }
+
+        GUILayout.Space(12);
+        GUILayout.Label("Material Copying", EditorStyles.boldLabel);
+
+        sourcePrefab = (GameObject)EditorGUILayout.ObjectField(
+            "Original Prefab", sourcePrefab, typeof(GameObject), true);
+
+        if (GUILayout.Button("Copy materials from original"))
+        {
+            if (fragmentParent == null || sourcePrefab == null)
+            {
+                EditorUtility.DisplayDialog("Missing reference",
+                    "Please assign both the Fragment Parent and Original Prefab.", "OK");
+                return;
+            }
+
+            // Collect all materials from the original prefab
+            List<Material> sourceMaterials = new List<Material>();
+            foreach (MeshRenderer mr in sourcePrefab.GetComponentsInChildren<MeshRenderer>())
+            {
+                foreach (Material m in mr.sharedMaterials)
+                {
+                    if (m != null && !sourceMaterials.Contains(m))
+                        sourceMaterials.Add(m);
+                }
+            }
+
+            if (sourceMaterials.Count == 0)
+            {
+                EditorUtility.DisplayDialog("No materials found",
+                    "The original prefab has no materials to copy.", "OK");
+                return;
+            }
+
+            // Apply to every fragment child
+            int count = 0;
+            foreach (Transform child in fragmentParent.transform)
+            {
+                MeshRenderer mr = child.GetComponent<MeshRenderer>();
+                if (mr != null)
+                {
+                    mr.sharedMaterials = sourceMaterials.ToArray();
+                    count++;
+                    EditorUtility.SetDirty(child.gameObject);
+                }
+            }
+
+            EditorUtility.DisplayDialog("Done",
+                $"Applied {sourceMaterials.Count} material(s) to {count} fragments.", "OK");
+
+            EditorUtility.SetDirty(fragmentParent);
+        }
+
+        if (GUILayout.Button("Swap material slots on all fragments"))
+        {
+            int count = 0;
+            foreach (Transform child in fragmentParent.transform)
+            {
+                MeshRenderer mr = child.GetComponent<MeshRenderer>();
+                if (mr != null && mr.sharedMaterials.Length >= 2)
+                {
+                    Material[] mats = mr.sharedMaterials;
+                    Material temp = mats[0];
+                    mats[0] = mats[1];
+                    mats[1] = temp;
+                    mr.sharedMaterials = mats;
+                    count++;
+                    EditorUtility.SetDirty(child.gameObject);
+                }
+            }
+            EditorUtility.DisplayDialog("Done",
+                $"Swapped material slots on {count} fragments.", "OK");
+            EditorUtility.SetDirty(fragmentParent);
         }
     }
 }
