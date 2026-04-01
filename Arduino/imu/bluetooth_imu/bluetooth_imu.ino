@@ -115,8 +115,6 @@ void loop() {  // run over and over
 
   delay(5);
 
-  vibrate();
-
   if (Serial1.available() > 0) {
     //Serial1.write(Serial.read());
     Serial1.read();
