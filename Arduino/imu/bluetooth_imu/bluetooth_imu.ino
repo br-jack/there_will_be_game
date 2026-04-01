@@ -14,10 +14,10 @@
 #define BNO08X_RESET -1
 #define FAST_MODE
 
-const int motor1DIRPin = A0;  // Motor 1 Direction pin of dual motor driver connected to digital pin 26
-const int motor1SPDPin = A1;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 27
-const int motor2SPDPin = A2;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 28
-const int motor2DIRPin = A3;  // Motor 2 Direction pin of dual motor driver connected to digital pin 29
+const int motor1DIRPin = A3;  // Motor 1 Direction pin of dual motor driver connected to digital pin 29
+const int motor1SPDPin = A2;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 28
+const int motor2SPDPin = A1;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 27
+const int motor2DIRPin = A0;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
 
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
