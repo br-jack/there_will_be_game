@@ -19,6 +19,10 @@ const int motor1SPDPin = A2;  // Motor 1 Speed PWM pin of dual motor driver conn
 const int motor2SPDPin = A1;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 27
 const int motor2DIRPin = A0;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
 
+bool rumbleOn = false;
+int rumbleStartMs;
+int rumbleDuration;
+
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
 
@@ -91,7 +95,7 @@ void setReports(void) {
   }
 }
 
-void vibrate() {
+void startRumble() {
   // fade in from min to max in increments of 5 points:
   // for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
     // sets the value (range from 0 to 255):
@@ -117,9 +121,17 @@ void loop() {  // run over and over
 
   if (Serial1.available() > 0) {
     //Serial1.write(Serial.read());
-    Serial1.read();
+    String s = Serial1.readStringUntil('\n');
+
+    if (s.startsWith('V')) {
+      int duration = s.substring(1).toInt();  
+      rumbleOn = true;
+      rumbleStartMs = millis();
+      rumbleDuration = duration;
+    }
+
     Serial1.println("Vibration enabled.");
-    vibrate();
+    startRumble();
   }
   // if (Serial.available()) {
   //   Serial1.write(Serial.read());
