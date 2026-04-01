@@ -95,7 +95,7 @@ void setReports(void) {
   }
 }
 
-void startRumble() {
+void startRumble(int duration) {
   // fade in from min to max in increments of 5 points:
   // for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
     // sets the value (range from 0 to 255):
@@ -111,6 +111,11 @@ void startRumble() {
     // delay(120);
   // }
 
+  rumbleOn = true;
+  rumbleStartMs = millis();
+  rumbleDuration = duration;
+  Serial1.println("Rumble activated.");
+
   analogWrite(motor1SPDPin, 255);
 }
 
@@ -118,24 +123,6 @@ void startRumble() {
 void loop() {  // run over and over
 
   delay(5);
-
-  if (Serial1.available() > 0) {
-    //Serial1.write(Serial.read());
-    String s = Serial1.readStringUntil('\n');
-
-    if (s.startsWith('V')) {
-      int duration = s.substring(1).toInt();  
-      rumbleOn = true;
-      rumbleStartMs = millis();
-      rumbleDuration = duration;
-    }
-
-    Serial1.println("Vibration enabled.");
-    startRumble();
-  }
-  // if (Serial.available()) {
-  //   Serial1.write(Serial.read());
-  // }
 
   if (bno08x.wasReset()) {
     Serial1.print("sensor was reset ");
@@ -179,4 +166,18 @@ void loop() {  // run over and over
         break;
       }
   }
+
+  if (Serial1.available() > 0) {
+    //Serial1.write(Serial.read());
+    const String s = Serial1.readStringUntil('\n');
+
+    //rumble string format: "Vx\n" where x is the duration in ms
+    if (s.startsWith("V")) {
+      const int duration = s.substring(1).toInt();  
+      startRumble(duration);
+    }
+  }
+  // if (Serial.available()) {
+  //   Serial1.write(Serial.read());
+  // }
 }
