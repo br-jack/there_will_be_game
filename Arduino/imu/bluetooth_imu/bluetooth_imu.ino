@@ -255,7 +255,7 @@ void loop() {  // run over and over
           else if ((currentMs - rumbleCurrentFadeMs) >= rumbleFadeInterval) {
             rumbleCurrentFadeMs = currentMs;
             if (rumbleStrength > 0) {
-              rumbleStrength--;
+              rumbleStrength -= 5;
               analogWrite(motor1SPDPin, rumbleStrength);
             }
           }
