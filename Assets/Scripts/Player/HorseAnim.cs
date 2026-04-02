@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public class HorseAnim : MonoBehaviour
 {
+    public float speed;
     Animator horseAnimator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,13 +17,14 @@ public class HorseAnim : MonoBehaviour
     {
         if(horseAnimator != null)
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            Debug.LogError("horszz");
+            if (speed > 10)
             {
                 horseAnimator.SetTrigger("Gallop3");
                 Debug.LogError("hors");
 
             }
-            if (Input.GetKeyDown(KeyCode.S))
+            if (speed > 20)
             {
                 horseAnimator.SetTrigger("Gallop0");
             }
