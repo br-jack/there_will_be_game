@@ -18,13 +18,21 @@ const int motor1SPDPin = A2;  // Motor 1 Speed PWM pin of dual motor driver conn
 const int motor2SPDPin = A1;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 27
 const int motor2DIRPin = A0;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
 
-bool rumbleOn = false;
 unsigned long rumbleStartMs;
 unsigned long rumbleDuration;
 int rumbleStrength = 255;
 
 int rumbleCurrentFadeMs;
 const int rumbleFadeInterval = 30;
+
+enum class RumbleMode {
+  Off,
+  Constant,
+  RampUp,
+  RampDown,
+};
+
+RumbleMode currentRumbleMode { RumbleMode::Off };
 
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
@@ -114,7 +122,7 @@ void startRumble(int duration) {
     // delay(120);
   // }
 
-  rumbleOn = true;
+  currentRumbleMode = RumbleMode::RampUp;
   rumbleStartMs = millis();
   //NOTE: assume duration is unsigned
   rumbleDuration = duration;
@@ -143,7 +151,7 @@ void endRumble() {
 
   rumbleStartMs = 0;
   rumbleDuration = 0;
-  rumbleOn = false;
+  currentRumbleMode = RumbleMode::Off;
   rumbleCurrentFadeMs = 0;
   Serial1.println("Rumble deactivated.");
 
@@ -210,7 +218,7 @@ void loop() {  // run over and over
     }
   }
 
-  if (rumbleOn) {
+  if (currentRumbleMode != RumbleMode::Off) {
     const unsigned long currentMs = millis();
 
     //handle millis wrap around (unlikely to occur)
@@ -222,15 +230,17 @@ void loop() {  // run over and over
       endRumble();
     }
     else {
-      //also handle millis wrap around
-      if (rumbleCurrentFadeMs == 0 || currentMs < rumbleCurrentFadeMs) {
-        rumbleCurrentFadeMs = currentMs;
-      }
-      else if ((currentMs - rumbleCurrentFadeMs) >= rumbleFadeInterval) {
-        rumbleCurrentFadeMs = currentMs;
-        if (rumbleStrength < 255) {
-          rumbleStrength++;
-          analogWrite(motor1SPDPin, rumbleStrength);
+      if (currentRumbleMode == RumbleMode::RampUp) {
+        //also handle millis wrap around
+        if (rumbleCurrentFadeMs == 0 || currentMs < rumbleCurrentFadeMs) {
+          rumbleCurrentFadeMs = currentMs;
+        }
+        else if ((currentMs - rumbleCurrentFadeMs) >= rumbleFadeInterval) {
+          rumbleCurrentFadeMs = currentMs;
+          if (rumbleStrength < 255) {
+            rumbleStrength++;
+            analogWrite(motor1SPDPin, rumbleStrength);
+          }
         }
       }
     }
