@@ -2,6 +2,8 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+namespace Score
+{
 public class ScorePopup : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI popupText;
@@ -79,4 +81,6 @@ public class ScorePopup : MonoBehaviour
         
         Destroy(gameObject);
     }
+}
+
 }
