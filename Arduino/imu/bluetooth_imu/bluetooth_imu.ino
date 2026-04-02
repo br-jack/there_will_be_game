@@ -1,4 +1,3 @@
-#include <SoftwareSerial.h>
 // Basic demo for readings from Adafruit BNO08x
 // Install this manually
 #include <Adafruit_BNO08x.h>
@@ -33,10 +32,10 @@ void setup(void) {
   delay(100);
 
   // Open serial communications and wait for port to open:
-  Serial.begin(115200);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
+  // Serial.begin(115200);
+  // while (!Serial) {
+  //   ; // wait for serial port to connect. Needed for native USB port only
+  // }
 
   // Serial1.begin(9600);
   // Serial1.print("AT+ROLE0");
@@ -205,7 +204,7 @@ void loop() {  // run over and over
     //rumble string format: "Vx\n" where x is the duration in ms
     if (rumbleString[0] == 'V') {
       const int duration = rumbleString.substring(1).toInt();
-      Serial.println(duration);  
+      //Serial.println(duration);  
       startRumble(duration);
     }
   }
