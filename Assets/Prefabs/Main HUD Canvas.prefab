@@ -160,12 +160,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 231108309085861216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f989c74bf095f224b9490c5bbd423693, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a9726ae4bc64614f8cfafa25aa80751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damageVignette: {fileID: 4951875804207568022}
-  flashAlpha: 1.5
-  fadeSpeed: 4
+  flashAlpha: 0.75
+  fadeSpeed: 8
 --- !u!1 &635458015265966460
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,20 +255,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 635458015265966460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a908ca05d9ca5b478d8e7962dd765fa, type: 3}
+  m_Script: {fileID: 11500000, guid: ec5f4cdbe14e9794ebc74563034be3c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   barFillTransform: {fileID: 1596772947843340562}
   barFillImage: {fileID: 3780661917720324910}
   scoreText: {fileID: 3669587704874408900}
   titleText: {fileID: 6143913131952380314}
-  fearIcon: {fileID: 5084443569656721429}
+  statusIcon: {fileID: 5084443569656721429}
   panelTransform: {fileID: 8091050067625834842}
-  maxFear: 5000
+  max: 5000
   fullBarWidth: 280
-  lowFearColor: {r: 1, g: 0.72, b: 0.15, a: 1}
-  midFearColor: {r: 1, g: 0.45, b: 0.1, a: 1}
-  highFearColor: {r: 0.9, g: 0.15, b: 0.15, a: 1}
+  lowScoreColor: {r: 1, g: 0.72, b: 0.15, a: 1}
+  midScoreColor: {r: 1, g: 0.45, b: 0.1, a: 1}
+  highScoreColor: {r: 0.9, g: 0.15, b: 0.15, a: 1}
   pulseScale: 1.06
   pulseUpTime: 0.08
   pulseDownTime: 0.12
@@ -888,10 +888,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2447194060461479100}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed47fd56b78284743bd628edff920733, type: 3}
+  m_Script: {fileID: 11500000, guid: f0d260fa3846db545b5bafdb6f226f99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthIconPrefab: {fileID: 8522822524304450401, guid: af6c415dc18854cb6a23750e47bac0bc, type: 3}
+  healthIconPrefab: {fileID: 3778892191804820358}
   iconContainer: {fileID: 6415058748756138011}
 --- !u!114 &7993482177753927825
 MonoBehaviour:
@@ -902,7 +902,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2447194060461479100}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f16d68cba22f540359170b3cf046131e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cfc6eac9d28f1e48b74a207005d7f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   continuousHealthBar: {fileID: 6899548887213444036}
@@ -1263,12 +1263,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3219648324504097735}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6d07f07850e5744592bbd76821ef7c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 92ab5ed22ca94b04c926d337c96c0eca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 3669587704874408900}
-  scorePopupPrefab: {fileID: 4898506943713068070, guid: d4c02d738bc92114fba99be18ed0d18e, type: 3}
-  popupContainer: {fileID: 1879296612164912189}
+  scorePopupPrefab: {fileID: 0}
+  popupContainer: {fileID: 0}
   popupStartOffset: {x: 150, y: 0}
   popupSpacing: 30
 --- !u!1 &3600719038237512754
@@ -2371,7 +2371,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5571188267721605200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1647de1e5c9dd439d83c72230f962369, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ffe2e949866e7a449854bfd2a6bdb45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 3212088640780363804}
