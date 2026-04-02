@@ -34,7 +34,8 @@ namespace Score
         private int aweScore = 0;
         public int AweScore => aweScore;
 
-        public event Action<int> OnScoreChanged;
+        public event Action<int> OnFearChanged;
+        public event Action<int> OnAweChanged;
         public event Action<List<ScoreComponent>> OnScoreAdded;
 
         private void Awake()
@@ -64,14 +65,21 @@ namespace Score
             fearScore += baseAmount + bonusAmount;
             aweScore += bonusAmount;
 
-            OnScoreChanged?.Invoke(fearScore);
+            OnFearChanged?.Invoke(fearScore);
+            OnAweChanged?.Invoke(aweScore);
             OnScoreAdded?.Invoke(components);
         }
 
-        public void ResetScore()
+        public void ResetFear()
         {
             fearScore = 0;
-            OnScoreChanged?.Invoke(fearScore);
+            OnFearChanged?.Invoke(fearScore);
+        }
+
+        public void ResetAwe()
+        {
+            aweScore = 0;
+            OnAweChanged?.Invoke(aweScore);
         }
     }
 

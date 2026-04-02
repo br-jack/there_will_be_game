@@ -29,13 +29,7 @@ namespace Score
 
         protected abstract void Start();
 
-        protected void OnDestroy()
-        {
-            if (ScoreManager.Instance != null)
-            {
-                ScoreManager.Instance.OnScoreChanged -= HandleScoreChanged;
-            }
-        }
+        protected abstract void OnDestroy();
 
         protected void HandleScoreChanged(int newScore)
         {

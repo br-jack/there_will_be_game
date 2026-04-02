@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Score
 {
-public class ScoreUI : MonoBehaviour
+public class FearUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private GameObject scorePopupPrefab;
@@ -21,7 +21,7 @@ public class ScoreUI : MonoBehaviour
         
         if (ScoreManager.Instance != null)
         {
-            ScoreManager.Instance.OnScoreChanged += UpdateScoreDisplay;
+            ScoreManager.Instance.OnFearChanged += UpdateScoreDisplay;
             ScoreManager.Instance.OnScoreAdded += SpawnScorePopups;
             UpdateScoreDisplay(ScoreManager.Instance.FearScore);
         }
@@ -31,7 +31,7 @@ public class ScoreUI : MonoBehaviour
     {
         if (ScoreManager.Instance != null)
         {
-            ScoreManager.Instance.OnScoreChanged -= UpdateScoreDisplay;
+            ScoreManager.Instance.OnFearChanged -= UpdateScoreDisplay;
             ScoreManager.Instance.OnScoreAdded -= SpawnScorePopups;
         }
     }
