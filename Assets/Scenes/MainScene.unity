@@ -39174,19 +39174,108 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 792093824157126630, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1879296612164912189, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1980488917}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 635458015265966460, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1486947154}
   m_SourcePrefab: {fileID: 100100000, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+--- !u!224 &1486947146 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8091050067625834842, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1486947147 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8345642027356060840, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
   m_PrefabInstance: {fileID: 1486947145}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1486947148 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5084443569656721429, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &1486947149 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1596772947843340562, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1486947150 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3780661917720324910, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1486947151 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3669587704874408900, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1486947152 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6143913131952380314, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1486947153 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 635458015265966460, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1486947154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486947153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dae68c57f20bf24998afbe30ffa8706, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  barFillTransform: {fileID: 1486947149}
+  barFillImage: {fileID: 1486947150}
+  scoreText: {fileID: 1486947151}
+  titleText: {fileID: 1486947152}
+  statusIcon: {fileID: 1486947148}
+  panelTransform: {fileID: 1486947146}
+  max: 5000
+  fullBarWidth: 280
+  lowScoreColor: {r: 1, g: 0.72, b: 0.15, a: 1}
+  midScoreColor: {r: 1, g: 0.45, b: 0.1, a: 1}
+  highScoreColor: {r: 0.9, g: 0.15, b: 0.15, a: 1}
+  pulseScale: 1.06
+  pulseUpTime: 0.08
+  pulseDownTime: 0.12
 --- !u!4 &1487196684 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4843471093780578812, guid: 31ad988e37418764f88e6038d4e9aac8, type: 3}
