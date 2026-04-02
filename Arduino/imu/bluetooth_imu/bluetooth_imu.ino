@@ -122,11 +122,11 @@ void startRumble(int duration) {
     // delay(120);
   // }
 
-  currentRumbleMode = RumbleMode::RampUp;
+  currentRumbleMode = RumbleMode::RampDown;
   rumbleStartMs = millis();
   //NOTE: assume duration is unsigned
   rumbleDuration = duration;
-  rumbleStrength = 0;
+  rumbleStrength = 255;
   rumbleCurrentFadeMs = 0;
   Serial1.println("Rumble activated.");
 
@@ -230,17 +230,37 @@ void loop() {  // run over and over
       endRumble();
     }
     else {
-      if (currentRumbleMode == RumbleMode::RampUp) {
-        //also handle millis wrap around
-        if (rumbleCurrentFadeMs == 0 || currentMs < rumbleCurrentFadeMs) {
-          rumbleCurrentFadeMs = currentMs;
-        }
-        else if ((currentMs - rumbleCurrentFadeMs) >= rumbleFadeInterval) {
-          rumbleCurrentFadeMs = currentMs;
-          if (rumbleStrength < 255) {
-            rumbleStrength++;
-            analogWrite(motor1SPDPin, rumbleStrength);
+      switch(currentRumbleMode) {
+        case RumbleMode::RampUp: {
+          //also handle millis wrap around
+          if (rumbleCurrentFadeMs == 0 || currentMs < rumbleCurrentFadeMs) {
+            rumbleCurrentFadeMs = currentMs;
           }
+          else if ((currentMs - rumbleCurrentFadeMs) >= rumbleFadeInterval) {
+            rumbleCurrentFadeMs = currentMs;
+            if (rumbleStrength < 255) {
+              rumbleStrength++;
+              analogWrite(motor1SPDPin, rumbleStrength);
+            }
+          }
+
+          break;
+        }
+
+        case RumbleMode::RampDown: {
+          //also handle millis wrap around
+          if (rumbleCurrentFadeMs == 0 || currentMs < rumbleCurrentFadeMs) {
+            rumbleCurrentFadeMs = currentMs;
+          }
+          else if ((currentMs - rumbleCurrentFadeMs) >= rumbleFadeInterval) {
+            rumbleCurrentFadeMs = currentMs;
+            if (rumbleStrength > 0) {
+              rumbleStrength--;
+              analogWrite(motor1SPDPin, rumbleStrength);
+            }
+          }
+
+          break;
         }
       }
     }
