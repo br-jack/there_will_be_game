@@ -14,12 +14,13 @@ namespace Score
         [SerializeField] protected Image statusIcon;
         [SerializeField] protected RectTransform panelTransform;
 
-        [SerializeField] protected int max = 300;
-        [SerializeField] protected float fullBarWidth = 280.0f;
+        //should probably replace these next five with abstract classes but then we cant edit in unity editor
+        protected int max = 2000;
+        protected float fullBarWidth = 280.0f;
 
-        [SerializeField] protected Color lowScoreColor = new Color(1.0f, 0.72f, 0.15f, 1.0f);
-        [SerializeField] protected Color midScoreColor = new Color(1.0f, 0.45f, 0.10f, 1.0f);
-        [SerializeField] protected Color highScoreColor = new Color(0.90f, 0.15f, 0.15f, 1.0f);
+        protected Color lowScoreColor = new Color(1.0f, 0.72f, 0.15f, 1.0f);
+        protected Color midScoreColor = new Color(1.0f, 0.45f, 0.10f, 1.0f);
+        protected Color highScoreColor = new Color(0.90f, 0.15f, 0.15f, 1.0f);
 
         [SerializeField] protected float pulseScale = 1.06f;
         [SerializeField] protected float pulseUpTime = 0.08f;

@@ -264,14 +264,14 @@ MonoBehaviour:
   titleText: {fileID: 6143913131952380314}
   statusIcon: {fileID: 5084443569656721429}
   panelTransform: {fileID: 8091050067625834842}
+  pulseScale: 1.06
+  pulseUpTime: 0.08
+  pulseDownTime: 0.12
   max: 5000
   fullBarWidth: 280
   lowScoreColor: {r: 1, g: 0.72, b: 0.15, a: 1}
   midScoreColor: {r: 1, g: 0.45, b: 0.1, a: 1}
   highScoreColor: {r: 0.9, g: 0.15, b: 0.15, a: 1}
-  pulseScale: 1.06
-  pulseUpTime: 0.08
-  pulseDownTime: 0.12
 --- !u!1 &944367555260820166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,8 +1267,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 3669587704874408900}
-  scorePopupPrefab: {fileID: 0}
-  popupContainer: {fileID: 0}
+  scorePopupPrefab: {fileID: 4898506943713068070, guid: d4c02d738bc92114fba99be18ed0d18e, type: 3}
+  popupContainer: {fileID: 1879296612164912189}
   popupStartOffset: {x: 150, y: 0}
   popupSpacing: 30
 --- !u!1 &3600719038237512754
