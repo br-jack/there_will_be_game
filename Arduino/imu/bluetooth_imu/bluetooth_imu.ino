@@ -22,6 +22,8 @@ const int motor2DIRPin = A0;  // Motor 2 Direction pin of dual motor driver conn
 bool rumbleOn = false;
 unsigned long rumbleStartMs;
 unsigned long rumbleDuration;
+int rumbleStrength = 255;
+int rumbleFadeNextTimer;
 
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
@@ -115,9 +117,11 @@ void startRumble(int duration) {
   rumbleStartMs = millis();
   //NOTE: assume duration is unsigned
   rumbleDuration = duration;
+  rumbleStrength = 0;
+  rumbleFadeNextTimer = 0;
   Serial1.println("Rumble activated.");
 
-  analogWrite(motor1SPDPin, 255);
+  analogWrite(motor1SPDPin, rumbleStrength);
 }
 
 void endRumble() {
@@ -139,6 +143,7 @@ void endRumble() {
   rumbleStartMs = 0;
   rumbleDuration = 0;
   rumbleOn = false;
+  rumbleFadeNextTimer = 0;
   Serial1.println("Rumble deactivated.");
 
   analogWrite(motor1SPDPin, 0);
@@ -148,6 +153,7 @@ void endRumble() {
 void loop() {  // run over and over
 
   delay(5);
+  rumbleFadeNextTimer += 5;
 
   if (bno08x.wasReset()) {
     Serial1.print("sensor was reset ");
@@ -214,6 +220,16 @@ void loop() {  // run over and over
 
     if ((currentMs - rumbleStartMs) >= rumbleDuration) {
       endRumble();
+    }
+    else {
+      if (rumbleFadeNextTimer == 30) {
+        rumbleFadeNextTimer = 0;
+        if (rumbleStrength < 255) {
+          rumbleStrength++;
+        }
+
+        analogWrite(motor1SPDPin, rumbleStrength);
+      }
     }
   }
 
