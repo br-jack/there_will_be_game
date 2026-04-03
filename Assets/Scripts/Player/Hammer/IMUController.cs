@@ -18,7 +18,6 @@ namespace Hammer
         private bool _running;
         private readonly ConcurrentQueue<string> _dataQueue = new ConcurrentQueue<string>();
 
-        private bool _portOpen = false;
         private const int TimeoutMs = 50;
         
         private string SearchPorts()
@@ -82,11 +81,12 @@ namespace Hammer
             return null;
         }
 
-        private void ConnectToPort(string port)
+        //Returns if connected successfully or not
+        private bool ConnectToPort(string port)
         {
             if (port == null)
             {
-                return;
+                return false;
             }
             
             try
@@ -103,26 +103,20 @@ namespace Hammer
                     _stream.ReadTimeout = TimeoutMs;
                     if (_stream.IsOpen)
                     {
-                        _portOpen = true;
                         // if youre connected but not getting any data you may have another serial monitor open for this port
                         Debug.Log("Connected (allegedly)");
+                        
+                        return true;
                     }
-                    else
-                    {
-                        _portOpen = false;
-                    }
-                }
-                else
-                {
-                    _portOpen = false;
                 }
             }
             catch// (System.Exception e)
             {
-                _portOpen = false;
                 // Debug.LogWarning("Failed to connect to port: ");
                 // Debug.LogWarning(e);
             }
+
+            return false;
         }
 
         public void Connect()
@@ -142,28 +136,30 @@ namespace Hammer
 
         private void IOThreadLoop()
         {
+            bool portOpen = false;
+            
             try
             {
                 while (_running)
                 {
-                    while (!_portOpen)
+                    while (!portOpen)
                     {
                         string port = SearchPorts();
                         if (port != null)
                         {
-                            ConnectToPort(port);
+                            portOpen = ConnectToPort(port);
                         }
-                        else
+
+                        if (!portOpen)
                         {
                             Thread.Sleep(5000);
                         }
                     }
                     
-                    string recievedData = null;
                     try
                     {
-                        recievedData = _stream.ReadLine();
-                        _dataQueue.Enqueue(recievedData);
+                        string receivedData = _stream.ReadLine();
+                        _dataQueue.Enqueue(receivedData);
                     }
                     catch// (Exception ex)
                     {
@@ -277,7 +273,6 @@ namespace Hammer
 
             _dataQueue.Clear();
 
-            _portOpen = false;
             _stream.Close();
             Debug.Log("Port closed");
         }
