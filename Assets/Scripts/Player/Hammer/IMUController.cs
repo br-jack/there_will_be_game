@@ -55,44 +55,36 @@ namespace Hammer
                         foreach (string possiblePort in availablePorts)
                         {
                             SerialPort testSerialPort = new SerialPort(possiblePort, 115200);
+                            testSerialPort.ReadTimeout = TimeoutMs * 5;
                             testSerialPort.Open();
-                            
+                            String request = "Caligula";
+                            testSerialPort.WriteLine(request);
+                            String response = testSerialPort.ReadExisting();
                             testSerialPort.Close();
+                            
+                            if (response.Contains("Incitatus"))
+                            {
+                                //hub found
+                                _port = possiblePort;
+                                return;
+                            }
                         }
-
-                        _port = availablePorts[0];
-                        Debug.Log(_port);
-
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error scanning COM ports: {ex.Message}");
+                        // Console.WriteLine($"Error scanning COM ports: {ex.Message}");
                     }
-
                 }
             }
             catch (System.Exception e)
             {
-                Debug.LogWarning("Failed to find port: ");
-                Debug.LogWarning(e);
+                // Debug.LogWarning("Failed to find port: ");
+                // Debug.LogWarning(e);
             }
         }
 
-        public void Connect()
+        private void ConnectToPort()
         {
-            int attempts = 0;
-            while (_port == null)
-            {
-                SearchPorts();
-                attempts++;
-                if (attempts == 5)
-                {
-                    Debug.LogWarning("Could not find port.");
-                    _running = false;
-                    return;
-                }
-            }
-
             try
             {
                 _stream = new SerialPort(_port, 115200)
@@ -105,24 +97,29 @@ namespace Hammer
                 _stream.ReadTimeout = TimeoutMs;
                 _portOpen = true;
                 // if youre connected but not getting any data you may have another serial monitor open for this port
-                Debug.Log("Connected (allegedly)");
+                // Debug.Log("Connected (allegedly)");
             }
             catch (System.Exception e)
             {
                 _portOpen = false;
-                Debug.LogWarning("Failed to connect to port: ");
-                Debug.LogWarning(e);
+                // Debug.LogWarning("Failed to connect to port: ");
+                // Debug.LogWarning(e);
             }
+        }
 
-
+        public void Connect()
+        {
             _running = true;
 
             // Start the background I/O thread
-            _ioThread = new Thread(IOThreadLoop)
+            if (_ioThread == null)
             {
-                IsBackground = true
-            };
-            _ioThread.Start();
+                _ioThread = new Thread(IOThreadLoop)
+                {
+                    IsBackground = true
+                };
+                _ioThread.Start();
+            }
         }
 
         private void IOThreadLoop()
@@ -131,6 +128,12 @@ namespace Hammer
             {
                 while (_running)
                 {
+                    while (_portOpen == false)
+                    {
+                        ConnectToPort();
+                        Thread.Sleep(5000);
+                    }
+                    
                     string recievedData = null;
                     try
                     {
