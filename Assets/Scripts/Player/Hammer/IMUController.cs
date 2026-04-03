@@ -57,15 +57,15 @@ namespace Hammer
                             testSerial.NewLine = "\n";
                             testSerial.ReadTimeout = TimeoutMs * 5;
                             //NOTE: Needed to prevent potential infinite wait
-                            testSerial.WriteTimeout = TimeoutMs;
+                            testSerial.WriteTimeout = TimeoutMs * 5;
                             
                             testSerial.Open();
                             String request = "Caligula";
-                            testSerial.WriteLine(request);
+                            testSerial.Write("Caligula\n");
                             
                             //wait to ensure what's received isn't just IMU data and
                             //hub has a chance to respond
-                            Thread.Sleep(250);
+                            // Thread.Sleep(250);
                             
                             String response = testSerial.ReadExisting();
                             Debug.Log(response);
