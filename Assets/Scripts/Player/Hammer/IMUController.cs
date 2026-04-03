@@ -145,22 +145,22 @@ namespace Hammer
             
             try
             {
+                while (_running && !portOpen)
+                {
+                    string port = SearchPorts();
+                    if (port != null)
+                    {
+                        portOpen = ConnectToPort(port);
+                    }
+
+                    if (!portOpen)
+                    {
+                        Thread.Sleep(5000);
+                    }
+                }
+                
                 while (_running)
                 {
-                    while (!portOpen)
-                    {
-                        string port = SearchPorts();
-                        if (port != null)
-                        {
-                            portOpen = ConnectToPort(port);
-                        }
-
-                        if (!portOpen)
-                        {
-                            Thread.Sleep(5000);
-                        }
-                    }
-                    
                     try
                     {
                         string receivedData = _stream.ReadLine();
