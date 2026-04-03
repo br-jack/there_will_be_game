@@ -126,7 +126,12 @@ void startRumble(RumbleMode mode, int duration) {
   rumbleStartMs = millis();
   //NOTE: assume duration is unsigned
   rumbleDuration = duration;
-  rumbleStrength = 255;
+  if (mode == RumbleMode::RampUp) {
+    rumbleStrength = 0;
+  }
+  else {
+    rumbleStrength = 255;
+  }
   rumbleCurrentFadeMs = 0;
   Serial1.println(F("Rumble activated."));
 
@@ -224,12 +229,19 @@ void loop(void) {  // run over and over
       switch(modeByte) {
         case (int)'C': {
           mode = RumbleMode::Constant;
+          break;
         }
         case (int)'U': {
           mode = RumbleMode::RampUp;
+          break;
         }
         case (int)'D': {
           mode = RumbleMode::RampDown;
+          break;
+        }
+        default: {
+          mode = RumbleMode::Constant;
+          break;
         }
       }
 
