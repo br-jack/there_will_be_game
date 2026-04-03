@@ -39,9 +39,7 @@ namespace Hammer
 
                     try
                     {
-                        var availablePorts = SerialPort.GetPortNames()
-                            .Where(p => !p.Equals("COM1"))
-                            .ToArray();
+                        string[] availablePorts = SerialPort.GetPortNames();
 
                         if (availablePorts.Length == 0)
                         {
@@ -51,6 +49,8 @@ namespace Hammer
 
                         foreach (string possiblePort in availablePorts)
                         {
+                            Debug.Log("Trying port " + possiblePort);
+                            
                             SerialPort testSerialPort = new SerialPort(possiblePort, 115200);
                             testSerialPort.ReadTimeout = TimeoutMs * 5;
                             
@@ -71,13 +71,14 @@ namespace Hammer
                             if (response.Contains("Incitatus"))
                             {
                                 //hub found
+                                Debug.Log("Hub found on port " + possiblePort);
                                 return possiblePort;
                             }
                         }
                     }
-                    catch// (Exception ex)
+                    catch (Exception ex)
                     {
-                        // Console.WriteLine($"Error scanning COM ports: {ex.Message}");
+                        Debug.LogError($"Error scanning COM ports: {ex.Message}");
                     }
                 }
             }

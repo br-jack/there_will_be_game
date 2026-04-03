@@ -29,6 +29,7 @@ void loop() { // run over and over
     }
     else
     {
+      //Serial.println(s);
       Serial1.println(s);
     }
   }
