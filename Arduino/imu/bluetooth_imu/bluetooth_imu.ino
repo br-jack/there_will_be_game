@@ -133,7 +133,7 @@ void startRumble(int duration) {
   analogWrite(motor1SPDPin, rumbleStrength);
 }
 
-void endRumble() {
+void endRumble(void) {
   // fade in from min to max in increments of 5 points:
   // for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
     // sets the value (range from 0 to 255):
@@ -158,11 +158,7 @@ void endRumble() {
   analogWrite(motor1SPDPin, 0);
 }
 
-
-void loop() {  // run over and over
-
-  delay(5);
-
+inline void outputSensorValues(void) {
   if (bno08x.wasReset()) {
     Serial1.print(F("Sensor was reset "));
     setReports();
@@ -205,6 +201,13 @@ void loop() {  // run over and over
         break;
       }
   }
+}
+
+void loop(void) {  // run over and over
+
+  delay(5);
+
+  outputSensorValues();
 
   if (Serial1.available() > 0) {
     //OPTIMISE by avoiding use of String operations that cause dynamic memory allocations
@@ -217,6 +220,10 @@ void loop() {  // run over and over
 
     //rumble string format: "Vx\n" where x is the duration in ms
     if (rumbleStringBuffer[0] == 'V') {
+
+      char* mode = strtok(rumbleStringBuffer + 2, ';');
+      if (fffff)
+
       const int duration = atoi(rumbleStringBuffer + 1);
       //Serial.println(duration);  
       startRumble(duration);

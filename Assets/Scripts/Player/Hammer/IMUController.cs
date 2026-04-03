@@ -262,8 +262,8 @@ namespace Hammer
                 throw new ArgumentOutOfRangeException(nameof(msDuration), "Rumble duration must be non-negative");
             }
             
-            Debug.Log("Sending Vibration Request");
-            _stream.WriteLine($"V{msDuration}");
+            Debug.Log("Sending Rumble Request");
+            _stream.WriteLine($"V;{msDuration}");
         }
 
         public void Cleanup()
