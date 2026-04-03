@@ -22,6 +22,14 @@ void loop() { // run over and over
   }
   if (Serial.available() > 0) {
     String s = Serial.readStringUntil('\n');
-    Serial1.println(s);
+    if (s.equals("Caligula"))
+    {
+      //handshake response
+      Serial.println("Incitatus");
+    }
+    else
+    {
+      Serial1.println(s);
+    }
   }
 }

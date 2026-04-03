@@ -56,6 +56,11 @@ namespace Hammer
                             testSerialPort.Open();
                             String request = "Caligula";
                             testSerialPort.WriteLine(request);
+                            
+                            //wait to ensure what's received isn't just IMU data and
+                            //hub has a chance to respond
+                            Thread.Sleep(100);
+                            
                             String response = testSerialPort.ReadExisting();
                             testSerialPort.Close();
                             
