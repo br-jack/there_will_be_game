@@ -48,7 +48,7 @@ public class DestructibleObjectWOF : MonoBehaviour
     {
         if (broken) return;
 
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Hammer"))
         {
             float impactSpeed = collision.relativeVelocity.magnitude;
             Debug.Log("ImpactSpeed" + impactSpeed);
