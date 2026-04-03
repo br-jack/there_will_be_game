@@ -207,12 +207,17 @@ void loop() {  // run over and over
   }
 
   if (Serial1.available() > 0) {
+    //OPTIMISE by avoiding use of String operations that cause dynamic memory allocations
+    //Should be safe as long as line length never exceeds this size
+    char rumbleStringBuffer[30];
+
     //Serial1.write(Serial.read());
-    const String rumbleString = Serial1.readStringUntil('\n');
+    int bytesRead = Serial1.readBytesUntil('\n', rumbleStringBuffer, 30);
+    rumbleStringBuffer[bytesRead] = '\0';
 
     //rumble string format: "Vx\n" where x is the duration in ms
-    if (rumbleString[0] == 'V') {
-      const int duration = rumbleString.substring(1).toInt();
+    if (rumbleStringBuffer[0] == 'V') {
+      const int duration = atoi(rumbleStringBuffer + 1);
       //Serial.println(duration);  
       startRumble(duration);
     }

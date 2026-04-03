@@ -140,7 +140,7 @@ namespace Hammer
             return _linearAccelerationSensor.acceleration.ReadValue();
         }
 
-        public void Rumble()
+        public void Rumble(int msDuration)
         {
             //Vibration unfortunately doesn't seem to be supported with Unity Remote
         }
