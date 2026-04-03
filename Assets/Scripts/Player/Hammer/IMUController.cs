@@ -53,6 +53,10 @@ namespace Hammer
                         {
                             SerialPort testSerialPort = new SerialPort(possiblePort, 115200);
                             testSerialPort.ReadTimeout = TimeoutMs * 5;
+                            
+                            //NOTE: Needed to prevent potential infinite wait
+                            testSerialPort.WriteTimeout = TimeoutMs;
+                            
                             testSerialPort.Open();
                             String request = "Caligula";
                             testSerialPort.WriteLine(request);
@@ -272,6 +276,7 @@ namespace Hammer
             _running = false;
             if (_ioThread != null && _ioThread.IsAlive)
             {
+                // _ioThread.Interrupt();
                 _ioThread.Join();
             }
             _ioThread = null;
