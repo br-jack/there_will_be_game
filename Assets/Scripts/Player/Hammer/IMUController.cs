@@ -20,21 +20,19 @@ namespace Hammer
 
         private bool _portOpen = false;
         private const int TimeoutMs = 50;
-
-        private string _port = null;
-
-        private void SearchPorts()
+        
+        private string SearchPorts()
         {
             try
             {
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
                 {
-                    _port = "/dev/cu.usbmodem101";
+                    return "/dev/cu.usbmodem101";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.LinuxPlayer) || Application.platform.Equals(RuntimePlatform.LinuxServer))
                 {
-                    _port = "/dev/ttyACM0";
+                    return "/dev/ttyACM0";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
@@ -49,7 +47,7 @@ namespace Hammer
                         if (availablePorts.Length == 0)
                         {
                             Console.WriteLine("No usable COM ports found (if the hub is COM1 that's weird and also not my problem sorry).");
-                            return;
+                            return null;
                         }
 
                         foreach (string possiblePort in availablePorts)
@@ -65,41 +63,61 @@ namespace Hammer
                             if (response.Contains("Incitatus"))
                             {
                                 //hub found
-                                _port = possiblePort;
-                                return;
+                                return possiblePort;
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch// (Exception ex)
                     {
                         // Console.WriteLine($"Error scanning COM ports: {ex.Message}");
                     }
                 }
             }
-            catch (System.Exception e)
+            catch// (System.Exception e)
             {
                 // Debug.LogWarning("Failed to find port: ");
                 // Debug.LogWarning(e);
             }
+
+            return null;
         }
 
-        private void ConnectToPort()
+        private void ConnectToPort(string port)
         {
+            if (port == null)
+            {
+                return;
+            }
+            
             try
             {
-                _stream = new SerialPort(_port, 115200)
+                _stream = new SerialPort(port, 115200)
                 {
                     ReadTimeout = TimeoutMs
                 };
 
-                _stream.DtrEnable = true;
-                _stream.Open();
-                _stream.ReadTimeout = TimeoutMs;
-                _portOpen = true;
-                // if youre connected but not getting any data you may have another serial monitor open for this port
-                // Debug.Log("Connected (allegedly)");
+                if (_stream != null)
+                {
+                    _stream.DtrEnable = true;
+                    _stream.Open();
+                    _stream.ReadTimeout = TimeoutMs;
+                    if (_stream.IsOpen)
+                    {
+                        _portOpen = true;
+                        // if youre connected but not getting any data you may have another serial monitor open for this port
+                        Debug.Log("Connected (allegedly)");
+                    }
+                    else
+                    {
+                        _portOpen = false;
+                    }
+                }
+                else
+                {
+                    _portOpen = false;
+                }
             }
-            catch (System.Exception e)
+            catch// (System.Exception e)
             {
                 _portOpen = false;
                 // Debug.LogWarning("Failed to connect to port: ");
@@ -128,10 +146,17 @@ namespace Hammer
             {
                 while (_running)
                 {
-                    while (_portOpen == false)
+                    while (!_portOpen)
                     {
-                        ConnectToPort();
-                        Thread.Sleep(5000);
+                        string port = SearchPorts();
+                        if (port != null)
+                        {
+                            ConnectToPort(port);
+                        }
+                        else
+                        {
+                            Thread.Sleep(5000);
+                        }
                     }
                     
                     string recievedData = null;
@@ -140,7 +165,7 @@ namespace Hammer
                         recievedData = _stream.ReadLine();
                         _dataQueue.Enqueue(recievedData);
                     }
-                    catch (Exception ex)
+                    catch// (Exception ex)
                     {
                         //Seems to cause a memory leak, so only enable this when debugging Bluetooth
                         // Debug.LogWarning($"Error reading data: {ex.Message}");
