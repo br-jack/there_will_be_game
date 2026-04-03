@@ -52,6 +52,14 @@ namespace Hammer
                             return;
                         }
 
+                        foreach (string possiblePort in availablePorts)
+                        {
+                            SerialPort testSerialPort = new SerialPort(possiblePort, 115200);
+                            testSerialPort.Open();
+                            
+                            testSerialPort.Close();
+                        }
+
                         _port = availablePorts[0];
                         Debug.Log(_port);
 
