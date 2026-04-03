@@ -11,6 +11,9 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
 
     public float trailSpeedThreshold;
     private ParticleSystem _ps;
+    
+    //probs can use this to properly enable and disable particle system
+    private ParticleSystemRenderer _ps_rend;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,6 +21,8 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
         
         _tf = GetComponent<Transform>();
         _ps = GetComponent<ParticleSystem>();
+        _ps_rend = GetComponent<ParticleSystemRenderer>();
+        _ps.Play();
         posPrevFrame = _tf.position;
         
     }
@@ -27,15 +32,17 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
     {
         
         Vector3 positionChange = _tf.position - posPrevFrame;
-        Vector3 velocity = positionChange/Time.deltaTime;
-        Vector3 headForward = _tf.forward; //normalised forward vector from head of hammer
+        Vector3 velocityGlobal = positionChange/Time.deltaTime;
+        Vector3 velocityLocal =  transform.InverseTransformDirection(velocityGlobal);
+        headSpeedForwards = velocityLocal.z;
+        
 
         //find scalar speed of hammer head in the forwards direction
-        headSpeedForwards = Vector3.Magnitude(headForward * Vector3.Dot(headForward,velocity));
+        
         Debug.Log("headSpeedForwards: "+headSpeedForwards);
 
         if (headSpeedForwards > trailSpeedThreshold) _ps.Play();
-        //else _ps.Stop();
+        else _ps.Stop();
         
         posPrevFrame = _tf.position;
         
