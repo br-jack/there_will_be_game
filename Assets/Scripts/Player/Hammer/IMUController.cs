@@ -15,7 +15,7 @@ namespace Hammer
         private SerialPort _stream;
 
         private Thread _ioThread;
-        private bool _running;
+        private volatile bool _running;
         private readonly ConcurrentQueue<string> _dataQueue = new ConcurrentQueue<string>();
 
         private const int TimeoutMs = 50;
@@ -53,8 +53,9 @@ namespace Hammer
                             
                             SerialPort testSerial = new SerialPort(possiblePort, 115200);
                             testSerial.DtrEnable = true;
+                            //on some Windows machines the default for this is \r\n which we don't want
+                            testSerial.NewLine = "\n";
                             testSerial.ReadTimeout = TimeoutMs * 5;
-                            
                             //NOTE: Needed to prevent potential infinite wait
                             testSerial.WriteTimeout = TimeoutMs;
                             
@@ -110,6 +111,7 @@ namespace Hammer
 
                 if (_stream != null)
                 {
+                    _stream.NewLine = "\n";
                     _stream.DtrEnable = true;
                     _stream.Open();
                     _stream.ReadTimeout = TimeoutMs;
