@@ -53,17 +53,16 @@ namespace Hammer
                             
                             SerialPort testSerial = new SerialPort(possiblePort, 115200);
                             testSerial.DtrEnable = true;
-                            testSerial.ReadTimeout = TimeoutMs * 5;
+                            testSerial.ReadTimeout = TimeoutMs * 3;
                             testSerial.Open();
                             
                             //wait to ensure IMU data gets received
-                            Thread.Sleep(250);
+                            Thread.Sleep(100);
                             
-                            String response = testSerial.ReadExisting();
-                            Debug.Log(response);
+                            String output = testSerial.ReadExisting();
                             testSerial.Close();
                             
-                            if (response.Contains("q:") || response.Contains("a:"))
+                            if (output.Contains("q:") || output.Contains("a:"))
                             {
                                 //(hub sending) IMU data found
                                 Debug.Log("Hub found on port " + possiblePort);
