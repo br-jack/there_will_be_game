@@ -63,9 +63,10 @@ namespace Hammer
                             
                             //wait to ensure what's received isn't just IMU data and
                             //hub has a chance to respond
-                            Thread.Sleep(100);
+                            Thread.Sleep(250);
                             
                             String response = testSerialPort.ReadExisting();
+                            Debug.Log(response);
                             testSerialPort.Close();
                             
                             if (response.Contains("Incitatus"))

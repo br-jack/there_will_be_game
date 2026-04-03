@@ -17,9 +17,6 @@ void setup() {
 }
 
 void loop() { // run over and over
-  if (Serial1.available() > 0) {
-    Serial.write(Serial1.read());
-  }
   if (Serial.available() > 0) {
     String s = Serial.readStringUntil('\n');
     if (s.equals("Caligula"))
@@ -32,5 +29,9 @@ void loop() { // run over and over
       //Serial.println(s);
       Serial1.println(s);
     }
+  }
+
+  if (Serial1.available() > 0) {
+    Serial.write(Serial1.read());
   }
 }
