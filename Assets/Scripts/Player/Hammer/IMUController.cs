@@ -263,7 +263,7 @@ namespace Hammer
             }
             
             Debug.Log("Sending Rumble Request");
-            _stream.WriteLine($"V;{msDuration}");
+            _stream.WriteLine($"RC{msDuration}");
         }
 
         public void Cleanup()

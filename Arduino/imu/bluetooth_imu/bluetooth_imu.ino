@@ -13,17 +13,17 @@
 #define BNO08X_RESET -1
 #define FAST_MODE
 
-const int motor1DIRPin = A3;  // Motor 1 Direction pin of dual motor driver connected to digital pin 29
-const int motor1SPDPin = A2;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 28
-const int motor2SPDPin = A1;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 27
-const int motor2DIRPin = A0;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
+constexpr int motor1DIRPin = A3;  // Motor 1 Direction pin of dual motor driver connected to digital pin 29
+constexpr int motor1SPDPin = A2;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 28
+constexpr int motor2SPDPin = A1;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 27
+constexpr int motor2DIRPin = A0;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
 
 unsigned long rumbleStartMs;
 unsigned long rumbleDuration;
 int rumbleStrength = 255;
 
 int rumbleCurrentFadeMs;
-const int rumbleFadeInterval = 30;
+constexpr int rumbleFadeInterval = 30;
 
 enum class RumbleMode {
   Off,
@@ -106,7 +106,7 @@ void setReports(void) {
   }
 }
 
-void startRumble(int duration) {
+void startRumble(RumbleMode mode, int duration) {
   // fade in from min to max in increments of 5 points:
   // for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
     // sets the value (range from 0 to 255):
@@ -122,7 +122,7 @@ void startRumble(int duration) {
     // delay(120);
   // }
 
-  currentRumbleMode = RumbleMode::RampDown;
+  currentRumbleMode = mode;
   rumbleStartMs = millis();
   //NOTE: assume duration is unsigned
   rumbleDuration = duration;
@@ -209,25 +209,38 @@ void loop(void) {  // run over and over
 
   outputSensorValues();
 
-  if (Serial1.available() > 0) {
-    //OPTIMISE by avoiding use of String operations that cause dynamic memory allocations
-    //Should be safe as long as line length never exceeds this size
-    char rumbleStringBuffer[30];
+  if (Serial1.available() > 1) {
+    constexpr char rumbleChar = 'R';
 
-    //Serial1.write(Serial.read());
-    const int bytesRead = Serial1.readBytesUntil('\n', rumbleStringBuffer, 30);
-    rumbleStringBuffer[bytesRead] = '\0';
+    const int incomingByte = Serial1.read();
 
-    //rumble string format: "Vx\n" where x is the duration in ms
-    if (rumbleStringBuffer[0] == 'V') {
+    //rumble string format: "RMx\n" where M is the mode and x is the duration in ms
+    if (incomingByte == (int)rumbleChar) {
 
-      char* mode = strtok(rumbleStringBuffer + 2, ';');
-      if (fffff)
+      const int modeByte = Serial1.read();
 
-      const int duration = atoi(rumbleStringBuffer + 1);
+      RumbleMode mode;
+
+      switch(modeByte) {
+        case (int)'C': {
+          mode = RumbleMode::Constant;
+        }
+        case (int)'U': {
+          mode = RumbleMode::RampUp;
+        }
+        case (int)'D': {
+          mode = RumbleMode::RampDown;
+        }
+      }
+
+      const int duration = Serial1.parseInt();
+
       //Serial.println(duration);  
-      startRumble(duration);
+      startRumble(mode, duration);
     }
+    
+    //discard newline character and any other remaining characters in buffer
+    (void) Serial1.readString();
   }
 
   if (currentRumbleMode != RumbleMode::Off) {
