@@ -17,21 +17,13 @@ void setup() {
 }
 
 void loop() { // run over and over
-  if (Serial.available() > 0) {
-    String s = Serial.readStringUntil('\n');
-    if (s.equals("Caligula"))
-    {
-      //handshake response
-      Serial.println("Incitatus");
-    }
-    else
-    {
-      //Serial.println(s);
-      Serial1.println(s);
-    }
-  }
-
   if (Serial1.available() > 0) {
     Serial.write(Serial1.read());
+  }
+
+  if (Serial.available() > 0) {
+    String s = Serial.readStringUntil('\n');
+    // Serial.println(s);
+    Serial1.println(s);
   }
 }
