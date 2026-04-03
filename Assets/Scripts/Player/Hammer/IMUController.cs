@@ -273,7 +273,9 @@ namespace Hammer
 
             _dataQueue.Clear();
 
-            _stream.Close();
+            _stream?.Close();
+            _stream = null;
+            
             Debug.Log("Port closed");
         }
     }
