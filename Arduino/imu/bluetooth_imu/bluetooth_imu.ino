@@ -56,20 +56,20 @@ void setup(void) {
 
   delay(20);
 
-  Serial1.println("Adafruit BNO08x test!");
+  Serial1.println(F("Adafruit BNO08x test!"));
 
   // Try to initialize!
   if (!bno08x.begin_I2C()) {
     //if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte UART buffer!
     //if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
-    Serial1.println("Failed to find BNO08x chip");
+    Serial1.println(F("Failed to find BNO08x chip"));
     while (1) {
       delay(120); 
       //see https://github.com/adafruit/Adafruit_BNO08x/issues/34#issuecomment-2533685723
       rp2040.reboot();
     }
   }
-  Serial1.println("BNO08x Found!");
+  Serial1.println(F("BNO08x Found!"));
 
   for (int n = 0; n < bno08x.prodIds.numEntries; n++) {
     Serial1.print("Part ");
@@ -85,7 +85,7 @@ void setup(void) {
   }
   setReports();
 
-  Serial1.println("Reading events");
+  Serial1.println(F("Reading events"));
 
   pinMode(motor1DIRPin, OUTPUT);
   pinMode(motor2DIRPin, OUTPUT);
@@ -97,12 +97,12 @@ void setup(void) {
 
 // Here is where you define the sensor outputs you want to receive
 void setReports(void) {
-  Serial1.println("Setting desired reports");
+  Serial1.println(F("Setting desired reports"));
   if (!bno08x.enableReport(SH2_GAME_ROTATION_VECTOR)) {
-    Serial1.println("Could not enable game vector");
+    Serial1.println(F("Could not enable game vector"));
   }
   if (!bno08x.enableReport(SH2_LINEAR_ACCELERATION, 20000)) {
-    Serial1.println("Could not enable linear acceleration");
+    Serial1.println(F("Could not enable linear acceleration"));
   }
 }
 
@@ -128,7 +128,7 @@ void startRumble(int duration) {
   rumbleDuration = duration;
   rumbleStrength = 255;
   rumbleCurrentFadeMs = 0;
-  Serial1.println("Rumble activated.");
+  Serial1.println(F("Rumble activated."));
 
   analogWrite(motor1SPDPin, rumbleStrength);
 }
@@ -153,7 +153,7 @@ void endRumble() {
   rumbleDuration = 0;
   currentRumbleMode = RumbleMode::Off;
   rumbleCurrentFadeMs = 0;
-  Serial1.println("Rumble deactivated.");
+  Serial1.println(F("Rumble deactivated."));
 
   analogWrite(motor1SPDPin, 0);
 }
@@ -164,7 +164,7 @@ void loop() {  // run over and over
   delay(5);
 
   if (bno08x.wasReset()) {
-    Serial1.print("sensor was reset ");
+    Serial1.print(F("Sensor was reset "));
     setReports();
   }
 
@@ -212,7 +212,7 @@ void loop() {  // run over and over
     char rumbleStringBuffer[30];
 
     //Serial1.write(Serial.read());
-    int bytesRead = Serial1.readBytesUntil('\n', rumbleStringBuffer, 30);
+    const int bytesRead = Serial1.readBytesUntil('\n', rumbleStringBuffer, 30);
     rumbleStringBuffer[bytesRead] = '\0';
 
     //rumble string format: "Vx\n" where x is the duration in ms
