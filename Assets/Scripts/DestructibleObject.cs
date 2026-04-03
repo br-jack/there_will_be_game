@@ -13,6 +13,7 @@ public class DestructibleObject : MonoBehaviour
     private AudioClip destructionHitSound;
     private AudioClip[] destructionSounds;
     public float soundVolume = 1f;
+    public GameObject destructionParticlesPrefab;
 
     void Awake()
     {
@@ -25,7 +26,9 @@ public class DestructibleObject : MonoBehaviour
             Resources.Load<AudioClip>("DestructionSFX2"),
             Resources.Load<AudioClip>("DestructionSFX3")
         };
-        }
+
+        destructionParticlesPrefab = Resources.Load<GameObject>("BuildingDestructionParticles");
+    }
 
     void Start() {
         myRenderer = GetComponent<MeshRenderer>();
@@ -51,6 +54,9 @@ public class DestructibleObject : MonoBehaviour
         if (clip != null)
             AudioSource.PlayClipAtPoint(destructionHitSound, transform.position, soundVolume);
             AudioSource.PlayClipAtPoint(clip, transform.position, soundVolume);
+
+        if (destructionParticlesPrefab != null)
+            Instantiate(destructionParticlesPrefab, transform.position, Quaternion.identity);
 
         GameObject fragments = Instantiate(fragmentsPrefab,
                                            transform.position,
