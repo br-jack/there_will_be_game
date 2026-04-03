@@ -10,6 +10,22 @@ public class DestructibleObject : MonoBehaviour
     private bool broken = false;
     private MeshRenderer myRenderer;
     private Collider myCollider;
+    private AudioClip destructionHitSound;
+    private AudioClip[] destructionSounds;
+    public float soundVolume = 1f;
+
+    void Awake()
+    {
+        destructionHitSound = Resources.Load<AudioClip>("DestructionSFX4");
+
+        destructionSounds = new AudioClip[]
+        {
+            Resources.Load<AudioClip>("DestructionSFX"),
+            Resources.Load<AudioClip>("DestructionSFX1"),
+            Resources.Load<AudioClip>("DestructionSFX2"),
+            Resources.Load<AudioClip>("DestructionSFX3")
+        };
+        }
 
     void Start() {
         myRenderer = GetComponent<MeshRenderer>();
@@ -30,6 +46,11 @@ public class DestructibleObject : MonoBehaviour
     void Break(Vector3 impactPoint)
     {
         broken = true;
+
+        AudioClip clip = destructionSounds[Random.Range(0, destructionSounds.Length)];
+        if (clip != null)
+            AudioSource.PlayClipAtPoint(destructionHitSound, transform.position, soundVolume);
+            AudioSource.PlayClipAtPoint(clip, transform.position, soundVolume);
 
         GameObject fragments = Instantiate(fragmentsPrefab,
                                            transform.position,
