@@ -51,23 +51,24 @@ namespace Hammer
                         {
                             Debug.Log("Trying port " + possiblePort);
                             
-                            SerialPort testSerialPort = new SerialPort(possiblePort, 115200);
-                            testSerialPort.ReadTimeout = TimeoutMs * 5;
+                            SerialPort testSerial = new SerialPort(possiblePort, 115200);
+                            testSerial.DtrEnable = true;
+                            testSerial.ReadTimeout = TimeoutMs * 5;
                             
                             //NOTE: Needed to prevent potential infinite wait
-                            testSerialPort.WriteTimeout = TimeoutMs;
+                            testSerial.WriteTimeout = TimeoutMs;
                             
-                            testSerialPort.Open();
+                            testSerial.Open();
                             String request = "Caligula";
-                            testSerialPort.WriteLine(request);
+                            testSerial.WriteLine(request);
                             
                             //wait to ensure what's received isn't just IMU data and
                             //hub has a chance to respond
                             Thread.Sleep(250);
                             
-                            String response = testSerialPort.ReadExisting();
+                            String response = testSerial.ReadExisting();
                             Debug.Log(response);
-                            testSerialPort.Close();
+                            testSerial.Close();
                             
                             if (response.Contains("Incitatus"))
                             {
