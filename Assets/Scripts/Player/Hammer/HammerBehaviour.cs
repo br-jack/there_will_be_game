@@ -33,6 +33,7 @@ namespace Hammer
         public hammerSpeedState hammerSpeedState;
         public hammerChargeState hammerChargeState;
 
+        
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
