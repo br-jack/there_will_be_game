@@ -4,6 +4,10 @@ public class FireTask : BaseTask
 {
     private bool hammerIgnited = false;
     private bool buildingBurned = false;
+    private bool rewardSpawned = false;
+    [SerializeField] private PowerUpSpawner powerUpSpawner;
+    [SerializeField] private GameObject infiniteFirePowerUpPrefab;
+    [SerializeField] private string rewardMessage = "The eternal flame boon has been granted";
 
     void Start()
     {
@@ -39,7 +43,12 @@ public class FireTask : BaseTask
     public override void CheckCompletion()
     {
         if (hammerIgnited && buildingBurned)
-        {
+        { 
+            if (!rewardSpawned && powerUpSpawner != null && infiniteFirePowerUpPrefab != null)
+            {
+                powerUpSpawner.SpawnSpecificPowerUp(infiniteFirePowerUpPrefab, rewardMessage);
+                rewardSpawned = true;
+            }
             CompleteTask();
         }
     }

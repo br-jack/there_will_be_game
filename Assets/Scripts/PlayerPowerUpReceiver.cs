@@ -104,6 +104,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         if (hammerFireController != null)
         {
             hammerFireController.UnlockInfiniteFire();
+            hammerFireController.IgniteHammer();
         }
     }
 }

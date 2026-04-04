@@ -3,7 +3,7 @@ using UnityEngine;
 public class HammerFireController : MonoBehaviour
 {
     [SerializeField] private bool isOnFire = false;
-    [SerializeField] private float fireDuration = 30f;
+    [SerializeField] private float fireDuration = 15f;
 
     [SerializeField] private bool infiniteFireUnlocked = false;
     [SerializeField] private bool useInfiniteFire = false;

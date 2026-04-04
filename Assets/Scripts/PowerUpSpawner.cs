@@ -10,9 +10,6 @@ public class PowerUpSpawner : MonoBehaviour
     public Transform[] spawnPoints;
     public float spawnHeightOffset = 10.0f;
 
-    public float spawnInterval = 5.0f;
-    public bool spawnImmediately = false;
-
     public TextMeshProUGUI boonText;
     public float messageDuration = 3.0f;
 
@@ -26,60 +23,32 @@ public class PowerUpSpawner : MonoBehaviour
         {
             boonText.gameObject.SetActive(false);
         }
-
-        StartCoroutine(SpawnLoop());
     }
 
-    private IEnumerator SpawnLoop()
+    public void SpawnSpecificPowerUp(GameObject powerUpPrefab, string customMessage)
     {
-        if (spawnImmediately)
-        {
-            SpawnRandomPowerUp();
-
-            if (audioSource != null && boonFanfare != null)
-            {
-                audioSource.PlayOneShot(boonFanfare);
-            }
-
-            yield return StartCoroutine(ShowBoonMessage());
-        }
-
-        while (true)
-        {
-            yield return new WaitForSeconds(spawnInterval);
-
-            SpawnRandomPowerUp();
-
-            if (audioSource != null && boonFanfare != null)
-            {
-                audioSource.PlayOneShot(boonFanfare);
-            }
-
-            yield return StartCoroutine(ShowBoonMessage());
-        }
-    }
-
-    private void SpawnRandomPowerUp()
-    {
-
-        int randomPowerUpIndex = Random.Range(0, powerUpPrefabs.Length);
         int randomSpawnPointIndex = Random.Range(0, spawnPoints.Length);
-
         Transform chosenSpawnPoint = spawnPoints[randomSpawnPointIndex];
 
         Vector3 spawnPosition = chosenSpawnPoint.position + Vector3.up * spawnHeightOffset;
 
-        Instantiate(powerUpPrefabs[randomPowerUpIndex], spawnPosition, Quaternion.identity);
+        Instantiate(powerUpPrefab, spawnPosition, Quaternion.identity);
+
+        if (audioSource != null && boonFanfare != null)
+        {
+            audioSource.PlayOneShot(boonFanfare);
+        }
+        StartCoroutine(ShowBoonMessage(customMessage));
     }
 
-    private IEnumerator ShowBoonMessage()
+    private IEnumerator ShowBoonMessage(string message)
     {
         if (boonText == null)
         {
             yield break;
         }
 
-        boonText.text = "A boon has been granted";
+        boonText.text = message;
         boonText.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(messageDuration);
