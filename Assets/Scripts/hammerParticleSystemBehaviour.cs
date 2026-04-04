@@ -11,8 +11,11 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
 
     public float trailSpeedThreshold;
 
+    public float ghostSpeedThreshold;
+
     public uint trailLingerFrames; //probs should be done with time
-    private ParticleSystem _ps;
+    public ParticleSystem trailsSystem;
+    public ParticleSystem ghostsSystem;
 
     private uint framesUntilTrailsDisabled;
 
@@ -24,35 +27,44 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
     {
         
         _tf = GetComponent<Transform>();
-        _ps = GetComponent<ParticleSystem>();
-        _ps.Play();
         posPrevFrame = _tf.position;
+        trailsSystem.Play();
+        ghostsSystem.Play();
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //find scalar speed of hammer head in the forwards direction
         Vector3 positionChange = _tf.position - posPrevFrame;
         Vector3 velocityGlobal = positionChange/Time.deltaTime;
         Vector3 velocityLocal =  transform.InverseTransformDirection(velocityGlobal);
         headSpeedForwards = velocityLocal.z;
-        
+        //Debug.Log("headSpeedForwards: "+headSpeedForwards);
 
-        //find scalar speed of hammer head in the forwards direction
-        
-        Debug.Log("headSpeedForwards: "+headSpeedForwards);
-
-        var trails = _ps.trails;
-
+        //enable a trail behind the hammer if headSpeedForwards is above the threshold, with a buffer
+        var trails = trailsSystem.trails;
         if (headSpeedForwards > trailSpeedThreshold) 
         {
+            Debug.Log("framesUntilTrailsDisabled:" +framesUntilTrailsDisabled);
             trails.enabled = true; 
             framesUntilTrailsDisabled = trailLingerFrames;
         }
         else if (framesUntilTrailsDisabled == 0) trails.enabled = false;
         else framesUntilTrailsDisabled --;
+
+        //spawn 'ghost' hammers behind the hammer if headSpeedForwards is above the threshold
+        var ghostMain = ghostsSystem.main;
+        var ghostEmission = ghostsSystem.emission;
+        if (headSpeedForwards > ghostSpeedThreshold)
+        {
+            Debug.Log("hi!");
+            ghostEmission.enabled = true;
+            ghostMain.startRotationX = transform.rotation.x;
+            ghostMain.startRotationY = transform.rotation.y;
+            ghostMain.startRotationZ = transform.rotation.z;
+        } else ghostEmission.enabled = false;
         
         posPrevFrame = _tf.position;
         
