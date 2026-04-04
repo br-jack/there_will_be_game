@@ -41,7 +41,7 @@ public class DestructibleObject : MonoBehaviour
         if (!collision.gameObject.CompareTag("Hammer")) return;
 
         float impactSpeed = collision.relativeVelocity.magnitude;
-        if (impactSpeed < breakForceThreshold) return;
+        //if (impactSpeed < breakForceThreshold) return;
 
         Break(collision.contacts[0].point);
     }
