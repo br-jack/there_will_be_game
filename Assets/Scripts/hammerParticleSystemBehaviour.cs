@@ -12,8 +12,7 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
     public float trailSpeedThreshold;
     private ParticleSystem _ps;
     
-    //probs can use this to properly enable and disable particle system
-    private ParticleSystemRenderer _ps_rend;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,7 +20,6 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
         
         _tf = GetComponent<Transform>();
         _ps = GetComponent<ParticleSystem>();
-        _ps_rend = GetComponent<ParticleSystemRenderer>();
         _ps.Play();
         posPrevFrame = _tf.position;
         
@@ -41,8 +39,10 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
         
         Debug.Log("headSpeedForwards: "+headSpeedForwards);
 
-        if (headSpeedForwards > trailSpeedThreshold) _ps.Play();
-        else _ps.Stop();
+        var trails = _ps.trails;
+
+        if (headSpeedForwards > trailSpeedThreshold) trails.enabled = true;
+        else trails.enabled = false;
         
         posPrevFrame = _tf.position;
         
