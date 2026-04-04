@@ -14,6 +14,8 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     private Coroutine speedBoostCoroutine;
     private Coroutine jumpBoostCoroutine;
 
+    public HammerFireController hammerFireController;
+
     private void Start()
     {
         if (horseMovement != null)
@@ -37,6 +39,10 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         else if (powerUpType == PowerUpType.Heal)
         {
             ApplyHeal(amount);
+        }
+        else if (powerUpType == PowerUpType.InfiniteFire)
+        {
+            ApplyInfiniteFire();
         }
     }
 
@@ -90,6 +96,14 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     {
         if (playerHealth != null){
             playerHealth.Heal(Mathf.RoundToInt(amount));
+        }
+    }
+
+    private void ApplyInfiniteFire()
+    {
+        if (hammerFireController != null)
+        {
+            hammerFireController.UnlockInfiniteFire();
         }
     }
 }
