@@ -16,6 +16,7 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
     public uint trailLingerFrames; //probs should be done with time
     public ParticleSystem trailsSystem;
     public ParticleSystem ghostsSystem;
+    public ParticleSystemRenderer ghostsRenderer;
 
     private uint framesUntilTrailsDisabled;
 
@@ -56,15 +57,14 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
 
         //spawn 'ghost' hammers behind the hammer if headSpeedForwards is above the threshold
         var ghostMain = ghostsSystem.main;
+        
         var ghostEmission = ghostsSystem.emission;
         if (headSpeedForwards > ghostSpeedThreshold)
         {
             Debug.Log("hi!");
             ghostEmission.enabled = true;
-            ghostMain.startRotationX = transform.rotation.x;
-            ghostMain.startRotationY = transform.rotation.y;
-            ghostMain.startRotationZ = transform.rotation.z;
-        } else ghostEmission.enabled = false;
+            
+        } else ghostEmission.enabled = false; 
         
         posPrevFrame = _tf.position;
         
