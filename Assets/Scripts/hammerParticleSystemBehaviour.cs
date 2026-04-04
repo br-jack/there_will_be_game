@@ -10,7 +10,12 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
     private Vector3 posPrevFrame;
 
     public float trailSpeedThreshold;
+
+    public uint trailLingerFrames; //probs should be done with time
     private ParticleSystem _ps;
+
+    private uint framesUntilTrailsDisabled;
+
     
     
 
@@ -41,8 +46,13 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
 
         var trails = _ps.trails;
 
-        if (headSpeedForwards > trailSpeedThreshold) trails.enabled = true;
-        else trails.enabled = false;
+        if (headSpeedForwards > trailSpeedThreshold) 
+        {
+            trails.enabled = true; 
+            framesUntilTrailsDisabled = trailLingerFrames;
+        }
+        else if (framesUntilTrailsDisabled == 0) trails.enabled = false;
+        else framesUntilTrailsDisabled --;
         
         posPrevFrame = _tf.position;
         
