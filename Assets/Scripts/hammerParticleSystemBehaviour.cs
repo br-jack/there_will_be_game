@@ -52,7 +52,6 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
         var trails = trailsSystem.trails;
         if (headSpeedForwards > trailSpeedThreshold) 
         {
-            Debug.Log("framesUntilTrailsDisabled:" +framesUntilTrailsDisabled);
             trails.enabled = true; 
             framesUntilTrailsDisabled = trailLingerFrames;
         }
@@ -62,8 +61,7 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
         //spawn 'ghost' hammers behind the hammer if headSpeedForwards is above the threshold 
         var ghostEmission = ghostsSystem.emission;
         if (headSpeedForwards > ghostSpeedThreshold) 
-        {
-            Debug.Log("framesUntilTrailsDisabled:" +framesUntilGhostsDisabled);
+        { 
             ghostEmission.enabled = true; 
             framesUntilGhostsDisabled = ghostsLingerFrames;
         }
