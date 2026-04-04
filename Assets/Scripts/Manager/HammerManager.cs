@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class GlobalManager : MonoBehaviour
+public class HammerManager : MonoBehaviour
 {
-    public static GlobalManager Instance { get; private set; }
+    public static HammerManager Instance { get; private set; }
     
     public Hammer.IController hammerController;
     
