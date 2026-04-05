@@ -14,12 +14,17 @@ public class hammerStateEffects : MonoBehaviour
     public ParticleSystem chargeLines;
     private ParticleSystem.MainModule _chargeLinesMain;
 
+    public ParticleSystem glow;
+    private ParticleSystem.MainModule _glowMain;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _embersMain = embers.main;
         _chargeLinesMain = chargeLines.main;
+        _glowMain = glow.main;
     }
 
     // Update is called once per frame
@@ -30,16 +35,19 @@ public class hammerStateEffects : MonoBehaviour
         {
             
             case hammerChargeState.uncharged:
-                embers.Stop();
+                embers.Play();
                 chargeLines.Stop();
+                glow.Stop();
                 break;
             case hammerChargeState.charging: 
                 embers.Stop();
                 chargeLines.Play();
+                glow.Stop();
                 break;
             case hammerChargeState.charged: 
                 embers.Play();
                 chargeLines.Play();
+                glow.Play();
                 break;
         }
         

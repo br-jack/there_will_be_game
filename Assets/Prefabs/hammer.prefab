@@ -9745,6 +9745,7 @@ MonoBehaviour:
   hammerChargeState: 0
   embers: {fileID: 0}
   chargeLines: {fileID: 0}
+  glow: {fileID: 0}
 --- !u!1 &4759012711130913374
 GameObject:
   m_ObjectHideFlags: 0
@@ -9817,7 +9818,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4964576340167020576}
   serializedVersion: 8
-  lengthInSec: 1
+  lengthInSec: 0.1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -10646,7 +10647,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 5
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -14630,6 +14631,7 @@ GameObject:
   - component: {fileID: 8955713741216259007}
   - component: {fileID: 8000864674359881068}
   - component: {fileID: 8892384873263243920}
+  - component: {fileID: 5108536424463998545}
   m_Layer: 0
   m_Name: HammerParticles
   m_TagString: Untagged
@@ -19476,6 +19478,23 @@ MonoBehaviour:
   trailsSystem: {fileID: 6278026725617630600}
   ghostsSystem: {fileID: 8232399675555418615}
   ghostsRenderer: {fileID: 8061637968058501050}
+--- !u!114 &5108536424463998545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5555687402779521408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f14a8012847594e90863a2f34d8d53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hammerSpeedState: 4
+  hammerChargeState: 2
+  embers: {fileID: 314189850103815418}
+  chargeLines: {fileID: 3199417569135181182}
+  glow: {fileID: 6211702859106016224}
 --- !u!1 &6338722567194937841
 GameObject:
   m_ObjectHideFlags: 0

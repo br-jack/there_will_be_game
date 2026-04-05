@@ -30,8 +30,6 @@ namespace Hammer
 
         private IController _controllerRef;
 
-        public hammerSpeedState hammerSpeedState;
-        public hammerChargeState hammerChargeState;
 
         
         void Awake()
