@@ -15,7 +15,7 @@ namespace Hammer
         [SerializeField] private TMP_Text zAccelText;
 
         [SerializeField] private TMP_Text accelButtonText;
-        [SerializeField] private HammerBehaviour hammerBehaviour;
+        [SerializeField] private TargetHammer hammerBehaviour;
 
         public void CalibrateHammer()
         {

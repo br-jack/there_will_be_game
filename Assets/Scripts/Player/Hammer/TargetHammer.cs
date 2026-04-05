@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Hammer
 {
-    public class HammerBehaviour : MonoBehaviour
+    public class TargetHammer : MonoBehaviour
     {
 
         [SerializeField] private float extension;
@@ -18,17 +18,10 @@ namespace Hammer
 
         [SerializeField] private Transform pivotTransform;
 
-        private Rigidbody _rb;
-
         private Quaternion attitude;
         private Vector3 frameAcceleration;
 
         private IController _controllerRef;
-
-        void Awake()
-        {
-            _rb = GetComponent<Rigidbody>();
-        }
 
         void Start()
         {
@@ -41,7 +34,6 @@ namespace Hammer
             attitude = _controllerRef.GetAttitude();
             HammerManager.Instance.CalibrationQuaternion = Quaternion.Inverse(attitude);
         }
-
        
         void UpdateRotation()
         {
@@ -79,13 +71,6 @@ namespace Hammer
             UpdatePosition();
         }
 
-        public void OnCollisionEnter(Collision collision)
-        {
-            if (collision.gameObject.CompareTag("Enemy"))
-            {
-                Destroy(collision.gameObject);
-            }
-        }
     }
 
 }
