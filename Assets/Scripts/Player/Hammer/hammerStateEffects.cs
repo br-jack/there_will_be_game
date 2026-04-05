@@ -17,6 +17,13 @@ public class hammerStateEffects : MonoBehaviour
     public ParticleSystem glow;
     private ParticleSystem.MainModule _glowMain;
 
+    public ParticleSystem trails;
+    private ParticleSystem.MainModule _trailsMain;
+
+    public ParticleSystem ghosts;
+    private ParticleSystem.MainModule _ghostsMain;
+
+    private Color _effectColor;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -25,6 +32,8 @@ public class hammerStateEffects : MonoBehaviour
         _embersMain = embers.main;
         _chargeLinesMain = chargeLines.main;
         _glowMain = glow.main;
+        _ghostsMain = ghosts.main;
+        _trailsMain = trails.main;
     }
 
     // Update is called once per frame
@@ -53,33 +62,35 @@ public class hammerStateEffects : MonoBehaviour
         
         switch (hammerSpeedState) {
             case hammerSpeedState.still: 
-                _chargeLinesMain.startColor = Color.white;
-                _embersMain.startColor = Color.white;
+                _effectColor = Color.white;
+                break;
+            case hammerSpeedState.walking: 
+                _effectColor = Color.green;
                 break;
             case hammerSpeedState.trotting: 
-                _chargeLinesMain.startColor = Color.blue;
-                _embersMain.startColor = Color.blue;
+                _effectColor = Color.blue;
                 break;
             case hammerSpeedState.cantering: 
-                _chargeLinesMain.startColor = Color.yellow;
-                _embersMain.startColor = Color.yellow;
+                _effectColor = Color.yellow;
                 break;
             case hammerSpeedState.galloping: 
-                _chargeLinesMain.startColor = Color.red;
-                _embersMain.startColor = Color.red;
+                _effectColor = Color.red;
                 break;
             case hammerSpeedState.ultraGalloping: 
-                _chargeLinesMain.startColor = Color.magenta;
-                _embersMain.startColor = Color.magenta;
+                _effectColor = Color.magenta;
                 break;
             case hammerSpeedState.vulcan: 
-                _chargeLinesMain.startColor = Color.white;
-                _embersMain.startColor = Color.white;
+                _effectColor = Color.black;
                 break;
             default: 
                 break;
             
         }
+        _chargeLinesMain.startColor = _effectColor;
+        _embersMain.startColor = _effectColor;
+        _glowMain.startColor = _effectColor;
+        _ghostsMain.startColor = _effectColor;
+        _trailsMain.startColor = _effectColor;
         //something like this may be necessary, not sure how well the pointers work
         //_chargeLinesCOL.color = _embersCOLGradient; 
     }

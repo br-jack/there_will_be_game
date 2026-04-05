@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using UnityEngine;
+//this script and hammerStateEffects should likely be one script, they do the same thing. 
 
 public class hammerParticleSystemBehaviour : MonoBehaviour
 {
