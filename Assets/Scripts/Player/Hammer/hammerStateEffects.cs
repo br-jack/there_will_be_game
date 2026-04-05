@@ -9,12 +9,12 @@ public class hammerStateEffects : MonoBehaviour
     
     
     public ParticleSystem embers;
-    private ParticleSystem.EmissionModule _embersEmission;
-    private ParticleSystem.MinMaxGradient _embersCOLGradient;
+    //private ParticleSystem.EmissionModule _embersEmission;
+    //private ParticleSystem.MinMaxGradient _embersCOLGradient;
 
     public ParticleSystem chargeLines;
-    private ParticleSystem.EmissionModule _chargeLinesEmission;
-    private ParticleSystem.MainModule _chargeLinesMain;
+    //private ParticleSystem.EmissionModule _chargeLinesEmission;
+    //private ParticleSystem.MainModule _chargeLinesMain;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,27 +29,28 @@ public class hammerStateEffects : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        _chargeLinesMain = chargeLines.main;
-        _chargeLinesEmission = chargeLines.emission;
-        _embersEmission = embers.emission;
-        _embersCOLGradient = embers.colorOverLifetime.color;
-        /*
+        var _chargeLinesMain = chargeLines.main;
+        var _chargeLinesEmission = chargeLines.emission;
+        var _embersEmission = embers.emission;
+        var _embersCOLGradient = embers.colorOverLifetime.color;
+        //Debug.Assert(_embersEmission != null);
         switch (hammerChargeState)
         {
+            
             case hammerChargeState.uncharged:
-                _embersEmission.enabled = false;
-                _chargeLinesEmission.enabled = false;
+                embers.Stop();
+                chargeLines.Stop();
                 break;
             case hammerChargeState.charging: 
-                _embersEmission.enabled = false;
-                _chargeLinesEmission.enabled = true; 
+                embers.Stop();
+                chargeLines.Play();
                 break;
             case hammerChargeState.charged: 
-                _embersEmission.enabled = true;
-                _chargeLinesEmission.enabled = true; 
+                embers.Play();
+                chargeLines.Play();
                 break;
         }
-        */
+        
         switch (hammerSpeedState) {
             case hammerSpeedState.still: 
                 _chargeLinesMain.startColor = Color.white;
