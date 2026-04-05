@@ -41,20 +41,20 @@ namespace Hammer
 
         void Start()
         {
-            _controllerRef = GlobalManager.Instance.hammerController;
+            _controllerRef = HammerManager.Instance.hammerController;
         }
 
         public void CalibrateHammer()
         {
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
-            GlobalManager.Instance.CalibrationQuaternion = Quaternion.Inverse(attitude);
+            HammerManager.Instance.CalibrationQuaternion = Quaternion.Inverse(attitude);
         }
 
        
         void UpdateRotation()
         {
-            transform.localRotation = GlobalManager.Instance.CalibrationQuaternion * attitude;
+            transform.localRotation = HammerManager.Instance.CalibrationQuaternion * attitude;
         }
 
         void UpdatePosition()
