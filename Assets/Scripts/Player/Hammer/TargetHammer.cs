@@ -2,17 +2,35 @@ using UnityEngine;
 
 namespace Hammer
 {
+/*
+TargetHammer:
+    Uses IMU position and velocity to simulate hammer. 
+        - rotation is 1:1 with IMU
+        - position is calculated by simulating a spring using the velocity values
+        - feel free to adjust serialised fields however the changes may be obscured by
+            the visual hammer behaviour (which uses its own spring). Be sure to disable 
+            that spring if you want clearer feedback.
+*/
     public class TargetHammer : MonoBehaviour
     {
 
-        [SerializeField] private float extension;
         private float extensionVelocity;
-        [SerializeField] private float k = 20f;
-        [SerializeField] private float dampingCoef = 3f;
-        [SerializeField] private float restLength = 1;
-        [SerializeField] private float maxLength = 20;
+
+        [Header("Spring Settings")]
+        [Tooltip("This is the main one you want to change. Just a multiplier")]
         [SerializeField] private float sensitivity = 2;
+        [Tooltip("Should probably be between like 0.85-0.95, again this is one of the main ones you want to change.")]
         [SerializeField] private float momentumDecay = 0.92f;
+        [Tooltip("Do not adjust this this is just serialised so you can see if its actually doing anything.")]
+        [SerializeField] private float extension;
+        [Tooltip("Spring constant: higher = stiffer")]
+        [SerializeField] private float k = 20f;
+        [Tooltip("Damping: how quickly it returns to rest, higher = returns to rest faster (have to think abt critical damping though)")]
+        [SerializeField] private float dampingCoef = 3f;
+        [Tooltip("Shortest length of spring: should be at least one or it causes maths issues")]
+        [SerializeField] private float restLength = 1;
+        [Tooltip("Max spring length: this can be whatever as long as its bigger than rest length obvs")]
+        [SerializeField] private float maxLength = 20;
 
         private float momentum = 0;
 
