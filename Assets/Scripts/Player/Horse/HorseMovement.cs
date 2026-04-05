@@ -18,6 +18,11 @@ public class HorseMovement : MonoBehaviour
     public float turnSpeedAtZero = 100f;
     private float _currentSpeed = 0f;
 
+    public float upShiftSpeedMaintenanceConstant; //how much to keep speed above the max speed while preparing to upshift
+
+    public uint framesToShiftGear;
+    private uint framesRemainingToGearShift;
+
     //Discrete Speeds
     
     //TODO could maybe include deceleration in this as well if necessary
@@ -40,7 +45,7 @@ public class HorseMovement : MonoBehaviour
         new Gear{name = "Gallop", minSpeed = 24f, maxSpeed = 35f, acceleration = 14f}
     };
 
-    private int _currentGear = 2;
+    private int _currentGear = 0;
 
     private float _currentMaxSpeed = 24f;
     private float _currentAcceleration = 10f;
@@ -226,6 +231,27 @@ public class HorseMovement : MonoBehaviour
         //         Debug.Log($" AUTODOWNSHIFTED TOO SLOW, Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
         //     }
         // }
+
+        //hello, i just wrote this as this is how i had imagined the gears, however may be dumb
+        if (_currentSpeed >= gears[_currentGear].maxSpeed)
+        {
+            if (framesRemainingToGearShift == 0)  //shift up in gear after a delay, as long as the player keeps accelerating
+            {
+                _currentGear++; 
+                _currentSpeed = gears[_currentGear].minSpeed; //jump to min speed of new gear. I'm aware this isn't how gears work, but this is a horse!
+                framesRemainingToGearShift = framesToShiftGear;
+            }
+            else {
+                framesRemainingToGearShift--;
+                _currentSpeed = gears[_currentGear].maxSpeed + upShiftSpeedMaintenanceConstant; //otherwise, keep speed capped at max for gear
+            }
+        }
+        else if (_currentSpeed < gears[_currentGear].minSpeed) { //downshift automatically
+            _currentGear --; 
+            _currentSpeed = Mathf.Max(_currentSpeed,gears[_currentGear].maxSpeed); //cap new speed at max for gear
+            }  
+        else framesRemainingToGearShift = framesToShiftGear; //reset time until upshift each frame if we're not at the max
+        
         if (_ignoreGroundTimer > 0f)
         {
             _ignoreGroundTimer -= Time.fixedDeltaTime;
