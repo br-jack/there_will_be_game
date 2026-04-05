@@ -12,8 +12,10 @@ namespace Hammer
         private Rigidbody _rb;
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
-        [SerializeField] private float positionK = 25;
-        [SerializeField] private float positionDampingCoeff = 0.9f;
+        [SerializeField] private float positionK = 1000;
+        [SerializeField] private float positionDampingCoeff = 64;
+
+        private Vector3 lastTargetPosition;
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
@@ -21,10 +23,11 @@ namespace Hammer
         private void moveToTargetPosition()
         {
             Vector3 toTarget = _targetHammer.Position - _rb.position;
+            Vector3 targetVelocity = (_targetHammer.Position - lastTargetPosition) / Time.deltaTime;
             Vector3 springForce = toTarget * positionK;
-            Vector3 dampingForce = -_rb.linearVelocity * positionDampingCoeff;
-
+            Vector3 dampingForce = (targetVelocity - _rb.linearVelocity) * positionDampingCoeff;
             _rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
+            lastTargetPosition = _targetHammer.Position;
         }
         private void moveToTargetRotation()
         {
