@@ -38,14 +38,14 @@ TargetHammer:
         private Quaternion attitude;
         private Vector3 frameAcceleration;
 
-        public Quaternion Attitude
+        public Quaternion Rotation
         {
-            get { return attitude; }
+            get { return transform.rotation; }
         }
        
-        public float Momentum
+        public Vector3 Position
         {
-            get { return momentum; }
+            get { return transform.position; }
         }
 
         private IController _controllerRef;
