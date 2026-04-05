@@ -34,7 +34,7 @@ namespace Hammer
             // temporary, should also be springy eventually TODO
             _rb.rotation = _targetHammer.Rotation;
         }
-        void Update()
+        void FixedUpdate()
         {
             moveToTargetPosition();
             moveToTargetRotation();

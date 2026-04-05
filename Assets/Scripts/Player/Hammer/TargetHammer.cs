@@ -88,7 +88,7 @@ TargetHammer:
             transform.position = pivotTransform.position + transform.rotation * Vector3.forward * extension;
         }
 
-        void Update()
+        void FixedUpdate()
         {
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
