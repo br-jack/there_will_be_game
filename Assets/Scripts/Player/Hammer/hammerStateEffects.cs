@@ -20,15 +20,19 @@ public class hammerStateEffects : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _chargeLinesMain = chargeLines.main;
-        _chargeLinesEmission = chargeLines.emission;
-        _embersEmission = embers.emission;
-        _embersCOLGradient = embers.colorOverLifetime.color;
+        //_chargeLinesMain = chargeLines.main;
+        //_chargeLinesEmission = chargeLines.emission;
+        //_embersEmission = embers.emission;
+        //_embersCOLGradient = embers.colorOverLifetime.color;
     }
 
     // Update is called once per frame
     void Update()
     {   
+        _chargeLinesMain = chargeLines.main;
+        _chargeLinesEmission = chargeLines.emission;
+        _embersEmission = embers.emission;
+        _embersCOLGradient = embers.colorOverLifetime.color;
         /*
         switch (hammerChargeState)
         {
