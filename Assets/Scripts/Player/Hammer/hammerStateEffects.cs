@@ -9,31 +9,23 @@ public class hammerStateEffects : MonoBehaviour
     
     
     public ParticleSystem embers;
-    //private ParticleSystem.EmissionModule _embersEmission;
-    //private ParticleSystem.MinMaxGradient _embersCOLGradient;
+    private ParticleSystem.MainModule _embersMain;
 
     public ParticleSystem chargeLines;
-    //private ParticleSystem.EmissionModule _chargeLinesEmission;
-    //private ParticleSystem.MainModule _chargeLinesMain;
+    private ParticleSystem.MainModule _chargeLinesMain;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //_chargeLinesMain = chargeLines.main;
-        //_chargeLinesEmission = chargeLines.emission;
-        //_embersEmission = embers.emission;
-        //_embersCOLGradient = embers.colorOverLifetime.color;
+        _embersMain = embers.main;
+        _chargeLinesMain = chargeLines.main;
     }
 
     // Update is called once per frame
     void Update()
     {   
-        var _chargeLinesMain = chargeLines.main;
-        var _chargeLinesEmission = chargeLines.emission;
-        var _embersEmission = embers.emission;
-        var _embersCOLGradient = embers.colorOverLifetime.color;
-        //Debug.Assert(_embersEmission != null);
+
         switch (hammerChargeState)
         {
             
@@ -54,27 +46,27 @@ public class hammerStateEffects : MonoBehaviour
         switch (hammerSpeedState) {
             case hammerSpeedState.still: 
                 _chargeLinesMain.startColor = Color.white;
-                _embersCOLGradient.colorMin = Color.white;
+                _embersMain.startColor = Color.white;
                 break;
             case hammerSpeedState.trotting: 
                 _chargeLinesMain.startColor = Color.blue;
-                _embersCOLGradient.colorMin = Color.blue;
+                _embersMain.startColor = Color.blue;
                 break;
             case hammerSpeedState.cantering: 
                 _chargeLinesMain.startColor = Color.yellow;
-                _embersCOLGradient.colorMin = Color.yellow;
+                _embersMain.startColor = Color.yellow;
                 break;
             case hammerSpeedState.galloping: 
                 _chargeLinesMain.startColor = Color.red;
-                _embersCOLGradient.colorMin = Color.red;
+                _embersMain.startColor = Color.red;
                 break;
             case hammerSpeedState.ultraGalloping: 
                 _chargeLinesMain.startColor = Color.magenta;
-                _embersCOLGradient.colorMin = Color.magenta;
+                _embersMain.startColor = Color.magenta;
                 break;
             case hammerSpeedState.vulcan: 
                 _chargeLinesMain.startColor = Color.white;
-                _embersCOLGradient.colorMin = Color.white;
+                _embersMain.startColor = Color.white;
                 break;
             default: 
                 break;
