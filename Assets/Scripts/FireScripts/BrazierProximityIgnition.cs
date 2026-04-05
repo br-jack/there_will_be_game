@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class BrazierProximityIgnite : MonoBehaviour
 {
-    [SerializeField] private Transform player;
+    [SerializeField] private BoxCollider hammerHitbox;
     [SerializeField] private HammerFireController hammerFireController;
-    [SerializeField] private float igniteDistance = 10f;
+    [SerializeField] private float igniteDistance = 1f;
 
     [SerializeField] private FireTask fireTask;
 
@@ -12,13 +12,13 @@ public class BrazierProximityIgnite : MonoBehaviour
 
     private void Update()
     {
-        if (player == null || hammerFireController == null)
+        if (hammerHitbox == null || hammerFireController == null)
             return;
 
         if (hasIgnited)
             return;
-
-        float distance = Vector3.Distance(player.position, transform.position);
+        Vector3 closestPoint = hammerHitbox.ClosestPoint(transform.position);
+        float distance = Vector3.Distance(closestPoint, transform.position);
 
         if (distance <= igniteDistance)
         {
