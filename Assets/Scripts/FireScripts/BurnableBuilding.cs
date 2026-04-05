@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BurnableBuilding : MonoBehaviour
@@ -30,5 +31,13 @@ public class BurnableBuilding : MonoBehaviour
             buildingFireParticles.Play();
 
         Debug.Log("Building has been set on fire");
+
+        StartCoroutine(BurnDown());
+    }
+
+    private IEnumerator BurnDown()
+    {
+        yield return new WaitForSeconds(5f);
+        Destroy(gameObject);
     }
 }

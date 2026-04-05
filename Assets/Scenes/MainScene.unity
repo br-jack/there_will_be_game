@@ -23611,6 +23611,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horseMovement: {fileID: 743921868}
   playerHealth: {fileID: 743921865}
+  hammerFireController: {fileID: 1356840562}
 --- !u!114 &743921876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23850,8 +23851,6 @@ MonoBehaviour:
   - {fileID: 1701464615}
   - {fileID: 1052762221}
   spawnHeightOffset: 10
-  spawnInterval: 60
-  spawnImmediately: 0
   boonText: {fileID: 2001586327}
   messageDuration: 3
   boonFanfare: {fileID: 0}
@@ -45749,6 +45748,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOnFire: 0
+  fireDuration: 60
+  infiniteFireUnlocked: 0
+  useInfiniteFire: 0
   fireVisual: {fileID: 1245709721}
   fireParticles: {fileID: 1245709722}
 --- !u!114 &1356840569
@@ -47798,6 +47800,9 @@ MonoBehaviour:
   taskName: 
   taskDescription: 
   isComplete: 0
+  powerUpSpawner: {fileID: 750377874}
+  infiniteFirePowerUpPrefab: {fileID: 1686391742984204268, guid: 57b283b3d2a515d449d1d960dc6e31c2, type: 3}
+  rewardMessage: The eternal flame boon has been granted
 --- !u!4 &1422696284
 Transform:
   m_ObjectHideFlags: 0
