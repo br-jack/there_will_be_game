@@ -2,15 +2,15 @@ using UnityEngine;
 
 namespace Hammer
 {
-/*
-TargetHammer:
-    Uses IMU position and velocity to simulate hammer. 
-        - rotation is 1:1 with IMU
-        - position is calculated by simulating a spring using the velocity values
-        - feel free to adjust serialised fields however the changes may be obscured by
-            the visual hammer behaviour (which uses its own spring). Be sure to disable 
-            that spring if you want clearer feedback.
-*/
+    /*
+    TargetHammer:
+        Uses IMU position and velocity to simulate hammer. 
+            - rotation is 1:1 with IMU
+            - position is calculated by simulating a spring using the velocity values
+            - feel free to adjust serialised fields however the changes may be obscured by
+                the visual hammer behaviour (which uses its own spring). Be sure to disable 
+                that spring if you want clearer feedback.
+    */
     public class TargetHammer : MonoBehaviour
     {
 
@@ -37,15 +37,19 @@ TargetHammer:
 
         private Quaternion attitude;
         private Vector3 frameAcceleration;
+        private Vector3 velocity;
 
         public Quaternion Rotation
         {
             get { return transform.rotation; }
         }
-       
-        public Vector3 Position
+        public Vector3 LocalPosition
         {
-            get { return transform.position; }
+            get { return transform.localPosition; }
+        }
+        public Vector3 Velocity
+        {
+            get { return velocity; }
         }
 
         private IController _controllerRef;
@@ -61,7 +65,7 @@ TargetHammer:
             attitude = _controllerRef.GetAttitude();
             HammerManager.Instance.CalibrationQuaternion = Quaternion.Inverse(attitude);
         }
-       
+
         void UpdateRotation()
         {
             transform.localRotation = HammerManager.Instance.CalibrationQuaternion * attitude;
@@ -93,7 +97,9 @@ TargetHammer:
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
             frameAcceleration = _controllerRef.GetAcceleration();
-            
+            velocity += frameAcceleration * Time.deltaTime;
+            velocity *= 0.98f;
+
             UpdateRotation();
             UpdatePosition();
         }

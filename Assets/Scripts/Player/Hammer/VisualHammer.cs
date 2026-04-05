@@ -12,23 +12,32 @@ namespace Hammer
         private Rigidbody _rb;
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
-        [SerializeField] private float positionK = 1000;
-        [SerializeField] private float positionDampingCoeff = 64;
+        [SerializeField] private float positionK = 100;
+        [SerializeField] private float positionDampingCoeff = 63;
+        [Tooltip("This is the main one you want to change. Just a multiplier")]
+        [SerializeField] private float sensitivity = 20f;
+
 
         private Vector3 lastTargetPosition;
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
         }
+
         private void moveToTargetPosition()
         {
-            Vector3 toTarget = _targetHammer.Position - _rb.position;
-            Vector3 targetVelocity = (_targetHammer.Position - lastTargetPosition) / Time.deltaTime;
-            Vector3 springForce = toTarget * positionK;
-            Vector3 dampingForce = (targetVelocity - _rb.linearVelocity) * positionDampingCoeff;
-            _rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
-            lastTargetPosition = _targetHammer.Position;
+            Vector3 toTarget = _targetHammer.LocalPosition - transform.localPosition;
+            Vector3 worldToTarget = pivotTransform.TransformDirection(toTarget);
+
+            Vector3 worldTargetVel = pivotTransform.TransformDirection(_targetHammer.Velocity);
+            Vector3 velError = _rb.linearVelocity - worldTargetVel;
+
+            Vector3 springForce = positionK * worldToTarget;
+            Vector3 dampingForce = -positionDampingCoeff * velError;
+
+            _rb.AddForce(springForce + dampingForce, ForceMode.Force);
         }
+
         private void moveToTargetRotation()
         {
             // temporary, should also be springy eventually TODO
