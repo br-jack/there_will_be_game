@@ -10,18 +10,22 @@ namespace Hammer
     {
         [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
+        [SerializeField] private Rigidbody horseRigidBody;
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
         [SerializeField] private float positionK = 100;
         [SerializeField] private float positionDampingCoeff = 63;
+        [SerializeField] private float rotationK = 100;
+        [SerializeField] private float rotationDampingCoeff = 63;
         [Tooltip("This is the main one you want to change. Just a multiplier")]
         [SerializeField] private float sensitivity = 20f;
+        private Vector3 localOffset;
 
 
-        private Vector3 lastTargetPosition;
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
+            localOffset = _targetHammer.LocalPosition;
         }
 
         private void moveToTargetPosition()
@@ -40,11 +44,18 @@ namespace Hammer
 
         private void moveToTargetRotation()
         {
-            // temporary, should also be springy eventually TODO
-            _rb.rotation = _targetHammer.Rotation;
+            Quaternion rotationError = _targetHammer.Rotation * Quaternion.Inverse(transform.rotation);
+            rotationError.ToAngleAxis(out float angle, out Vector3 axis);
+
+            if (angle > 180f) angle -= 360f;
+
+            Vector3 torque = axis * (angle * rotationK) - rotationDampingCoeff * _rb.angularVelocity;
+            _rb.AddTorque(torque, ForceMode.Force);
         }
+
         void FixedUpdate()
         {
+            _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, horseRigidBody.linearVelocity, 0.8f);
             moveToTargetPosition();
             moveToTargetRotation();
         }
