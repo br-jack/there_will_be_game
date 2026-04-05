@@ -1,17 +1,32 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Hammer
 {
+    /*
+     VisualHammer: 
+        Acts like a spring towards target hammer
+     */
     public class VisualHammer : MonoBehaviour
     {
         [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
+        [Tooltip("This should be from a TargetHammer prefab")]
+        [SerializeField] private TargetHammer _targetHammer;
 
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
         }
+        private void moveToTargetPosition()
+        {
 
+        }
+        private void moveToTargetAttitude()
+        {
+            // temporary, should also be springy eventually TODO
+            _rb.rotation = _targetHammer.Attitude;
+        }
         void Update()
         {
 
