@@ -224,8 +224,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxLives: 5
-  startingLives: 5
-  livesBar: {fileID: 0}
   healthBar: {fileID: 0}
   playerHealth: {fileID: 9012345678901234567}
   invincibilityTime: 3
@@ -717,10 +715,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3199417569135181182, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: InitialModule.startSizeY.scalar
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199417569135181182, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: InitialModule.startSizeZ.scalar
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199417569135181182, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199417569135181182, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: InitialModule.startSizeY.minScalar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199417569135181182, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: InitialModule.startSizeZ.minScalar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739323767163687195, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 7676368825266902001, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
       propertyPath: pivotTransform
       value: 
       objectReference: {fileID: 3283128650886327725}
+    - target: {fileID: 8686399012987291408, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 99251fe8b2a6b3142a18760fe8b8d553, type: 2}
+    - target: {fileID: 8955713741216259007, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
