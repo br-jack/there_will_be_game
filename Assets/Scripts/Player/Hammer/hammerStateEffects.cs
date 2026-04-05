@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class hammerSparksSpawnerBehaviour : MonoBehaviour
+public class hammerStateEffects : MonoBehaviour
 {
     public hammerSpeedState hammerSpeedState;
     public hammerChargeState hammerChargeState;
@@ -15,6 +15,10 @@ public class hammerSparksSpawnerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        switch (hammerChargeState)
+        {
+            default: break;
+        }
         switch (hammerSpeedState) {
             case hammerSpeedState.still: 
                 _mmod.startColor = Color.white;
