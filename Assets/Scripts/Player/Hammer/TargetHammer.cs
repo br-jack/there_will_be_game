@@ -14,8 +14,6 @@ TargetHammer:
     public class TargetHammer : MonoBehaviour
     {
 
-        private float extensionVelocity;
-
         [Header("Spring Settings")]
         [Tooltip("This is the main one you want to change. Just a multiplier")]
         [SerializeField] private float sensitivity = 2;
@@ -32,12 +30,23 @@ TargetHammer:
         [Tooltip("Max spring length: this can be whatever as long as its bigger than rest length obvs")]
         [SerializeField] private float maxLength = 20;
 
+        private float extensionVelocity;
         private float momentum = 0;
 
         [SerializeField] private Transform pivotTransform;
 
         private Quaternion attitude;
         private Vector3 frameAcceleration;
+
+        public Quaternion Attitude
+        {
+            get { return attitude; }
+        }
+       
+        public float Momentum
+        {
+            get { return momentum; }
+        }
 
         private IController _controllerRef;
 
