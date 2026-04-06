@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using System;
 
 public class HorseAnim : MonoBehaviour
 {
@@ -28,14 +28,26 @@ public class HorseAnim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Action jump = horseMovement.jumpStarted;
+
         if(horseAnimator != null)
         {
+            // TODO: make jump anim go until hitting the floor, make jump anim end upon hitting the floor. 
+            // currently holding the jump button loops the animation even when hitting the floor
+
             speed = horseMovement.GetCurrentSpeed();
             horseAnimator.SetFloat("Speed", speed);
             //Debug.LogError("horszz");
-          
-            if (speed  > 15)
+
+            if (horseMovement.JumpButtonHeld)
+            {
+                horseAnimator.SetTrigger("Jump");
+            }
+            else
+            {
+                horseAnimator.ResetTrigger("Jump");
+            }
+            if (speed  > 19)
             {
                 horseAnimator.SetTrigger("Gallop3");
                 horseAnimator.ResetTrigger("Gallop1");
@@ -59,6 +71,7 @@ public class HorseAnim : MonoBehaviour
             {
                 horseAnimator.SetTrigger("Idle");
                 horseAnimator.ResetTrigger("Gallop0");
+                //horseAnimator.ResetTrigger("Gallop1");
 
             }
         }
