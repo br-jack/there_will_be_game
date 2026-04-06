@@ -8,13 +8,7 @@ public class horseMovementGaits : MonoBehaviour
     private float _brakeInput;
     private bool _jumpButtonPressed;
     private bool _jumpButtonHeld;
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        Vector2 moveVector = context.ReadValue<Vector2>();
-        _turnInput = moveVector.x;
-        _throttleInput = moveVector.y;
-        Debug.Log("time to move lol");
-    }
+    
 
     public void OnJump(InputAction.CallbackContext context)
     {
@@ -32,17 +26,20 @@ public class horseMovementGaits : MonoBehaviour
 
     public void onSteer(InputAction.CallbackContext context)
     {
-        Debug.Log("hi!");
+        Debug.Log("hi! steering");
         _turnInput = context.ReadValue<float>();
+
     }
 
     public void onAccelerate(InputAction.CallbackContext context)
     {
+        Debug.Log("accelerating!");
         _throttleInput = context.ReadValue<float>();
     }
 
     public void onBrake(InputAction.CallbackContext context)
     {
+        Debug.Log("braking!");
         _brakeInput = context.ReadValue<float>();
     }
     
