@@ -8,8 +8,10 @@ public class TransitionToMain : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Trigger entered by: " + other.gameObject.name);
         if (other.CompareTag(playerTag))
         {
+            Debug.Log("Player entered trigger, transitioning to main scene.");
             SceneManager.LoadScene(sceneToLoad);
         }
     }
