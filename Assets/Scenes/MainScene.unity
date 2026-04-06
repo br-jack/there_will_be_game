@@ -61208,6 +61208,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 287603272147302520, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 287603272147302520, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 359498572803808022, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -61271,6 +61279,82 @@ PrefabInstance:
     - target: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[0].name
+      value: Park
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[1].name
+      value: Walk
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[2].name
+      value: Trot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[3].name
+      value: Canter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[4].name
+      value: Gallop
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[0].maxSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[0].minSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[1].maxSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[1].minSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[2].maxSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[2].minSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[3].maxSpeed
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[3].minSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[4].maxSpeed
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[4].minSpeed
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[0].acceleration
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[2].acceleration
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174524514626147514, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: gears.Array.data[4].acceleration
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: damageFlash

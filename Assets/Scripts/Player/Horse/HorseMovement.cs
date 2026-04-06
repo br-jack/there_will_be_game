@@ -18,15 +18,15 @@ public class HorseMovement : MonoBehaviour
     public float turnSpeedAtZero = 100f;
     private float _currentSpeed = 0f;
 
-    public float upShiftSpeedMaintenanceConstant; //how much to keep speed above the max speed while preparing to upshift
+    //public float upShiftSpeedMaintenanceConstant; //how much to keep speed above the max speed while preparing to upshift
 
-    public uint framesToShiftGear;
-    private uint framesRemainingToGearShift;
+    //public uint framesToShiftGear;
+    //private uint framesRemainingToGearShift;
 
     //Discrete Speeds
     
     //TODO could maybe include deceleration in this as well if necessary
-
+    /*
     [Serializable]
     private struct Gear
     {
@@ -35,7 +35,15 @@ public class HorseMovement : MonoBehaviour
         public float maxSpeed;
         public float acceleration;
     }
+    */
+
     
+
+
+    
+    public Gait[] gaits;
+    public Gait gait;
+    /*
     [SerializeField]
     private Gear[] gears =
     {
@@ -44,11 +52,14 @@ public class HorseMovement : MonoBehaviour
         new Gear{name = "Canter", minSpeed = 16f, maxSpeed = 24f, acceleration = 10f},
         new Gear{name = "Gallop", minSpeed = 24f, maxSpeed = 35f, acceleration = 14f}
     };
-
+    */
+    
+    /*
     private int _currentGear = 0;
 
     private float _currentMaxSpeed = 24f;
     private float _currentAcceleration = 10f;
+    */
     public float CurrentSpeed => _currentSpeed;
 
     private bool _isGrounded = false;
@@ -156,7 +167,7 @@ public class HorseMovement : MonoBehaviour
     {
         _brakeInput = context.ReadValue<float>();
     }
-
+    /*
     public void OnGearUp(InputAction.CallbackContext context)
     {
         if (context.performed && gears[_currentGear].name != "Gallop")
@@ -170,7 +181,8 @@ public class HorseMovement : MonoBehaviour
         _currentAcceleration = gears[_currentGear].acceleration;
         Debug.Log($"Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
     }
-
+    */
+    /*
     public void OnGearDown(InputAction.CallbackContext context)
     {
         if (context.performed && gears[_currentGear].name != "Walk") {
@@ -183,6 +195,7 @@ public class HorseMovement : MonoBehaviour
         _currentAcceleration = gears[_currentGear].acceleration;
         Debug.Log($"Speed: {_currentSpeed:F1} | Gear: {gears[_currentGear].name} ({_currentGear})");
     }
+    */
     public void onDrift(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -214,13 +227,18 @@ public class HorseMovement : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //GameObject player = GameObject.FindGameObjectWithTag("Player");
+        gait = gaits[0];
     }
 
     private void Update()
     {
-    }
+        gait = gait.getNextGait(_throttleInput,_brakeInput);
+        _rb.MoveRotation(_rb.rotation * gait.getTurnRotation(_turnInput));
+        _rb.linearVelocity *= gait.getSpeed();
 
+    }
+    /*
     private void FixedUpdate()  
     {
         // changed so can change gear without needing to be above or below speeds - remove Car gear vibe.
@@ -233,6 +251,8 @@ public class HorseMovement : MonoBehaviour
         // }
 
         //hello, i just wrote this as this is how i had imagined the gears, however may be dumb
+        */
+        /*
         if (_currentSpeed >= gears[_currentGear].maxSpeed)
         {
             if (framesRemainingToGearShift == 0)  //shift up in gear after a delay, as long as the player keeps accelerating
@@ -250,14 +270,15 @@ public class HorseMovement : MonoBehaviour
             _currentGear --; 
             _currentSpeed = Mathf.Max(_currentSpeed,gears[_currentGear].maxSpeed); //cap new speed at max for gear
             }  
-        else framesRemainingToGearShift = framesToShiftGear; //reset time until upshift each frame if we're not at the max
+        */ /*
+        //else framesRemainingToGearShift = framesToShiftGear; //reset time until upshift each frame if we're not at the max
         
         if (_ignoreGroundTimer > 0f)
         {
             _ignoreGroundTimer -= Time.fixedDeltaTime;
         }
 
-        HandleMovement();
+        //HandleMovement();
         
         float targetLean;
         if (_isDrifting && _isGrounded  && _driftButtonPressed)
@@ -315,13 +336,15 @@ public class HorseMovement : MonoBehaviour
             _rb.linearVelocity += Physics.gravity * ((lowJumpMultiplier - 1f) * Time.fixedDeltaTime); 
         }
     }
-
+    */
+    /*
     private bool Jump(bool grounded)
     {
+        */
         /*Not currently using this:
         scaledJumpForce = jumpForce * speedPercent * 1.2f;
         scaledJumpForce = Mathf.Clamp(scaledJumpForce, 0.0f, jumpForce);*/
-
+        /*
         if (!_jumpButtonPressed)
         {
             return false;
@@ -357,7 +380,9 @@ public class HorseMovement : MonoBehaviour
 
         return true;
     }
-
+    */
+    
+    /*
     private void Turn(bool grounded)
     {
         //restrict turning more at higher speeds
@@ -378,6 +403,7 @@ public class HorseMovement : MonoBehaviour
 
         //_rb.AddTorque(Vector3.up * _turnInput * effectiveTurnSpeed * 0.05f, ForceMode.Acceleration); try only have torque added for drifting not when turning normally
     }
+    */
 
     // private void CalculateSpeed()
     // {
@@ -399,7 +425,7 @@ public class HorseMovement : MonoBehaviour
         
     //     _currentSpeed = Mathf.Clamp(_currentSpeed, -1.0f, maxSpeed);
     // }
-
+    /*
     private void CalculateSpeed()
     {
         float netForce = 0f;
@@ -416,7 +442,9 @@ public class HorseMovement : MonoBehaviour
         
         _currentSpeed = Mathf.Clamp(_currentSpeed, -3.0f, _currentMaxSpeed * maxSpeedMultiplier);
     }
+    */
 
+    /*
     private void HandleMovement()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.2f;
@@ -558,6 +586,7 @@ public class HorseMovement : MonoBehaviour
         //Looking into another way to get around it
         // _rb.MovePosition(_rb.position + forwardMovement);
     }
+    */
 
     private bool CheckForGroundBelow(out RaycastHit groundHit, float extraDistance)
     {
