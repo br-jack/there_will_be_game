@@ -4,60 +4,88 @@ namespace Hammer
 {
     /*
      VisualHammer: 
-        Acts like a spring towards target hammer
+        Acts like a spring towards target hammer.
+        - Springs toward target position/rotation each FixedUpdate
+        - Disables collisions when too far from target (so it can snap back)
+        - (TODO) Horse acceleration lag
      */
     public class VisualHammer : MonoBehaviour
     {
         [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
+        private Collider _collider;
+
         [SerializeField] private Rigidbody horseRigidBody;
+
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
-        [SerializeField] private float positionK = 100;
-        [SerializeField] private float positionDampingCoeff = 63;
-        [SerializeField] private float rotationK = 100;
-        [SerializeField] private float rotationDampingCoeff = 63;
-        [Tooltip("This is the main one you want to change. Just a multiplier")]
-        [SerializeField] private float sensitivity = 20f;
-        private Vector3 localOffset;
 
+        [Header("Spring Settings")]
+        [SerializeField] private float positionSpringStrength = 1000;
+        [SerializeField] private float positionDamping = 160f;
+        [SerializeField] private float rotationSpringStrength = 30f;
+        [SerializeField] private float rotationDamping = 5f;
+
+        [Header("Collision Distance Settings")]
+        [Tooltip("Beyond this distance, collisions are disabled so the hammer can snap back freely")]
+        [SerializeField] private float collisionDisableDistance = 2.5f;
+        [Tooltip("Must get this close to re-enable collisions")]
+        [SerializeField] private float collisionReenableDistance = 0.3f;
+
+        private bool _collisionsEnabled = true;
 
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
-            localOffset = _targetHammer.LocalPosition;
+            _collider = GetComponent<Collider>();
         }
 
-        private void moveToTargetPosition()
+        private void MoveToTargetPosition()
         {
-            Vector3 toTarget = _targetHammer.LocalPosition - transform.localPosition;
-            Vector3 worldToTarget = pivotTransform.TransformDirection(toTarget);
+            Vector3 toTarget = _targetHammer.transform.position - transform.position;
+            float distance = toTarget.magnitude;
 
-            Vector3 worldTargetVel = pivotTransform.TransformDirection(_targetHammer.Velocity);
-            Vector3 velError = _rb.linearVelocity - worldTargetVel;
+            Vector3 springForce = toTarget * positionSpringStrength;
 
-            Vector3 springForce = positionK * worldToTarget;
-            Vector3 dampingForce = -positionDampingCoeff * velError;
+            // horses are much faster than hammers
+            Vector3 dampingForce = -(_rb.linearVelocity - horseRigidBody.linearVelocity) * positionDamping;
 
-            _rb.AddForce(springForce + dampingForce, ForceMode.Force);
+            _rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
+
+            if (_collisionsEnabled && distance > collisionDisableDistance)
+            {
+                _collisionsEnabled = false;
+                if (_collider != null) _collider.enabled = false;
+            }
+            else if (!_collisionsEnabled && distance < collisionReenableDistance)
+            {
+                _collisionsEnabled = true;
+                if (_collider != null) _collider.enabled = true;
+            }
         }
 
-        private void moveToTargetRotation()
+        private void MoveToTargetRotation()
         {
-            Quaternion rotationError = _targetHammer.Rotation * Quaternion.Inverse(transform.rotation);
-            rotationError.ToAngleAxis(out float angle, out Vector3 axis);
+            Quaternion rotationDiff = _targetHammer.transform.rotation * Quaternion.Inverse(transform.rotation);
+            rotationDiff.ToAngleAxis(out float angle, out Vector3 rotationAxis);
 
             if (angle > 180f) angle -= 360f;
 
-            Vector3 torque = axis * (angle * rotationK) - rotationDampingCoeff * _rb.angularVelocity;
-            _rb.AddTorque(torque, ForceMode.Force);
+            if (rotationAxis.sqrMagnitude > 0.001f)
+            {
+                Vector3 springTorque = rotationAxis.normalized * (angle * Mathf.Deg2Rad * rotationSpringStrength);
+                Vector3 dampingTorque = -_rb.angularVelocity * rotationDamping;
+                _rb.AddTorque(springTorque + dampingTorque, ForceMode.Acceleration);
+            }
         }
 
         void FixedUpdate()
         {
+            // maybe horse acceleration?
             _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, horseRigidBody.linearVelocity, 0.8f);
-            moveToTargetPosition();
-            moveToTargetRotation();
+
+            MoveToTargetPosition();
+            MoveToTargetRotation();
         }
 
         // this should probably be replaced with damage on the enemies or something (it should also involve force maybe?)
@@ -69,5 +97,4 @@ namespace Hammer
             }
         }
     }
-
 }

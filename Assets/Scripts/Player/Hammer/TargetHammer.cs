@@ -39,14 +39,6 @@ namespace Hammer
         private Vector3 frameAcceleration;
         private Vector3 velocity;
 
-        public Quaternion Rotation
-        {
-            get { return transform.rotation; }
-        }
-        public Vector3 LocalPosition
-        {
-            get { return transform.localPosition; }
-        }
         public Vector3 Velocity
         {
             get { return velocity; }
