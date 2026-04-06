@@ -8,6 +8,8 @@ public class horseMovementGaits : MonoBehaviour
     private float _brakeInput;
     private bool _jumpButtonPressed;
     private bool _jumpButtonHeld;
+
+    private Rigidbody _rb;
     
 
     public void OnJump(InputAction.CallbackContext context)
@@ -28,6 +30,7 @@ public class horseMovementGaits : MonoBehaviour
     {
         Debug.Log("hi! steering");
         _turnInput = context.ReadValue<float>();
+        _rb.AddRelativeForce(new Vector3(_turnInput,0,0));
 
     }
 
@@ -35,22 +38,24 @@ public class horseMovementGaits : MonoBehaviour
     {
         Debug.Log("accelerating!");
         _throttleInput = context.ReadValue<float>();
+        _rb.AddRelativeForce(new Vector3(0,0,_throttleInput));
     }
 
     public void onBrake(InputAction.CallbackContext context)
     {
         Debug.Log("braking!");
         _brakeInput = context.ReadValue<float>();
+        _rb.AddRelativeForce(new Vector3(0,0,-_brakeInput));
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        _rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         Debug.Log("Throttle: "+_throttleInput+", Turn: "+_turnInput+", JumpHeld: "+_jumpButtonHeld+", JumpPressed: "+_jumpButtonPressed+", brake: "+_brakeInput);
     }
