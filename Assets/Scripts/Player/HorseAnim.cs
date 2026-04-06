@@ -19,6 +19,11 @@ public class HorseAnim : MonoBehaviour
         horseAnimator.Update(0);
         } 
     }
+    void ResetAll()
+    {
+        horseAnimator.ResetTrigger("Gallop0");
+        horseAnimator.ResetTrigger("Gallop3");
+    }
 
     // Update is called once per frame
     void Update()
@@ -33,15 +38,28 @@ public class HorseAnim : MonoBehaviour
             if (speed  > 15)
             {
                 horseAnimator.SetTrigger("Gallop3");
+                horseAnimator.ResetTrigger("Gallop1");
                 horseAnimator.ResetTrigger("Gallop0");
                 //Debug.LogError("horszz");
             }
-            else if (speed > 5 && speed < 13)
+            else if (speed > 8){
+                horseAnimator.SetTrigger("Gallop1");
+                horseAnimator.ResetTrigger("Gallop3");
+                horseAnimator.ResetTrigger("Gallop0");
+            }
+            else if (speed > 1)
             {
                 horseAnimator.SetTrigger("Gallop0");
-                horseAnimator.ResetTrigger("Gallop3");
+                horseAnimator.ResetTrigger("Gallop1");
+                horseAnimator.ResetTrigger("Idle");
                 
                 //Debug.LogError("hors");
+            }
+            else
+            {
+                horseAnimator.SetTrigger("Idle");
+                horseAnimator.ResetTrigger("Gallop0");
+
             }
         }
         else
