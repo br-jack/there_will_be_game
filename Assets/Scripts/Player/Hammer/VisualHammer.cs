@@ -21,10 +21,10 @@ namespace Hammer
         [SerializeField] private TargetHammer _targetHammer;
 
         [Header("Spring Settings")]
-        [SerializeField] private float positionSpringStrength = 1000;
-        [SerializeField] private float positionDamping = 160f;
-        [SerializeField] private float rotationSpringStrength = 30f;
-        [SerializeField] private float rotationDamping = 5f;
+        [SerializeField] private float positionSpringStrength = 2000f;
+        [SerializeField] private float positionDamping = 240f;
+        [SerializeField] private float rotationSpringStrength = 2000f;
+        [SerializeField] private float rotationDamping = 240f;
 
         [Header("Collision Distance Settings")]
         [Tooltip("Beyond this distance, collisions are disabled so the hammer can snap back freely")]
