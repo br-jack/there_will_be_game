@@ -7,7 +7,7 @@ public class PlayerParticles : MonoBehaviour
     public ParticleSystem runParticles;
     public ParticleSystem jumpParticles;
     
-    [SerializeField] private HorseMovement horseMovement;
+    //[SerializeField] private HorseMovement horseMovement;
 
     private ParticleSystem.Particle[] _particleBuffer;
     
@@ -22,12 +22,12 @@ public class PlayerParticles : MonoBehaviour
     
     public void OnEnable()
     {
-        horseMovement.jumpStarted += TriggerJumpParticles;
+        //horseMovement.jumpStarted += TriggerJumpParticles;
     }
 
     public void OnDisable()
     {
-        horseMovement.jumpStarted -= TriggerJumpParticles; 
+        //horseMovement.jumpStarted -= TriggerJumpParticles; 
     }
 
     private IEnumerator PlayJumpParticles()
@@ -43,10 +43,12 @@ public class PlayerParticles : MonoBehaviour
         
         yield return new WaitForSeconds(0.1f);
 
+        /*
         if (!horseMovement.JumpButtonHeld)
         {
             DecreaseParticles(jumpParticles);
         }
+        */
     }
     
     private void DecreaseParticles(ParticleSystem pSystem)
@@ -77,6 +79,7 @@ public class PlayerParticles : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (horseMovement.IsGrounded)
         {
             // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
@@ -89,6 +92,7 @@ public class PlayerParticles : MonoBehaviour
             }
         }
         else
+        */
         {
             runParticles.Stop();
         }

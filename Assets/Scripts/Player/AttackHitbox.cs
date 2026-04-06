@@ -6,12 +6,12 @@ public class AttackHitbox : MonoBehaviour
     public float velocityKnockbackMultiplier = 1f;
     
     private Rigidbody _rb;
-    private HorseMovement _horseMovement;
+    //private HorseMovement _horseMovement;
 
     private void Awake()
     {
         _rb = GetComponentInParent<Rigidbody>();
-        _horseMovement = GetComponentInParent<HorseMovement>();
+        //_horseMovement = GetComponentInParent<HorseMovement>();
     }
 
     public float GetKnockbackForce()
@@ -19,12 +19,15 @@ public class AttackHitbox : MonoBehaviour
         float speed = 0f;
         
         // Try to get speed from HorseMovement first (more accurate)
+        //horseMovement currently doesn't exist, so this won't work!
+        /*
         if (_horseMovement != null)
         {
             speed = _horseMovement.GetCurrentSpeed();
         }
-        // If can't then use Rigidbody speed
-        else if (_rb != null)
+        */
+        // If can't then use Rigidbody speed <-- we will just do this i guess!
+        /*else*/ if (_rb != null)
         {
             speed = _rb.linearVelocity.magnitude;
         }

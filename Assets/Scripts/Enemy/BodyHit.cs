@@ -63,8 +63,10 @@ public class BodyHit : MonoBehaviour
         GameObject player = GameObject.FindWithTag("Player");
         if (player == null) return;
         
+        /*
         HorseMovement horseMovement = player.GetComponent<HorseMovement>();
         if (horseMovement == null) return;
+        */
 
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         
@@ -74,10 +76,12 @@ public class BodyHit : MonoBehaviour
         scoreComponents.Add(new ScoreComponent(baseScore, ScoreType.Base));
         
         // Speed bonus
+        /*
         if (horseMovement.CurrentSpeed >= speedThreshold)
         {
             scoreComponents.Add(new ScoreComponent(speedBonusScore, ScoreType.Speed));
         }
+        */
         
         // Low health bonus
         if (playerHealth != null)
@@ -90,10 +94,12 @@ public class BodyHit : MonoBehaviour
         }
         
         // Air bonus
+        /*
         if (!horseMovement.IsGrounded)
         {
             scoreComponents.Add(new ScoreComponent(airBonusScore, ScoreType.Air));
         }
+        */
 
         // Shield bypass bonus
         if (enemy != null && enemy.HasShield())
