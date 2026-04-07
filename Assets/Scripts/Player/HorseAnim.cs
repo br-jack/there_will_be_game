@@ -4,73 +4,71 @@ using System;
 
 public class HorseAnim : MonoBehaviour
 {
-    public float speed;
-    Animator horseAnimator;
-    public GameObject horseMovObj;
-    HorseMovement horseMovement;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private float speed;
+    private Animator _horseAnimator;
+    private HorseMovement _horseMovement;
+    void Awake()
     {
-        horseAnimator = GetComponent<Animator>();
-        horseMovement = horseMovObj.GetComponent<HorseMovement>();
-        if (horseAnimator.enabled) //this is here because the animator panel is bugged in this unity version :(
+        _horseAnimator = GetComponent<Animator>();
+        _horseMovement = GetComponentInParent<HorseMovement>();
+        if (_horseAnimator.enabled) //this is here because the animator panel is bugged in this unity version :(
         {
-        horseAnimator.Rebind();
-        horseAnimator.Update(0);
+            _horseAnimator.Rebind();
+            _horseAnimator.Update(0);
         } 
     }
     void ResetAll()
     {
-        horseAnimator.ResetTrigger("Gallop0");
-        horseAnimator.ResetTrigger("Gallop3");
+        _horseAnimator.ResetTrigger("Gallop0");
+        _horseAnimator.ResetTrigger("Gallop3");
     }
 
     // Update is called once per frame
     void Update()
     {
-        Action jump = horseMovement.jumpStarted;
+        Action jump = _horseMovement.jumpStarted;
 
-        if(horseAnimator != null)
+        if(_horseAnimator != null)
         {
 
-            speed = horseMovement.GetCurrentSpeed();
-            horseAnimator.SetFloat("Speed", speed);
+            speed = _horseMovement.GetCurrentSpeed();
+            _horseAnimator.SetFloat("Speed", speed);
             //Debug.LogError("horszz");
-            bool grounded = horseMovement.CheckForGroundBelow(out RaycastHit groundHit, 1.0f);
+            bool grounded = _horseMovement.CheckForGroundBelow(out RaycastHit groundHit, 1.0f);
 
-            if (horseMovement.JumpButtonPressed && grounded)
+            if (_horseMovement.JumpButtonPressed && grounded)
             {
-                horseAnimator.SetTrigger("Jump");
+                _horseAnimator.SetTrigger("Jump");
             }
             else
             {
-                horseAnimator.ResetTrigger("Jump");
+                _horseAnimator.ResetTrigger("Jump");
             }
-            horseAnimator.SetBool("Grounded",grounded);
+            _horseAnimator.SetBool("Grounded",grounded);
             if (speed  > 19)
             {
-                horseAnimator.SetTrigger("Gallop3");
-                horseAnimator.ResetTrigger("Gallop1");
-                horseAnimator.ResetTrigger("Gallop0");
+                _horseAnimator.SetTrigger("Gallop3");
+                _horseAnimator.ResetTrigger("Gallop1");
+                _horseAnimator.ResetTrigger("Gallop0");
                 //Debug.LogError("horszz");
             }
             else if (speed > 8){
-                horseAnimator.SetTrigger("Gallop1");
-                horseAnimator.ResetTrigger("Gallop3");
-                horseAnimator.ResetTrigger("Gallop0");
+                _horseAnimator.SetTrigger("Gallop1");
+                _horseAnimator.ResetTrigger("Gallop3");
+                _horseAnimator.ResetTrigger("Gallop0");
             }
             else if (speed > 1)
             {
-                horseAnimator.SetTrigger("Gallop0");
-                horseAnimator.ResetTrigger("Gallop1");
-                horseAnimator.ResetTrigger("Idle");
+                _horseAnimator.SetTrigger("Gallop0");
+                _horseAnimator.ResetTrigger("Gallop1");
+                _horseAnimator.ResetTrigger("Idle");
                 
                 //Debug.LogError("hors");
             }
             else
             {
-                horseAnimator.SetTrigger("Idle");
-                horseAnimator.ResetTrigger("Gallop0");
+                _horseAnimator.SetTrigger("Idle");
+                _horseAnimator.ResetTrigger("Gallop0");
                 //horseAnimator.ResetTrigger("Gallop1");
 
             }
