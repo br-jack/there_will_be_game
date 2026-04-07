@@ -31,13 +31,18 @@ public class IntroFadeText : MonoBehaviour
     [Header("Tutorial Prompt UI")]
     [SerializeField] private GameObject tutorialPromptUI;
     [SerializeField] private TextMeshProUGUI promptText;
-    [SerializeField] private string firstPromptMessage = "Swing your hammer 3 times";
-    [SerializeField] private string secondPromptMessage = "Jump 1 time using the A button";
+    [SerializeField] private string firstPromptMessage = "Swing your hammer";
+    [SerializeField] private string secondPromptMessage = "Jump using the A button";
     [SerializeField] private string thirdPromptMessage = "Complete the task shown on the panel";
+    [SerializeField] private int swingsRequired = 3;
+    [SerializeField] private int jumpsRequired = 1;
 
     private bool introFinished = false;
     private bool firstPromptCompleted = false;
     private bool secondPromptCompleted = false;
+
+    private int currentSwings = 0;
+    private int currentJumps = 0;
 
     private void OnEnable()
     {
@@ -89,8 +94,8 @@ public class IntroFadeText : MonoBehaviour
         introOverlay.SetActive(false);
 
         tutorialPromptUI.SetActive(true);
-        promptText.text = firstPromptMessage;
         introFinished = true;
+        promptText.text = $"{firstPromptMessage} ({currentSwings}/{swingsRequired})";
     }
 
     private IEnumerator TypeText(string fullMessage)
@@ -161,8 +166,15 @@ public class IntroFadeText : MonoBehaviour
     {
         if (introFinished && !firstPromptCompleted)
         {
-            firstPromptCompleted = true;
-            promptText.text = secondPromptMessage;
+            currentSwings++;
+            currentSwings = Mathf.Min(currentSwings, swingsRequired);
+            promptText.text = $"{firstPromptMessage} ({currentSwings}/{swingsRequired})";
+            if (currentSwings >= swingsRequired)
+            {
+                firstPromptCompleted = true;
+                currentJumps = 0;
+                promptText.text = $"{secondPromptMessage} ({currentJumps}/{jumpsRequired})";
+            }
         }
     }
 
@@ -170,9 +182,15 @@ public class IntroFadeText : MonoBehaviour
     {
         if (introFinished && firstPromptCompleted && !secondPromptCompleted)
         {
-            secondPromptCompleted = true;
-            taskPanelUI.SetActive(true);
-            promptText.text = thirdPromptMessage;
+            currentJumps++;
+            currentJumps = Mathf.Min(currentJumps, jumpsRequired);
+            promptText.text = $"{secondPromptMessage} ({currentJumps}/{jumpsRequired})";
+            if (currentJumps >= jumpsRequired)
+            {
+                secondPromptCompleted = true;
+                taskPanelUI.SetActive(true);
+                promptText.text = thirdPromptMessage;
+            }
         }
     }
 
