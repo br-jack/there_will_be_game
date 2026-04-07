@@ -530,7 +530,7 @@ public class HorseMovement : MonoBehaviour
         // _rb.MovePosition(_rb.position + forwardMovement);
     }
 
-    private bool CheckForGroundBelow(out RaycastHit groundHit, float extraDistance)
+    public bool CheckForGroundBelow(out RaycastHit groundHit, float extraDistance)
     {
         groundHit = default;
 
