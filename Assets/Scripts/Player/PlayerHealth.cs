@@ -39,9 +39,12 @@ public class PlayerHealth : MonoBehaviour
     {
         //Debug.Log($"TakeDamage activated.");
         if (playerLives.IsInvincible) return; // Don't let player take damage while invisible.
-
-        // Don't put negative values for TakeDamage, use Heal() instead
-        if (damage <= 0) return;
+       
+        if (damage <= 0)
+        {
+            Debug.LogError("Don't put negative values for TakeDamage, use Heal() instead");
+            return;
+        }
         if (IsDead) return;
 
         Current -= damage;
@@ -70,7 +73,11 @@ public class PlayerHealth : MonoBehaviour
     public void Heal(int amount)
     {
         // Don't call Heal() for a negative amount, use TakeDamage().
-        if (amount <= 0) return;
+        if (amount <= 0)
+        {
+            Debug.LogError("Don't put negative values for Heal, use TakeDamage() instead");
+            return;
+        }
         if (IsDead) return;
 
         current += amount;
