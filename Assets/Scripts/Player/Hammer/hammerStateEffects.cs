@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class hammerStateEffects : MonoBehaviour
 {
-    public hammerSpeedState hammerSpeedState;
+    public gait gait;
     public hammerChargeState hammerChargeState;
 
     
@@ -24,7 +24,10 @@ public class hammerStateEffects : MonoBehaviour
     private ParticleSystem.MainModule _ghostsMain;
 
     //public Color _effectColor;
-
+    public void updateGait(gait newGait)
+    {
+        gait = newGait;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -60,50 +63,50 @@ public class hammerStateEffects : MonoBehaviour
                 break;
         }
         
-        switch (hammerSpeedState) {
-            case hammerSpeedState.still: 
+        switch (gait) {
+            case gait.still: 
                 _chargeLinesMain.startColor = Color.white; 
                 _embersMain.startColor = Color.white;
                 _glowMain.startColor = Color.white;
                 _ghostsMain.startColor = Color.white;
                 _trailsMain.startColor = Color.white;
                 break;
-            case hammerSpeedState.walking: 
+            case gait.walking: 
                 _chargeLinesMain.startColor = Color.green; 
                 _embersMain.startColor = Color.green;
                 _glowMain.startColor = Color.green;
                 _ghostsMain.startColor = Color.green;
                 _trailsMain.startColor = Color.green;
                 break;
-            case hammerSpeedState.trotting: 
+            case gait.trotting: 
                 _chargeLinesMain.startColor = Color.blue; 
                 _embersMain.startColor = Color.blue;
                 _glowMain.startColor = Color.blue;
                 _ghostsMain.startColor = Color.blue;
                 _trailsMain.startColor = Color.blue;
                 break;
-            case hammerSpeedState.cantering: 
+            case gait.cantering: 
                 _chargeLinesMain.startColor =  Color.yellow;
                 _embersMain.startColor = Color.yellow;
                 _glowMain.startColor = Color.yellow;
                 _ghostsMain.startColor = Color.yellow;
                 _trailsMain.startColor = Color.yellow;
                 break;
-            case hammerSpeedState.galloping: 
+            case gait.galloping: 
                 _chargeLinesMain.startColor = Color.red; 
                 _embersMain.startColor = Color.red;
                 _glowMain.startColor = Color.red;
                 _ghostsMain.startColor = Color.red;
                 _trailsMain.startColor = Color.red;
                 break;
-            case hammerSpeedState.ultraGalloping: 
+            case gait.ultraGalloping: 
                 _chargeLinesMain.startColor =  Color.magenta;
                 _embersMain.startColor = Color.magenta;
                 _glowMain.startColor = Color.magenta;
                 _ghostsMain.startColor = Color.magenta;
                 _trailsMain.startColor = Color.magenta;
                 break;
-            case hammerSpeedState.vulcan: 
+            case gait.vulcan: 
                 _chargeLinesMain.startColor = Color.black; 
                 _embersMain.startColor = Color.black;
                 _glowMain.startColor = Color.black;

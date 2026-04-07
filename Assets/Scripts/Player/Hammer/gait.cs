@@ -1,4 +1,4 @@
-public enum hammerSpeedState
+public enum gait
 {
     still,
     walking,

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Net.NetworkInformation;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
@@ -8,6 +10,7 @@ public class horseMovementGaits : MonoBehaviour
 {   
     //a bit of copy pasting from https://gist.github.com/Mike-Schvedov/b833a89b16e8b5a44df5707923169936
     //has happened here, not sure whether any actually remains, come back and check
+    public UnityEvent<gait> gaitChange;
     public float walkSpeed;
     public float canterSpeed;
     public float gallopSpeed;
@@ -19,7 +22,7 @@ public class horseMovementGaits : MonoBehaviour
     public float chargeDecay;
     //public float jumpHeight = 4f; no jumping for now
     public float currentRunCharge; //should be private, but i want to see it! 
-    public hammerSpeedState hammerSpeedState; //currently pointless, just to see gait in editor
+    public gait gait; //currently pointless, just to see gait in editor
     public float currentSpeed = 0f; //just to see in editor
     private float gravity = -9.81f;
     private Vector3 verticalVelocity = Vector3.zero;
@@ -30,7 +33,6 @@ public class horseMovementGaits : MonoBehaviour
     //private bool _jumpButtonPressed;
     //private bool _jumpButtonHeld;
 
-    private Vector3 _move;
     private CharacterController _cc;
     private Transform _tf;
     
@@ -69,6 +71,25 @@ public class horseMovementGaits : MonoBehaviour
         _tf = GetComponent<Transform>();
     }
 
+    private void setGait(gait newGait)
+    {
+        if (gait != newGait) 
+        {
+            gaitChange.Invoke(newGait);
+            gait = newGait;
+        }
+    }
+
+    private void setGait(float runCharge)
+    {
+        gait newGait;
+        if (runCharge <= 0f) newGait = gait.walking;
+        else if (runCharge <= chargeRequiredToCanter) newGait = gait.trotting;
+        else if (runCharge <= chargeRequiredToGallop) newGait = gait.cantering;
+        else newGait = gait.galloping;
+        setGait(newGait);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -77,15 +98,13 @@ public class horseMovementGaits : MonoBehaviour
         if ((_throttleInput - _brakeInput) > 0.1f)  
         {
             if (currentRunCharge > chargeRequiredToGallop)
-            {
-                hammerSpeedState = hammerSpeedState.galloping;
+            {   
                 targetSpeed = gallopSpeed;
                 //set charge to a little over needed to maintain gallop
                 currentRunCharge = chargeRequiredToGallop + 0.1f; 
 
             } else if (currentRunCharge > chargeRequiredToCanter)
             {
-                hammerSpeedState = hammerSpeedState.cantering;
                 targetSpeed = canterSpeed;
 
                 //if within a range of canter speed, and accelerating, add charge towards galloping
@@ -95,19 +114,16 @@ public class horseMovementGaits : MonoBehaviour
 
             } else 
             {
-                hammerSpeedState = hammerSpeedState.walking;
                 targetSpeed = walkSpeed; 
 
                 //if within a range of walk speed, and accelerating, add charge towards cantering
                 if (walkSpeed - currentSpeed < 0.25f) currentRunCharge += Time.deltaTime; 
             }
         }
-        else if (currentRunCharge > 0) 
-        {
-            currentRunCharge -= Time.deltaTime * chargeDecay; 
-            Debug.Log("hello?");
-            //if (currentRunCharge < chargeRequiredToGallop) 
-        }
+        else if (currentRunCharge > 0) {currentRunCharge -= Time.deltaTime * chargeDecay;}
+
+        setGait(currentRunCharge); 
+        
 
         //turn transform 
         if (Mathf.Abs(_turnInput) > 0.1f)
@@ -127,6 +143,5 @@ public class horseMovementGaits : MonoBehaviour
         Vector3 move = transform.forward * currentSpeed + verticalVelocity;
         _cc.Move(move * Time.deltaTime);
 
-        Debug.Log("Throttle: "+_throttleInput+", Turn: "+_turnInput+/*", JumpHeld: "+_jumpButtonHeld+", JumpPressed: "+_jumpButtonPressed+*/", brake: "+_brakeInput);
     }
 }
