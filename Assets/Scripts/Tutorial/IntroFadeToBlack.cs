@@ -22,25 +22,33 @@ public class IntroFadeText : MonoBehaviour
     [SerializeField] private float maxBackgroundAlpha = 0.75f;
 
     [Header("Gameplay UI")]
-    [SerializeField] private GameObject gameplayUI;
+    [SerializeField] private GameObject fearBarUI;
+    [SerializeField] private GameObject aweBarUI;
+    [SerializeField] private GameObject healthBarUI;
+    [SerializeField] private GameObject boonTextUI;
+    [SerializeField] private GameObject taskPanelUI;
 
     [Header("Tutorial Prompt UI")]
     [SerializeField] private GameObject tutorialPromptUI;
     [SerializeField] private TextMeshProUGUI promptText;
     [SerializeField] private string firstPromptMessage = "Swing your hammer 3 times";
-    [SerializeField] private string secondPromptMessage = "Jump 3 times";
+    [SerializeField] private string secondPromptMessage = "Jump 1 time using the A button";
+    [SerializeField] private string thirdPromptMessage = "Complete the task shown on the panel";
 
     private bool introFinished = false;
     private bool firstPromptCompleted = false;
+    private bool secondPromptCompleted = false;
 
     private void OnEnable()
     {
         HammerBehaviour.OnHammerSwing += HandleHammerSwing;
+        HorseMovement.OnTutorialJump += HandleJump;
     }
 
     private void OnDisable()
     {
         HammerBehaviour.OnHammerSwing -= HandleHammerSwing;
+        HorseMovement.OnTutorialJump -= HandleJump;
     }
 
     private void Start()
@@ -51,7 +59,7 @@ public class IntroFadeText : MonoBehaviour
     private IEnumerator PlayIntroSequence()
     {
         // At the start of the intro hide the gameplay UI and tutorial prompts
-        gameplayUI.SetActive(false);
+        HideGameplayUIAtStart();
         tutorialPromptUI.SetActive(false);
 
         introOverlay.SetActive(true);
@@ -156,5 +164,24 @@ public class IntroFadeText : MonoBehaviour
             firstPromptCompleted = true;
             promptText.text = secondPromptMessage;
         }
+    }
+
+    private void HandleJump()
+    {
+        if (introFinished && firstPromptCompleted && !secondPromptCompleted)
+        {
+            secondPromptCompleted = true;
+            taskPanelUI.SetActive(true);
+            promptText.text = thirdPromptMessage;
+        }
+    }
+
+    private void HideGameplayUIAtStart()
+    {
+        fearBarUI.SetActive(false);
+        aweBarUI.SetActive(false);
+        healthBarUI.SetActive(false);
+        boonTextUI.SetActive(false);
+        taskPanelUI.SetActive(false);
     }
 }

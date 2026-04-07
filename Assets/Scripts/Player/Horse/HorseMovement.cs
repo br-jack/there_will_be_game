@@ -11,7 +11,8 @@ public class HorseMovement : MonoBehaviour
     public float deceleration = 2f; //ambient deceleration when no acceleration or braking/reverse
 
     public float brake = 20f;
-    
+
+    public static Action OnTutorialJump;
 
     public float steerTorque = 10f;
     public float turnSpeed = 70f;
@@ -320,6 +321,7 @@ public class HorseMovement : MonoBehaviour
 
         _rb.linearVelocity = velocity;
         _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        OnTutorialJump?.Invoke();
         JumpTask task = FindFirstObjectByType<JumpTask>();
         if (task != null) task.JumpDone();
 

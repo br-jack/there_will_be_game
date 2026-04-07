@@ -1518,6 +1518,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 969506504}
   m_CullTransparentMesh: 1
+--- !u!1 &1006594888 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7549535118096911905, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1089072607
 GameObject:
   m_ObjectHideFlags: 0
@@ -2203,6 +2208,11 @@ MonoBehaviour:
   pulseScale: 1.06
   pulseUpTime: 0.08
   pulseDownTime: 0.12
+--- !u!1 &1579351736 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5571188267721605200, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1802088971
 GameObject:
   m_ObjectHideFlags: 0
@@ -2241,11 +2251,16 @@ MonoBehaviour:
   fadeInTime: 1
   fadeOutTime: 1
   maxBackgroundAlpha: 0.7
-  gameplayUI: {fileID: 0}
+  fearBarUI: {fileID: 1486947153}
+  aweBarUI: {fileID: 360482477}
+  healthBarUI: {fileID: 1579351736}
+  boonTextUI: {fileID: 1006594888}
+  taskPanelUI: {fileID: 1980488916}
   tutorialPromptUI: {fileID: 45193402}
   promptText: {fileID: 910374579}
   firstPromptMessage: Swing your hammer 3 times
   secondPromptMessage: Jump 3 times
+  thirdPromptMessage: Complete the task shown on the panel
 --- !u!4 &1802088973
 Transform:
   m_ObjectHideFlags: 0
