@@ -20,6 +20,14 @@ public class IntroFadeText : MonoBehaviour
     [SerializeField] private float fadeOutTime = 1.5f;
     [SerializeField] private float maxBackgroundAlpha = 0.75f;
 
+    [Header("Gameplay UI")]
+    [SerializeField] private GameObject gameplayUI;
+
+    [Header("Tutorial Prompt UI")]
+    [SerializeField] private GameObject tutorialPromptUI;
+    [SerializeField] private TextMeshProUGUI promptText;
+    [SerializeField] private string firstPromptMessage = "Swing your hammer 3 times";
+
     private void Start()
     {
         StartCoroutine(PlayIntroSequence());
@@ -27,6 +35,10 @@ public class IntroFadeText : MonoBehaviour
 
     private IEnumerator PlayIntroSequence()
     {
+        // At the start of the intro hide the gameplay UI and tutorial prompts
+        gameplayUI.SetActive(false);
+        tutorialPromptUI.SetActive(false);
+
         introOverlay.SetActive(true);
 
         // Start with invisible background and empty text
@@ -52,6 +64,9 @@ public class IntroFadeText : MonoBehaviour
         yield return StartCoroutine(FadeOutOverlay());
 
         introOverlay.SetActive(false);
+
+        tutorialPromptUI.SetActive(true);
+        promptText.text = firstPromptMessage;
     }
 
     private IEnumerator TypeText(string fullMessage)
