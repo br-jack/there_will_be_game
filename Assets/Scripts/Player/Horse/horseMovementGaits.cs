@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,14 +8,18 @@ public class horseMovementGaits : MonoBehaviour
 {   
     //a bit of copy pasting from https://gist.github.com/Mike-Schvedov/b833a89b16e8b5a44df5707923169936
     //has happened here, not sure whether any actually remains, come back and check
-    public float walkSpeed = 6f;
-    public float runSpeed = 12f;
-    public float chargeRequiredToRun = 10f;
+    public float walkSpeed;
+    public float canterSpeed;
+    public float gallopSpeed;
+    public float chargeRequiredToCanter = 10f;
+    public float chargeRequiredToGallop = 20f;
     public float turnSpeed = 60f;
     public float acceleration = 2f;
-    public float deceleration = 2f;
+    public float deceleration = 6f;
+    public float chargeDecay;
     //public float jumpHeight = 4f; no jumping for now
     public float currentRunCharge; //should be private, but i want to see it! 
+    public hammerSpeedState hammerSpeedState; //currently pointless, just to see gait in editor
     private float currentSpeed = 0f;
     private float gravity = -9.81f;
     private Vector3 verticalVelocity = Vector3.zero;
@@ -69,19 +74,35 @@ public class horseMovementGaits : MonoBehaviour
     {
         //identify a target speed to accelerate towards
         float targetSpeed = 0f;
-        if ((_throttleInput - _brakeInput) > 0.1f)
-            if (currentRunCharge > chargeRequiredToRun)
+        if ((_throttleInput - _brakeInput) > 0.1f)  
+        {
+            if (currentRunCharge > chargeRequiredToGallop)
             {
-                targetSpeed = runSpeed;
-                //set charge to a little over needed to maintain run
-                currentRunCharge = chargeRequiredToRun + 0.1f; 
+                hammerSpeedState = hammerSpeedState.galloping;
+                targetSpeed = gallopSpeed;
+                //set charge to a little over needed to maintain gallop
+                currentRunCharge = chargeRequiredToGallop + 0.1f; 
+
+            } else if (currentRunCharge > chargeRequiredToCanter)
+            {
+                hammerSpeedState = hammerSpeedState.cantering;
+                targetSpeed = canterSpeed;
+
+                //if within a range of canter speed, and accelerating, add charge towards galloping
+                if (canterSpeed - currentSpeed < 0.25f) currentRunCharge += Time.deltaTime;
+                else currentRunCharge = chargeRequiredToCanter + 0.1f; 
+                //^^otherwise set charge to a little over needed to maintain canter
+
             } else 
             {
+                hammerSpeedState = hammerSpeedState.walking;
                 targetSpeed = walkSpeed; 
-                //if within a range of walk speed, and accelerating, add charge
+
+                //if within a range of walk speed, and accelerating, add charge towards cantering
                 if (walkSpeed - currentSpeed < 0.25f) currentRunCharge += Time.deltaTime; 
             }
-        else if (currentRunCharge > 0) currentRunCharge -= Time.deltaTime;
+        }
+        else if (currentRunCharge > 0) currentRunCharge -= Time.deltaTime * chargeDecay; Debug.Log("hello?");
 
 
         //turn transform 
@@ -89,6 +110,8 @@ public class horseMovementGaits : MonoBehaviour
         {
             _tf.Rotate(Vector3.up * _turnInput * turnSpeed * Time.deltaTime);
         }
+        //should see if it would be fun for turning to decrease charge speed, so you have to 
+        //go in a straight line to increase gait
 
         //accelerate
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed,
