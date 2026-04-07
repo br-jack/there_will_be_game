@@ -485,11 +485,11 @@ RectTransform:
   - {fileID: 2081719575}
   - {fileID: 890898795}
   - {fileID: 779971761}
-  m_Father: {fileID: 527624930}
+  m_Father: {fileID: 392162190}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 707.5, y: 268.5}
+  m_AnchoredPosition: {x: -22, y: -120}
   m_SizeDelta: {x: 320, y: 70}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &360482479
@@ -743,39 +743,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
---- !u!224 &527624930 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1275055409300259989, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
-  m_PrefabInstance: {fileID: 1486947145}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &527624931 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3297560508546776476, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
-  m_PrefabInstance: {fileID: 1486947145}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &527624932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 527624931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d22212540a69bc84a82ddb0f402a6f93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tutorialIntroRoot: {fileID: 1927686302}
-  dimBackground: {fileID: 776700385}
-  introText: {fileID: 829590286}
-  gameplayUIRoot: {fileID: 527624931}
-  message: A god is helping you achieve your task
-  letterDelay: 0.05
-  holdAfterTyping: 1.5
-  dimFadeInTime: 0.5
-  dimFadeOutTime: 0.75
-  targetDimAlpha: 0.5
-  tutorialStarter: {fileID: 0}
 --- !u!1 &605744326
 GameObject:
   m_ObjectHideFlags: 0
@@ -2135,16 +2102,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1879296612164912189, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 45193403}
-    - targetCorrespondingSourceObject: {fileID: 1275055409300259989, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1879296612164912189, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1980488917}
-    - targetCorrespondingSourceObject: {fileID: 1275055409300259989, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1879296612164912189, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 360482478}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3297560508546776476, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 527624932}
     - targetCorrespondingSourceObject: {fileID: 635458015265966460, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1486947154}
@@ -2277,10 +2241,11 @@ MonoBehaviour:
   fadeInTime: 1
   fadeOutTime: 1
   maxBackgroundAlpha: 0.7
-  gameplayUI: {fileID: 527624931}
+  gameplayUI: {fileID: 0}
   tutorialPromptUI: {fileID: 45193402}
   promptText: {fileID: 910374579}
   firstPromptMessage: Swing your hammer 3 times
+  secondPromptMessage: Jump 3 times
 --- !u!4 &1802088973
 Transform:
   m_ObjectHideFlags: 0
@@ -2564,11 +2529,11 @@ RectTransform:
   m_Children:
   - {fileID: 605744327}
   - {fileID: 1322352136}
-  m_Father: {fileID: 527624930}
+  m_Father: {fileID: 392162190}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -619.5, y: 0}
+  m_AnchoredPosition: {x: 110, y: 0}
   m_SizeDelta: {x: 200, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1980488918
