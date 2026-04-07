@@ -55,7 +55,8 @@ namespace Hammer
         {
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
-            HammerManager.Instance.CalibrationQuaternion = Quaternion.Inverse(attitude);
+            HammerManager.Instance.SaveCalibration(Quaternion.Inverse(attitude));
+            
         }
 
         void UpdateRotation()
