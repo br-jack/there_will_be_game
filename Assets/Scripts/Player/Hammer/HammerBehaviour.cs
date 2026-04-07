@@ -9,6 +9,7 @@ namespace Hammer
 {
     public class HammerBehaviour : MonoBehaviour
     {
+        public static Action OnHammerSwing;
 
         [SerializeField] private float extension;
         private float extensionVelocity;
@@ -22,6 +23,12 @@ namespace Hammer
         private float momentum = 0;
 
         [SerializeField] private Transform pivotTransform;
+
+        [Header("Swing Detection")]
+        [SerializeField] private float swingAccelerationThreshold = 2.5f;
+        [SerializeField] private float swingCooldown = 0.6f;
+
+        private float lastSwingTime = -999f;
 
         private Rigidbody _rb;
 
@@ -82,6 +89,20 @@ namespace Hammer
             
             UpdateRotation();
             UpdatePosition();
+            CheckForSwing();
+        }
+
+        void CheckForSwing()
+        {
+            Vector3 worldForward = transform.rotation * Vector3.forward;
+            float radialAcceleration = Vector3.Dot(frameAcceleration, worldForward);
+
+            if (Mathf.Abs(radialAcceleration) >= swingAccelerationThreshold && Time.time >= lastSwingTime + swingCooldown)
+            {
+                lastSwingTime = Time.time;
+                OnHammerSwing?.Invoke();
+                Debug.Log("Hammer swing detected");
+            }
         }
 
         public void OnCollisionEnter(Collision collision)

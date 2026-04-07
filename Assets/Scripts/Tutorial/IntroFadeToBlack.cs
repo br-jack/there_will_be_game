@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Hammer;
 
 public class IntroFadeText : MonoBehaviour
 {
@@ -27,6 +28,20 @@ public class IntroFadeText : MonoBehaviour
     [SerializeField] private GameObject tutorialPromptUI;
     [SerializeField] private TextMeshProUGUI promptText;
     [SerializeField] private string firstPromptMessage = "Swing your hammer 3 times";
+    [SerializeField] private string secondPromptMessage = "Jump 3 times";
+
+    private bool introFinished = false;
+    private bool firstPromptCompleted = false;
+
+    private void OnEnable()
+    {
+        HammerBehaviour.OnHammerSwing += HandleHammerSwing;
+    }
+
+    private void OnDisable()
+    {
+        HammerBehaviour.OnHammerSwing -= HandleHammerSwing;
+    }
 
     private void Start()
     {
@@ -67,6 +82,7 @@ public class IntroFadeText : MonoBehaviour
 
         tutorialPromptUI.SetActive(true);
         promptText.text = firstPromptMessage;
+        introFinished = true;
     }
 
     private IEnumerator TypeText(string fullMessage)
@@ -131,5 +147,14 @@ public class IntroFadeText : MonoBehaviour
         Color finalTextColour = introText.color;
         finalTextColour.a = 0f;
         introText.color = finalTextColour;
+    }
+
+    private void HandleHammerSwing()
+    {
+        if (introFinished && !firstPromptCompleted)
+        {
+            firstPromptCompleted = true;
+            promptText.text = secondPromptMessage;
+        }
     }
 }
