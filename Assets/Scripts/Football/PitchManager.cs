@@ -7,9 +7,12 @@ public class PitchManager : MonoBehaviour
     public GameObject invisibleWallForNormalEnemies;
 
     private void OnTriggerEnter(Collider other)
+    
     {
+        Debug.Log("Something entered the pitch: " + other.name + " with tag: " + other.tag);
         if (other.CompareTag("Player"))
         {
+            Debug.Log("Player detected! Activating defenders...");
             ActivatePitch(true);
         }
     }
