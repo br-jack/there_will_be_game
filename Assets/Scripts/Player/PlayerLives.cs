@@ -2,18 +2,16 @@ using System;
 using UnityEngine;
 
 /*
-PlayerLives contains both the discrete and continuous bars (UI).
+PlayerLives contains the continuous bar (UI).
 It's connected to both UIs and PlayerHealth.
 Invincibility is controlled here, PlayerHealth can use the getter IsInvincible to see whether to deal damage.
 */
 
 public class PlayerLives : MonoBehaviour
 {
-    [SerializeField] private int maxLives = 5;
-    [SerializeField] private int startingLives = 5;
+    [SerializeField] private int maxLives = 1;
 
     [Header("UI")]
-    [SerializeField] private DiscreteHealthBar livesBar;
     [SerializeField] private ContinuousBar healthBar;
 
     [Header("Dependencies")]
@@ -39,14 +37,12 @@ public class PlayerLives : MonoBehaviour
     private void Awake()
     {
         if (playerHealth == null) playerHealth = GetComponent<PlayerHealth>();
-        if (livesBar == null) livesBar = FindObjectOfType<DiscreteHealthBar>();
         if (healthBar == null) healthBar = FindObjectOfType<ContinuousBar>();
     }
 
     private void Start()
     {
-        Lives = startingLives;
-        UpdateLivesUI(Lives, maxLives);
+        Lives = 1;
     }
 
     private void OnEnable()
@@ -72,7 +68,6 @@ public class PlayerLives : MonoBehaviour
         if (IsGameOver) return;
 
         Lives--;
-        UpdateLivesUI(Lives, maxLives);
         OnLivesChanged?.Invoke(Lives, maxLives);
 
         MakeInvincibleFor(invincibilityTime);
@@ -94,7 +89,6 @@ public class PlayerLives : MonoBehaviour
         if (IsGameOver) return;
         Lives = Lives + amount;
         if (Lives > maxLives) Lives = maxLives;
-        UpdateLivesUI(Lives, maxLives);
         OnLivesChanged?.Invoke(Lives, maxLives);
     }
 
@@ -119,9 +113,5 @@ public class PlayerLives : MonoBehaviour
     private void UpdateHealthUI(int current, int max)
     {
         healthBar?.DisplayHealth(current, max);
-    }
-    private void UpdateLivesUI(int current, int max)
-    {
-        livesBar?.DisplayHealth(current, max);
     }
 }
