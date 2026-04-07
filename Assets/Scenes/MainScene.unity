@@ -48409,12 +48409,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d3f02ba14be2e94bb27bb865a227e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 6
-  runSpeed: 12
-  chargeRequiredToRun: 10
+  walkSpeed: 10
+  runSpeed: 30
+  chargeRequiredToRun: 6
   turnSpeed: 60
-  acceleration: 2
-  deceleration: 2
+  acceleration: 15
+  deceleration: 15
   currentRunCharge: 0
 --- !u!143 &1758361335
 CharacterController:
@@ -48434,13 +48434,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 0
-  m_Radius: 1.5
+  m_Height: 2.5
+  m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.6
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.5, z: 0}
+  m_Center: {x: 0, y: 1.25, z: 0.5}
 --- !u!4 &1760117778 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6684650752117785536, guid: b079b9bd975d5154ca7b34b5a62c436b, type: 3}
