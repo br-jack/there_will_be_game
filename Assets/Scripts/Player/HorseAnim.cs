@@ -32,15 +32,13 @@ public class HorseAnim : MonoBehaviour
 
         if(horseAnimator != null)
         {
-            // TODO:
-            // currently holding the jump button loops the animation even when hitting the floor
 
             speed = horseMovement.GetCurrentSpeed();
             horseAnimator.SetFloat("Speed", speed);
             //Debug.LogError("horszz");
             bool grounded = horseMovement.CheckForGroundBelow(out RaycastHit groundHit, 1.0f);
 
-            if (horseMovement.JumpButtonHeld && grounded)
+            if (horseMovement.JumpButtonPressed && grounded)
             {
                 horseAnimator.SetTrigger("Jump");
             }
