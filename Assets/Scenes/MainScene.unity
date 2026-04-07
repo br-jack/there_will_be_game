@@ -48412,14 +48412,15 @@ MonoBehaviour:
   walkSpeed: 10
   canterSpeed: 18
   gallopSpeed: 24
-  chargeRequiredToCanter: 10
-  chargeRequiredToGallop: 20
+  chargeRequiredToCanter: 1.5
+  chargeRequiredToGallop: 3.5
   turnSpeed: 60
-  acceleration: 15
-  deceleration: 15
-  chargeDecay: 4
+  acceleration: 6
+  deceleration: 12
+  chargeDecay: 15
   currentRunCharge: 0
   hammerSpeedState: 0
+  currentSpeed: 0
 --- !u!143 &1758361335
 CharacterController:
   m_ObjectHideFlags: 0

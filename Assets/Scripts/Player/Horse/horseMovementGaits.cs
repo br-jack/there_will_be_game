@@ -20,7 +20,7 @@ public class horseMovementGaits : MonoBehaviour
     //public float jumpHeight = 4f; no jumping for now
     public float currentRunCharge; //should be private, but i want to see it! 
     public hammerSpeedState hammerSpeedState; //currently pointless, just to see gait in editor
-    private float currentSpeed = 0f;
+    public float currentSpeed = 0f; //just to see in editor
     private float gravity = -9.81f;
     private Vector3 verticalVelocity = Vector3.zero;
     
@@ -102,8 +102,12 @@ public class horseMovementGaits : MonoBehaviour
                 if (walkSpeed - currentSpeed < 0.25f) currentRunCharge += Time.deltaTime; 
             }
         }
-        else if (currentRunCharge > 0) currentRunCharge -= Time.deltaTime * chargeDecay; Debug.Log("hello?");
-
+        else if (currentRunCharge > 0) 
+        {
+            currentRunCharge -= Time.deltaTime * chargeDecay; 
+            Debug.Log("hello?");
+            //if (currentRunCharge < chargeRequiredToGallop) 
+        }
 
         //turn transform 
         if (Mathf.Abs(_turnInput) > 0.1f)
