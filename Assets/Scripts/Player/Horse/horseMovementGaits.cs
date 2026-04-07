@@ -90,6 +90,7 @@ public class horseMovementGaits : MonoBehaviour
             _tf.Rotate(Vector3.up * _turnInput * turnSpeed * Time.deltaTime);
         }
 
+        //accelerate
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed,
             (currentSpeed < targetSpeed ? acceleration : deceleration) * Time.deltaTime);
         
@@ -99,8 +100,6 @@ public class horseMovementGaits : MonoBehaviour
         Vector3 move = transform.forward * currentSpeed + verticalVelocity;
         _cc.Move(move * Time.deltaTime);
 
-
-        _cc.Move(_move);
         Debug.Log("Throttle: "+_throttleInput+", Turn: "+_turnInput+/*", JumpHeld: "+_jumpButtonHeld+", JumpPressed: "+_jumpButtonPressed+*/", brake: "+_brakeInput);
     }
 }
