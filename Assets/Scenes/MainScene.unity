@@ -17465,7 +17465,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 743921864}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -4505212103197417152, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: m_Size.z
@@ -17485,15 +17485,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5003253198180856680, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -5.26
       objectReference: {fileID: 0}
     - target: {fileID: 5003253198180856680, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 12.77
       objectReference: {fileID: 0}
     - target: {fileID: 5003253198180856680, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -14.81
       objectReference: {fileID: 0}
     - target: {fileID: 5003253198180856680, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17537,7 +17537,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5577740451161296096, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: m_CollisionDetection
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577740451161296096, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 5630890325763975634, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: m_Name
@@ -62836,10 +62840,7 @@ PrefabInstance:
     - {fileID: 5019991307706842844, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
     - {fileID: 8418701904486700013, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
     - {fileID: 2636759613974309699, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 1131709874}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
 --- !u!1001 &6126506868503943783
@@ -62961,6 +62962,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 377037377}
+  - {fileID: 652765277}
   - {fileID: 5061453144199501980}
   - {fileID: 139368893}
   - {fileID: 6126506868503943783}
