@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class horseMovementGaits : MonoBehaviour
 {   
@@ -8,10 +9,12 @@ public class horseMovementGaits : MonoBehaviour
     //has happened here, not sure whether any actually remains, come back and check
     public float walkSpeed = 6f;
     public float runSpeed = 12f;
+    public float chargeRequiredToRun = 10f;
     public float turnSpeed = 60f;
     public float acceleration = 2f;
     public float deceleration = 2f;
     //public float jumpHeight = 4f; no jumping for now
+    public float currentRunCharge; //should be private, but i want to see it! 
     private float currentSpeed = 0f;
     private float gravity = -9.81f;
     private Vector3 verticalVelocity = Vector3.zero;
@@ -67,7 +70,19 @@ public class horseMovementGaits : MonoBehaviour
         //identify a target speed to accelerate towards
         float targetSpeed = 0f;
         if ((_throttleInput - _brakeInput) > 0.1f)
-            targetSpeed = walkSpeed; //just walking for now
+            if (currentRunCharge > chargeRequiredToRun)
+            {
+                targetSpeed = runSpeed;
+                //set charge to a little over needed to maintain run
+                currentRunCharge = chargeRequiredToRun + 0.1f; 
+            } else 
+            {
+                targetSpeed = walkSpeed; 
+                //if within a range of walk speed, and accelerating, add charge
+                if (walkSpeed - currentSpeed < 0.25f) currentRunCharge += Time.deltaTime; 
+            }
+        else if (currentRunCharge > 0) currentRunCharge -= Time.deltaTime;
+
 
         //turn transform 
         if (Mathf.Abs(_turnInput) > 0.1f)

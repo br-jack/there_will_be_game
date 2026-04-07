@@ -48411,9 +48411,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 6
   runSpeed: 12
+  chargeRequiredToRun: 10
   turnSpeed: 60
   acceleration: 2
   deceleration: 2
+  currentRunCharge: 0
 --- !u!143 &1758361335
 CharacterController:
   m_ObjectHideFlags: 0
@@ -48432,10 +48434,10 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 0
+  m_Radius: 1.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.6
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.5, z: 0}
