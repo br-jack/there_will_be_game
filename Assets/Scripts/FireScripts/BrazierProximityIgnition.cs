@@ -8,14 +8,12 @@ public class BrazierProximityIgnite : MonoBehaviour
 
     [SerializeField] private FireTask fireTask;
 
-    private bool hasIgnited = false;
-
     private void Update()
     {
         if (hammerHitbox == null || hammerFireController == null)
             return;
 
-        if (hasIgnited)
+        if (hammerFireController.IsOnFire)
             return;
         Vector3 closestPoint = hammerHitbox.ClosestPoint(transform.position);
         float distance = Vector3.Distance(closestPoint, transform.position);
@@ -24,7 +22,6 @@ public class BrazierProximityIgnite : MonoBehaviour
         {
             hammerFireController.IgniteHammer();
             fireTask.HammerIgnited();
-            hasIgnited = true;
         }
     }
 }

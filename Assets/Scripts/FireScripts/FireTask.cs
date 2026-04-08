@@ -7,6 +7,7 @@ public class FireTask : BaseTask
     private bool rewardSpawned = false;
     [SerializeField] private PowerUpSpawner powerUpSpawner;
     [SerializeField] private GameObject infiniteFirePowerUpPrefab;
+    [SerializeField] private HammerFireController hammerFireController;
     [SerializeField] private string rewardMessage = "The eternal flame boon has been granted";
 
     void Start()
@@ -16,9 +17,22 @@ public class FireTask : BaseTask
         StartTask();
     }
 
+    private void Update()
+    {
+        if (hammerIgnited && !buildingBurned && !isComplete)
+        {
+            if (!hammerFireController.IsOnFire)
+            {
+                hammerIgnited = false;
+                taskDescription = "Ignite the hammer";
+                TaskHUD.Instance.RefreshUI();
+            }
+        }
+    }
+
     public void HammerIgnited()
     {
-        if (hammerIgnited) return;
+        if (hammerIgnited || buildingBurned) return;
 
         hammerIgnited = true;
 
