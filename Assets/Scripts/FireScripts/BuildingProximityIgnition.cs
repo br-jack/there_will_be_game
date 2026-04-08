@@ -14,7 +14,10 @@ public class BuildingProximityIgnition : MonoBehaviour
 
     private void Update()
     {
-        if (!hammerFireController.IsOnFire && !hasIgnited && !burnableBuilding.isBurning)
+        if (burnableBuilding == null || hammerFireController == null)
+            return;
+
+        if (!hammerFireController.IsOnFire && !hasIgnited && !burnableBuilding.IsBurning)
         {
             currentHoldTime = 0f;
             return;
