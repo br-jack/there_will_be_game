@@ -2,35 +2,43 @@ using UnityEngine;
 
 public class BuildingProximityIgnition : MonoBehaviour
 {
-    [SerializeField] private Transform player;
     [SerializeField] private HammerFireController hammerFireController;
-
     [SerializeField] private BurnableBuilding burnableBuilding;
-    [SerializeField] private float igniteDistance = 10f;
-
     [SerializeField] private FireTask fireTask;
 
+    [SerializeField] private float igniteDistance = 5f;
+    [SerializeField] private float requiredHoldTime = 2f;
 
     private bool hasIgnited = false;
+    private float currentHoldTime = 0f;
 
     private void Update()
     {
-        if (player == null || hammerFireController == null)
+        if (!hammerFireController.IsOnFire && !hasIgnited && !burnableBuilding.isBurning)
+        {
+            currentHoldTime = 0f;
             return;
+        }
 
-        if (hasIgnited)
-            return;
-
-        if (!hammerFireController.IsOnFire)
-            return;
-
-        float distance = Vector3.Distance(burnableBuilding.gameObject.transform.position, transform.position);
+        float distance = Vector3.Distance(transform.position, burnableBuilding.transform.position);
 
         if (distance <= igniteDistance)
         {
-            burnableBuilding.IgniteBuilding();
-            fireTask.BuildingBurned();
-            hasIgnited = true;
+            currentHoldTime += Time.deltaTime;
+
+            if (currentHoldTime >= requiredHoldTime)
+            {
+                burnableBuilding.IgniteBuilding();
+
+                if (fireTask != null)
+                    fireTask.BuildingBurned();
+
+                hasIgnited = true;
+            }
+        }
+        else
+        {
+            currentHoldTime = 0f;
         }
     }
 }

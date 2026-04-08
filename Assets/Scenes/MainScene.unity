@@ -47640,23 +47640,6 @@ MonoBehaviour:
   useInfiniteFire: 0
   fireVisual: {fileID: 1245709721}
   fireParticles: {fileID: 1245709722}
---- !u!114 &1356840569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1356840547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff104a559e6bc9d49a2d105b4eca7b0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 743921864}
-  hammerFireController: {fileID: 1356840562}
-  burnableBuilding: {fileID: 1609895617}
-  igniteDistance: 1
-  fireTask: {fileID: 1422696283}
 --- !u!4 &1356840575 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3261977628211663459, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
@@ -65656,6 +65639,55 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4555785035387534733, guid: 09785aaac7ac4934c80b613c87f95aa2, type: 3}
   m_PrefabInstance: {fileID: 301279850}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1825154429
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1825154430}
+  - component: {fileID: 1825154431}
+  m_Layer: 0
+  m_Name: HammerHeadPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1825154430
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825154429}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.375, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1356840575}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1825154431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825154429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff104a559e6bc9d49a2d105b4eca7b0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hammerFireController: {fileID: 1356840562}
+  burnableBuilding: {fileID: 1609895617}
+  fireTask: {fileID: 1422696283}
+  igniteDistance: 5
+  requiredHoldTime: 2
 --- !u!1001 &1827817285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -76494,6 +76526,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3261977628211663459, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1245709724}
+    - targetCorrespondingSourceObject: {fileID: 3261977628211663459, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1825154430}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2742428231631341785, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       insertIndex: -1
@@ -76501,9 +76536,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2742428231631341785, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1356840562}
-    - targetCorrespondingSourceObject: {fileID: 2742428231631341785, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1356840569}
   m_SourcePrefab: {fileID: 100100000, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
 --- !u!1001 &6126506868503943783
 PrefabInstance:
