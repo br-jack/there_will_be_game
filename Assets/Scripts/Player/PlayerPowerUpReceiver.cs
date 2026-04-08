@@ -176,10 +176,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     private void ApplyInfiniteFire()
     {
-        if (hammerFireController != null)
-        {
-            hammerFireController.UnlockInfiniteFire();
-            hammerFireController.IgniteHammer();
-        }
+        hammerFireController.UnlockInfiniteFire();
+        hammerFireController.IgniteHammer();
     }
 }
