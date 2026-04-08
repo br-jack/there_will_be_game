@@ -19,14 +19,12 @@ public class FireTask : BaseTask
 
     private void Update()
     {
-        if (hammerIgnited && !buildingBurned && !isComplete)
+        if (hammerIgnited && !buildingBurned && !isComplete && !hammerFireController.IsOnFire)
         {
-            if (!hammerFireController.IsOnFire)
-            {
-                hammerIgnited = false;
-                taskDescription = "Ignite the hammer";
-                TaskHUD.Instance.RefreshUI();
-            }
+            Debug.Log("This definitely runs");
+            hammerIgnited = false;
+            taskDescription = "Ignite the hammer";
+            TaskHUD.Instance.RefreshUI();
         }
     }
 
