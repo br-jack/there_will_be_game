@@ -455,6 +455,52 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63813f844d076ef45847d75814bfe367, type: 3}
+--- !u!1 &16718249
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 16718251}
+  - component: {fileID: 16718250}
+  m_Layer: 0
+  m_Name: StatueCentrePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &16718250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16718249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ce30f18c2897649b5563707ee6a4e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingFireVisual: {fileID: 1522483989}
+  buildingFireParticles: {fileID: 1522483991}
+--- !u!4 &16718251
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16718249}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.4443, z: -0.553}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 145240877}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &17774083 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3650667094805562110, guid: 5df42979fbdffb344ae109e054e262e1, type: 3}
@@ -3826,10 +3872,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1295308931763932660, guid: 2e0cf16059587a2498aed79c5af6e658, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1522483990}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7385917657208508215, guid: 2e0cf16059587a2498aed79c5af6e658, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1295308931763932660, guid: 2e0cf16059587a2498aed79c5af6e658, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1742461768}
+      addedObject: {fileID: 16718251}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e0cf16059587a2498aed79c5af6e658, type: 3}
 --- !u!4 &145240877 stripped
 Transform:
@@ -62306,25 +62352,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dae87b57a47e56c46a1f40d67a9282ed, type: 3}
---- !u!1 &1742461764 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7385917657208508215, guid: 2e0cf16059587a2498aed79c5af6e658, type: 3}
-  m_PrefabInstance: {fileID: 145240876}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1742461768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1742461764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96ce30f18c2897649b5563707ee6a4e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buildingFireVisual: {fileID: 1522483989}
-  buildingFireParticles: {fileID: 1522483991}
 --- !u!4 &1743901426 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8670220962648395590, guid: e078868090442eb4890df8d70d34f980, type: 3}
@@ -65502,7 +65529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hammerFireController: {fileID: 1356840562}
-  burnableBuilding: {fileID: 1742461768}
+  burnableBuilding: {fileID: 16718250}
   fireTask: {fileID: 1422696283}
   igniteDistance: 5
   requiredHoldTime: 2
@@ -68101,7 +68128,7 @@ Transform:
   m_GameObject: {fileID: 1921023227}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0.4409}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
