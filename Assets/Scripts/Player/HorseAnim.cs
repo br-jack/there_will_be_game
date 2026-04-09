@@ -16,8 +16,10 @@ public class HorseAnim : MonoBehaviour
 
     void Awake()
     {
+        
         _horseAnimator = GetComponent<Animator>();
         _horseMovementGaits = GetComponentInParent<horseMovementGaits>();
+        _cc = GetComponentInParent<CharacterController>();
 
         if (_horseAnimator.enabled) //this is here because the animator panel is bugged in this unity version :(
         {
