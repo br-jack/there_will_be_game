@@ -4512,9 +4512,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 5
+  detectionRadius: 6
+  maxLeashDistance: 7
+  kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &151501453
@@ -4556,8 +4556,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -14999,9 +14999,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 2
+  detectionRadius: 3
   maxLeashDistance: 4
-  kickPower: 5
+  kickPower: 12
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &514618172
@@ -15043,8 +15043,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -16335,9 +16335,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 5
+  detectionRadius: 6
+  maxLeashDistance: 7
+  kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &578476441
@@ -16379,8 +16379,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -24920,9 +24920,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 5
+  detectionRadius: 6
+  maxLeashDistance: 7
+  kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &893432190
@@ -24964,8 +24964,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -28069,76 +28069,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 330777781932622763, guid: f54570fe36fd2d14c896cce14ebbe346, type: 3}
   m_PrefabInstance: {fileID: 485646345}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &975061876
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1771183083}
-    m_Modifications:
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 15.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -11.62
-      objectReference: {fileID: 0}
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 31.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5661960832059577718, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_Name
-      value: wall1 (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5661960832059577718, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-      propertyPath: m_TagString
-      value: PitchWall
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
---- !u!4 &975061877 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1099393222889580625, guid: d8da8c58a9dbf5442b7c75f714da5b0f, type: 3}
-  m_PrefabInstance: {fileID: 975061876}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &981548265
 PrefabInstance:
@@ -31590,9 +31520,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 5
+  detectionRadius: 6
+  maxLeashDistance: 7
+  kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &1103564325
@@ -31634,8 +31564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -35149,9 +35079,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 5
+  detectionRadius: 6
+  maxLeashDistance: 7
+  kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &1196436716
@@ -35193,8 +35123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -35640,9 +35570,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 5
+  detectionRadius: 6
+  maxLeashDistance: 7
+  kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &1207743027
@@ -35684,8 +35614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -37171,9 +37101,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 5
+  detectionRadius: 6
+  maxLeashDistance: 7
+  kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &1246009855
@@ -37215,8 +37145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -51544,9 +51474,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 5
+  detectionRadius: 6
+  maxLeashDistance: 7
+  kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &1720901964
@@ -51588,8 +51518,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -53448,7 +53378,7 @@ Transform:
   - {fileID: 1980885383}
   - {fileID: 1877975909}
   - {fileID: 857477531}
-  - {fileID: 975061877}
+  - {fileID: 1099393222185085733}
   - {fileID: 1399977817}
   - {fileID: 1187027031}
   - {fileID: 281115214}
@@ -62573,9 +62503,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 5
+  detectionRadius: 6
+  maxLeashDistance: 7
+  kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &2057861277
@@ -62617,8 +62547,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -65576,9 +65506,9 @@ MonoBehaviour:
   ball: {fileID: 752856247}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 5
+  detectionRadius: 6
+  maxLeashDistance: 7
+  kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &2116681631
@@ -65620,8 +65550,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpeed: 8
-  formationSpeed: 10
+  defaultSpeed: 11
+  formationSpeed: 11
   spawner: {fileID: 0}
   shield: {fileID: 0}
   arriveRadius: 0.6
@@ -66368,6 +66298,68 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 409142556f494914e874a3fbba72ae82, type: 3}
+--- !u!1001 &949050450581809373
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1771183083}
+    m_Modifications:
+    - target: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 31.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8472940432799221761, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+      propertyPath: m_Name
+      value: wall1 (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+--- !u!4 &1099393222185085733 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8371171864521816768, guid: c50bc1a62d4d28348b7128041c9f18f2, type: 3}
+  m_PrefabInstance: {fileID: 949050450581809373}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1146068428503181121
 PrefabInstance:
   m_ObjectHideFlags: 0
