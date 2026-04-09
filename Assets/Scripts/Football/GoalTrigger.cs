@@ -12,6 +12,8 @@ public class GoalTrigger : MonoBehaviour
             FootballTask task = FindFirstObjectByType<FootballTask>();
             if (task != null) task.goalScored();
             ball.StartCoroutine(ball.ResetBall(1.5f));
+            PitchManager pitchManager = FindFirstObjectByType<PitchManager>();
+            pitchManager.EndFootballMiniGame();
             Debug.Log("GOAL SCORED!");
         }
     }

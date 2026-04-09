@@ -4,8 +4,6 @@ using System.Collections.Generic;
 public class PitchManager : MonoBehaviour
 {
     public List<FootballPlayer> footballEnemies;
-    public GameObject invisibleWallForNormalEnemies;
-
     private void OnTriggerEnter(Collider other)
     
     {
@@ -23,8 +21,14 @@ public class PitchManager : MonoBehaviour
         {
             enemy.SetPitchActivity(status);
         }
-        
-        // Disable the wall so normal enemies can enter once the goal is scored/task done
-        if (!status) invisibleWallForNormalEnemies.SetActive(false);
+    }
+
+    public void EndFootballMiniGame()
+    {
+        foreach (var enemy in footballEnemies)
+        {   
+            enemy.tag = "Enemy";
+            enemy.SwitchToNormalAI();
+        }
     }
 }

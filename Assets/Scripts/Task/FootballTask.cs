@@ -26,7 +26,7 @@ public class FootballTask : BaseTask
     {
         if (Scored == true)
             CompleteTask();
-            GameObject[] walls = GameObject.FindGameObjectsWithTag("Pitch");
+            GameObject[] walls = GameObject.FindGameObjectsWithTag("PitchWall");
             foreach(GameObject wall in walls) wall.SetActive(false);
     }
 }
