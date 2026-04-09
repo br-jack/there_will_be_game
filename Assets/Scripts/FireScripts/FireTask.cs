@@ -9,9 +9,11 @@ public class FireTask : BaseTask
     [SerializeField] private GameObject infiniteFirePowerUpPrefab;
     [SerializeField] private HammerFireController hammerFireController;
     [SerializeField] private string rewardMessage = "The eternal flame boon has been granted";
+    [SerializeField] private GameObject statueArrowUI;
 
     void Start()
     {
+        statueArrowUI.SetActive(false);
         taskName = "Burn the building";
         taskDescription = "Ignite the hammer";
         StartTask();
@@ -21,7 +23,6 @@ public class FireTask : BaseTask
     {
         if (hammerIgnited && !buildingBurned && !isComplete && !hammerFireController.IsOnFire)
         {
-            Debug.Log("This definitely runs");
             hammerIgnited = false;
             taskDescription = "Ignite the hammer";
             TaskHUD.Instance.RefreshUI();
@@ -33,6 +34,7 @@ public class FireTask : BaseTask
         if (hammerIgnited || buildingBurned) return;
 
         hammerIgnited = true;
+        statueArrowUI.SetActive(true);
 
         taskDescription = "Go to the building";
         TaskHUD.Instance.RefreshUI();
@@ -45,6 +47,7 @@ public class FireTask : BaseTask
         if (buildingBurned) return;
 
         buildingBurned = true;
+        statueArrowUI.SetActive(false);
 
         taskDescription = "Completed!";
         TaskHUD.Instance.RefreshUI();
