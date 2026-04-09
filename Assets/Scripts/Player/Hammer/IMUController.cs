@@ -62,7 +62,7 @@ namespace Hammer
                             String output = testSerial.ReadExisting();
                             testSerial.Close();
                             
-                            if (output.Contains("q:") || output.Contains("a:"))
+                            if (output.Contains("q:") || output.Contains("a:") || output.Contains("info:"))
                             {
                                 //(hub sending) IMU data found
                                 Debug.Log("Hub found on port " + possiblePort);

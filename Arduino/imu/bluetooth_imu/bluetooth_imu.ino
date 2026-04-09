@@ -56,20 +56,20 @@ void setup(void) {
 
   delay(20);
 
-  Serial1.println(F("Adafruit BNO08x test!"));
+  Serial1.println(F("info:Adafruit BNO08x test!"));
 
   // Try to initialize!
   if (!bno08x.begin_I2C()) {
     //if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte UART buffer!
     //if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
-    Serial1.println(F("Failed to find BNO08x chip"));
+    Serial1.println(F("info:Failed to find BNO08x chip"));
     while (1) {
       delay(120); 
       //see https://github.com/adafruit/Adafruit_BNO08x/issues/34#issuecomment-2533685723
       rp2040.reboot();
     }
   }
-  Serial1.println(F("BNO08x Found!"));
+  Serial1.println(F("info:BNO08x Found!"));
 
   for (int n = 0; n < bno08x.prodIds.numEntries; n++) {
     Serial1.print("Part ");
@@ -85,7 +85,7 @@ void setup(void) {
   }
   setReports();
 
-  Serial1.println(F("Reading events"));
+  Serial1.println(F("info:Reading events"));
 
   pinMode(motor1DIRPin, OUTPUT);
   pinMode(motor2DIRPin, OUTPUT);
@@ -97,13 +97,16 @@ void setup(void) {
 
 // Here is where you define the sensor outputs you want to receive
 void setReports(void) {
-  Serial1.println(F("Setting desired reports"));
+  Serial1.println(F("info:Setting desired reports"));
   if (!bno08x.enableReport(SH2_GAME_ROTATION_VECTOR)) {
-    Serial1.println(F("Could not enable game vector"));
+    Serial1.println(F("info:Could not enable game vector"));
   }
   if (!bno08x.enableReport(SH2_LINEAR_ACCELERATION, 20000)) {
-    Serial1.println(F("Could not enable linear acceleration"));
+    Serial1.println(F("info:Could not enable linear acceleration"));
   }
+
+  //https://github.com/sparkfun/SparkFun_BNO08x_Arduino_Library/issues/2
+  //delay(100); // This delay allows enough time for the BNO085 to accept the new configuration and clear its reset status
 }
 
 void startRumble(RumbleMode mode, int duration) {
@@ -133,7 +136,7 @@ void startRumble(RumbleMode mode, int duration) {
     rumbleStrength = 255;
   }
   rumbleCurrentFadeMs = 0;
-  Serial1.println(F("Rumble activated."));
+  Serial1.println(F("info:Rumble activated."));
 
   analogWrite(motor1SPDPin, rumbleStrength);
 }
@@ -158,19 +161,19 @@ void endRumble(void) {
   rumbleDuration = 0;
   currentRumbleMode = RumbleMode::Off;
   rumbleCurrentFadeMs = 0;
-  Serial1.println(F("Rumble deactivated."));
+  Serial1.println(F("info:Rumble deactivated."));
 
   analogWrite(motor1SPDPin, 0);
 }
 
 inline void outputSensorValues(void) {
   if (bno08x.wasReset()) {
-    Serial1.print(F("Sensor was reset "));
+    Serial1.print(F("info:Sensor was reset "));
     setReports();
   }
 
   if (!bno08x.getSensorEvent(&sensorValue)) {
-    //Serial1.println("Unable to get sensor event!");
+    //Serial1.println("info:Unable to get sensor event!");
     return;
   }
   switch (sensorValue.sensorId) {
