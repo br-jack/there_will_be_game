@@ -79,6 +79,11 @@ public class horseMovementGaits : MonoBehaviour
         return gait;
     }
 
+    public float getCurrentSpeed()
+    {
+        return currentSpeed;
+    }
+
     private void setGait(gait newGait)
     {
         if (gait != newGait) 

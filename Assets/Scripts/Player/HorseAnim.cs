@@ -43,7 +43,7 @@ public class HorseAnim : MonoBehaviour
         if(_horseAnimator != null)
         {
 
-            //speed = _horseMovement.GetCurrentSpeed();
+            speed = _horseMovementGaits.getCurrentSpeed();
             _horseAnimator.SetFloat("Speed", speed);
 
             //Debug.LogError("horszz");
