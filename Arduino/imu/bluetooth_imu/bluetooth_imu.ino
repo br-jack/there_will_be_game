@@ -56,20 +56,15 @@ void setup(void) {
 
   delay(20);
 
-  Wire.begin();
-  Wire.setClock(400000);
-
-  delay(20);
-
   Serial1.println(F("info:Adafruit BNO08x test!"));
 
   // Try to initialize!
-  if (!bno08x.begin_I2C(74, &Wire)) {
+  if (!bno08x.begin_I2C()) {
     //if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte UART buffer!
     //if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
     Serial1.println(F("info:Failed to find BNO08x chip"));
     while (1) {
-      delay(1000); 
+      delay(120); 
       //see https://github.com/adafruit/Adafruit_BNO08x/issues/34#issuecomment-2533685723
       rp2040.reboot();
     }
@@ -173,7 +168,7 @@ void endRumble(void) {
 
 inline void outputSensorValues(void) {
   if (bno08x.wasReset()) {
-    Serial1.println(F("info:Sensor was reset "));
+    Serial1.print(F("info:Sensor was reset "));
     setReports();
   }
 
