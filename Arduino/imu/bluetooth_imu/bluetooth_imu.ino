@@ -4,15 +4,14 @@
 #include <string.h>
 
 // For SPI mode, we need a CS pin
-// #define BNO08X_CS 10
+#define BNO08X_CS 10
+#define BNO08X_INT 9
 
 // For SPI mode, we also need a RESET
 // #define BNO08X_RESET 5
 // but not for I2C or UART
 #define BNO08X_RESET -1
 #define FAST_MODE
-
-constexpr int BNO08X_INT = D10;
 
 constexpr int motor1DIRPin = A3;  // Motor 1 Direction pin of dual motor driver connected to digital pin 29
 constexpr int motor1SPDPin = A2;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 28
@@ -58,23 +57,6 @@ void setup(void) {
   delay(20);
 
   Serial1.println(F("info:Adafruit BNO08x test!"));
-
-
-  //adapted from SPI open code
-  //https://github.com/adafruit/Adafruit_BNO08x/blob/master/src/Adafruit_BNO08x.cpp
-  pinMode(BNO08X_INT, INPUT_PULLUP);
-  bool interruptFound = false;
-  for (int i = 0; i < 500; ++i) {
-    if (!digitalRead(BNO08X_INT)) {
-      interruptFound = true;
-      break;
-    }
-    delay(1);
-  }
-  if (!interruptFound) {
-    Serial1.println("Didn't get interrupt");
-    bno08x.hardwareReset();
-  }
 
   // Try to initialize!
   if (!bno08x.begin_I2C()) {
@@ -124,7 +106,7 @@ void setReports(void) {
   }
 
   //https://github.com/sparkfun/SparkFun_BNO08x_Arduino_Library/issues/2
-  delay(100); // This delay allows enough time for the BNO085 to accept the new configuration and clear its reset status
+  //delay(100); // This delay allows enough time for the BNO085 to accept the new configuration and clear its reset status
 }
 
 void startRumble(RumbleMode mode, int duration) {
