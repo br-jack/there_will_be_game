@@ -20003,6 +20003,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
   m_PrefabInstance: {fileID: 5061453144199501980}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &743921865 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7439884306161422662, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf8b051f53eef848a688ef0392c8c74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &745234386 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7666096751302965868, guid: 701b185362bb29b4986210149ecd8297, type: 3}
@@ -95207,6 +95218,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e62bb0231e89ee4b8e0f6d308fc1af4, type: 3}
+--- !u!114 &1951389204 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8012643455451720329, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a9726ae4bc64614f8cfafa25aa80751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1953708771
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102103,11 +102125,11 @@ PrefabInstance:
     - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: damageFlash
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1951389204}
     - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: invulnerabilityFlash
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 743921865}
     m_RemovedComponents:
     - {fileID: 8530547163705277252, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
     - {fileID: 1943810648994803527, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
