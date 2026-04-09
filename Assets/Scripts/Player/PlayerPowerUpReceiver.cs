@@ -4,16 +4,21 @@ using UnityEngine;
 public class PlayerPowerUpReceiver : MonoBehaviour
 {
     //public HorseMovement horseMovement;
+
+    public horseMovementGaits horseMovementGaits;
     
     public PlayerParticles playerParticles;
 
     public PlayerHealth playerHealth;
 
-    private float _defaultMaxSpeedMultiplier;
-    private float _defaultAccelerationMultiplier;
-    private float _defaultJumpForce;
-    
-    
+    //private float _defaultMaxSpeedMultiplier;
+    //private float _defaultAccelerationMultiplier;
+    //private float _defaultJumpForce;
+    private float _defaultAcceleration;
+    private float _defaultGallopSpeed;
+    private float _defaultCanterSpeed;
+    private float _defaultTrotSpeed;
+    private float _defaultJumpHeight;
     public ParticleSystem jumpBoostParticles;
     public TrailRenderer jumpBoostTrail;
     private ParticleSystem _defaultJumpParticles;
@@ -28,14 +33,20 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     private void Start()
     {
-        /*
-        if (horseMovement != null)
+        
+        if (horseMovementGaits != null)
         {
-            _defaultMaxSpeedMultiplier = horseMovement.maxSpeedMultiplier;
-            _defaultAccelerationMultiplier = horseMovement.accelerationMultiplier;
-            _defaultJumpForce = horseMovement.jumpForce;
+            //_defaultMaxSpeedMultiplier = horseMovement.maxSpeedMultiplier;
+            //_defaultAccelerationMultiplier = horseMovement.accelerationMultiplier;
+            //_defaultJumpForce = horseMovement.jumpForce;
+            _defaultAcceleration = horseMovementGaits.acceleration;
+            _defaultGallopSpeed = horseMovementGaits.gallopSpeed;
+            _defaultCanterSpeed = horseMovementGaits.canterSpeed;
+            _defaultTrotSpeed = horseMovementGaits.trotSpeed;
+            _defaultJumpHeight = horseMovementGaits.jumpHeight;
+
         }
-        */
+        
 
         if (playerParticles != null)
         {
@@ -72,6 +83,12 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         horseMovement.maxSpeedMultiplier = multiplier;
         horseMovement.accelerationMultiplier = multiplier;
         */
+        horseMovementGaits.acceleration *= multiplier;
+        horseMovementGaits.trotSpeed *= multiplier;
+        horseMovementGaits.canterSpeed *= multiplier;
+        horseMovementGaits.gallopSpeed *= multiplier;
+        
+        
         
         if (playerParticles != null)
         {
@@ -87,6 +104,10 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         horseMovement.maxSpeedMultiplier = _defaultMaxSpeedMultiplier;
         horseMovement.accelerationMultiplier = _defaultAccelerationMultiplier;
         */
+        horseMovementGaits.trotSpeed = _defaultTrotSpeed;
+        horseMovementGaits.canterSpeed = _defaultCanterSpeed;
+        horseMovementGaits.gallopSpeed = _defaultGallopSpeed;
+        horseMovementGaits.acceleration = _defaultAcceleration;
 
         if (playerParticles != null)
         {
@@ -99,8 +120,9 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     private void ApplySpeedBoost(float multiplier, float duration)
     {
+        
 
-        if (speedBoostCoroutine != null /*&& horseMovement != null*/)
+        if (speedBoostCoroutine != null && horseMovementGaits != null)
         {
             StopCoroutine(speedBoostCoroutine);
             EndSpeedBoostEffects();
@@ -121,6 +143,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     private void StartJumpBoostEffects(float multiplier)
     {
         //horseMovement.jumpForce = _defaultJumpForce * multiplier;
+        horseMovementGaits.jumpHeight *= multiplier;
 
         if (playerParticles != null)
         {
@@ -135,6 +158,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     private void EndJumpBoostEffects()
     {
         //horseMovement.jumpForce = _defaultJumpForce;
+        horseMovementGaits.jumpHeight = _defaultJumpHeight;
         if (playerParticles != null)
         {
             playerParticles.jumpTrail.emitting = false;
@@ -150,7 +174,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     private void ApplyJumpBoost(float multiplier, float duration)
     {
-        if (jumpBoostCoroutine != null /*&& horseMovement != null*/)
+        if (jumpBoostCoroutine != null && horseMovementGaits != null)
         {
             StopCoroutine(jumpBoostCoroutine);
             EndJumpBoostEffects();

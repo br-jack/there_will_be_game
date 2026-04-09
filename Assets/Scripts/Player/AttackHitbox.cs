@@ -1,17 +1,24 @@
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class AttackHitbox : MonoBehaviour
 {
     public float baseKnockbackForce = 12f;
     public float velocityKnockbackMultiplier = 1f;
     
-    private Rigidbody _rb;
+    //private Rigidbody _rb;
     //private HorseMovement _horseMovement;
+    private CharacterController _cc;
+    private horseMovementGaits _horseMovementGaits;
+
 
     private void Awake()
     {
-        _rb = GetComponentInParent<Rigidbody>();
+        //_rb = GetComponentInParent<Rigidbody>();
         //_horseMovement = GetComponentInParent<HorseMovement>();
+        _cc = GetComponentInParent<CharacterController>();
+        _horseMovementGaits = GetComponentInParent<horseMovementGaits>();
+
     }
 
     public float GetKnockbackForce()
@@ -25,11 +32,22 @@ public class AttackHitbox : MonoBehaviour
         {
             speed = _horseMovement.GetCurrentSpeed();
         }
-        */
+        
         // If can't then use Rigidbody speed <-- we will just do this i guess!
-        /*else*/ if (_rb != null)
+        else if (_rb != null)
         {
-            speed = _rb.linearVelocity.magnitude;
+            speed = _rb.velocity.magnitude;
+        }
+        //same thing but gaits, but I want to leave the old code in there too!
+        */
+
+        if (_horseMovementGaits != null)
+        {
+            speed = _horseMovementGaits.currentSpeed;
+        }
+        else if (_cc != null)
+        {
+            speed = _cc.velocity.magnitude;
         }
         
         // Now calculates knockback based on the speed of approach

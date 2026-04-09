@@ -5,9 +5,6 @@ public class hammerStateEffects : MonoBehaviour
     public gait gait;
     public hammerChargeState hammerChargeState;
 
-    
-    
-    
     public ParticleSystem embers;
     private ParticleSystem.MainModule _embersMain;
 

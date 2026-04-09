@@ -8,11 +8,14 @@ public class PlayerParticles : MonoBehaviour
     public ParticleSystem jumpParticles;
     
     //[SerializeField] private HorseMovement horseMovement;
+    [SerializeField] private horseMovementGaits _horseMovementGaits;
+    private CharacterController _cc;
 
     private ParticleSystem.Particle[] _particleBuffer;
     
     void Awake()
     {
+        _cc = GetComponent<CharacterController>();
         if (jumpTrail != null)
         {
             jumpTrail.emitting = false;
@@ -22,12 +25,12 @@ public class PlayerParticles : MonoBehaviour
     
     public void OnEnable()
     {
-        //horseMovement.jumpStarted += TriggerJumpParticles;
+        _horseMovementGaits.jumpStarted += TriggerJumpParticles;
     }
 
     public void OnDisable()
     {
-        //horseMovement.jumpStarted -= TriggerJumpParticles; 
+        _horseMovementGaits.jumpStarted -= TriggerJumpParticles; 
     }
 
     private IEnumerator PlayJumpParticles()
@@ -42,6 +45,9 @@ public class PlayerParticles : MonoBehaviour
         //Reduce particle lifetime and size if jump button is released early
         
         yield return new WaitForSeconds(0.1f);
+
+        //just decrease particles always for now, i don't understand how this works because i am foolish!
+        DecreaseParticles(jumpParticles);
 
         /*
         if (!horseMovement.JumpButtonHeld)
@@ -79,22 +85,23 @@ public class PlayerParticles : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        if (horseMovement.IsGrounded)
-        {
-            // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
-            // sizeOverLifetime.sizeMultiplier = 1;
-            
-            runParticles.Play();
-            if (jumpTrail != null)
+        if (_cc != null) {
+            if (_cc.isGrounded)
             {
-                jumpTrail.emitting = false;
+                // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
+                // sizeOverLifetime.sizeMultiplier = 1;
+                
+                runParticles.Play();
+                if (jumpTrail != null)
+                {
+                    jumpTrail.emitting = false;
+                }
             }
-        }
-        else
-        */
-        {
-            runParticles.Stop();
+            else
+            
+            {
+                runParticles.Stop();
+            }
         }
     }
 }

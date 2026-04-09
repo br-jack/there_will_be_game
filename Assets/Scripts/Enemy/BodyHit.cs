@@ -14,6 +14,10 @@ public class BodyHit : MonoBehaviour
     [SerializeField] private int lowHealthThreshold = 30;
     [SerializeField] private int airBonusScore = 25;
     [SerializeField] private int shieldBypassBonusScore = 40;
+    [SerializeField] private int atATrotBonusScore = 5;
+    [SerializeField] private int atACanterBonusScore = 20;
+    [SerializeField] private int atAGallopBonusScore = 50;
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -60,53 +64,81 @@ public class BodyHit : MonoBehaviour
 
     private void AwardScore(EnemyMovement enemy)
     {   
+        //could perhaps be done with events, with enemies broadcasting when they're hit, 
+        //and a script on the player awarding the score.
+
         GameObject player = GameObject.FindWithTag("Player");
-        if (player == null) return;
-        
-        /*
-        HorseMovement horseMovement = player.GetComponent<HorseMovement>();
-        if (horseMovement == null) return;
-        */
+        if (player != null) {
+            
+            /*
+            HorseMovement horseMovement = player.GetComponent<HorseMovement>();
+            if (horseMovement == null) return;
+            */
 
-        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
-        
-        List<ScoreComponent> scoreComponents = new List<ScoreComponent>();
-        
-        // Base score
-        scoreComponents.Add(new ScoreComponent(baseScore, ScoreType.Base));
-        
-        // Speed bonus
-        /*
-        if (horseMovement.CurrentSpeed >= speedThreshold)
-        {
-            scoreComponents.Add(new ScoreComponent(speedBonusScore, ScoreType.Speed));
-        }
-        */
-        
-        // Low health bonus
-        if (playerHealth != null)
-        {
-            float healthPercent = (float)playerHealth.Current / playerHealth.Max * 100f;
-            if (healthPercent <= lowHealthThreshold)
+            //hopefully the player has these! should probs do null checks
+            CharacterController characterController = player.GetComponent<CharacterController>();
+            PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+            horseMovementGaits horseMovementGaits = player.GetComponent<horseMovementGaits>();
+            
+            List<ScoreComponent> scoreComponents = new List<ScoreComponent>();
+            
+            // Base score
+            scoreComponents.Add(new ScoreComponent(baseScore, ScoreType.Base));
+            
+            // Speed bonus. Commented out for now as I think gait bonus is more intuitive.
+            /*
+            if (characterController.velocity.magnitude >= speedThreshold)
             {
-                scoreComponents.Add(new ScoreComponent(lowHealthBonusScore, ScoreType.LowHealth));
+                scoreComponents.Add(new ScoreComponent(speedBonusScore, ScoreType.Speed));
             }
-        }
-        
-        // Air bonus
-        /*
-        if (!horseMovement.IsGrounded)
-        {
-            scoreComponents.Add(new ScoreComponent(airBonusScore, ScoreType.Air));
-        }
-        */
+            */
 
-        // Shield bypass bonus
-        if (enemy != null && enemy.HasShield())
-        {
-            scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
+            //gait bonus
+            if (horseMovementGaits != null)
+            {
+                switch (horseMovementGaits.getCurrentGait())
+                {
+                    case gait.walking:
+                        // no bonus
+                        break;
+                    case gait.trotting:
+                        scoreComponents.Add(new ScoreComponent(atATrotBonusScore, ScoreType.atATrot));
+                        break;
+                    case gait.cantering:
+                        scoreComponents.Add(new ScoreComponent(atACanterBonusScore, ScoreType.atACanter));
+                        break;
+                    case gait.galloping:
+                        scoreComponents.Add(new ScoreComponent(atAGallopBonusScore, ScoreType.atAGallop));
+                        break;
+                }
+            }
+            // Low health bonus
+            if (playerHealth != null)
+            {
+                float healthPercent = (float)playerHealth.Current / playerHealth.Max * 100f;
+                if (healthPercent <= lowHealthThreshold)
+                {
+                    scoreComponents.Add(new ScoreComponent(lowHealthBonusScore, ScoreType.LowHealth));
+                }
+            }
+            
+            // Air bonus
+            if (!characterController.isGrounded)
+            {
+                scoreComponents.Add(new ScoreComponent(airBonusScore, ScoreType.Air));
+            }
+            
+
+            // Shield bypass bonus
+            if (enemy != null && enemy.HasShield())
+            {
+                scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
+            }
+            
+            ScoreManager.Instance.AddScore(scoreComponents);
         }
-        
-        ScoreManager.Instance.AddScore(scoreComponents);
+        else {
+            Debug.LogWarning("Player not found - cannot award score");
+        }
     }
 }

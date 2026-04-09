@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -11,25 +12,28 @@ public class horseMovementGaits : MonoBehaviour
     //a bit of copy pasting from https://gist.github.com/Mike-Schvedov/b833a89b16e8b5a44df5707923169936
     //has happened here, not sure whether any actually remains, come back and check
     public UnityEvent<gait> gaitChange;
-    public float walkSpeed;
+    public UnityEvent jump;
+    public float trotSpeed;
     public float canterSpeed;
     public float gallopSpeed;
     public float chargeRequiredToCanter = 10f;
-    public float chargeRequiredToGallop = 20f;
+    public float chargeRequiredToGallop =20f;
+    public float jumpHeight = 4f; 
     public float turnSpeed = 60f;
     public float acceleration = 2f;
     public float deceleration = 6f;
     public float chargeDecay;
-    //public float jumpHeight = 4f; no jumping for now
     public float currentRunCharge; //should be private, but i want to see it! 
     public gait gait; //currently pointless, just to see gait in editor
     public float currentSpeed = 0f; //just to see in editor
     private float gravity = -9.81f;
     private Vector3 verticalVelocity = Vector3.zero;
+    public Action jumpStarted;
     
     private float _throttleInput;
     private float _turnInput;
     private float _brakeInput;
+    private bool _jumpInput;
     //private bool _jumpButtonPressed;
     //private bool _jumpButtonHeld;
 
@@ -40,8 +44,7 @@ public class horseMovementGaits : MonoBehaviour
     //so we can update _move in each of them and then apply it in update()
     public void OnJump(InputAction.CallbackContext context)
     {
-        Debug.Log("currently a ground horse");
-        //if (_cc.isGrounded) _move += 
+        _jumpInput = context.ReadValue<bool>();
     }
 
     public void onSteer(InputAction.CallbackContext context)
@@ -71,6 +74,11 @@ public class horseMovementGaits : MonoBehaviour
         _tf = GetComponent<Transform>();
     }
 
+    public gait getCurrentGait() 
+    {
+        return gait;
+    }
+
     private void setGait(gait newGait)
     {
         if (gait != newGait) 
@@ -92,7 +100,9 @@ public class horseMovementGaits : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        
+
         //identify a target speed to accelerate towards
         float targetSpeed = 0f;
         if ((_throttleInput - _brakeInput) > 0.1f)  
@@ -114,10 +124,10 @@ public class horseMovementGaits : MonoBehaviour
 
             } else 
             {
-                targetSpeed = walkSpeed; 
+                targetSpeed = trotSpeed; 
 
                 //if within a range of walk speed, and accelerating, add charge towards cantering
-                if (walkSpeed - currentSpeed < 0.25f) currentRunCharge += Time.deltaTime; 
+                if (trotSpeed - currentSpeed < 0.25f) currentRunCharge += Time.deltaTime; 
             }
         }
         else if (currentRunCharge > 0) {currentRunCharge -= Time.deltaTime * chargeDecay;}
@@ -139,6 +149,13 @@ public class horseMovementGaits : MonoBehaviour
         
         //apply gravity, or a small down force if already on the ground
         verticalVelocity.y += (_cc.isGrounded ? -1f : gravity) * Time.deltaTime; 
+        if (_jumpInput && _cc.isGrounded) 
+            {
+                verticalVelocity.y += jumpHeight;
+                //not sure why we are invoking two things here! once i understand, ill try to do with just one
+                jumpStarted.Invoke();
+                jump.Invoke();
+            }
         
         Vector3 move = transform.forward * currentSpeed + verticalVelocity;
         _cc.Move(move * Time.deltaTime);
