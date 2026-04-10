@@ -1,8 +1,10 @@
 using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class hammerStateEffects : MonoBehaviour
 {
+    public float materialLerpPerSecond; //How much the material linearly interpolates towards the target colour each second
     public gait gait;
     public hammerChargeState hammerChargeState;
 
@@ -29,13 +31,24 @@ public class hammerStateEffects : MonoBehaviour
     public Color _gallopColor;
     public Color _ultraGallopColor;
 
-    [SerializeField] private Renderer hammerMesh;
+    public Material _stillAndWalkMaterial;
+    public Material _trotMaterial;
+    public Material _canterMaterial;
+    public Material _gallopMaterial;
+    public Material _ultraGallopMaterial;
+    public Material currentHammerMaterial;
+
+
+    //private Material targetMaterial;
+    
+
+    [SerializeField] private MeshRenderer hammerMesh;
     [SerializeField] private int headMaterialIndex = 2;
     private Material[] _hammerMaterials;
 
     public void updateGait(gait newGait)
     {
-        flash.Play();
+        flash.Play(); //flash has a v short delay, so particles should be of the new colour
         gait = newGait;
     }
 
@@ -51,9 +64,10 @@ public class hammerStateEffects : MonoBehaviour
 
         _hammerMaterials = hammerMesh.materials;
 
-        Assert.IsTrue(_hammerMaterials[headMaterialIndex].name == "hammer_metal");
+        //Assert.IsTrue(_hammerMaterials[headMaterialIndex].name == "hammer_metal");
         
-        _hammerMaterials[headMaterialIndex] = new Material(_hammerMaterials[headMaterialIndex]);
+        //_hammerMaterials[headMaterialIndex] = new Material(_hammerMaterials[headMaterialIndex]);
+        //targetMaterial = new Material(_hammerMaterials[headMaterialIndex]);
     }
 
     // Update is called once per frame
@@ -88,7 +102,7 @@ public class hammerStateEffects : MonoBehaviour
                 _ghostsMain.startColor = _stillAndWalkColor;
                 _trailsMain.startColor = _stillAndWalkColor;
                 _flashMain.startColor = _stillAndWalkColor;
-                _hammerMaterials[headMaterialIndex].color = _stillAndWalkColor;
+                currentHammerMaterial.Lerp(currentHammerMaterial,_stillAndWalkMaterial,materialLerpPerSecond * Time.deltaTime);
                 break;
             case gait.walking: 
                 _chargeLinesMain.startColor = _stillAndWalkColor; 
@@ -97,7 +111,7 @@ public class hammerStateEffects : MonoBehaviour
                 _ghostsMain.startColor = _stillAndWalkColor;
                 _trailsMain.startColor = _stillAndWalkColor;
                 _flashMain.startColor = _stillAndWalkColor;
-                _hammerMaterials[headMaterialIndex].color = _stillAndWalkColor;
+                currentHammerMaterial.Lerp(currentHammerMaterial,_stillAndWalkMaterial,materialLerpPerSecond * Time.deltaTime);
                 break;
             case gait.trotting: 
                 _chargeLinesMain.startColor = _trotColor;
@@ -106,7 +120,7 @@ public class hammerStateEffects : MonoBehaviour
                 _ghostsMain.startColor = _trotColor;
                 _trailsMain.startColor = _trotColor;
                 _flashMain.startColor = _trotColor;
-                _hammerMaterials[headMaterialIndex].color = _trotColor;
+                currentHammerMaterial.Lerp(currentHammerMaterial,_trotMaterial,materialLerpPerSecond * Time.deltaTime);
                 break;
             case gait.cantering: 
                 _chargeLinesMain.startColor = _canterColor;
@@ -115,7 +129,7 @@ public class hammerStateEffects : MonoBehaviour
                 _ghostsMain.startColor = _canterColor;
                 _trailsMain.startColor = _canterColor;
                 _flashMain.startColor = _canterColor;
-                _hammerMaterials[headMaterialIndex].color = _canterColor;
+                currentHammerMaterial.Lerp(currentHammerMaterial,_canterMaterial,materialLerpPerSecond * Time.deltaTime);
                 break;
             case gait.galloping: 
                 _chargeLinesMain.startColor = _gallopColor;
@@ -124,7 +138,7 @@ public class hammerStateEffects : MonoBehaviour
                 _ghostsMain.startColor = _gallopColor;
                 _trailsMain.startColor = _gallopColor;
                 _flashMain.startColor = _gallopColor;
-                _hammerMaterials[headMaterialIndex].color = _gallopColor;
+                currentHammerMaterial.Lerp(currentHammerMaterial,_gallopMaterial,materialLerpPerSecond * Time.deltaTime);
                 break;
             case gait.ultraGalloping: 
                 _chargeLinesMain.startColor =  _ultraGallopColor;
@@ -133,7 +147,7 @@ public class hammerStateEffects : MonoBehaviour
                 _ghostsMain.startColor = _ultraGallopColor;
                 _trailsMain.startColor = _ultraGallopColor;
                 _flashMain.startColor = _ultraGallopColor;
-                _hammerMaterials[headMaterialIndex].color = _ultraGallopColor;
+                currentHammerMaterial.Lerp(currentHammerMaterial,_ultraGallopMaterial,materialLerpPerSecond * Time.deltaTime);
                 break;
             case gait.vulcan: 
                 _chargeLinesMain.startColor = Color.black; 
@@ -142,7 +156,7 @@ public class hammerStateEffects : MonoBehaviour
                 _ghostsMain.startColor = Color.black;
                 _trailsMain.startColor = Color.black;
                 _flashMain.startColor = Color.black;
-                _hammerMaterials[headMaterialIndex].color = Color.black;
+                //currentHammerMaterial.Lerp(currentHammerMaterial,_stillAndWalkMaterial,materialLerpPerSecond * Time.deltaTime);
                 break;
             default: 
                 break;
@@ -152,7 +166,8 @@ public class hammerStateEffects : MonoBehaviour
         //NOTE: this may not be performant
         //Set the renderer's materials this way rather than changing the material
         // because the latter would change the actual asset
-        hammerMesh.materials = _hammerMaterials;
+        //_hammerMaterials[headMaterialIndex] = currentHammerMaterial;
+        hammerMesh.materials[2] = currentHammerMaterial;
 
         //something like this may be necessary, not sure how well the pointers work
         //_chargeLinesCOL.color = _embersCOLGradient; 
