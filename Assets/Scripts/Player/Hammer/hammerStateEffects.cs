@@ -20,7 +20,12 @@ public class hammerStateEffects : MonoBehaviour
     public ParticleSystem ghosts;
     private ParticleSystem.MainModule _ghostsMain;
 
-    //public Color _effectColor;
+    public Color _stillAndWalkColor;
+    public Color _trotColor;
+    public Color _canterColor;
+    public Color _gallopColor;
+    public Color _ultraGallopColor;
+
     public void updateGait(gait newGait)
     {
         gait = newGait;
@@ -62,46 +67,46 @@ public class hammerStateEffects : MonoBehaviour
         
         switch (gait) {
             case gait.still: 
-                _chargeLinesMain.startColor = Color.white; 
-                _embersMain.startColor = Color.white;
-                _glowMain.startColor = Color.white;
-                _ghostsMain.startColor = Color.white;
-                _trailsMain.startColor = Color.white;
+                _chargeLinesMain.startColor = _stillAndWalkColor; 
+                _embersMain.startColor = _stillAndWalkColor;
+                _glowMain.startColor = _stillAndWalkColor;
+                _ghostsMain.startColor = _stillAndWalkColor;
+                _trailsMain.startColor = _stillAndWalkColor;
                 break;
             case gait.walking: 
-                _chargeLinesMain.startColor = Color.green; 
-                _embersMain.startColor = Color.green;
-                _glowMain.startColor = Color.green;
-                _ghostsMain.startColor = Color.green;
-                _trailsMain.startColor = Color.green;
+                _chargeLinesMain.startColor = _stillAndWalkColor; 
+                _embersMain.startColor = _stillAndWalkColor;
+                _glowMain.startColor = _stillAndWalkColor;
+                _ghostsMain.startColor = _stillAndWalkColor;
+                _trailsMain.startColor = _stillAndWalkColor;
                 break;
             case gait.trotting: 
-                _chargeLinesMain.startColor = Color.blue; 
-                _embersMain.startColor = Color.blue;
-                _glowMain.startColor = Color.blue;
-                _ghostsMain.startColor = Color.blue;
-                _trailsMain.startColor = Color.blue;
+                _chargeLinesMain.startColor = _trotColor;
+                _embersMain.startColor = _trotColor;
+                _glowMain.startColor = _trotColor;
+                _ghostsMain.startColor = _trotColor;
+                _trailsMain.startColor = _trotColor;
                 break;
             case gait.cantering: 
-                _chargeLinesMain.startColor =  Color.yellow;
-                _embersMain.startColor = Color.yellow;
-                _glowMain.startColor = Color.yellow;
-                _ghostsMain.startColor = Color.yellow;
-                _trailsMain.startColor = Color.yellow;
+                _chargeLinesMain.startColor = _canterColor;
+                _embersMain.startColor = _canterColor;
+                _glowMain.startColor = _canterColor;
+                _ghostsMain.startColor = _canterColor;
+                _trailsMain.startColor = _canterColor;
                 break;
             case gait.galloping: 
-                _chargeLinesMain.startColor = Color.red; 
-                _embersMain.startColor = Color.red;
-                _glowMain.startColor = Color.red;
-                _ghostsMain.startColor = Color.red;
-                _trailsMain.startColor = Color.red;
+                _chargeLinesMain.startColor = _gallopColor;
+                _embersMain.startColor = _gallopColor;
+                _glowMain.startColor = _gallopColor;
+                _ghostsMain.startColor = _gallopColor;
+                _trailsMain.startColor = _gallopColor;
                 break;
             case gait.ultraGalloping: 
-                _chargeLinesMain.startColor =  Color.magenta;
-                _embersMain.startColor = Color.magenta;
-                _glowMain.startColor = Color.magenta;
-                _ghostsMain.startColor = Color.magenta;
-                _trailsMain.startColor = Color.magenta;
+                _chargeLinesMain.startColor =  _ultraGallopColor;
+                _embersMain.startColor = _ultraGallopColor;
+                _glowMain.startColor = _ultraGallopColor;
+                _ghostsMain.startColor = _ultraGallopColor;
+                _trailsMain.startColor = _ultraGallopColor;
                 break;
             case gait.vulcan: 
                 _chargeLinesMain.startColor = Color.black; 
