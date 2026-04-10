@@ -104,7 +104,8 @@ public class SimpleEnemySpawner : MonoBehaviour
             if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
             {
                 GameObject spawned = Instantiate(prefab, hit.position, Quaternion.identity);
-                if (spawned.GetComponent<StandardEnemyAI>() != null)
+                StandardEnemyAI ai = spawned.GetComponent<StandardEnemyAI>();
+                if (ai != null)
                 {
                     aliveEnemies.Add(ai);
                 }

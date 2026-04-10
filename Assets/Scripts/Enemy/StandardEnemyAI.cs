@@ -18,7 +18,6 @@ public class StandardEnemyAI : MonoBehaviour
     public GameObject shield;
     private Rigidbody rb;
     private AudioSource _shieldBreakAudioSource;
-    private StandardEnemySpawner spawner;
     [HideInInspector] public PlayerHealth _playerHealthRef;
     [HideInInspector] public Transform _playerTransformRef;
     private NavMeshAgent agent;
@@ -57,7 +56,6 @@ public class StandardEnemyAI : MonoBehaviour
 
     public bool HasShield() => shield != null;
     public void MarkShieldHit() => ShieldWasJustHit = true;
-    public void Initialize(StandardEnemySpawner spawnerRef) => spawner = spawnerRef;
 
     // Timers
     private float knockbackTimer;
@@ -309,7 +307,6 @@ public class StandardEnemyAI : MonoBehaviour
 
         TryTrigger(deadTrigger);
 
-        spawner?.RemoveEnemy(this);
         OnDied?.Invoke();
     }
 
@@ -347,10 +344,5 @@ public class StandardEnemyAI : MonoBehaviour
     private void TryTrigger(string triggerName)
     {
         if (anim != null && !string.IsNullOrEmpty(triggerName)) anim.SetTrigger(triggerName);
-    }
-
-    private void OnDisable()
-    {
-        if (!IsDying) spawner?.RemoveEnemy(this);
     }
 }
