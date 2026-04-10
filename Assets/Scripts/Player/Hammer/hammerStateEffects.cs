@@ -19,6 +19,8 @@ public class hammerStateEffects : MonoBehaviour
 
     public ParticleSystem ghosts;
     private ParticleSystem.MainModule _ghostsMain;
+    public ParticleSystem flash;
+    private ParticleSystem.MainModule _flashMain;
 
     public Color _stillAndWalkColor;
     public Color _trotColor;
@@ -32,6 +34,7 @@ public class hammerStateEffects : MonoBehaviour
 
     public void updateGait(gait newGait)
     {
+        flash.Play();
         gait = newGait;
     }
 
@@ -43,6 +46,7 @@ public class hammerStateEffects : MonoBehaviour
         _glowMain = glow.main;
         _ghostsMain = ghosts.main;
         _trailsMain = trails.main;
+        _flashMain = flash.main;
         
         defaultHammerMatColour = hammerMaterial.color;
     }
@@ -78,6 +82,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _stillAndWalkColor;
                 _ghostsMain.startColor = _stillAndWalkColor;
                 _trailsMain.startColor = _stillAndWalkColor;
+                _flashMain.startColor = _stillAndWalkColor;
                 hammerMaterial.color = _stillAndWalkColor;
                 break;
             case gait.walking: 
@@ -86,6 +91,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _stillAndWalkColor;
                 _ghostsMain.startColor = _stillAndWalkColor;
                 _trailsMain.startColor = _stillAndWalkColor;
+                _flashMain.startColor = _stillAndWalkColor;
                 hammerMaterial.color = _stillAndWalkColor;
                 break;
             case gait.trotting: 
@@ -94,6 +100,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _trotColor;
                 _ghostsMain.startColor = _trotColor;
                 _trailsMain.startColor = _trotColor;
+                _flashMain.startColor = _trotColor;
                 hammerMaterial.color = _trotColor;
                 break;
             case gait.cantering: 
@@ -102,6 +109,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _canterColor;
                 _ghostsMain.startColor = _canterColor;
                 _trailsMain.startColor = _canterColor;
+                _flashMain.startColor = _canterColor;
                 hammerMaterial.color = _canterColor;
                 break;
             case gait.galloping: 
@@ -110,6 +118,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _gallopColor;
                 _ghostsMain.startColor = _gallopColor;
                 _trailsMain.startColor = _gallopColor;
+                _flashMain.startColor = _gallopColor;
                 hammerMaterial.color = _gallopColor;
                 break;
             case gait.ultraGalloping: 
@@ -118,6 +127,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _ultraGallopColor;
                 _ghostsMain.startColor = _ultraGallopColor;
                 _trailsMain.startColor = _ultraGallopColor;
+                _flashMain.startColor = _ultraGallopColor;
                 hammerMaterial.color = _ultraGallopColor;
                 break;
             case gait.vulcan: 
@@ -126,6 +136,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = Color.black;
                 _ghostsMain.startColor = Color.black;
                 _trailsMain.startColor = Color.black;
+                _flashMain.startColor = Color.black;
                 hammerMaterial.color = Color.black;
                 break;
             default: 
