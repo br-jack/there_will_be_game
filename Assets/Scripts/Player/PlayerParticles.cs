@@ -21,6 +21,12 @@ public class PlayerParticles : MonoBehaviour
             jumpTrail.emitting = false;
         }
 
+        if (runParticles != null)
+        {
+            var emission = jumpParticles.emission;
+            emission.enabled = false;
+        }
+
     }
     
     public void OnEnable()
@@ -86,13 +92,17 @@ public class PlayerParticles : MonoBehaviour
     void Update()
     {
         if (_cc != null) {
-            if (!_cc.isGrounded)
+            if (_cc.isGrounded)
             {
-                Debug.Log("Is not grounded");
                 // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
                 // sizeOverLifetime.sizeMultiplier = 1;
+
+                if (runParticles != null && !runParticles.isEmitting)
+                {
+                    var emission = jumpParticles.emission;
+                    emission.enabled = true;
+                }
                 
-                runParticles.Play();
                 if (jumpTrail != null)
                 {
                     jumpTrail.emitting = false;
@@ -100,8 +110,8 @@ public class PlayerParticles : MonoBehaviour
             }
             else
             {
-                Debug.Log("Is grounded");
-                // runParticles.Stop();
+                var emission = jumpParticles.emission;
+                emission.enabled = false;
             }
         }
     }
