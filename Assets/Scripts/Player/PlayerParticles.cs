@@ -86,8 +86,9 @@ public class PlayerParticles : MonoBehaviour
     void Update()
     {
         if (_cc != null) {
-            if (_cc.isGrounded)
+            if (!_cc.isGrounded)
             {
+                Debug.Log("Is not grounded");
                 // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
                 // sizeOverLifetime.sizeMultiplier = 1;
                 
@@ -98,9 +99,9 @@ public class PlayerParticles : MonoBehaviour
                 }
             }
             else
-            
             {
-                runParticles.Stop();
+                Debug.Log("Is grounded");
+                // runParticles.Stop();
             }
         }
     }
