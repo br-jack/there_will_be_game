@@ -11,11 +11,14 @@ namespace Hammer
     {
 
         public hammerHead head;
-        public float smallHitboxSizeZ;
+        public Vector3 smallHitboxSize;
+        public Vector3 smallHitboxCenter;
         public float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
-        public float mediumHitboxSizeZ;
+        public Vector3 mediumHitboxSize;
+        public Vector3 mediumHitboxCenter;
         public float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
-        public float largeHitboxSizeZ;
+        public Vector3 largeHitboxSize;
+        public Vector3 largeHitboxxCenter;
 
         
         [SerializeField] private float extension;
@@ -89,16 +92,19 @@ namespace Hammer
 
         void Update()
         {
-            var hboxsize = _hitbox.size;
+            
             if (head.forwardSpeed < mediumHitboxThreshold)
             {
-                hboxsize.z = smallHitboxSizeZ;
+                _hitbox.size = smallHitboxSize;
+                _hitbox.center = smallHitboxCenter;
             } else if (head.forwardSpeed < largeHitboxThreshold)
             {
-                hboxsize.z = mediumHitboxSizeZ;
+                _hitbox.size = mediumHitboxSize;
+                _hitbox.center = mediumHitboxCenter;
             } else
             {
-                hboxsize.z = largeHitboxSizeZ;
+                _hitbox.size = largeHitboxSize;
+                _hitbox.center = largeHitboxxCenter;
             }
             
             _controllerRef.Update();
