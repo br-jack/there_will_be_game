@@ -10068,12 +10068,12 @@ MonoBehaviour:
   jump:
     m_PersistentCalls:
       m_Calls: []
-  trotSpeed: 0
+  trotSpeed: 10
   canterSpeed: 18
   gallopSpeed: 24
   chargeRequiredToCanter: 1.5
   chargeRequiredToGallop: 3.5
-  jumpHeight: 4
+  jumpHeight: 20
   turnSpeed: 60
   acceleration: 6
   deceleration: 12
@@ -10160,6 +10160,7 @@ MonoBehaviour:
   runParticles: {fileID: 8481436098113573260}
   jumpParticles: {fileID: 7022321905512896264}
   _horseMovementGaits: {fileID: 4768003233324626996}
+  isGrounded: 0
 --- !u!143 &5198885869196984512
 CharacterController:
   m_ObjectHideFlags: 0

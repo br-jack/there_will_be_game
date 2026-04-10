@@ -3435,17 +3435,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1984088431}
   m_SourcePrefab: {fileID: 100100000, guid: 2bf0761a3b0a74d42a0c6c3c8c8f489f, type: 3}
---- !u!114 &137942468 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2757818377256489188, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-  m_PrefabInstance: {fileID: 5061453144199501980}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9f14a8012847594e90863a2f34d8d53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &139368892
 GameObject:
   m_ObjectHideFlags: 0
@@ -60209,18 +60198,6 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1486947147}
-    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: trotSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: gaitChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 137942468}
-    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: gaitChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: updateGait
-      objectReference: {fileID: 0}
     - target: {fileID: 6347623796818449220, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.75
@@ -60283,7 +60260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.77
+      value: 10.77
       objectReference: {fileID: 0}
     - target: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_LocalPosition.z
