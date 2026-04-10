@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class hammerParticleSystemBehaviour : MonoBehaviour
 {
-    private float headSpeedForwards;
-
+    public hammerHead head;
     private Transform _tf;
     private Vector3 posPrevFrame;
 
@@ -31,9 +30,6 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
-        _tf = GetComponent<Transform>();
-        posPrevFrame = _tf.position;
         trailsSystem.Play();
         ghostsSystem.Play();
         
@@ -42,16 +38,11 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //find scalar speed of hammer head in the forwards direction
-        Vector3 positionChange = _tf.position - posPrevFrame;
-        Vector3 velocityGlobal = positionChange/Time.deltaTime;
-        Vector3 velocityLocal =  transform.InverseTransformDirection(velocityGlobal);
-        headSpeedForwards = velocityLocal.z;
-        //Debug.Log("headSpeedForwards: "+headSpeedForwards);
+        
 
         //enable a trail behind the hammer if headSpeedForwards is above the threshold, with a buffer
         var trails = trailsSystem.trails;
-        if (headSpeedForwards > trailSpeedThreshold) 
+        if (head.forwardSpeed > trailSpeedThreshold) 
         {
             trails.enabled = true; 
             framesUntilTrailsDisabled = trailLingerFrames;
@@ -61,7 +52,7 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
 
         //spawn 'ghost' hammers behind the hammer if headSpeedForwards is above the threshold 
         var ghostEmission = ghostsSystem.emission;
-        if (headSpeedForwards > ghostSpeedThreshold) 
+        if (head.forwardSpeed > ghostSpeedThreshold) 
         { 
             ghostEmission.enabled = true; 
             framesUntilGhostsDisabled = ghostsLingerFrames;

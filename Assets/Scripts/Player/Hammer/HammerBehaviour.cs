@@ -10,6 +10,14 @@ namespace Hammer
     public class HammerBehaviour : MonoBehaviour
     {
 
+        public hammerHead head;
+        public float smallHitboxSizeZ;
+        public float mediumHitboxThreshold;
+        public float mediumHitboxSizeZ;
+        public float largeHitboxThreshold;
+        public float largeHitboxSizeZ;
+
+        
         [SerializeField] private float extension;
         private float extensionVelocity;
         [SerializeField] private float k = 20f;
@@ -29,12 +37,14 @@ namespace Hammer
         private Vector3 frameAcceleration;
 
         private IController _controllerRef;
+        private BoxCollider _hitbox;
 
 
         
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
+            _hitbox = GetComponent<BoxCollider>();
         }
 
         void Start()
@@ -78,6 +88,18 @@ namespace Hammer
 
         void Update()
         {
+            var hboxsize = _hitbox.size;
+            if (head.forwardSpeed < mediumHitboxThreshold)
+            {
+                hboxsize.z = smallHitboxSizeZ;
+            } else if (head.forwardSpeed < largeHitboxThreshold)
+            {
+                hboxsize.z = mediumHitboxSizeZ;
+            } else
+            {
+                hboxsize.z = largeHitboxSizeZ;
+            }
+            
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
             frameAcceleration = _controllerRef.GetAcceleration();
