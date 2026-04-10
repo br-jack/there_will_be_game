@@ -448,22 +448,22 @@ MonoBehaviour:
   jump:
     m_PersistentCalls:
       m_Calls: []
-  trotSpeed: 10
+  trotSpeed: 14
   canterSpeed: 18
   gallopSpeed: 24
   chargeRequiredToCanter: 1.5
   chargeRequiredToGallop: 3.5
-  jumpHeight: 20
+  jumpHeight: 16
   turnSpeed: 60
-  acceleration: 6
+  acceleration: 12
   deceleration: 12
   minTimeBetweenJumps: 0.25
   chargeDecay: 15
   currentRunCharge: 0
-  gait: 0
+  gait: 1
   currentSpeed: 0
-  gravity: -9.81
-  verticalVelocity: {x: 0, y: 0, z: 0}
+  gravity: -25
+  verticalVelocity: {x: 0, y: -1, z: 0}
 --- !u!114 &9012345678901234567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,10 +564,10 @@ CharacterController:
   serializedVersion: 3
   m_Height: 2.5
   m_Radius: 0.5
-  m_SlopeLimit: 45
+  m_SlopeLimit: 60
   m_StepOffset: 0.6
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1.25, z: 0.5}
 --- !u!1 &3919838540913894575
 GameObject:
@@ -644,6 +644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a65b67cf38ee7478330a8c73cbcd62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forwardSpeed: 0
 --- !u!1 &6900478287992809880
 GameObject:
   m_ObjectHideFlags: 0
