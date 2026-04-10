@@ -19,10 +19,10 @@ public class GameStateManager : MonoBehaviour
     public float playTimeSoFar { get; private set; }
 
     // Scene references
+    [SerializeField] private GameObject _pausePanel;
     private PlayerLives _playerLives;
     private HorseMovement _horseMovement;
     private EnemySpawner[] _enemySpawners;
-    private GameObject _pausePanel;
 
 
     private void Awake()
@@ -35,6 +35,24 @@ public class GameStateManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        FindSceneReferences();
+    }
+
+    // Finds per-scene references. Called on Awake and after every scene load
+    // because DontDestroyOnLoad means the new scene's objects need re-discovering.
+    private void FindSceneReferences()
+    {
+        _enemySpawners = FindObjectsByType<EnemySpawner>(FindObjectsSortMode.None);
+        _horseMovement = FindFirstObjectByType<HorseMovement>();
+        _playerLives = FindFirstObjectByType<PlayerLives>();
+    }
+
+    private void Start()
+    {
+        // SceneManager.sceneLoaded does NOT fire for the initial scene, so
+        // drive the handler manually once on startup to set the correct state.
+        NewSceneJustLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 
     private void Update()
@@ -137,6 +155,10 @@ public class GameStateManager : MonoBehaviour
 
     private void NewSceneJustLoaded(Scene scene, LoadSceneMode mode)
     {
+        // Re-discover scene refs: since this manager is DontDestroyOnLoad, the
+        // refs from the previous scene now point at destroyed objects.
+        FindSceneReferences();
+
         // If a scene just loaded, force the state to match the scene.
         // This has no transition unlike calling SetState().
         switch (scene.name)
@@ -165,7 +187,7 @@ public class GameStateManager : MonoBehaviour
 
         foreach (EnemySpawner spawner in _enemySpawners)
         {
-            if (spawner == null) return;
+            if (spawner == null) continue;
             spawner.spawningEnabled = true;
         }
     }
@@ -178,9 +200,15 @@ public class GameStateManager : MonoBehaviour
 
         foreach (EnemySpawner spawner in _enemySpawners)
         {
-            if (spawner == null) return;
+            if (spawner == null) continue;
             spawner.spawningEnabled = false;
         }
+    }
+
+    // Enable/disable the player's input-driven movement.
+    private void SetPlayerInputEnabled(bool enabled)
+    {
+        if (_horseMovement != null) _horseMovement.enabled = enabled;
     }
 
     // Functions for entering specific GameStates
@@ -195,7 +223,7 @@ public class GameStateManager : MonoBehaviour
     private void EnterBeforePlaying()
     {
         Time.timeScale = 1f;
-        ElapsedRunTime = 0f;
+        playTimeSoFar = 0f;
 
         EnableSpawning();
     }
