@@ -31,7 +31,7 @@ public class horseMovementGaits : MonoBehaviour
 
     private float jumpLockedTime;
 
-    private Vector3 verticalVelocity = Vector3.zero;
+    [SerializeField] private Vector3 verticalVelocity = Vector3.zero; //serialised as bugged i think
     public Action jumpStarted;
     
     private float _throttleInput;
@@ -110,7 +110,8 @@ public class horseMovementGaits : MonoBehaviour
     // Update is called once per frame
     void Update()
     {       
-        if (jumpLockedTime > 0.0f) {jumpLockedTime -= Time.deltaTime;}
+        if (jumpLockedTime > 0.0f) {jumpLockedTime -= Time.deltaTime;} 
+        else {jumpLockedTime = 0.0f;}
 
         //identify a target speed to accelerate towards
         float targetSpeed = 0f;
@@ -157,10 +158,11 @@ public class horseMovementGaits : MonoBehaviour
             (currentSpeed < targetSpeed ? acceleration : deceleration) * Time.deltaTime);
         
         //apply gravity, or a small down force if already on the ground
-        verticalVelocity.y += (_cc.isGrounded ? -1f : gravity) * Time.deltaTime; 
+        
+        verticalVelocity.y = _cc.isGrounded ? -1f : verticalVelocity.y + (gravity * Time.deltaTime); 
         if (_jumpInput && _cc.isGrounded) 
             {
-                if (jumpLockedTime == 0)
+                if (jumpLockedTime <= 0.0f)
                 {
                     verticalVelocity.y += jumpHeight;
                     //not sure why we are invoking two things here! once i understand, ill try to do with just one
