@@ -42,47 +42,49 @@ namespace Hammer
 
         private void MoveToTargetPosition()
         {
-            Vector3 toTarget = _targetHammer.transform.position - transform.position;
-            float distance = toTarget.magnitude;
+            transform.position = _targetHammer.transform.position;
+            //Vector3 toTarget = _targetHammer.transform.position - transform.position;
+            //float distance = toTarget.magnitude;
 
-            Vector3 springForce = toTarget * positionSpringStrength;
+            //Vector3 springForce = toTarget * positionSpringStrength;
 
-            // horses are much faster than hammers
-            Vector3 dampingForce = -(_rb.linearVelocity - horseRigidBody.linearVelocity) * positionDamping;
+            //// horses are much faster than hammers
+            //Vector3 dampingForce = -(_rb.linearVelocity - horseRigidBody.linearVelocity) * positionDamping;
 
-            _rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
+            //_rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
 
-            if (_collisionsEnabled && distance > collisionDisableDistance)
-            {
-                _collisionsEnabled = false;
-                if (_collider != null) _collider.enabled = false;
-            }
-            else if (!_collisionsEnabled && distance < collisionReenableDistance)
-            {
-                _collisionsEnabled = true;
-                if (_collider != null) _collider.enabled = true;
-            }
+            //if (_collisionsEnabled && distance > collisionDisableDistance)
+            //{
+            //    _collisionsEnabled = false;
+            //    if (_collider != null) _collider.enabled = false;
+            //}
+            //else if (!_collisionsEnabled && distance < collisionReenableDistance)
+            //{
+            //    _collisionsEnabled = true;
+            //    if (_collider != null) _collider.enabled = true;
+            //}
         }
 
         private void MoveToTargetRotation()
         {
-            Quaternion rotationDiff = _targetHammer.transform.rotation * Quaternion.Inverse(transform.rotation);
-            rotationDiff.ToAngleAxis(out float angle, out Vector3 rotationAxis);
+            transform.rotation = _targetHammer.transform.rotation;
+            //Quaternion rotationDiff = _targetHammer.transform.rotation * Quaternion.Inverse(transform.rotation);
+            //rotationDiff.ToAngleAxis(out float angle, out Vector3 rotationAxis);
 
-            if (angle > 180f) angle -= 360f;
+            //if (angle > 180f) angle -= 360f;
 
-            if (rotationAxis.sqrMagnitude > 0.001f)
-            {
-                Vector3 springTorque = rotationAxis.normalized * (angle * Mathf.Deg2Rad * rotationSpringStrength);
-                Vector3 dampingTorque = -_rb.angularVelocity * rotationDamping;
-                _rb.AddTorque(springTorque + dampingTorque, ForceMode.Acceleration);
-            }
+            //if (rotationAxis.sqrMagnitude > 0.001f)
+            //{
+            //    Vector3 springTorque = rotationAxis.normalized * (angle * Mathf.Deg2Rad * rotationSpringStrength);
+            //    Vector3 dampingTorque = -_rb.angularVelocity * rotationDamping;
+            //    _rb.AddTorque(springTorque + dampingTorque, ForceMode.Acceleration);
+            //}
         }
 
         void FixedUpdate()
         {
             // maybe horse acceleration?
-            _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, horseRigidBody.linearVelocity, 0.8f);
+            //_rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, horseRigidBody.linearVelocity, 0.8f);
 
             MoveToTargetPosition();
             MoveToTargetRotation();
