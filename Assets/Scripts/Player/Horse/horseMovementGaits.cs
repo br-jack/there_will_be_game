@@ -157,9 +157,9 @@ public class horseMovementGaits : MonoBehaviour
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed,
             (currentSpeed < targetSpeed ? acceleration : deceleration) * Time.deltaTime);
         
-        //apply gravity, or a small down force if already on the ground
-        
-        verticalVelocity.y = _cc.isGrounded ? -1f : verticalVelocity.y + (gravity * Time.deltaTime); 
+
+        //apply gravity if midair, or a small static push if on the ground
+        verticalVelocity.y = _cc.isGrounded ? Mathf.Max(verticalVelocity.y-1f,-1f) : verticalVelocity.y + (gravity * Time.deltaTime); 
         if (_jumpInput && _cc.isGrounded) 
             {
                 if (jumpLockedTime <= 0.0f)
