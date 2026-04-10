@@ -18,7 +18,7 @@ public class horseMovementGaits : MonoBehaviour
     public float gallopSpeed;
     public float chargeRequiredToCanter = 10f;
     public float chargeRequiredToGallop =20f;
-    public float jumpHeight = 4f; 
+    public float jumpHeight = 20f; 
     public float turnSpeed = 60f;
     public float acceleration = 2f;
     public float deceleration = 6f;
@@ -44,7 +44,7 @@ public class horseMovementGaits : MonoBehaviour
     //so we can update _move in each of them and then apply it in update()
     public void OnJump(InputAction.CallbackContext context)
     {
-        _jumpInput = context.ReadValue<bool>();
+        _jumpInput = context.ReadValueAsButton();
     }
 
     public void onSteer(InputAction.CallbackContext context)
