@@ -66,15 +66,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       propertyPath: m_Name
-      value: hammer
+      value: VisualHammer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 364211550610626168}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2693413810626932691}
@@ -83,34 +80,16 @@ PrefabInstance:
       addedObject: {fileID: 5577740451161296096}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -4505212103197417152}
+      addedObject: {fileID: 6217375704657944669}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 262269830760244149}
   m_SourcePrefab: {fileID: 100100000, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
 --- !u!1 &5630890325763975634 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
   m_PrefabInstance: {fileID: 4820427454857696387}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &364211550610626168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5630890325763975634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b6d0a1dd8956af4385d7151cfe70551, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  extension: 0
-  k: 20
-  dampingCoef: 3
-  restLength: 1
-  maxLength: 10
-  sensitivity: 2
-  momentumDecay: 0.95
-  pivotTransform: {fileID: 0}
-  rigidBody: {fileID: 0}
 --- !u!82 &2693413810626932691
 AudioSource:
   m_ObjectHideFlags: 0
@@ -235,7 +214,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &-4505212103197417152
+--- !u!114 &6217375704657944669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5630890325763975634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 470dec3b8051d194a98d0bcdbfd45145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pivotTransform: {fileID: 0}
+  horseRigidBody: {fileID: 0}
+  _targetHammer: {fileID: 0}
+  positionSpringStrength: 500
+  positionDamping: 80
+  rotationSpringStrength: 30
+  rotationDamping: 5
+  collisionDisableDistance: 2.5
+  collisionReenableDistance: 0.3
+--- !u!65 &262269830760244149
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -248,11 +248,11 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5, y: 2.5, z: 1}
-  m_Center: {x: 0, y: 4.5, z: 0.4}
+  m_Size: {x: 1, y: 1.5, z: 2}
+  m_Center: {x: 0, y: 4.5, z: -0.11356791}
