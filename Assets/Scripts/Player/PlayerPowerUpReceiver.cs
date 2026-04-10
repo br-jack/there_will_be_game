@@ -50,7 +50,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
         if (playerParticles != null)
         {
-            _defaultSpeedParticles = playerParticles.runParticles;
+            //_defaultSpeedParticles = playerParticles.runParticles;
             
             _defaultJumpParticles = playerParticles.jumpParticles;
             _defaultJumpTrail = playerParticles.jumpTrail;
@@ -92,9 +92,9 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         
         if (playerParticles != null)
         {
-            playerParticles.runParticles.Stop();
+            //playerParticles.runParticles.Stop();
             speedBoostParticles.gameObject.SetActive(true);
-            playerParticles.runParticles = speedBoostParticles;
+            //playerParticles.runParticles = speedBoostParticles;
         }
     }
 
@@ -111,7 +111,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
         if (playerParticles != null)
         {
-            playerParticles.runParticles = _defaultSpeedParticles;
+            //playerParticles.runParticles = _defaultSpeedParticles;
             speedBoostParticles.gameObject.SetActive(false);
         }
 

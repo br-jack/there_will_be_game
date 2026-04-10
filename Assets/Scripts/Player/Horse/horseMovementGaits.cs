@@ -22,11 +22,15 @@ public class horseMovementGaits : MonoBehaviour
     public float turnSpeed = 60f;
     public float acceleration = 2f;
     public float deceleration = 6f;
+    public float minTimeBetweenJumps = 0.25f; //for how long are you unable to jump after jumping
     public float chargeDecay;
     public float currentRunCharge; //should be private, but i want to see it! 
     public gait gait; //currently pointless, just to see gait in editor
     public float currentSpeed = 0f; //just to see in editor
-    private float gravity = -9.81f;
+    public float gravity = -9.81f; 
+
+    private float jumpLockedTime;
+
     private Vector3 verticalVelocity = Vector3.zero;
     public Action jumpStarted;
     
@@ -105,8 +109,8 @@ public class horseMovementGaits : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
-        
+    {       
+        if (jumpLockedTime > 0.0f) {jumpLockedTime -= Time.deltaTime;}
 
         //identify a target speed to accelerate towards
         float targetSpeed = 0f;
@@ -156,10 +160,16 @@ public class horseMovementGaits : MonoBehaviour
         verticalVelocity.y += (_cc.isGrounded ? -1f : gravity) * Time.deltaTime; 
         if (_jumpInput && _cc.isGrounded) 
             {
-                verticalVelocity.y += jumpHeight;
-                //not sure why we are invoking two things here! once i understand, ill try to do with just one
-                jumpStarted.Invoke();
-                jump.Invoke();
+                if (jumpLockedTime == 0)
+                {
+                    verticalVelocity.y += jumpHeight;
+                    //not sure why we are invoking two things here! once i understand, ill try to do with just one
+                    jumpStarted.Invoke();
+                    jump.Invoke();
+                    jumpLockedTime = minTimeBetweenJumps;
+                }
+                
+                
             }
         
         Vector3 move = transform.forward * currentSpeed + verticalVelocity;
