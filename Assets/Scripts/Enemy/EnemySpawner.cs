@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SimpleEnemySpawner : MonoBehaviour
+public class EnemySpawner : MonoBehaviour
 {
     [System.Serializable]
     public struct Wave
@@ -22,7 +22,7 @@ public class SimpleEnemySpawner : MonoBehaviour
 
     [SerializeField] private float maxDistanceFromPlayer = 100f;
 
-    private float navMeshSearchRadius = 2f;
+    private float navMeshSearchRadius = 2.5f;
 
     [Header("Waves")]
 
