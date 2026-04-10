@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 2558347792124415364}
   - component: {fileID: 9007078426132667616}
   - component: {fileID: 5660115021953431527}
-  - component: {fileID: 3967042737960735111}
+  - component: {fileID: -8550110256333393937}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -682,7 +682,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3967042737960735111
+--- !u!114 &-8550110256333393937
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -694,13 +694,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shield: {fileID: 4355481918939910684}
+  shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
   stopFromPlayerDistance: 1.5
   smoothVelocity: 0.35
   rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
   maxDeathTime: 4
   anim: {fileID: 0}
   speedParam: Speed

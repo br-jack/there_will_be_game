@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public struct EnemyAttack
+[System.Serializable] public struct EnemyAttack
 {
     public int damage;
     public float range;
@@ -29,7 +29,7 @@ public class StandardEnemyAI : MonoBehaviour
     [SerializeField] private float smoothVelocity = 0.35f;
     [SerializeField] private float rotationSpeed = 8f;
 
-    private EnemyAttack attack = new EnemyAttack
+    [SerializeField] protected EnemyAttack attack = new EnemyAttack
     {
         damage = 10,
         range = 2.5f,
@@ -225,7 +225,7 @@ public class StandardEnemyAI : MonoBehaviour
         DoDamage();
     }
 
-    private void DoDamage()
+    protected virtual void DoDamage()
     {
         if (IsDying || _playerHealthRef == null) return;
 
