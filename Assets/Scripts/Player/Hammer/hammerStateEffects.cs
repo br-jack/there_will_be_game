@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 
 public class hammerStateEffects : MonoBehaviour
@@ -26,9 +27,9 @@ public class hammerStateEffects : MonoBehaviour
     public Color _gallopColor;
     public Color _ultraGallopColor;
 
-    [SerializeField] private Material defaultHammerHeadMaterial;
-
-    private Material hammerHeadMaterial;
+    [SerializeField] private Renderer hammerMesh;
+    [SerializeField] private int headMaterialIndex = 2;
+    private Material[] _hammerMaterials;
 
     public void updateGait(gait newGait)
     {
@@ -43,10 +44,12 @@ public class hammerStateEffects : MonoBehaviour
         _glowMain = glow.main;
         _ghostsMain = ghosts.main;
         _trailsMain = trails.main;
+
+        _hammerMaterials = hammerMesh.materials;
+
+        Assert.IsTrue(_hammerMaterials[headMaterialIndex].name == "hammer_metal");
         
-        
-        
-        hammerHeadMaterial = new Material(defaultHammerHeadMaterial);
+        _hammerMaterials[headMaterialIndex] = new Material(_hammerMaterials[headMaterialIndex]);
     }
 
     // Update is called once per frame
@@ -80,7 +83,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _stillAndWalkColor;
                 _ghostsMain.startColor = _stillAndWalkColor;
                 _trailsMain.startColor = _stillAndWalkColor;
-                hammerHeadMaterial.color = _stillAndWalkColor;
+                _hammerMaterials[headMaterialIndex].color = _stillAndWalkColor;
                 break;
             case gait.walking: 
                 _chargeLinesMain.startColor = _stillAndWalkColor; 
@@ -88,7 +91,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _stillAndWalkColor;
                 _ghostsMain.startColor = _stillAndWalkColor;
                 _trailsMain.startColor = _stillAndWalkColor;
-                hammerHeadMaterial.color = _stillAndWalkColor;
+                _hammerMaterials[headMaterialIndex].color = _stillAndWalkColor;
                 break;
             case gait.trotting: 
                 _chargeLinesMain.startColor = _trotColor;
@@ -96,7 +99,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _trotColor;
                 _ghostsMain.startColor = _trotColor;
                 _trailsMain.startColor = _trotColor;
-                hammerHeadMaterial.color = _trotColor;
+                _hammerMaterials[headMaterialIndex].color = _trotColor;
                 break;
             case gait.cantering: 
                 _chargeLinesMain.startColor = _canterColor;
@@ -104,7 +107,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _canterColor;
                 _ghostsMain.startColor = _canterColor;
                 _trailsMain.startColor = _canterColor;
-                hammerHeadMaterial.color = _canterColor;
+                _hammerMaterials[headMaterialIndex].color = _canterColor;
                 break;
             case gait.galloping: 
                 _chargeLinesMain.startColor = _gallopColor;
@@ -112,7 +115,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _gallopColor;
                 _ghostsMain.startColor = _gallopColor;
                 _trailsMain.startColor = _gallopColor;
-                hammerHeadMaterial.color = _gallopColor;
+                _hammerMaterials[headMaterialIndex].color = _gallopColor;
                 break;
             case gait.ultraGalloping: 
                 _chargeLinesMain.startColor =  _ultraGallopColor;
@@ -120,7 +123,7 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = _ultraGallopColor;
                 _ghostsMain.startColor = _ultraGallopColor;
                 _trailsMain.startColor = _ultraGallopColor;
-                hammerHeadMaterial.color = _ultraGallopColor;
+                _hammerMaterials[headMaterialIndex].color = _ultraGallopColor;
                 break;
             case gait.vulcan: 
                 _chargeLinesMain.startColor = Color.black; 
@@ -128,14 +131,27 @@ public class hammerStateEffects : MonoBehaviour
                 _glowMain.startColor = Color.black;
                 _ghostsMain.startColor = Color.black;
                 _trailsMain.startColor = Color.black;
-                hammerHeadMaterial.color = Color.black;
+                _hammerMaterials[headMaterialIndex].color = Color.black;
                 break;
             default: 
                 break;
             
         }
-        
+
+        //NOTE: this may not be performant
+        //Set the renderer's materials this way rather than changing the material
+        // because the latter would change the actual asset
+        hammerMesh.materials = _hammerMaterials;
+
         //something like this may be necessary, not sure how well the pointers work
         //_chargeLinesCOL.color = _embersCOLGradient; 
+    }
+
+    void OnDestroy()
+    {
+        for (int i = 0; i < _hammerMaterials.Length; ++i)
+        {
+            Destroy(_hammerMaterials[i]);
+        }
     }
 }
