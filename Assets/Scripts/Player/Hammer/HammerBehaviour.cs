@@ -12,9 +12,9 @@ namespace Hammer
 
         public hammerHead head;
         public float smallHitboxSizeZ;
-        public float mediumHitboxThreshold;
+        public float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
         public float mediumHitboxSizeZ;
-        public float largeHitboxThreshold;
+        public float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
         public float largeHitboxSizeZ;
 
         
@@ -45,6 +45,7 @@ namespace Hammer
         {
             _rb = GetComponent<Rigidbody>();
             _hitbox = GetComponent<BoxCollider>();
+            Debug.Assert(_hitbox != null);
         }
 
         void Start()

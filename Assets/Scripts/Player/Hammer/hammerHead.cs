@@ -21,5 +21,7 @@ public class hammerHead : MonoBehaviour
         Vector3 velocityGlobal = positionChange/Time.deltaTime;
         Vector3 velocityLocal =  transform.InverseTransformDirection(velocityGlobal);
         forwardSpeed = velocityLocal.z;
+
+        posPrevFrame = _tf.position;
     }
 }

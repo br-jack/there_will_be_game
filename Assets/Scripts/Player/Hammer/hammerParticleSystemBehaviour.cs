@@ -60,6 +60,5 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
         else if (framesUntilGhostsDisabled == 0) ghostEmission.enabled = false;
         else framesUntilGhostsDisabled --;
         
-        posPrevFrame = _tf.position; //keep track of previous frame to calculate velocities
     }
 }
