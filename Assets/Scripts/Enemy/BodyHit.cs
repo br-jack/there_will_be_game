@@ -17,46 +17,11 @@ public class BodyHit : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // Check if hit by attack
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
         if (attack == null) return;
 
-        // Try StandardEnemyAI first, then fall back to EnemyMovement
-        StandardEnemyAI standardEnemy = GetComponentInParent<StandardEnemyAI>();
-        if (standardEnemy != null)
-        {
-            HandleStandardEnemy(standardEnemy, other, attack);
-            return;
-        }
-
-        EnemyMovement enemy = GetComponentInParent<EnemyMovement>();
-        if (enemy != null)
-        {
-            HandleFormationEnemy(enemy, other, attack);
-        }
-    }
-
-    private void HandleStandardEnemy(StandardEnemyAI enemy, Collider other, AttackHitbox attack)
-    {
-        if (enemy.IsKnockedBack) return;
-        if (enemy.ShieldWasJustHit) return;
-
-        Vector3 attackPosition = other.transform.position;
-        Vector3 enemyPosition = enemy.transform.position;
-        Vector3 direction = (enemyPosition - attackPosition).normalized;
-        float distance = Vector3.Distance(attackPosition, enemyPosition);
-
-        if (Physics.Raycast(attackPosition, direction, distance, shieldMask)) return;
-
-        hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
-        hitSounds.PlaySFX();
-
-        AwardScore(enemy.HasShield());
-        enemy.KilledBy(other, attack);
-    }
-
-    private void HandleFormationEnemy(EnemyMovement enemy, Collider other, AttackHitbox attack)
-    {
+        StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
+        if (enemy == null) return;
         if (enemy.IsKnockedBack) return;
         if (enemy.ShieldWasJustHit) return;
 
