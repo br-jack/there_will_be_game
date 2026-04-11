@@ -3,6 +3,7 @@ using UnityEngine;
 public class hammerHead : MonoBehaviour
 {
     public float forwardSpeed;
+    public Transform getSpeedRelativeTo;
     private Transform _tf;
     private Vector3 posPrevFrame;
 
@@ -19,7 +20,7 @@ public class hammerHead : MonoBehaviour
         //find scalar speed of hammer head in the forwards direction
         Vector3 positionChange = _tf.position - posPrevFrame;
         Vector3 velocityGlobal = positionChange/Time.deltaTime;
-        Vector3 velocityLocal =  transform.InverseTransformDirection(velocityGlobal);
+        Vector3 velocityLocal =  getSpeedRelativeTo.InverseTransformDirection(velocityGlobal);
         forwardSpeed = velocityLocal.z;
 
         posPrevFrame = _tf.position;

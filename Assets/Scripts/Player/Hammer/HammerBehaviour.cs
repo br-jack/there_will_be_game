@@ -18,7 +18,7 @@ namespace Hammer
         public Vector3 mediumHitboxCenter;
         public float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
         public Vector3 largeHitboxSize;
-        public Vector3 largeHitboxxCenter;
+        public Vector3 largeHitboxCenter;
 
         
         [SerializeField] private float extension;
@@ -104,7 +104,7 @@ namespace Hammer
             } else
             {
                 _hitbox.size = largeHitboxSize;
-                _hitbox.center = largeHitboxxCenter;
+                _hitbox.center = largeHitboxCenter;
             }
             
             _controllerRef.Update();
