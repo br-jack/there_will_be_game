@@ -479,9 +479,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7867753212353401518, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
+      - m_Target: {fileID: 894623958}
         m_TargetAssemblyTypeName: GameStateManager, Assembly-CSharp
-        m_MethodName: Button_Resume
+        m_MethodName: Button_CalibrationDone
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -924,6 +924,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &894623958 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7867753212353401518, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
+  m_PrefabInstance: {fileID: 4887283710053077435}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 314c6039f1a1a4bd1be073d5e4e788ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &896106722
 GameObject:
   m_ObjectHideFlags: 0

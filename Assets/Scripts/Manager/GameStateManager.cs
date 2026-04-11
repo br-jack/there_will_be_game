@@ -19,27 +19,22 @@ public class GameStateManager : MonoBehaviour
     public static GameStateManager Instance { get; private set; }
 
     public GameState CurState { get; private set; }
-    public float playTimeSoFar { get; private set; }
 
-    // Pause is bound to a button (Escape) in the input asset; assign on the prefab.
     [SerializeField] private InputActionReference _pauseAction;
 
-    // Scene references
     [SerializeField] private GameObject _pausePanel;
     private PlayerLives _playerLives;
     private HorseMovement _horseMovement;
     private EnemySpawner[] _enemySpawners;
 
-    // Additive calibration overlay state. When active, hammerTest is loaded
-    // on top of MainScene; these fields remember what we disabled so we can
-    // restore it exactly when the overlay closes.
+    // Additive calibration overlay: hammerTest is loaded on top of MainScene
+    // and these fields remember what we disabled so we can restore it.
     private const string CalibrationSceneName = "hammerTest";
     private bool _calibrationOverlayActive;
     private Camera _overlayCachedCamera;
     private AudioListener _overlayCachedAudio;
     private EventSystem _overlayCachedEventSystem;
     private Canvas _overlayCachedHud;
-
 
     private void Awake()
     {
@@ -55,64 +50,42 @@ public class GameStateManager : MonoBehaviour
         FindSceneReferences();
     }
 
-    // Finds per-scene references. Called on Awake and after every scene load
-    // because DontDestroyOnLoad means the new scene's objects need re-discovering.
+    // Re-discovers scene refs after every scene load, since DontDestroyOnLoad
+    // means refs from the previous scene now point at destroyed objects.
     private void FindSceneReferences()
     {
         _enemySpawners = FindObjectsByType<EnemySpawner>(FindObjectsSortMode.None);
         _horseMovement = FindFirstObjectByType<HorseMovement>();
 
-        // Unsubscribe from any prior PlayerLives before swapping refs.
-        // Use `is not null` to bypass Unity's overloaded == that returns true for destroyed objects.
+        // `is not null` bypasses Unity's overloaded == that returns true for destroyed objects.
         if (_playerLives is not null) _playerLives.OnGameOver -= HandleGameOver;
         _playerLives = FindFirstObjectByType<PlayerLives>();
         if (_playerLives != null) _playerLives.OnGameOver += HandleGameOver;
 
-        // Pause Menu starts inactive in the prefab, so the standard
-        // FindObject* APIs won't return it. Walk the active scene's
-        // root objects and look for it by name.
+        // Pause Menu starts inactive so FindObject* won't return it.
+        // Resources.FindObjectsOfTypeAll includes inactive objects but also assets,
+        // so filter by the active scene to exclude prefab assets.
         _pausePanel = null;
-        foreach (GameObject root in SceneManager.GetActiveScene().GetRootGameObjects())
+        Scene activeScene = SceneManager.GetActiveScene();
+        foreach (Transform t in Resources.FindObjectsOfTypeAll<Transform>())
         {
-            Transform match = FindChildRecursive(root.transform, "Pause Menu");
-            if (match != null)
+            if (t.name == "Pause Menu" && t.gameObject.scene == activeScene)
             {
-                _pausePanel = match.gameObject;
+                _pausePanel = t.gameObject;
                 break;
             }
         }
     }
 
-    private static Transform FindChildRecursive(Transform parent, string name)
-    {
-        if (parent.name == name) return parent;
-        for (int i = 0; i < parent.childCount; i++)
-        {
-            Transform hit = FindChildRecursive(parent.GetChild(i), name);
-            if (hit != null) return hit;
-        }
-        return null;
-    }
-
     private void Start()
     {
-        // SceneManager.sceneLoaded does NOT fire for the initial scene, so
-        // drive the handler manually once on startup to set the correct state.
+        // sceneLoaded doesn't fire for the initial scene; drive it manually.
         NewSceneJustLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
-    }
-
-    private void Update()
-    {
-        if (CurState == GameState.Playing)
-        {
-            playTimeSoFar += Time.deltaTime;
-        }
     }
 
     public void OnEnable()
     {
-        // Skip wiring if this is a duplicate singleton instance about to be destroyed —
-        // touching the shared InputAction here would interfere with the real instance.
+        // Skip wiring on a duplicate singleton about to be destroyed.
         if (Instance != null && Instance != this) return;
 
         SceneManager.sceneLoaded += NewSceneJustLoaded;
@@ -150,21 +123,15 @@ public class GameStateManager : MonoBehaviour
     {
         bool isValid = (CurState, next) switch
         {
-            // Valid Transitions from Running
             (GameState.Playing, GameState.Paused) => true,
             (GameState.Playing, GameState.GameOver) => true,
-            // Valid Transitions from Paused
             (GameState.Paused, GameState.Playing) => true,
             (GameState.Paused, GameState.Menu) => true,
-            // Valid Transitions from GameOver
             (GameState.GameOver, GameState.BeforePlay) => true,
             (GameState.GameOver, GameState.Menu) => true,
-            // Valid Transitions from Menu
             (GameState.Menu, GameState.BeforePlay) => true,
             (GameState.Menu, GameState.Calibration) => true,
-            // Valid Transitions from Calibration
             (GameState.Calibration, GameState.Menu) => true,
-            // Valid Transitions from BeforePlay
             (GameState.BeforePlay, GameState.Playing) => true,
             _ => false
         };
@@ -182,8 +149,6 @@ public class GameStateManager : MonoBehaviour
         EnterState(next);
     }
 
-
-    // General functions for entering and exiting states.
     private void ExitState(GameState state)
     {
         switch (state)
@@ -213,7 +178,6 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    // Call this function to Pause and Resume the Game
     public void TogglePause()
     {
         if (CurState == GameState.Playing)
@@ -226,25 +190,11 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    // --- Static entry points for UI buttons ---
-    // UnityEvents in prefabs can't reference scene-only objects, so the
-    // pause menu buttons call these statics instead of an instance.
-
-    public static void Button_TogglePause()
-    {
-        if (Instance != null) Instance.TogglePause();
-    }
-
+    // Static entry points: UnityEvents in prefabs can't reference scene-only objects.
     public static void Button_Resume()
     {
         if (Instance != null && Instance.CurState == GameState.Paused)
             Instance.SetState(GameState.Playing);
-    }
-
-    public static void Button_Restart()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("MainScene");
     }
 
     public static void Button_PlayGame()
@@ -271,50 +221,19 @@ public class GameStateManager : MonoBehaviour
         SceneManager.LoadScene("hammerTest");
     }
 
-    // In-place calibration — samples the hammer's current orientation and
-    // stores its inverse on the persistent HammerManager singleton. Safe to
-    // call while paused; no scene change, run continues on resume.
-    public static void Button_CalibrateHammer()
-    {
-        var hammer = FindFirstObjectByType<Hammer.HammerBehaviour>();
-        if (hammer != null)
-        {
-            hammer.CalibrateHammer();
-        }
-        else
-        {
-            Debug.LogWarning("Button_CalibrateHammer: no HammerBehaviour found in the active scene.");
-        }
-    }
-
-    // ----- Additive calibration overlay -----
-    // Loads hammerTest on top of MainScene so the run stays alive in memory.
-    // MainScene's view/audio/input/HUD are temporarily disabled so the two
-    // scenes don't fight over cameras, audio listeners, or the event system.
-
     public static void Button_OpenCalibration()
     {
         if (Instance != null) Instance.OpenCalibrationOverlay();
     }
 
-    public static void Button_CloseCalibration()
-    {
-        if (Instance != null) Instance.CloseCalibrationOverlay();
-    }
-
-    // Used by hammerTest's "Play Game" button. If the scene is up as an
-    // overlay, close it and resume. Otherwise (reached from the main menu as
-    // a normal scene) start a fresh run.
+    // hammerTest's "Play Game" button: closes the overlay if mid-game,
+    // otherwise (reached from main menu) starts a fresh run.
     public static void Button_CalibrationDone()
     {
         if (Instance != null && Instance._calibrationOverlayActive)
-        {
             Instance.CloseCalibrationOverlay();
-        }
         else
-        {
             Button_PlayGame();
-        }
     }
 
     private void OpenCalibrationOverlay()
@@ -322,16 +241,10 @@ public class GameStateManager : MonoBehaviour
         if (_calibrationOverlayActive) return;
         if (SceneManager.GetSceneByName(CalibrationSceneName).IsValid()) return;
 
-        // Enter Paused so the state machine knows we're suspended. If we're
-        // coming from Playing this is a valid transition; if we're already
-        // Paused, skip the transition.
         if (CurState == GameState.Playing) SetState(GameState.Paused);
-
-        // Hide the pause panel — hammerTest will own the screen.
         if (_pausePanel != null) _pausePanel.SetActive(false);
 
-        // Cache and disable MainScene's rendering, audio, input, and HUD so
-        // hammerTest's equivalents don't conflict.
+        // Cache and disable MainScene's camera/audio/input/HUD so hammerTest's don't conflict.
         _overlayCachedCamera = Camera.main;
         if (_overlayCachedCamera != null) _overlayCachedCamera.enabled = false;
 
@@ -365,7 +278,6 @@ public class GameStateManager : MonoBehaviour
             SceneManager.UnloadSceneAsync(overlay);
         }
 
-        // Restore MainScene's rendering, audio, input, and HUD.
         if (_overlayCachedCamera != null) _overlayCachedCamera.enabled = true;
         if (_overlayCachedAudio != null) _overlayCachedAudio.enabled = true;
         if (_overlayCachedEventSystem != null) _overlayCachedEventSystem.enabled = true;
@@ -378,7 +290,6 @@ public class GameStateManager : MonoBehaviour
 
         _calibrationOverlayActive = false;
 
-        // Return to the pause menu so the player can resume or tweak settings.
         if (_pausePanel != null) _pausePanel.SetActive(true);
     }
 
@@ -393,17 +304,12 @@ public class GameStateManager : MonoBehaviour
 
     private void NewSceneJustLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Additive loads are overlays (e.g. mid-game calibration). They don't
-        // own the game state, and MainScene's refs are still valid, so skip
-        // rediscovery and the state override.
+        // Additive loads are overlays (e.g. mid-game calibration); skip rediscovery.
         if (mode == LoadSceneMode.Additive) return;
 
-        // Re-discover scene refs: since this manager is DontDestroyOnLoad, the
-        // refs from the previous scene now point at destroyed objects.
         FindSceneReferences();
 
-        // If a scene just loaded, force the state to match the scene.
-        // This has no transition unlike calling SetState().
+        // Force state to match the scene without going through SetState's transition check.
         switch (scene.name)
         {
             case "MainScene":
@@ -424,65 +330,45 @@ public class GameStateManager : MonoBehaviour
         EnterState(next);
     }
 
-    private void EnableSpawning()
+    private void SetSpawningEnabled(bool enabled)
     {
         if (_enemySpawners == null) return;
 
         foreach (EnemySpawner spawner in _enemySpawners)
         {
-            if (spawner == null) continue;
-            spawner.spawningEnabled = true;
+            if (spawner != null) spawner.spawningEnabled = enabled;
         }
     }
 
-
-    // Enable and Disable the spawners (mainly used as helper functions)
-    private void DisableSpawning()
-    {
-        if (_enemySpawners == null) return;
-
-        foreach (EnemySpawner spawner in _enemySpawners)
-        {
-            if (spawner == null) continue;
-            spawner.spawningEnabled = false;
-        }
-    }
-
-    // Enable/disable the player's input-driven movement.
     private void SetPlayerInputEnabled(bool enabled)
     {
         if (_horseMovement != null) _horseMovement.enabled = enabled;
     }
 
-    // Functions for entering specific GameStates
     private void EnterPlaying()
     {
         Time.timeScale = 1f;
-        EnableSpawning();
+        SetSpawningEnabled(true);
         SetPlayerInputEnabled(true);
-
-        _pausePanel?.SetActive(false);
     }
 
     private void EnterBeforePlaying()
     {
         Time.timeScale = 1f;
-        playTimeSoFar = 0f;
 
         ScoreManager.Instance?.ResetFear();
         ScoreManager.Instance?.ResetAwe();
 
-        EnableSpawning();
+        SetSpawningEnabled(true);
 
-        // Auto-advance to Playing — there's currently no UI gate between
-        // scene load and gameplay, so collapse the transition immediately.
+        // No UI gate between scene load and gameplay, so collapse the transition.
         SetState(GameState.Playing);
     }
 
     private void EnterPaused()
     {
         Time.timeScale = 0f;
-        DisableSpawning();
+        SetSpawningEnabled(false);
         SetPlayerInputEnabled(false);
 
         if (_pausePanel != null) _pausePanel.SetActive(true);
@@ -490,12 +376,12 @@ public class GameStateManager : MonoBehaviour
 
     private void ExitPaused()
     {
-        Time.timeScale = 1f;
         if (_pausePanel != null) _pausePanel.SetActive(false);
     }
+
     private void EnterGameOver()
     {
         Time.timeScale = 0f;
-        DisableSpawning();
+        SetSpawningEnabled(false);
     }
 }
