@@ -1,4 +1,5 @@
 using UnityEngine;
+using Hammer;
 
 public class Projectile : MonoBehaviour
 {
@@ -28,6 +29,12 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.GetComponentInParent<HammerBehaviour>() != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
         PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
         if (playerHealth == null) return;
 
