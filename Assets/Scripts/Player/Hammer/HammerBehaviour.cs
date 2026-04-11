@@ -10,6 +10,17 @@ namespace Hammer
     public class HammerBehaviour : MonoBehaviour
     {
 
+        public hammerHead head;
+        public Vector3 smallHitboxSize;
+        public Vector3 smallHitboxCenter;
+        public float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
+        public Vector3 mediumHitboxSize;
+        public Vector3 mediumHitboxCenter;
+        public float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
+        public Vector3 largeHitboxSize;
+        public Vector3 largeHitboxCenter;
+
+        
         [SerializeField] private float extension;
         private float extensionVelocity;
         [SerializeField] private float k = 20f;
@@ -29,10 +40,15 @@ namespace Hammer
         private Vector3 frameAcceleration;
 
         private IController _controllerRef;
+        private BoxCollider _hitbox;
 
+
+        
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
+            _hitbox = GetComponent<BoxCollider>();
+            Debug.Assert(_hitbox != null);
         }
 
         void Start()
@@ -76,6 +92,21 @@ namespace Hammer
 
         void Update()
         {
+            
+            if (head.forwardSpeed < mediumHitboxThreshold)
+            {
+                _hitbox.size = smallHitboxSize;
+                _hitbox.center = smallHitboxCenter;
+            } else if (head.forwardSpeed < largeHitboxThreshold)
+            {
+                _hitbox.size = mediumHitboxSize;
+                _hitbox.center = mediumHitboxCenter;
+            } else
+            {
+                _hitbox.size = largeHitboxSize;
+                _hitbox.center = largeHitboxCenter;
+            }
+            
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
             frameAcceleration = _controllerRef.GetAcceleration();
