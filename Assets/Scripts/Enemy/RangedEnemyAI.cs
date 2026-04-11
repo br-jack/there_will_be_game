@@ -6,10 +6,11 @@ public class RangedEnemyAI : StandardEnemyAI
     [SerializeField] private Projectile projectile;
     [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 1.5f, 0.8f);
 
-    [SerializeField] private float launchAngle = 10f;
+    [SerializeField] private float spawnAngle = 4f;
     protected override void DoDamage()
     {
         if (IsDying || _playerTransformRef == null) return;
+
         if (projectile == null)
         {
             Debug.LogWarning("RangedEnemyAI: projectilePrefab is not assigned in the Inspector.", this);
@@ -25,9 +26,14 @@ public class RangedEnemyAI : StandardEnemyAI
 
         // Make them less accurate with a random offset.
         float spread = Random.Range(-3.0f, 3.0f);
-        direction = Quaternion.AngleAxis(spread, Vector3.up) * direction;
 
-        Projectile proj = Instantiate(projectile, spawnPos, Quaternion.identity);
-        proj.Initialize(attack.damage, direction);
+        // They launch in a slightly upwards direction.
+        direction = Quaternion.AngleAxis(spread, Vector3.up) * direction;
+        direction.Normalize();
+        float angle = spawnAngle * Mathf.Deg2Rad;
+        Vector3 angledDirection = Vector3.up * Mathf.Sin(angle) + direction * Mathf.Cos(angle);
+
+        Projectile newProjectile = Instantiate(this.projectile, spawnPos, Quaternion.identity);
+        newProjectile.Initialize(attack.damage, angledDirection);
     }
 }

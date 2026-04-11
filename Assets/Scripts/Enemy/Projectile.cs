@@ -5,7 +5,9 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed = 15f;
     [SerializeField] private float lifetime = 5f;
-    [SerializeField] private bool deflectUponHammerHit = false;
+
+    // Change this variable depending on if you want the hammer to deflect or destroy the projectile.
+    [SerializeField] private bool deflectUponHammerHit = true;
     private bool hasHitHammer = false;
     private Rigidbody rb;
     private int damage;
