@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
     }
     void Start()
     {
-        Destroy(gameObject, lifetime);
+        Invoke(nameof(DestroyWrapper), lifetime);
     }
     void OnTriggerEnter(Collider other)
     {
@@ -101,6 +101,10 @@ public class Projectile : MonoBehaviour
         normal.Normalize();
 
         rb.linearVelocity = Vector3.Reflect(rb.linearVelocity, normal);
+
+        // Reset the lifetime of the projectile upon deflection.
+        CancelInvoke(nameof(DestroyWrapper));
+        Invoke(nameof(DestroyWrapper), lifetime);
     }
     private void DestroyWrapper()
     {
