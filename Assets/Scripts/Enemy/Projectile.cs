@@ -6,9 +6,9 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float speed = 15f;
     [SerializeField] private float lifetime = 5f;
 
-    [SerializeField] private deflectUponHammerHit = false;
+    [SerializeField] private bool deflectUponHammerHit = false;
 
-    private hasHitHammer = false;
+    private bool hasHitHammer = false;
 
     private int damage;
     public void Initialize(int damageAmount, Vector3 direction)
@@ -33,9 +33,12 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        // Stop checking for hitting hammer or player after it's already been deflected by the hammer.
+        if (hasHitHammer) return;
 
         // This comes before the player health so calls destroy() before harming the player if the projectile hits the hammer.
-        if (other.GetComponentInParent<HammerBehaviour>() != null)
+        HammerBehaviour hammer = other.GetComponentInParent<HammerBehaviour>();
+        if (hammer != null)
         {
             HandleProjectileHitsHammer();
             return;
@@ -49,8 +52,23 @@ public class Projectile : MonoBehaviour
     }
 
     // Called when the projectile is blocked by the player's hammer
-    private void HandleProjectileHitsHammer()
+    private void HandleProjectileHitsHammer(HammerBehaviour hammer)
     {
-        Destroy(gameObject);
+        hasHammerHit = true;
+        // If deflection setting is off, the object is destroyed.
+        if (!deflectUponHammerHit)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        // DEFLECT
+        Vector3 normal = transform.position - hammer.transform.position;
+        if (normal.sqrMagnitude < 0.001f)
+        {
+            normal = -rb.linearVelocity;
+        }
+        normal.Normalize();
+
+        rb.linearVelocity = Vector3.Reflect(rb.linearVelocity, normal);
     }
 }
