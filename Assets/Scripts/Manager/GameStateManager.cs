@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public enum GameState { Menu, Calibration, BeforePlay, Playing, Paused, GameOver }
+public enum GameState { Menu, Calibration, Playing, Paused, GameOver }
 
 public class GameStateManager : MonoBehaviour
 {
@@ -53,7 +53,7 @@ public class GameStateManager : MonoBehaviour
             _pauseAction.action.performed -= OnPausePerformed;
             _pauseAction.action.Disable();
         }
-        if (_playerLives is not null) _playerLives.OnGameOver -= HandleGameOver;
+        if (_playerLives != null) _playerLives.OnGameOver -= HandleGameOver;
     }
 
     private void FindSceneReferences()
@@ -61,7 +61,7 @@ public class GameStateManager : MonoBehaviour
         _enemySpawners = FindObjectsByType<EnemySpawner>(FindObjectsSortMode.None);
         _horseMovement = FindFirstObjectByType<HorseMovement>();
 
-        if (_playerLives is not null) _playerLives.OnGameOver -= HandleGameOver;
+        if (_playerLives != null) _playerLives.OnGameOver -= HandleGameOver;
         _playerLives = FindFirstObjectByType<PlayerLives>();
         if (_playerLives != null) _playerLives.OnGameOver += HandleGameOver;
 
@@ -82,13 +82,14 @@ public class GameStateManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (mode == LoadSceneMode.Additive) return;
+        Time.timeScale = 1f;
         FindSceneReferences();
         switch (scene.name)
         {
             case "MainScene":
                 ScoreManager.Instance?.ResetFear();
                 ScoreManager.Instance?.ResetAwe();
-                EnterState(GameState.Playing);
+                ApplyState(GameState.Playing);
                 break;
             case "MainMenu":
                 CurState = GameState.Menu;
@@ -109,10 +110,12 @@ public class GameStateManager : MonoBehaviour
     public void SetState(GameState next)
     {
         if (CurState == next) return;
-        EnterState(next);
+        ApplyState(next);
     }
 
-    private void EnterState(GameState next)
+    // Applies the state's effects unconditionally. Used by SetState and by
+    // scene-load to re-configure freshly-loaded references.
+    private void ApplyState(GameState next)
     {
         CurState = next;
         switch (next)
@@ -154,19 +157,6 @@ public class GameStateManager : MonoBehaviour
         if (Instance != null && Instance.CurState == GameState.Paused)
             Instance.SetState(GameState.Playing);
     }
-    public static void Button_PlayGame()    { Time.timeScale = 1f; SceneManager.LoadScene("MainScene"); }
-    public static void Button_LoadIntro()   { Time.timeScale = 1f; SceneManager.LoadScene("IntroScene"); }
-    public static void Button_MainMenu()    { Time.timeScale = 1f; SceneManager.LoadScene("MainMenu"); }
-    public static void Button_Calibration() { Time.timeScale = 1f; SceneManager.LoadScene("hammerTest"); }
-
-    public static void Button_Quit()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.ExitPlaymode();
-#else
-        Application.Quit();
-#endif
-    }
 
     public static void Button_OpenCalibration()
     {
@@ -178,14 +168,12 @@ public class GameStateManager : MonoBehaviour
     public static void Button_CalibrationDone()
     {
         if (Instance != null && Instance._calibrationOverlayActive) Instance.CloseCalibrationOverlay();
-        else Button_PlayGame();
+        else SceneManager.LoadScene("MainScene");
     }
 
     private void OpenCalibrationOverlay()
     {
         if (_calibrationOverlayActive) return;
-        if (SceneManager.GetSceneByName(CalibrationSceneName).IsValid()) return;
-
         if (CurState == GameState.Playing) SetState(GameState.Paused);
         if (_pausePanel != null) _pausePanel.SetActive(false);
 
