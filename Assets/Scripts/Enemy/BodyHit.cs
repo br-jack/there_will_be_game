@@ -17,68 +17,49 @@ public class BodyHit : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // Check if hit by attack
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
-        if (attack == null)
-        {
-            return;
-        }
-        EnemyMovement enemy = GetComponentInParent<EnemyMovement>();
-        if (enemy == null)
-        {
-            return;
-        }
-        if (enemy.IsKnockedBack)
-        {
-            return;
-        }
-        // If shield was already hit this frame, ignore body hit
-        if (enemy.ShieldWasJustHit)
-        {
-            return;
-        }
-        // Use raycasting to check if shield is blocking
+        if (attack == null) return;
+
+        StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
+        if (enemy == null) return;
+        if (enemy.IsKnockedBack) return;
+        if (enemy.ShieldWasJustHit) return;
+
         Vector3 attackPosition = other.transform.position;
         Vector3 enemyPosition = enemy.transform.position;
         Vector3 direction = (enemyPosition - attackPosition).normalized;
         float distance = Vector3.Distance(attackPosition, enemyPosition);
 
+        if (Physics.Raycast(attackPosition, direction, distance, shieldMask)) return;
 
-        if (Physics.Raycast(attackPosition, direction, distance, shieldMask))
-        {
-            // Shield is blocking
-            return;
-        }
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
         hitSounds.PlaySFX();
 
-        AwardScore(enemy);
-     
-        // No shield blocking - kill the enemy
+        AwardScore(enemy.HasShield());
         enemy.KilledBy(other, attack);
     }
 
-    private void AwardScore(EnemyMovement enemy)
-    {   
+    private void AwardScore(bool hasShield)
+    {
         GameObject player = GameObject.FindWithTag("Player");
         if (player == null) return;
-        
+
         HorseMovement horseMovement = player.GetComponent<HorseMovement>();
         if (horseMovement == null) return;
 
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
-        
+
         List<ScoreComponent> scoreComponents = new List<ScoreComponent>();
-        
+
         // Base score
         scoreComponents.Add(new ScoreComponent(baseScore, ScoreType.Base));
-        
+
         // Speed bonus
         if (horseMovement.CurrentSpeed >= speedThreshold)
         {
             scoreComponents.Add(new ScoreComponent(speedBonusScore, ScoreType.Speed));
         }
-        
+
         // Low health bonus
         if (playerHealth != null)
         {
@@ -88,7 +69,7 @@ public class BodyHit : MonoBehaviour
                 scoreComponents.Add(new ScoreComponent(lowHealthBonusScore, ScoreType.LowHealth));
             }
         }
-        
+
         // Air bonus
         if (!horseMovement.IsGrounded)
         {
@@ -96,11 +77,11 @@ public class BodyHit : MonoBehaviour
         }
 
         // Shield bypass bonus
-        if (enemy != null && enemy.HasShield())
+        if (hasShield)
         {
             scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
         }
-        
+
         ScoreManager.Instance.AddScore(scoreComponents);
     }
 }
