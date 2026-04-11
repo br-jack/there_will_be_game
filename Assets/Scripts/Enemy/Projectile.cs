@@ -29,16 +29,24 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+
+        // This comes before the player health so calls destroy() before harming the player if the projectile hits the hammer.
         if (other.GetComponentInParent<HammerBehaviour>() != null)
         {
-            Destroy(gameObject);
+            HandleProjectileHitsHammer();
             return;
         }
-        
+
         PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
         if (playerHealth == null) return;
 
         playerHealth.TakeDamage(damage);
+        Destroy(gameObject);
+    }
+
+    // Called when the projectile is blocked by the player's hammer
+    private void HandleProjectileHitsHammer()
+    {
         Destroy(gameObject);
     }
 }
