@@ -63,8 +63,8 @@ public class GameStateManager : MonoBehaviour
         if (_playerLives != null) _playerLives.OnGameOver += HandleGameOver;
 
         // Pause Menu starts inactive so FindObject* won't return it.
-        // Resources.FindObjectsOfTypeAll includes inactive objects but also assets,
-        // so filter by the active scene to exclude prefab assets.
+        // Resources.FindObjectsOfTypeAll includes inactive objects but also
+        // prefab assets, so filter by the active scene to exclude those.
         _pausePanel = null;
         Scene activeScene = SceneManager.GetActiveScene();
         foreach (Transform t in Resources.FindObjectsOfTypeAll<Transform>())
@@ -75,12 +75,6 @@ public class GameStateManager : MonoBehaviour
                 break;
             }
         }
-    }
-
-    private void Start()
-    {
-        // sceneLoaded doesn't fire for the initial scene; drive it manually.
-        NewSceneJustLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 
     public void OnEnable()
@@ -112,7 +106,10 @@ public class GameStateManager : MonoBehaviour
         if (_playerLives is not null) _playerLives.OnGameOver -= HandleGameOver;
     }
 
-    private void OnPausePerformed(InputAction.CallbackContext _) => TogglePause();
+    private void OnPausePerformed(InputAction.CallbackContext _)
+    {
+        TogglePause();
+    }
 
     private void HandleGameOver()
     {
@@ -350,6 +347,10 @@ public class GameStateManager : MonoBehaviour
         Time.timeScale = 1f;
         SetSpawningEnabled(true);
         SetPlayerInputEnabled(true);
+
+        // Ensure the panel is hidden when entering Playing from any state,
+        // including BeforePlay (where ExitPaused doesn't run).
+        if (_pausePanel != null) _pausePanel.SetActive(false);
     }
 
     private void EnterBeforePlaying()
