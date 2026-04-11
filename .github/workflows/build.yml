@@ -4,8 +4,6 @@
 # https://game.ci/docs/github/getting-started#advanced-il2cpp-example
 
 on:
-  push:
-    branches: [ "dev" ]
   workflow_dispatch:
     
 #allow only one run at a time on each branch
