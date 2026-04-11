@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 1, g: 0.61764705, b: 0.9578093, a: 1}
+  m_FogColor: {r: 0.3764706, g: 0.7176471, b: 1, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.002
   m_LinearFogStart: 30
@@ -3016,6 +3016,82 @@ PrefabInstance:
     - target: {fileID: 8806667431029049813, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
       propertyPath: m_Name
       value: SkyboxController
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431033594291, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431033594291, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: m_Brightness
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _exposure
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _topColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _topColor.g
+      value: 0.8485708
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _topColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _topExponent
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _cloudsHeight
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _bottomColor.b
+      value: 0.7584905
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _bottomColor.g
+      value: 0.16323395
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _bottomColor.r
+      value: 0.00429328
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _cloudsCubemap
+      value: 
+      objectReference: {fileID: 8900000, guid: d5d9dd79ad3016943b7f1ff5b201391e, type: 3}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _middleColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _middleColor.g
+      value: 0.7176471
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _middleColor.r
+      value: 0.3764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _bottomExponent
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431034490017, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: _cloudsRotation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431035089771, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: m_Color.b
+      value: 0.80784315
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806667431035089771, guid: d56123a0271c76241bb2c7c6253e8c15, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9372549
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

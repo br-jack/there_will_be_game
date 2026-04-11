@@ -2,25 +2,29 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LowPolySkybox
   m_Shader: {fileID: 4800000, guid: 64b0353c78f90494db13ca1bd8b4fb6b, type: 3}
-  m_ShaderKeywords: 
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 1000
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _CloudsTex:
-        m_Texture: {fileID: 8900000, guid: bfa1267ef40a77540ac2cfde9297f199, type: 3}
+        m_Texture: {fileID: 8900000, guid: d5d9dd79ad3016943b7f1ff5b201391e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MoonTex:
@@ -39,9 +43,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: eb1e18ae3dbe9f348a7bc0d71a5cc811, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
-    - _BottomExponent: 1
-    - _CloudsHeight: 0
+    - _BottomExponent: 0.8
+    - _CloudsHeight: 0.25
     - _CloudsRotation: 0
     - _Exponent: 1
     - _Exposure: 1
@@ -51,11 +56,11 @@ Material:
     - _StarsTwinklingSpeed: 10
     - _SunHalo: 1
     - _SunSize: 0.75
-    - _TopExponent: 1
+    - _TopExponent: 0.85
     m_Colors:
-    - _BottomColor: {r: 0.016868481, g: 0, b: 0.47794116, a: 1}
+    - _BottomColor: {r: 0.00429328, g: 0.16323395, b: 0.7584905, a: 1}
     - _CloudsTint: {r: 0.50799215, g: 0.48885787, b: 0.7656204, a: 1}
-    - _MiddleColor: {r: 1, g: 0.61764705, b: 0.9578093, a: 1}
+    - _MiddleColor: {r: 0.3764706, g: 0.7176471, b: 1, a: 1}
     - _MoonTint: {r: 0.491, g: 0.53774476, b: 1, a: 1}
     - _SkyBottomColor: {r: 0.016868481, g: 0, b: 0.47794116, a: 0}
     - _SkyColor: {r: 0.03529412, g: 0.41960788, b: 0.59607846, a: 1}
@@ -66,5 +71,6 @@ Material:
     - _SkyTopColor: {r: 0.2794118, g: 0.6421905, b: 1, a: 0}
     - _StarsTint: {r: 1, g: 1, b: 1, a: 1}
     - _SunTint: {r: 0.703, g: 0.55044055, b: 0.366966, a: 1}
-    - _TopColor: {r: 0.2794118, g: 0.6421905, b: 1, a: 1}
+    - _TopColor: {r: 0, g: 0.8485708, b: 1, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
