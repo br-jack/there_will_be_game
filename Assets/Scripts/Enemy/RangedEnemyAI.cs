@@ -4,11 +4,9 @@ using UnityEngine;
 public class RangedEnemyAI : StandardEnemyAI
 {
     [SerializeField] private Projectile projectile;
-
-    [Tooltip("Offset where projectile spawns.")]
     [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 1.5f, 0.8f);
 
-    [Tooltip("Horizontal aim inaccuracy in degrees. Each shot is rotated by a random angle within +/- this value. 0 = perfect aim.")]
+    [SerializeField] private float launchAngle = 10f;
     protected override void DoDamage()
     {
         if (IsDying || _playerTransformRef == null) return;
