@@ -5,13 +5,10 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed = 15f;
     [SerializeField] private float lifetime = 5f;
-
     [SerializeField] private bool deflectUponHammerHit = false;
-
     private bool hasHitHammer = false;
     private Rigidbody rb;
     private int damage;
-    
     public void Initialize(int damageAmount, Vector3 direction)
     {
         damage = damageAmount;
@@ -20,7 +17,6 @@ public class Projectile : MonoBehaviour
             rb.linearVelocity = direction.normalized * speed;
         }
     }
-
     void FixedUpdate()
     {
         if (rb.linearVelocity.sqrMagnitude > 0.0001f)
@@ -28,23 +24,14 @@ public class Projectile : MonoBehaviour
             transform.forward = rb.linearVelocity.normalized;
         }
     }
-
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
-
     void Start()
     {
         Destroy(gameObject, lifetime);
     }
-
-    void Update()
-    {
-        // Projectile travels at a constant linear speed in target direction.
-        transform.position += transform.forward * speed * Time.deltaTime;
-    }
-
     void OnTriggerEnter(Collider other)
     {
         // Stop checking for hitting hammer or player after it's already been deflected by the hammer.
@@ -54,7 +41,7 @@ public class Projectile : MonoBehaviour
         HammerBehaviour hammer = other.GetComponentInParent<HammerBehaviour>();
         if (hammer != null)
         {
-            HandleProjectileHitsHammer();
+            HandleProjectileHitsHammer(hammer);
             return;
         }
 
