@@ -3565,8 +3565,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 743921864}
+  horseMovement: {fileID: 0}
   offsetFromPlayerPosition: {x: 0, y: 4, z: -8}
   playerLookAtOffset: {x: 0, y: 2.13, z: 0}
+  baseFOV: 60
+  maxFOV: 75
+  speedForMaxFOV: 35
+  fovSmoothSpeed: 5
 --- !u!4 &140311603 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3411100825764721443, guid: 5b00d78aaada3da48953f612de79cc4e, type: 3}
