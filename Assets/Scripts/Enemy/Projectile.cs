@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour
     private bool hasHitHammer = false;
     private Rigidbody rb;
     private int damage;
+    private Collider collider;
     public void Initialize(int damageAmount, Vector3 direction)
     {
         damage = damageAmount;
@@ -29,6 +30,7 @@ public class Projectile : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        collider = GetComponent<Collider>();
     }
     void Start()
     {
@@ -50,6 +52,25 @@ public class Projectile : MonoBehaviour
         PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
         if (playerHealth != null && hasHitHammer == false){
             playerHealth.TakeDamage(damage);
+            DestroyWrapper();
+            return;
+        }
+
+        // If it hits the enemy.
+        StandardEnemyAI enemy = other.GetComponentInParent<StandardEnemyAI>();
+        if (enemy != null)
+        {
+            if (hasHitHammer)
+            {
+                if (enemy.HasShield())
+                {
+                    enemy.BreakShield();
+                }
+                else
+                {
+                    enemy.KilledBy(collider, null);
+                }
+            }
             DestroyWrapper();
             return;
         }
@@ -81,7 +102,6 @@ public class Projectile : MonoBehaviour
 
         rb.linearVelocity = Vector3.Reflect(rb.linearVelocity, normal);
     }
-
     private void DestroyWrapper()
     {
         // When we add particle effects upon destruction, we can add it here!
