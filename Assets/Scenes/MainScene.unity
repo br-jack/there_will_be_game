@@ -60558,6 +60558,18 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3997856712999313910, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: moveWithTransform
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3997856712999313910, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: moveWithCustomTransform
+      value: 
+      objectReference: {fileID: 743921864}
+    - target: {fileID: 3997856712999313910, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 4111065928576150462, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: playOnAwake
       value: 0
@@ -60572,11 +60584,11 @@ PrefabInstance:
       objectReference: {fileID: 931467710}
     - target: {fileID: 4480094754588070545, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: ghostSpeedThreshold
-      value: 50
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4480094754588070545, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: trailSpeedThreshold
-      value: 25
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4690600845459401979, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: playOnAwake
