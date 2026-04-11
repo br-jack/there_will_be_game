@@ -36,20 +36,19 @@ public class Projectile : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        // Stop checking for hitting hammer or player after it's already been deflected by the hammer.
-        if (hasHitHammer) return;
-
         // This comes before the player health so calls destroy() before harming the player if the projectile hits the hammer.
         HammerBehaviour hammer = other.GetComponentInParent<HammerBehaviour>();
         if (hammer != null)
         {
+            // Don't handle again if already hit hammer.
+            if (hasHitHammer) return;
             HandleProjectileHitsHammer(hammer);
             return;
         }
 
         // Hits player.
         PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
-        if (playerHealth != null){
+        if (playerHealth != null && hasHitHammer == false){
             playerHealth.TakeDamage(damage);
             DestroyWrapper();
             return;
