@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
 
     // Change this variable depending on if you want the hammer to deflect or destroy the projectile.
     [SerializeField] private bool deflectUponHammerHit = true;
+    private float gravityScale = 0.3f;
     private bool hasHitHammer = false;
     private Rigidbody rb;
     private int damage;
@@ -22,6 +23,7 @@ public class Projectile : MonoBehaviour
     }
     void FixedUpdate()
     {
+        rb.linearVelocity += Physics.gravity * gravityScale * Time.fixedDeltaTime;
         if (rb.linearVelocity.sqrMagnitude > 0.0001f)
         {
             transform.forward = rb.linearVelocity.normalized;
