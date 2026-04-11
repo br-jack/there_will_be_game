@@ -9,7 +9,6 @@ public class HorseMovement : MonoBehaviour
     [Range(0f, 5f)] public float accelerationMultiplier = 1.0f;
     [Range(0f, 5f)] public float maxSpeedMultiplier = 1.0f;
     public float deceleration = 2f; //ambient deceleration when no acceleration or braking/reverse
-
     public float brake = 20f;
 
     public static Action OnTutorialJump;
@@ -76,6 +75,7 @@ public class HorseMovement : MonoBehaviour
     public float jumpForce = 5f; // originally 8f
     private bool _jumpButtonPressed;
     private bool _jumpButtonHeld;
+    public bool JumpButtonPressed => _jumpButtonPressed;
     public bool JumpButtonHeld => _jumpButtonHeld;
     
     public float fallMultiplier = 7.5f; // originally 2.5f
@@ -535,7 +535,7 @@ public class HorseMovement : MonoBehaviour
         // _rb.MovePosition(_rb.position + forwardMovement);
     }
 
-    private bool CheckForGroundBelow(out RaycastHit groundHit, float extraDistance)
+    public bool CheckForGroundBelow(out RaycastHit groundHit, float extraDistance)
     {
         groundHit = default;
 

@@ -224,13 +224,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfb7a804801d03942a77f491fe72194f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 12
+  accelerationMultiplier: 1
+  maxSpeedMultiplier: 1
   deceleration: 6
   brake: 20
-  maxSpeed: 32
   steerTorque: 10
   turnSpeed: 170
   turnSpeedAtZero: 100
+  gears:
+  - name: Walk
+    minSpeed: 0
+    maxSpeed: 8
+    acceleration: 4
+  - name: Trot
+    minSpeed: 8
+    maxSpeed: 16
+    acceleration: 6
+  - name: Canter
+    minSpeed: 16
+    maxSpeed: 24
+    acceleration: 10
+  - name: Gallop
+    minSpeed: 24
+    maxSpeed: 35
+    acceleration: 14
   horseVisual: {fileID: 7518415703454089516}
   jumpForce: 8.5
   fallMultiplier: 2.5
@@ -269,8 +286,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxLives: 5
-  startingLives: 5
-  livesBar: {fileID: 0}
   healthBar: {fileID: 0}
   playerHealth: {fileID: 9012345678901234567}
   invincibilityTime: 3
@@ -780,6 +795,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7672999536482783943}
     m_Modifications:
+    - target: {fileID: 269795941911052510, guid: e5b8cbff9289d6a40a84ee38ea7ef4e6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b2f25917cfb31374abc004c2d35a73eb, type: 2}
     - target: {fileID: 2443911395502521377, guid: e5b8cbff9289d6a40a84ee38ea7ef4e6, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.8
@@ -863,6 +882,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2988663631381971515, guid: e5b8cbff9289d6a40a84ee38ea7ef4e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2669959191608439493}
+    - targetCorrespondingSourceObject: {fileID: 8193894645686718224, guid: e5b8cbff9289d6a40a84ee38ea7ef4e6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4034368043269411586}
   m_SourcePrefab: {fileID: 100100000, guid: e5b8cbff9289d6a40a84ee38ea7ef4e6, type: 3}
 --- !u!1 &109910945004321059 stripped
 GameObject:
@@ -982,6 +1004,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8193894645686718224, guid: e5b8cbff9289d6a40a84ee38ea7ef4e6, type: 3}
   m_PrefabInstance: {fileID: 2954263296692075288}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4034368043269411586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6433718710823810056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f89738d0cd234c4b8471a84b2da432b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
 --- !u!23 &7205892955244995351 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5548399170983827471, guid: e5b8cbff9289d6a40a84ee38ea7ef4e6, type: 3}
@@ -1423,6 +1458,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7672999536482783943}
     m_Modifications:
+    - target: {fileID: -4505212103197417152, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 364211550610626168, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
       propertyPath: maxLength
       value: 10
@@ -1481,11 +1520,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5577740451161296096, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5630890325763975634, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
       propertyPath: m_Name
       value: hammer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630890325763975634, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: m_TagString
+      value: Hammer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
