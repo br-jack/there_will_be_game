@@ -47,11 +47,19 @@ public class Projectile : MonoBehaviour
             return;
         }
 
+        // Hits player.
         PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
-        if (playerHealth == null) return;
-
-        playerHealth.TakeDamage(damage);
-        Destroy(gameObject);
+        if (playerHealth != null){
+            playerHealth.TakeDamage(damage);
+            DestroyWrapper();
+            return;
+        }
+        
+        // Hits something that's not the player.
+        if (!other.isTrigger)
+        {
+            DestroyWrapper();
+        }
     }
 
     // Called when the projectile is blocked by the player's hammer
@@ -61,7 +69,7 @@ public class Projectile : MonoBehaviour
         // If deflection setting is off, the object is destroyed.
         if (!deflectUponHammerHit)
         {
-            Destroy(gameObject);
+            DestroyWrapper();
             return;
         }
         // DEFLECT
@@ -73,5 +81,11 @@ public class Projectile : MonoBehaviour
         normal.Normalize();
 
         rb.linearVelocity = Vector3.Reflect(rb.linearVelocity, normal);
+    }
+
+    private void DestroyWrapper()
+    {
+        // When we add particle effects upon destruction, we can add it here!
+        Destroy(gameObject);
     }
 }
