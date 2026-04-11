@@ -9,15 +9,29 @@ public class Projectile : MonoBehaviour
     [SerializeField] private bool deflectUponHammerHit = false;
 
     private bool hasHitHammer = false;
-
+    private Rigidbody rb;
     private int damage;
+    
     public void Initialize(int damageAmount, Vector3 direction)
     {
         damage = damageAmount;
         if (direction.sqrMagnitude > 0.0001f)
         {
-            transform.forward = direction.normalized;
+            rb.linearVelocity = direction.normalized * speed;
         }
+    }
+
+    void FixedUpdate()
+    {
+        if (rb.linearVelocity.sqrMagnitude > 0.0001f)
+        {
+            transform.forward = rb.linearVelocity.normalized;
+        }
+    }
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
     }
 
     void Start()
@@ -54,7 +68,7 @@ public class Projectile : MonoBehaviour
     // Called when the projectile is blocked by the player's hammer
     private void HandleProjectileHitsHammer(HammerBehaviour hammer)
     {
-        hasHammerHit = true;
+        hasHitHammer = true;
         // If deflection setting is off, the object is destroyed.
         if (!deflectUponHammerHit)
         {
