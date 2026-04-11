@@ -16,10 +16,11 @@ public class horseMovementGaits : MonoBehaviour
     public float trotSpeed;
     public float canterSpeed;
     public float gallopSpeed;
-    public float chargeRequiredToCanter = 10f;
-    public float chargeRequiredToGallop =20f;
+    public float chargeRequiredToCanter;
+    public float chargeRequiredToGallop;
     public float jumpHeight = 20f; 
-    public float turnSpeed = 60f;
+    public float turnSpeedGrounded;
+    public float turnSpeedMidair;
     public float acceleration = 2f;
     public float deceleration = 6f;
     public float minTimeBetweenJumps = 0.25f; //for how long are you unable to jump after jumping
@@ -115,7 +116,7 @@ public class horseMovementGaits : MonoBehaviour
 
         //identify a target speed to accelerate towards
         float targetSpeed = 0f;
-        if ((_throttleInput - _brakeInput) > 0.1f)  
+        if ((_throttleInput - _brakeInput) > 0.1f)  //accelerating
         {
             if (currentRunCharge > chargeRequiredToGallop)
             {   
@@ -127,17 +128,17 @@ public class horseMovementGaits : MonoBehaviour
             {
                 targetSpeed = canterSpeed;
 
-                //if within a range of canter speed, and accelerating, add charge towards galloping
-                if (canterSpeed - currentSpeed < 0.25f) currentRunCharge += Time.deltaTime;
+                //if within a range of canter speed and grounded, add charge towards galloping
+                if ((canterSpeed - currentSpeed < 0.25f) && _cc.isGrounded) currentRunCharge += Time.deltaTime;
                 else currentRunCharge = chargeRequiredToCanter + 0.1f; 
-                //^^otherwise set charge to a little over needed to maintain canter
+                //^^otherwise reset charge to a little over needed to maintain canter
 
             } else 
             {
                 targetSpeed = trotSpeed; 
 
-                //if within a range of walk speed, and accelerating, add charge towards cantering
-                if (trotSpeed - currentSpeed < 0.25f) currentRunCharge += Time.deltaTime; 
+                //if within a range of walk speed and grounded, add charge towards cantering
+                if ((trotSpeed - currentSpeed < 0.25f) && _cc.isGrounded) currentRunCharge += Time.deltaTime; 
             }
         }
         else if (currentRunCharge > 0) {currentRunCharge -= Time.deltaTime * chargeDecay;}
@@ -148,7 +149,7 @@ public class horseMovementGaits : MonoBehaviour
         //turn transform 
         if (Mathf.Abs(_turnInput) > 0.1f)
         {
-            _tf.Rotate(Vector3.up * _turnInput * turnSpeed * Time.deltaTime);
+            _tf.Rotate(Vector3.up * _turnInput * (_cc.isGrounded ? turnSpeedGrounded : turnSpeedMidair) * Time.deltaTime );
         }
         //should see if it would be fun for turning to decrease charge speed, so you have to 
         //go in a straight line to increase gait
