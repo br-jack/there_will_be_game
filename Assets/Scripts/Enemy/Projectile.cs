@@ -6,6 +6,10 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float speed = 15f;
     [SerializeField] private float lifetime = 5f;
 
+    [SerializeField] private deflectUponHammerHit = false;
+
+    private hasHitHammer = false;
+
     private int damage;
     public void Initialize(int damageAmount, Vector3 direction)
     {
