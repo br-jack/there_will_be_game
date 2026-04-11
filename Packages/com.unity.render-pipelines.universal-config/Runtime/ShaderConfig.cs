@@ -17,7 +17,7 @@ namespace UnityEngine.Rendering.Universal
         public const int k_MaxVisibleLightCountLowEndMobile = 16;
 
         /// <summary>Max number of lights supported on mobile, OpenGL, and WebGPU platforms.</summary>
-        public const int k_MaxVisibleLightCountMobile = 32;
+        public const int k_MaxVisibleLightCountMobile = 64;
 
         /// <summary>Max number of lights supported on desktop platforms.</summary>
         public const int k_MaxVisibleLightCountDesktop = 64;
