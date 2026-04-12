@@ -3,18 +3,20 @@ using Hammer;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float speed = 15f;
+    [SerializeField] private float speed = 20.0f;
     [SerializeField] private float lifetime = 5f;
 
     // Change this variable depending on if you want the hammer to deflect or destroy the projectile.
     [SerializeField] private bool deflectUponHammerHit = true;
-    private float gravityScale = 0.3f;
+    private float gravityScale = 0.1f;
     private bool hasHitHammer = false;
     private Rigidbody rb;
     private int damage;
     private new Collider collider;
-    public void Initialize(int damageAmount, Vector3 direction)
+    private GameObject owner;
+    public void Initialize(int damageAmount, Vector3 direction, GameObject owner)
     {
+        this.owner = owner;
         damage = damageAmount;
         if (direction.sqrMagnitude > 0.0001f)
         {
@@ -40,6 +42,8 @@ public class Projectile : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
+        if (owner != null && other.transform.IsChildOf(owner.transform)) return;
+
         // This comes before the player health so calls destroy() before harming the player if the projectile hits the hammer.
         HammerBehaviour hammer = other.GetComponentInParent<HammerBehaviour>();
         if (hammer != null)

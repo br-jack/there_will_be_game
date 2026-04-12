@@ -5,29 +5,30 @@ using UnityEngine.AI;
 public class EnemySpawner : MonoBehaviour
 {
     [System.Serializable]
-    public struct Wave
+    public struct SpawnSettings
     {
-        public float meleeInterval;
-        public float rangedInterval;
-        public float duration;
+        public float spawnInterval;
         public int maxAlive;
-        [Range(0f,1f)] public float meleeShieldProbability;
-        [Range(0f,1f)] public float rangedShieldProbability;
+        [Range(0f, 1f)] public float shieldChance;
     }
 
-    [SerializeField] private GameObject meleeEnemyPrefab;
+    [System.Serializable]
+    public struct Wave
+    {
+        public float duration;
+        public SpawnSettings melee;
+        public SpawnSettings ranged;
+    }
 
+    [Header("Enemy Prefabs")]
+    [SerializeField] private GameObject meleeEnemyPrefab;
     [SerializeField] private GameObject rangedEnemyPrefab;
 
-
     [SerializeField] private float minDistanceFromPlayer = 15f;
-
     [SerializeField] private float maxDistanceFromPlayer = 100f;
-
     private float navMeshSearchRadius = 2.5f;
 
     [Header("Waves")]
-
     // Spawner stays on the last wave once the waves have ran out.
     [SerializeField] private Wave[] waves;
 
@@ -75,16 +76,34 @@ public class EnemySpawner : MonoBehaviour
         meleeTimer += Time.deltaTime;
         rangedTimer += Time.deltaTime;
 
-        if (meleeTimer >= currentWave.meleeInterval && aliveEnemies.Count < currentWave.maxAlive)
+        SpawnType(meleeEnemyPrefab, currentWave.melee, ref meleeTimer);
+        SpawnType(rangedEnemyPrefab, currentWave.ranged, ref rangedTimer);
+    }
+
+    private void SpawnType(GameObject prefab, SpawnSettings settings, ref float timer)
+    {
+        if (settings.maxAlive <= 0) return;
+        if (timer < settings.spawnInterval) return;
+        if (CountAlive(prefab) >= settings.maxAlive) return;
+
+        TrySpawnEnemy(prefab, settings.shieldChance);
+        timer = 0f;
+    }
+
+    private int CountAlive(GameObject prefab)
+    {
+        if (prefab == null) return 0;
+        int count = 0;
+        string prefabName = prefab.name;
+        for (int i = 0; i < aliveEnemies.Count; i++)
         {
-            TrySpawnEnemy(meleeEnemyPrefab, currentWave.meleeSheildProbability);
-            meleeTimer = 0f;
+            // Instantiated objects are named "PrefabName(Clone)"
+            if (aliveEnemies[i] != null && aliveEnemies[i].name.StartsWith(prefabName))
+            {
+                count++;
+            }
         }
-        if (rangedTimer >= currentWave.rangedInterval && aliveEnemies.Count < currentWave.maxAlive)
-        {
-            TrySpawnEnemy(rangedEnemyPrefab, currentWave.rangedShieldProbability);
-            rangedTimer = 0f;
-        }
+        return count;
     }
 
     private void TrySpawnEnemy(GameObject prefab, float chanceOfShield)

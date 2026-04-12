@@ -35,6 +35,6 @@ public class RangedEnemyAI : StandardEnemyAI
         Vector3 angledDirection = Vector3.up * Mathf.Sin(angle) + direction * Mathf.Cos(angle);
 
         Projectile newProjectile = Instantiate(this.projectile, spawnPos, Quaternion.identity);
-        newProjectile.Initialize(attack.damage, angledDirection);
+        newProjectile.Initialize(attack.damage, angledDirection, gameObject);
     }
 }

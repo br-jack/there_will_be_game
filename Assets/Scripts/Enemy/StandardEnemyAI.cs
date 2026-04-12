@@ -49,10 +49,10 @@ public class StandardEnemyAI : MonoBehaviour
 
     [SerializeField] private EnemyRetreat retreat = new EnemyRetreat
     {
-        enabled = false,
-        duration = 4f,
-        speedMultipler = 2,
-    }
+        enabled = true,
+        duration = 1.8f,
+        speedMultiplier = 0.5f,
+    };
 
     private bool isCurRetreating;
     private float retreatTimer;
@@ -135,13 +135,6 @@ public class StandardEnemyAI : MonoBehaviour
         _doDebug = _dbgTimer <= 0f;
         if (_doDebug) _dbgTimer = 1f;
 
-        if (isCurRetreating)
-        {
-            retreatTimer -= Time.deltaTime;
-            if (retreatTimer <= 0f) isRetreating = false;
-            return;
-        }
-
         if (IsDying)
         {
             if (_doDebug) Debug.Log($"[{name}] Update bail: IsDying, type={GetType().Name}", this);
@@ -153,6 +146,13 @@ public class StandardEnemyAI : MonoBehaviour
         {
             if (_doDebug) Debug.Log($"[{name}] Update bail: IsKnockedBack, type={GetType().Name}", this);
             HandleKnockback();
+            return;
+        }
+
+        if (isCurRetreating)
+        {
+            retreatTimer -= Time.deltaTime;
+            if (retreatTimer <= 0f) isCurRetreating = false;
             return;
         }
 
@@ -277,6 +277,12 @@ public class StandardEnemyAI : MonoBehaviour
         Debug.Log($"[{name}] Attack triggered. type={GetType().Name}, useDamageAnimEvent={useDamageAnimEvent}, chargeTime={attack.chargeTime}", this);
 
         if (!useDamageAnimEvent) StartCoroutine(ChargeUpThenDamage());
+
+        if (retreat.enabled)
+        {
+            isCurRetreating = true;
+            retreatTimer = retreat.duration;
+        }
     }
 
     private IEnumerator ChargeUpThenDamage()
