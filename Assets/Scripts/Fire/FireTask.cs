@@ -9,7 +9,7 @@ public class FireTask : BaseTask
     [SerializeField] private HammerFireController hammerFireController;
     [SerializeField] private string rewardMessage = "The eternal flame boon has been granted";
     [SerializeField] private GameObject statueArrowUI;
-    [SerializeField] private int buildingsRequired = 5;
+    [SerializeField] private int buildingsRequired = 7;
     private int buildingsBurned = 0;
 
     void Start()

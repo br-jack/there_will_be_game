@@ -5,6 +5,8 @@ public class BurnableBuilding : MonoBehaviour
 {
     [SerializeField] private GameObject buildingFireVisual;
     [SerializeField] private ParticleSystem buildingFireParticles;
+    [SerializeField] private float burnDuration = 5f;
+    [SerializeField] private FireTask fireTask;
 
     private bool isBurning = false;
     public bool IsBurning => isBurning;
@@ -30,6 +32,11 @@ public class BurnableBuilding : MonoBehaviour
         if (buildingFireParticles != null)
             buildingFireParticles.Play();
 
+        if (fireTask != null)
+        {
+            fireTask.BuildingBurned();
+        }
+
         Debug.Log("Building has been set on fire");
 
         StartCoroutine(BurnDown());
@@ -37,7 +44,7 @@ public class BurnableBuilding : MonoBehaviour
 
     private IEnumerator BurnDown()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(burnDuration);
         Destroy(gameObject);
     }
 }

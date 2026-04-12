@@ -32,10 +32,6 @@ public class BuildingProximityIgnition : MonoBehaviour
             if (currentHoldTime >= requiredHoldTime)
             {
                 burnableBuilding.IgniteBuilding();
-
-                if (fireTask != null)
-                    fireTask.BuildingBurned();
-
                 hasIgnited = true;
             }
         }
