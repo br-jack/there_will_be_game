@@ -4,11 +4,12 @@ using Hammer;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed = 20.0f;
+    public float Speed => speed;
     [SerializeField] private float lifetime = 5f;
 
     // Change this variable depending on if you want the hammer to deflect or destroy the projectile.
     [SerializeField] private bool deflectUponHammerHit = true;
-    private float gravityScale = 0.1f;
+    [SerializeField] private float gravityScale = 0f;
     private bool hasHitHammer = false;
     private Rigidbody rb;
     private int damage;

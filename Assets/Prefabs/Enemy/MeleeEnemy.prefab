@@ -694,11 +694,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shield: {fileID: 0}
+  shield: {fileID: 4355481918939910684}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 6
-  stopFromPlayerDistance: 2.75
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -706,11 +705,13 @@ MonoBehaviour:
     range: 3.25
     cooldown: 2
     chargeTime: 0.25
+  useStrike: 1
+  stalkDistance: 6
+  stalkDistanceVariance: 2
+  strikeSpeedMultiplier: 1.75
+  retreatSpeedMultiplier: 1.25
+  stopFromPlayerDistance: -1
   maxDeathTime: 2.5
-  retreat:
-    enabled: 1
-    duration: 1.8
-    speedMultiplier: 0.5
   anim: {fileID: 0}
   speedParam: Speed
   attackTrigger: Attack

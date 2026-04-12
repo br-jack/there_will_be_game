@@ -11,17 +11,12 @@ using UnityEngine.AI;
     public float chargeTime;
 }
 
-[System.Serializable] public struct EnemyRetreat
-{
-    public bool enabled;
-    public float duration;
-    public float speedMultiplier;
-}
-
 public class StandardEnemyAI : MonoBehaviour
 {
+    private enum CombatState { Approaching, Stalking, Striking, Attacking, Retreating }
+
     // References
-    public GameObject shield;
+    [HideInInspector] public GameObject shield;
     private Rigidbody rb;
     private AudioSource _shieldBreakAudioSource;
     [HideInInspector] public PlayerHealth _playerHealthRef;
@@ -30,7 +25,6 @@ public class StandardEnemyAI : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float speed = 5f;
-    [SerializeField] private float stopFromPlayerDistance = 1.5f; // Enemy stop distance must be less than player's attack range.
     [SerializeField] private float smoothVelocity = 0.35f;
     [SerializeField] private float rotationSpeed = 8f;
 
@@ -42,21 +36,23 @@ public class StandardEnemyAI : MonoBehaviour
         chargeTime = 0.25f
     };
 
+    [Header("Strike Behavior")]
+    [SerializeField] protected bool useStrike = true;
+    [SerializeField] private float stalkDistance = 6f;
+    [SerializeField] private float stalkDistanceVariance = 1.5f;
+    [SerializeField] private float strikeSpeedMultiplier = 2.5f;
+    [SerializeField] private float retreatSpeedMultiplier = 1.5f;
+
+    [Header("Ranged Behavior (used when !useStrike)")]
+    [SerializeField] private float stopFromPlayerDistance = 1.5f;
+
     [Header("Knockback & Death")]
     [SerializeField] private float maxDeathTime = 4f;
     private const float KnockbackTime = 0.5f;
     private const float GroundCheckDistance = 0.4f;
 
-    [SerializeField] private EnemyRetreat retreat = new EnemyRetreat
-    {
-        enabled = true,
-        duration = 1.8f,
-        speedMultiplier = 0.5f,
-    };
-
-    private bool isCurRetreating;
-    private float retreatTimer;
-    private bool mustReEngage;
+    private CombatState combatState = CombatState.Approaching;
+    private float actualStalkDistance;
 
     [Header("Animation (optional)")]
     [SerializeField] private Animator anim;
@@ -88,6 +84,13 @@ public class StandardEnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         _shieldBreakAudioSource = GetComponent<AudioSource>();
         if (anim == null) anim = GetComponentInChildren<Animator>();
+        ShieldHit shieldHit = GetComponentInChildren<ShieldHit>();
+        if (shieldHit != null) shield = shieldHit.gameObject;
+
+        // Each enemy gets a slightly different stalk distance (Stalk distance should ALWAYS be further than attack range).
+        actualStalkDistance = stalkDistance + UnityEngine.Random.Range(-stalkDistanceVariance, stalkDistanceVariance);
+        actualStalkDistance = Mathf.Max(actualStalkDistance, attack.range + 0.5f);
+
         SetupNavMesh();
     }
 
@@ -113,14 +116,12 @@ public class StandardEnemyAI : MonoBehaviour
             return;
         }
 
-        // Disable automatic movement - we drive the Rigidbody ourselves.
         agent.updatePosition = false;
         agent.updateRotation = false;
         agent.angularSpeed = 0f;
         agent.speed = speed;
         agent.stoppingDistance = attack.range * 0.7f;
 
-        // Match the agent cylinder to the physical CapsuleCollider so path clearance matches body size.
         var capsule = GetComponent<CapsuleCollider>();
         if (capsule != null)
         {
@@ -136,41 +137,85 @@ public class StandardEnemyAI : MonoBehaviour
         _doDebug = _dbgTimer <= 0f;
         if (_doDebug) _dbgTimer = 1f;
 
-        if (IsDying)
-        {
-            if (_doDebug) Debug.Log($"[{name}] Update bail: IsDying, type={GetType().Name}", this);
-            KillEnemy();
-            return;
-        }
-
-        if (IsKnockedBack)
-        {
-            if (_doDebug) Debug.Log($"[{name}] Update bail: IsKnockedBack, type={GetType().Name}", this);
-            HandleKnockback();
-            return;
-        }
-
-        if (isCurRetreating)
-        {
-            retreatTimer -= Time.deltaTime;
-            if (retreatTimer <= 0f)
-            {
-                isCurRetreating = false;
-                mustReEngage = true;
-            }
-            return;
-        }
+        if (IsDying) { KillEnemy(); return; }
+        if (IsKnockedBack) { HandleKnockback(); return; }
 
         if (_playerHealthRef == null || _playerTransformRef == null)
         {
-            if (_doDebug) Debug.Log($"[{name}] Update bail: player refs null (hlth={(_playerHealthRef != null)}, tfm={(_playerTransformRef != null)}), type={GetType().Name}", this);
             ResolvePlayerRefs();
             return;
         }
 
-        if (_doDebug) Debug.Log($"[{name}] Update reaching MeleeAttack, type={GetType().Name}", this);
-        MeleeAttack();
+        if (useStrike)
+        {
+            StrikeUpdate();
+        }
+        else
+        {
+            ClassicAttackUpdate();
+        }
+
         UpdateAnim();
+    }
+
+    // Stalk, Strike and Retreat state system
+    private void StrikeUpdate()
+    {
+        if (_playerHealthRef.IsDead) return;
+
+        switch (combatState)
+        {
+            case CombatState.Stalking:
+                // Wait for cooldown, then start striking.
+                if (Time.time >= timeOfNextAttack)
+                {
+                    combatState = CombatState.Striking;
+                }
+                break;
+
+            case CombatState.Striking:
+                // Check if in attack range.
+                Vector3 toPlayer = _playerTransformRef.position - transform.position;
+                toPlayer.y = 0f;
+                if (toPlayer.sqrMagnitude <= attack.range * attack.range)
+                {
+                    combatState = CombatState.Attacking;
+                    timeOfNextAttack = Time.time + attack.cooldown;
+                    TryTrigger(attackTrigger);
+                    StartCoroutine(StrikeDamageThenRetreat());
+                }
+                break;
+
+            // StrikeMovement() in FixedUpdate() does Approaching and Retreating
+            // If there's no approach and retreat (e.g. for ranged enemies) then ClassicMovement().
+        }
+    }
+
+    // The classic system (system without the lunging forwards and retreating). Ranged enemies use this.
+    private void ClassicAttackUpdate()
+    {
+        if (_playerHealthRef.IsDead) return;
+        if (Time.time < timeOfNextAttack) return;
+
+        Vector3 toPlayer = _playerTransformRef.position - transform.position;
+        toPlayer.y = 0f;
+        if (toPlayer.sqrMagnitude > attack.range * attack.range) return;
+
+        PerformAttack();
+    }
+
+    private IEnumerator StrikeDamageThenRetreat()
+    {
+        if (attack.chargeTime > 0f) yield return new WaitForSeconds(attack.chargeTime);
+        DoDamage();
+        combatState = CombatState.Retreating;
+    }
+
+    private void PerformAttack()
+    {
+        timeOfNextAttack = Time.time + attack.cooldown;
+        TryTrigger(attackTrigger);
+        if (!useDamageAnimEvent) StartCoroutine(ChargeUpThenDamage());
     }
 
     void FixedUpdate()
@@ -180,13 +225,12 @@ public class StandardEnemyAI : MonoBehaviour
         if (IsDying || IsKnockedBack) return;
         if (_playerTransformRef == null) return;
 
-        // Flat direction to player
         Vector3 toPlayer = _playerTransformRef.position - transform.position;
         toPlayer.y = 0f;
         float distToPlayer = toPlayer.magnitude;
         Vector3 toPlayerDir = distToPlayer > 0.01f ? toPlayer / distToPlayer : Vector3.zero;
 
-        // Use NavMesh for pathfinding if available, otherwise straight-line fallback.
+        // NavMesh pathfinding direction.
         Vector3 moveDir = toPlayerDir;
         if (agent != null && agent.enabled && agent.isOnNavMesh)
         {
@@ -196,14 +240,91 @@ public class StandardEnemyAI : MonoBehaviour
             if (desiredVel.sqrMagnitude > 0.0001f) moveDir = desiredVel.normalized;
         }
 
-        // Rotate towards movement direction
-        if (moveDir.sqrMagnitude > 0.0001f)
+        // Always face the player.
+        if (toPlayerDir.sqrMagnitude > 0.0001f)
         {
-            Quaternion finalRotation = Quaternion.LookRotation(moveDir);
+            Quaternion finalRotation = Quaternion.LookRotation(toPlayerDir);
             transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, Time.fixedDeltaTime * rotationSpeed);
         }
 
-        // Slow down as we enter attack range
+        if (useStrike)
+        {
+            StrikeMovement(distToPlayer, moveDir, toPlayerDir);
+        }
+        else
+        {
+            ClassicMovement(distToPlayer, moveDir);
+        }
+
+        if (agent != null && agent.enabled && agent.isOnNavMesh) agent.nextPosition = transform.position;
+    }
+
+    private void StrikeMovement(float distToPlayer, Vector3 moveDir, Vector3 toPlayerDir)
+    {
+        Vector3 velocity = Vector3.zero;
+
+        switch (combatState)
+        {
+            case CombatState.Approaching:
+                // Move toward stalk distance.
+                if (distToPlayer > actualStalkDistance)
+                {
+                    velocity = moveDir * speed;
+                }
+                else
+                {
+                    combatState = CombatState.Stalking;
+                    timeOfNextAttack = Time.time + attack.cooldown;
+                }
+                break;
+
+            case CombatState.Stalking:
+                // Stand still at stalk distance, but re-approach if player moves away.
+                if (distToPlayer > actualStalkDistance + 1f)
+                {
+                    velocity = moveDir * speed;
+                }
+                else
+                {
+                    velocity = Vector3.zero;
+                }
+                break;
+
+            case CombatState.Striking:
+                // Charge toward player, but stop at attack range.
+                if (distToPlayer > attack.range * 0.95)
+                {
+                    velocity = moveDir * speed * strikeSpeedMultiplier;
+                }
+                else
+                {
+                    velocity = Vector3.zero;
+                }
+                break;
+
+            case CombatState.Attacking:
+                // Stand still while the attack animation plays.
+                velocity = Vector3.zero;
+                break;
+
+            case CombatState.Retreating:
+                // Move away from player.
+                if (distToPlayer < actualStalkDistance)
+                {
+                    velocity = -toPlayerDir * speed * retreatSpeedMultiplier;
+                }
+                else
+                {
+                    combatState = CombatState.Stalking;
+                }
+                break;
+        }
+        ApplyVelocity(velocity);
+    }
+
+    private void ClassicMovement(float distToPlayer, Vector3 moveDir)
+    {
+        // Slow down as we approach stop distance.
         float currentSpeed = speed;
         float stopDist = attack.range * 0.7f;
         float arriveDist = attack.range + stopFromPlayerDistance;
@@ -216,35 +337,21 @@ public class StandardEnemyAI : MonoBehaviour
             currentSpeed *= (distToPlayer - stopDist) / (arriveDist - stopDist);
         }
 
-        if (!isCurRetreating)
+        ApplyVelocity(moveDir * currentSpeed);
+    }
+
+    private void ApplyVelocity(Vector3 desired)
+    {
+        if (rb != null)
         {
-            // Apply movement
-            Vector3 desired = moveDir * currentSpeed;
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector3.Lerp(
-                    rb.linearVelocity,
-                    new Vector3(desired.x, rb.linearVelocity.y, desired.z),
-                    smoothVelocity);
-            }
-            else
-            {
-                transform.position += desired * Time.fixedDeltaTime;
-            }
+            rb.linearVelocity = Vector3.Lerp(
+                rb.linearVelocity,
+                new Vector3(desired.x, rb.linearVelocity.y, desired.z), smoothVelocity);
         }
         else
         {
-            Vector3 retreatDir = -toPlayerDir;
-            Vector3 retreatVel = retreatDir * speed * retreat.speedMultiplier;
-            if (rb != null)
-            {
-                rb.linearVelocity = new Vector3(retreatVel.x, rb.linearVelocity.y, retreatVel.z);
-            }
-            if (agent != null && agent.enabled && agent.isOnNavMesh) agent.nextPosition = transform.position;
+            transform.position += desired * Time.fixedDeltaTime;
         }
-
-        // Keep NavMesh agent position in sync with Rigidbody
-        if (agent != null && agent.enabled && agent.isOnNavMesh) agent.nextPosition = transform.position;
     }
 
     public void BreakShield()
@@ -255,56 +362,6 @@ public class StandardEnemyAI : MonoBehaviour
         _shieldBreakAudioSource?.Play();
     }
 
-    private void MeleeAttack()
-    {
-        if (_playerHealthRef.IsDead)
-        {
-            if (_doDebug) Debug.Log($"[{name}] MeleeAttack bail: player IsDead, type={GetType().Name}", this);
-            return;
-        }
-        if (Time.time < timeOfNextAttack)
-        {
-            if (_doDebug) Debug.Log($"[{name}] MeleeAttack bail: cooldown {timeOfNextAttack - Time.time:F2}s left, type={GetType().Name}", this);
-            return;
-        }
-
-        Vector3 toPlayer = _playerTransformRef.position - transform.position;
-        toPlayer.y = 0f;
-        float distSqr = toPlayer.sqrMagnitude;
-
-        // After retreating, enemy must close back into attack range before attacking again.
-        if (mustReEngage)
-        {
-            if (distSqr <= attack.range * attack.range)
-            {
-                mustReEngage = false;
-            }
-            else
-            {
-                return;
-            }
-        }
-
-        if (distSqr > attack.range * attack.range)
-        {
-            if (_doDebug) Debug.Log($"[{name}] MeleeAttack bail: out of range, dist={toPlayer.magnitude:F2} range={attack.range}, type={GetType().Name}", this);
-            return;
-        }
-
-        timeOfNextAttack = Time.time + attack.cooldown;
-        TryTrigger(attackTrigger);
-
-        Debug.Log($"[{name}] Attack triggered. type={GetType().Name}, useDamageAnimEvent={useDamageAnimEvent}, chargeTime={attack.chargeTime}", this);
-
-        if (!useDamageAnimEvent) StartCoroutine(ChargeUpThenDamage());
-
-        if (retreat.enabled)
-        {
-            isCurRetreating = true;
-            retreatTimer = retreat.duration;
-        }
-    }
-
     private IEnumerator ChargeUpThenDamage()
     {
         if (attack.chargeTime > 0f) yield return new WaitForSeconds(attack.chargeTime);
@@ -313,10 +370,8 @@ public class StandardEnemyAI : MonoBehaviour
 
     protected virtual void DoDamage()
     {
-        Debug.Log($"[{name}] StandardEnemyAI.DoDamage base called. type={GetType().Name}", this);
         if (IsDying || _playerHealthRef == null) return;
 
-        // Only damage if player is still in range at the moment of impact.
         Vector3 toPlayer = _playerTransformRef.position - transform.position;
         toPlayer.y = 0f;
         if (toPlayer.sqrMagnitude <= attack.range * attack.range)
@@ -325,7 +380,6 @@ public class StandardEnemyAI : MonoBehaviour
         }
     }
 
-    /// <summary>Called from an attack animation event at the hit frame.</summary>
     public void AnimDealDamage()
     {
         if (useDamageAnimEvent) DoDamage();
@@ -336,7 +390,7 @@ public class StandardEnemyAI : MonoBehaviour
         IsKnockedBack = true;
         knockbackTimer = KnockbackTime;
 
-        if (agent != null) agent.enabled = false;   // let physics own the body
+        if (agent != null) agent.enabled = false;
 
         if (rb != null)
         {
@@ -353,7 +407,6 @@ public class StandardEnemyAI : MonoBehaviour
         if (knockbackTimer > 0f) return;
         if (!IsGrounded()) return;
 
-        // Knockback finished - back on the ground.
         IsKnockedBack = false;
         knockbackTimer = KnockbackTime;
 
@@ -365,6 +418,9 @@ public class StandardEnemyAI : MonoBehaviour
                 agent.Warp(hit.position);
             }
         }
+
+        // After knockback, re-approach from wherever we ended up.
+        if (useStrike) combatState = CombatState.Approaching;
     }
 
     public void KilledBy(Collider other, AttackHitbox hitBox)
@@ -378,11 +434,9 @@ public class StandardEnemyAI : MonoBehaviour
 
         if (agent != null) agent.enabled = false;
 
-        // Grey out the enemy.
         Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
         if (r != null) r.material.color = Color.gray;
 
-        // Knock away from whatever killed it.
         float force = hitBox != null ? hitBox.GetKnockbackForce() : 30f;
         Vector3 knockDir = transform.position - other.transform.position;
         knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
@@ -395,7 +449,6 @@ public class StandardEnemyAI : MonoBehaviour
         }
 
         TryTrigger(deadTrigger);
-
         OnDied?.Invoke();
     }
 

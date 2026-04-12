@@ -32,8 +32,8 @@ public class WaveAnnouncerUI : MonoBehaviour
     private IEnumerator ShowMessage(int waveNumber)
     {
         waveText.text = "Wave " + waveNumber;
-        waveText.gameObject.SetActive(true);
+        waveText.enabled = true;
         yield return new WaitForSeconds(messageDuration);
-        waveText.gameObject.SetActive(false);
+        waveText.enabled = false;
     }
 }

@@ -37,7 +37,7 @@ public class EnemySpawner : MonoBehaviour
 
     private Transform player;
 
-    // Separate lists per enemy type for accurate counting.
+    // Keep track of enemies of each enemy type.
     private readonly List<StandardEnemyAI> aliveMeleeShielded = new List<StandardEnemyAI>();
     private readonly List<StandardEnemyAI> aliveMeleeUnshielded = new List<StandardEnemyAI>();
     private readonly List<StandardEnemyAI> aliveRanged = new List<StandardEnemyAI>();
@@ -126,7 +126,8 @@ public class EnemySpawner : MonoBehaviour
 
         // Weighted random pick.
         int roll = Random.Range(0, total);
-
+        
+        // [0, remainMeleeShielded], [remainMeleeShielded, remainMeleeShielded + remainMeleeUnshielded], [remainMeleeShielded + remainMeleeUnshielded, remainMeleeShielded + remainMeleeUnshielded + remainRanged], [remainMeleeShielded + remainMeleeUnshielded + remainRanged, total]
         if (roll < remainMeleeShielded)
         {
             SpawnEnemy(EnemyType.MeleeShielded);

@@ -4,12 +4,9 @@ using UnityEngine;
 public class RangedEnemyAI : StandardEnemyAI
 {
     [SerializeField] private Projectile projectile;
-    [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 1.5f, 0.8f);
-
-    [SerializeField] private float spawnAngle = 4f;
+    [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 0.25f, 0.8f);
     protected override void DoDamage()
     {
-        Debug.Log($"[{name}] RangedEnemyAI.DoDamage override called. projectile={(projectile != null ? "assigned" : "NULL")}, IsDying={IsDying}, playerRef={(_playerTransformRef != null ? "ok" : "NULL")}", this);
         if (IsDying || _playerTransformRef == null) return;
 
         if (projectile == null)
@@ -18,23 +15,14 @@ public class RangedEnemyAI : StandardEnemyAI
             return;
         }
 
-        // Position the projectile should spawn from.
-        Vector3 spawnPos = transform.TransformPoint(spawnOffset);
+        Vector3 spawnPosition = transform.TransformPoint(spawnOffset);
+        Vector3 direction = (_playerTransformRef.position - spawnPosition).normalized;
 
-        // Projectile shots are aimed at the player's position.
-        Vector3 direction = _playerTransformRef.position - spawnPos;
-        direction.y = 0f;
-
-        // Make them less accurate with a random offset.
+        // Horizontal spread to simulate archers won't be completely accurate.
         float spread = Random.Range(-3.0f, 3.0f);
-
-        // They launch in a slightly upwards direction.
         direction = Quaternion.AngleAxis(spread, Vector3.up) * direction;
-        direction.Normalize();
-        float angle = spawnAngle * Mathf.Deg2Rad;
-        Vector3 angledDirection = Vector3.up * Mathf.Sin(angle) + direction * Mathf.Cos(angle);
 
-        Projectile newProjectile = Instantiate(this.projectile, spawnPos, Quaternion.identity);
-        newProjectile.Initialize(attack.damage, angledDirection, gameObject);
+        Projectile newProjectile = Instantiate(this.projectile, spawnPosition, Quaternion.identity);
+        newProjectile.Initialize(attack.damage, direction, gameObject);
     }
 }
