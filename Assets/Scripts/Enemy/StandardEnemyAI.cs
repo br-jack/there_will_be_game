@@ -56,6 +56,7 @@ public class StandardEnemyAI : MonoBehaviour
 
     private bool isCurRetreating;
     private float retreatTimer;
+    private bool mustReEngage;
 
     [Header("Animation (optional)")]
     [SerializeField] private Animator anim;
@@ -152,7 +153,11 @@ public class StandardEnemyAI : MonoBehaviour
         if (isCurRetreating)
         {
             retreatTimer -= Time.deltaTime;
-            if (retreatTimer <= 0f) isCurRetreating = false;
+            if (retreatTimer <= 0f)
+            {
+                isCurRetreating = false;
+                mustReEngage = true;
+            }
             return;
         }
 
@@ -265,7 +270,22 @@ public class StandardEnemyAI : MonoBehaviour
 
         Vector3 toPlayer = _playerTransformRef.position - transform.position;
         toPlayer.y = 0f;
-        if (toPlayer.sqrMagnitude > attack.range * attack.range)
+        float distSqr = toPlayer.sqrMagnitude;
+
+        // After retreating, enemy must close back into attack range before attacking again.
+        if (mustReEngage)
+        {
+            if (distSqr <= attack.range * attack.range)
+            {
+                mustReEngage = false;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        if (distSqr > attack.range * attack.range)
         {
             if (_doDebug) Debug.Log($"[{name}] MeleeAttack bail: out of range, dist={toPlayer.magnitude:F2} range={attack.range}, type={GetType().Name}", this);
             return;
