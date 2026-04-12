@@ -54,6 +54,9 @@ public class StandardEnemyAI : MonoBehaviour
         speedMultipler = 2,
     }
 
+    private bool isCurRetreating;
+    private float retreatTimer;
+
     [Header("Animation (optional)")]
     [SerializeField] private Animator anim;
     [SerializeField] private string speedParam = "Speed";
@@ -132,6 +135,13 @@ public class StandardEnemyAI : MonoBehaviour
         _doDebug = _dbgTimer <= 0f;
         if (_doDebug) _dbgTimer = 1f;
 
+        if (isCurRetreating)
+        {
+            retreatTimer -= Time.deltaTime;
+            if (retreatTimer <= 0f) isRetreating = false;
+            return;
+        }
+
         if (IsDying)
         {
             if (_doDebug) Debug.Log($"[{name}] Update bail: IsDying, type={GetType().Name}", this);
@@ -201,18 +211,31 @@ public class StandardEnemyAI : MonoBehaviour
             currentSpeed *= (distToPlayer - stopDist) / (arriveDist - stopDist);
         }
 
-        // Apply movement
-        Vector3 desired = moveDir * currentSpeed;
-        if (rb != null)
+        if (!isCurRetreating)
         {
-            rb.linearVelocity = Vector3.Lerp(
-                rb.linearVelocity,
-                new Vector3(desired.x, rb.linearVelocity.y, desired.z),
-                smoothVelocity);
+            // Apply movement
+            Vector3 desired = moveDir * currentSpeed;
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.Lerp(
+                    rb.linearVelocity,
+                    new Vector3(desired.x, rb.linearVelocity.y, desired.z),
+                    smoothVelocity);
+            }
+            else
+            {
+                transform.position += desired * Time.fixedDeltaTime;
+            }
         }
         else
         {
-            transform.position += desired * Time.fixedDeltaTime;
+            Vector3 retreatDir = -toPlayerDir;
+            Vector3 retreatVel = retreatDir * speed * retreat.speedMultiplier;
+            if (rb != null)
+            {
+                rb.linearVelocity = new Vector3(retreatVel.x, rb.linearVelocity.y, retreatVel.z);
+            }
+            if (agent != null && agent.enabled && agent.isOnNavMesh) agent.nextPosition = transform.position;
         }
 
         // Keep NavMesh agent position in sync with Rigidbody
