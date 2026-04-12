@@ -36388,36 +36388,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b605ab55a659c41ed934bbcd82dbb8f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTypes:
-  - prefab: {fileID: 4937528112206273530, guid: 958da4c8e8c7d48169847e9e756975ce, type: 3}
-    weight: 0
-  - prefab: {fileID: 4937528112206273530, guid: 525c1ca2571d54d5380ac4f07f2d7659, type: 3}
-    weight: 15
-  aliveEnemies: []
-  spawnPoints: []
-  spawnRadius: 2
-  directionalSpawn: 1
-  aheadDistanceMultiplier: 2
-  aheadBaseDistance: 10
-  aheadArcHalfAngle: 70
-  directionalSpeedThreshold: 2
-  useClustering: 1
-  clusterSize: 3
-  clusterRadius: 3
-  minPlayerDistance: 2
-  maxPlayerDistance: 60
-  requireOffScreen: 0
-  offScreenPadding: 0.05
-  requireNavMesh: 1
-  navMeshSearchRadius: 5
-  initialCount: 5
-  continuousSpawn: 1
-  spawnInterval: 4
-  spawnBatchSize: 1
-  maxAlive: 20
-  useWaves: 0
-  waves: []
-  timeBetweenWaves: 3
+  meleeEnemyPrefab: {fileID: 4937528112206273530, guid: 958da4c8e8c7d48169847e9e756975ce, type: 3}
+  rangedEnemyPrefab: {fileID: 4937528112206273530, guid: 525c1ca2571d54d5380ac4f07f2d7659, type: 3}
+  minDistanceFromPlayer: 25
+  maxDistanceFromPlayer: 200
+  waves:
+  - meleeInterval: 5
+    rangedInterval: 1
+    duration: 50
+    maxAlive: 50
 --- !u!1001 &1354978145
 PrefabInstance:
   m_ObjectHideFlags: 0
