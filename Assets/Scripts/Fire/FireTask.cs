@@ -70,7 +70,7 @@ public class FireTask : BaseTask
 
     public override void CheckCompletion()
     {
-        if (hammerIgnited && buildingsBurned >= buildingsRequired)
+        if (buildingsBurned >= buildingsRequired)
         { 
             if (!rewardSpawned && powerUpSpawner != null && infiniteFirePowerUpPrefab != null)
             {
