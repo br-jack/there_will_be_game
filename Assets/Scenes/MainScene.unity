@@ -36393,10 +36393,24 @@ MonoBehaviour:
   minDistanceFromPlayer: 25
   maxDistanceFromPlayer: 200
   waves:
-  - meleeInterval: 5
-    rangedInterval: 1
-    duration: 50
-    maxAlive: 50
+  - duration: 30
+    melee:
+      spawnRate: 4
+      maxAlive: 25
+      shieldChance: 0.1
+    ranged:
+      spawnRate: 1
+      maxAlive: 5
+      shieldChance: 0.1
+  - duration: 60
+    melee:
+      spawnRate: 2
+      maxAlive: 30
+      shieldChance: 0.2
+    ranged:
+      spawnRate: 1
+      maxAlive: 15
+      shieldChance: 0.2
 --- !u!1001 &1354978145
 PrefabInstance:
   m_ObjectHideFlags: 0

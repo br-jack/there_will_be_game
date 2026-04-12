@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     [System.Serializable]
     public struct SpawnSettings
     {
-        public float spawnInterval;
+        public float spawnRate;
         public int maxAlive;
         [Range(0f, 1f)] public float shieldChance;
     }
@@ -82,8 +82,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnType(GameObject prefab, SpawnSettings settings, ref float timer)
     {
-        if (settings.maxAlive <= 0) return;
-        if (timer < settings.spawnInterval) return;
+        if (settings.maxAlive <= 0 || settings.spawnRate <= 0f) return;
+        if (timer < 1f / settings.spawnRate) return;
         if (CountAlive(prefab) >= settings.maxAlive) return;
 
         TrySpawnEnemy(prefab, settings.shieldChance);
