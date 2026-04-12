@@ -45,6 +45,6 @@ public class BurnableBuilding : MonoBehaviour
     private IEnumerator BurnDown()
     {
         yield return new WaitForSeconds(burnDuration);
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }
