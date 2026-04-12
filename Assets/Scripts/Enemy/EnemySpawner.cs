@@ -4,24 +4,24 @@ using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [System.Serializable]
-    public struct SpawnSettings
-    {
-        public float spawnRate;
-        public int maxAlive;
-        [Range(0f, 1f)] public float shieldChance;
-    }
+    private enum EnemyType { MeleeShielded, MeleeUnshielded, Ranged, Rapid }
 
     [System.Serializable]
     public struct Wave
     {
         public float duration;
-        public SpawnSettings melee;
-        public SpawnSettings ranged;
+        public float breakDuration;
+        public bool clearRemainingOnEnd;
+        public float spawnInterval;
+        public int meleeShielded;
+        public int meleeUnshielded;
+        public int ranged;
+        public int rapid;
     }
 
     [Header("Enemy Prefabs")]
     [SerializeField] private GameObject meleeEnemyPrefab;
+    [SerializeField] private GameObject rapidEnemyPrefab;
     [SerializeField] private GameObject rangedEnemyPrefab;
 
     [SerializeField] private float minDistanceFromPlayer = 15f;
@@ -32,13 +32,22 @@ public class EnemySpawner : MonoBehaviour
     // Spawner stays on the last wave once the waves have ran out.
     [SerializeField] private Wave[] waves;
 
+    // Fires when a new wave begins. The int is the 1-based wave number.
+    public event System.Action<int> OnWaveStarted;
+
     private Transform player;
-    private readonly List<StandardEnemyAI> aliveEnemies = new List<StandardEnemyAI>();
+
+    // Separate lists per enemy type for accurate counting.
+    private readonly List<StandardEnemyAI> aliveMeleeShielded = new List<StandardEnemyAI>();
+    private readonly List<StandardEnemyAI> aliveMeleeUnshielded = new List<StandardEnemyAI>();
+    private readonly List<StandardEnemyAI> aliveRanged = new List<StandardEnemyAI>();
+    private readonly List<StandardEnemyAI> aliveRapid = new List<StandardEnemyAI>();
 
     private int currentWaveIndex = 0;
     private float waveTimer = 0f;
-    private float meleeTimer = 0f;
-    private float rangedTimer = 0f;
+    private float breakTimer = 0f;
+    private bool onBreak = false;
+    private float spawnTimer = 0f;
 
     private void Start()
     {
@@ -47,73 +56,125 @@ public class EnemySpawner : MonoBehaviour
         {
             player = playerObject.transform;
         }
+        OnWaveStarted?.Invoke(1);
     }
 
     private void Update()
     {
-        // Prune dead enemies. This is the only cleanup mechanism.
-        aliveEnemies.RemoveAll(e => e == null);
+        // Prune dead enemies.
+        aliveMeleeShielded.RemoveAll(e => e == null);
+        aliveMeleeUnshielded.RemoveAll(e => e == null);
+        aliveRanged.RemoveAll(e => e == null);
+        aliveRapid.RemoveAll(e => e == null);
 
         if (player == null || waves == null || waves.Length == 0)
         {
             return;
         }
 
-        Wave currentWave = waves[currentWaveIndex];
-
-        // Advance to the next wave and reset the wave timers.
-        waveTimer += Time.deltaTime;
-        if (waveTimer >= currentWave.duration && currentWaveIndex < waves.Length - 1)
+        // Rest period between waves — no spawning.
+        if (onBreak)
         {
-            currentWaveIndex++;
-            waveTimer = 0f;
-            meleeTimer = 0f;
-            rangedTimer = 0f;
-            currentWave = waves[currentWaveIndex];
-        }
-
-        // Update timers
-        meleeTimer += Time.deltaTime;
-        rangedTimer += Time.deltaTime;
-
-        SpawnType(meleeEnemyPrefab, currentWave.melee, ref meleeTimer);
-        SpawnType(rangedEnemyPrefab, currentWave.ranged, ref rangedTimer);
-    }
-
-    private void SpawnType(GameObject prefab, SpawnSettings settings, ref float timer)
-    {
-        if (settings.maxAlive <= 0 || settings.spawnRate <= 0f) return;
-        if (timer < 1f / settings.spawnRate) return;
-        if (CountAlive(prefab) >= settings.maxAlive) return;
-
-        TrySpawnEnemy(prefab, settings.shieldChance);
-        timer = 0f;
-    }
-
-    private int CountAlive(GameObject prefab)
-    {
-        if (prefab == null) return 0;
-        int count = 0;
-        string prefabName = prefab.name;
-        for (int i = 0; i < aliveEnemies.Count; i++)
-        {
-            // Instantiated objects are named "PrefabName(Clone)"
-            if (aliveEnemies[i] != null && aliveEnemies[i].name.StartsWith(prefabName))
+            breakTimer += Time.deltaTime;
+            if (breakTimer >= waves[currentWaveIndex].breakDuration)
             {
-                count++;
+                onBreak = false;
+                currentWaveIndex++;
+                waveTimer = 0f;
+                spawnTimer = 0f;
+                OnWaveStarted?.Invoke(currentWaveIndex + 1);
             }
-        }
-        return count;
-    }
-
-    private void TrySpawnEnemy(GameObject prefab, float chanceOfShield)
-    {
-        if (prefab == null)
-        {
             return;
         }
 
-        // Uses the navmesh to spawn enemies so tries multiple attempts.
+        Wave currentWave = waves[currentWaveIndex];
+
+        // Advance to the next wave.
+        waveTimer += Time.deltaTime;
+        if (waveTimer >= currentWave.duration && currentWaveIndex < waves.Length - 1)
+        {
+            if (currentWave.clearRemainingOnEnd)
+            {
+                ClearAllEnemies();
+            }
+            onBreak = true;
+            breakTimer = 0f;
+            return;
+        }
+
+        // Spawn on interval.
+        if (currentWave.spawnInterval <= 0f) return;
+
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer >= currentWave.spawnInterval)
+        {
+            spawnTimer = 0f;
+            TrySpawnWeighted(currentWave);
+        }
+    }
+
+    private void TrySpawnWeighted(Wave wave)
+    {
+        // Calculate remaining capacity for each type.
+        int remainMeleeShielded = Mathf.Max(0, wave.meleeShielded - aliveMeleeShielded.Count);
+        int remainMeleeUnshielded = Mathf.Max(0, wave.meleeUnshielded - aliveMeleeUnshielded.Count);
+        int remainRanged = Mathf.Max(0, wave.ranged - aliveRanged.Count);
+        int remainRapid = Mathf.Max(0, wave.rapid - aliveRapid.Count);
+
+        int total = remainMeleeShielded + remainMeleeUnshielded + remainRanged + remainRapid;
+        if (total <= 0) return;
+
+        // Weighted random pick.
+        int roll = Random.Range(0, total);
+
+        if (roll < remainMeleeShielded)
+        {
+            SpawnEnemy(EnemyType.MeleeShielded);
+        }
+        else if (roll < remainMeleeShielded + remainMeleeUnshielded)
+        {
+            SpawnEnemy(EnemyType.MeleeUnshielded);
+        }
+        else if (roll < remainMeleeShielded + remainMeleeUnshielded + remainRanged)
+        {
+            SpawnEnemy(EnemyType.Ranged);
+        }
+        else
+        {
+            SpawnEnemy(EnemyType.Rapid);
+        }
+    }
+
+    private void SpawnEnemy(EnemyType type)
+    {
+        GameObject prefab;
+        bool keepShield;
+
+        switch (type)
+        {
+            case EnemyType.MeleeShielded:
+                prefab = meleeEnemyPrefab;
+                keepShield = true;
+                break;
+            case EnemyType.MeleeUnshielded:
+                prefab = meleeEnemyPrefab;
+                keepShield = false;
+                break;
+            case EnemyType.Ranged:
+                prefab = rangedEnemyPrefab;
+                keepShield = false;
+                break;
+            case EnemyType.Rapid:
+                prefab = rapidEnemyPrefab;
+                keepShield = false;
+                break;
+            default:
+                return;
+        }
+
+        if (prefab == null) return;
+
+        // Try to find a valid NavMesh position near the player.
         for (int attempt = 0; attempt < 10; attempt++)
         {
             float angle = Random.Range(0f, Mathf.PI * 2f);
@@ -127,17 +188,44 @@ public class EnemySpawner : MonoBehaviour
                 StandardEnemyAI ai = spawned.GetComponent<StandardEnemyAI>();
                 if (ai != null)
                 {
-                    aliveEnemies.Add(ai);
-
-                    if (ai.shield != null && Random.value > chanceOfShield)
+                    // Strip shield if this type shouldn't have one.
+                    if (!keepShield && ai.shield != null)
                     {
                         Destroy(ai.shield);
                         ai.shield = null;
+                    }
+
+                    // Track in the correct list.
+                    switch (type)
+                    {
+                        case EnemyType.MeleeShielded:   aliveMeleeShielded.Add(ai); break;
+                        case EnemyType.MeleeUnshielded: aliveMeleeUnshielded.Add(ai); break;
+                        case EnemyType.Ranged:          aliveRanged.Add(ai); break;
+                        case EnemyType.Rapid:           aliveRapid.Add(ai); break;
                     }
                 }
                 return;
             }
         }
-        // Code only gets here if a position can't be found.
+    }
+
+    private void ClearAllEnemies()
+    {
+        ClearList(aliveMeleeShielded);
+        ClearList(aliveMeleeUnshielded);
+        ClearList(aliveRanged);
+        ClearList(aliveRapid);
+    }
+
+    private void ClearList(List<StandardEnemyAI> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i] != null)
+            {
+                Destroy(list[i].gameObject);
+            }
+        }
+        list.Clear();
     }
 }
