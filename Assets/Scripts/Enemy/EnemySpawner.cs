@@ -11,7 +11,7 @@ public class EnemySpawner : MonoBehaviour
         public float rangedInterval;
         public float duration;
         public int maxAlive;
-        [Range(0f,1f)] public float meleeSheildProbability;
+        [Range(0f,1f)] public float meleeShieldProbability;
         [Range(0f,1f)] public float rangedShieldProbability;
     }
 
@@ -79,7 +79,7 @@ public class EnemySpawner : MonoBehaviour
         {
             TrySpawnEnemy(meleeEnemyPrefab, currentWave.meleeSheildProbability);
             meleeTimer = 0f;
-
+        }
         if (rangedTimer >= currentWave.rangedInterval && aliveEnemies.Count < currentWave.maxAlive)
         {
             TrySpawnEnemy(rangedEnemyPrefab, currentWave.rangedShieldProbability);
