@@ -77,13 +77,12 @@ public class EnemySpawner : MonoBehaviour
 
         if (meleeTimer >= currentWave.meleeInterval && aliveEnemies.Count < currentWave.maxAlive)
         {
-            TrySpawnEnemy(meleeEnemyPrefab, meleeSheildProbability);
+            TrySpawnEnemy(meleeEnemyPrefab, currentWave.meleeSheildProbability);
             meleeTimer = 0f;
-        }
 
         if (rangedTimer >= currentWave.rangedInterval && aliveEnemies.Count < currentWave.maxAlive)
         {
-            TrySpawnEnemy(rangedEnemyPrefab, rangedShieldProbability);
+            TrySpawnEnemy(rangedEnemyPrefab, currentWave.rangedShieldProbability);
             rangedTimer = 0f;
         }
     }
@@ -110,6 +109,12 @@ public class EnemySpawner : MonoBehaviour
                 if (ai != null)
                 {
                     aliveEnemies.Add(ai);
+
+                    if (ai.shield != null && Random.value > chanceOfShield)
+                    {
+                        Destroy(ai.shield);
+                        ai.shield = null;
+                    }
                 }
                 return;
             }
