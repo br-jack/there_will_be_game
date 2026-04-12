@@ -698,7 +698,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
-  stopFromPlayerDistance: 1.5
+  stopFromPlayerDistance: 1.8
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -706,7 +706,11 @@ MonoBehaviour:
     range: 2.5
     cooldown: 2
     chargeTime: 0.25
-  maxDeathTime: 4
+  maxDeathTime: 2.5
+  retreat:
+    enabled: 1
+    duration: 1.8
+    speedMultiplier: 0.5
   anim: {fileID: 0}
   speedParam: Speed
   attackTrigger: Attack
