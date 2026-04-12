@@ -3,7 +3,6 @@ using UnityEngine;
 public class BuildingProximityIgnition : MonoBehaviour
 {
     [SerializeField] private HammerFireController hammerFireController;
-    [SerializeField] private BurnableBuilding burnableBuilding;
     [SerializeField] private FireTask fireTask;
 
     [SerializeField] private float igniteDistance = 5f;
@@ -14,7 +13,7 @@ public class BuildingProximityIgnition : MonoBehaviour
 
     private void Update()
     {
-        if (burnableBuilding == null || hammerFireController == null)
+        if (hammerFireController == null)
             return;
 
         // all the different checks to make sure igniting is possible
