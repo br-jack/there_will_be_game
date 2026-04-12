@@ -3,25 +3,26 @@ using UnityEngine;
 public class FireTask : BaseTask
 {
     private bool hammerIgnited = false;
-    private bool buildingBurned = false;
     private bool rewardSpawned = false;
     [SerializeField] private PowerUpSpawner powerUpSpawner;
     [SerializeField] private GameObject infiniteFirePowerUpPrefab;
     [SerializeField] private HammerFireController hammerFireController;
     [SerializeField] private string rewardMessage = "The eternal flame boon has been granted";
     [SerializeField] private GameObject statueArrowUI;
+    [SerializeField] private int buildingsRequired = 5;
+    private int buildingsBurned = 0;
 
     void Start()
     {
         statueArrowUI.SetActive(false);
-        taskName = "Burn the building";
+        taskName = "Burn down the village";
         taskDescription = "Ignite the hammer";
         StartTask();
     }
 
     private void Update()
     {
-        if (hammerIgnited && !buildingBurned && !isComplete && !hammerFireController.IsOnFire)
+        if (hammerIgnited && buildingsBurned < buildingsRequired && !isComplete && !hammerFireController.IsOnFire)
         {
             hammerIgnited = false;
             taskDescription = "Ignite the hammer";
@@ -31,12 +32,12 @@ public class FireTask : BaseTask
 
     public void HammerIgnited()
     {
-        if (hammerIgnited || buildingBurned) return;
+        if (hammerIgnited || isComplete) return;
 
         hammerIgnited = true;
         statueArrowUI.SetActive(true);
 
-        taskDescription = "Go to the building";
+        taskDescription = $"Burn the village ({buildingsBurned}/{buildingsRequired} buildings burned)";
         TaskHUD.Instance.RefreshUI();
 
         CheckCompletion();
@@ -44,12 +45,24 @@ public class FireTask : BaseTask
 
     public void BuildingBurned()
     {
-        if (buildingBurned) return;
+        if (isComplete) return;
 
-        buildingBurned = true;
+        buildingsBurned++;
         statueArrowUI.SetActive(false);
 
-        taskDescription = "Completed!";
+        if (buildingsBurned > buildingsRequired)
+        {
+            buildingsBurned = buildingsRequired;
+        }
+
+        if (buildingsBurned >= buildingsRequired)
+        {
+            taskDescription = "All buildings burned! Return to the statue.";
+        }
+        else
+        {
+            taskDescription = $"Burn the village ({buildingsBurned}/{buildingsRequired} buildings burned)";
+        }
         TaskHUD.Instance.RefreshUI();
 
         CheckCompletion();
@@ -57,7 +70,7 @@ public class FireTask : BaseTask
 
     public override void CheckCompletion()
     {
-        if (hammerIgnited && buildingBurned)
+        if (hammerIgnited && buildingsBurned >= buildingsRequired)
         { 
             if (!rewardSpawned && powerUpSpawner != null && infiniteFirePowerUpPrefab != null)
             {
