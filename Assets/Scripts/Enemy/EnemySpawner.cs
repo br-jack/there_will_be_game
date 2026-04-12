@@ -11,6 +11,8 @@ public class EnemySpawner : MonoBehaviour
         public float rangedInterval;
         public float duration;
         public int maxAlive;
+        [Range(0f,1f)] public float meleeSheildProbability;
+        [Range(0f,1f)] public float rangedShieldProbability;
     }
 
     [SerializeField] private GameObject meleeEnemyPrefab;
@@ -75,18 +77,18 @@ public class EnemySpawner : MonoBehaviour
 
         if (meleeTimer >= currentWave.meleeInterval && aliveEnemies.Count < currentWave.maxAlive)
         {
-            TrySpawnEnemy(meleeEnemyPrefab);
+            TrySpawnEnemy(meleeEnemyPrefab, meleeSheildProbability);
             meleeTimer = 0f;
         }
 
         if (rangedTimer >= currentWave.rangedInterval && aliveEnemies.Count < currentWave.maxAlive)
         {
-            TrySpawnEnemy(rangedEnemyPrefab);
+            TrySpawnEnemy(rangedEnemyPrefab, rangedShieldProbability);
             rangedTimer = 0f;
         }
     }
 
-    private void TrySpawnEnemy(GameObject prefab)
+    private void TrySpawnEnemy(GameObject prefab, float chanceOfShield)
     {
         if (prefab == null)
         {

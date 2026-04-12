@@ -9,6 +9,7 @@ public class RangedEnemyAI : StandardEnemyAI
     [SerializeField] private float spawnAngle = 4f;
     protected override void DoDamage()
     {
+        Debug.Log($"[{name}] RangedEnemyAI.DoDamage override called. projectile={(projectile != null ? "assigned" : "NULL")}, IsDying={IsDying}, playerRef={(_playerTransformRef != null ? "ok" : "NULL")}", this);
         if (IsDying || _playerTransformRef == null) return;
 
         if (projectile == null)

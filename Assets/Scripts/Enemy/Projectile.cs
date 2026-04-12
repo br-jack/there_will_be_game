@@ -12,7 +12,7 @@ public class Projectile : MonoBehaviour
     private bool hasHitHammer = false;
     private Rigidbody rb;
     private int damage;
-    private Collider collider;
+    private new Collider collider;
     public void Initialize(int damageAmount, Vector3 direction)
     {
         damage = damageAmount;

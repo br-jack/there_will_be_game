@@ -62,6 +62,10 @@ public class StandardEnemyAI : MonoBehaviour
     private float timeOfNextAttack;
     private float deathTimer;
 
+    // Debug throttling
+    private float _dbgTimer;
+    private bool _doDebug;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -111,24 +115,32 @@ public class StandardEnemyAI : MonoBehaviour
 
     void Update()
     {
+        _dbgTimer -= Time.deltaTime;
+        _doDebug = _dbgTimer <= 0f;
+        if (_doDebug) _dbgTimer = 1f;
+
         if (IsDying)
         {
+            if (_doDebug) Debug.Log($"[{name}] Update bail: IsDying, type={GetType().Name}", this);
             KillEnemy();
             return;
         }
 
         if (IsKnockedBack)
         {
+            if (_doDebug) Debug.Log($"[{name}] Update bail: IsKnockedBack, type={GetType().Name}", this);
             HandleKnockback();
             return;
         }
 
         if (_playerHealthRef == null || _playerTransformRef == null)
         {
+            if (_doDebug) Debug.Log($"[{name}] Update bail: player refs null (hlth={(_playerHealthRef != null)}, tfm={(_playerTransformRef != null)}), type={GetType().Name}", this);
             ResolvePlayerRefs();
             return;
         }
 
+        if (_doDebug) Debug.Log($"[{name}] Update reaching MeleeAttack, type={GetType().Name}", this);
         MeleeAttack();
         UpdateAnim();
     }
@@ -204,15 +216,29 @@ public class StandardEnemyAI : MonoBehaviour
 
     private void MeleeAttack()
     {
-        if (_playerHealthRef.IsDead) return;
-        if (Time.time < timeOfNextAttack) return;
+        if (_playerHealthRef.IsDead)
+        {
+            if (_doDebug) Debug.Log($"[{name}] MeleeAttack bail: player IsDead, type={GetType().Name}", this);
+            return;
+        }
+        if (Time.time < timeOfNextAttack)
+        {
+            if (_doDebug) Debug.Log($"[{name}] MeleeAttack bail: cooldown {timeOfNextAttack - Time.time:F2}s left, type={GetType().Name}", this);
+            return;
+        }
 
         Vector3 toPlayer = _playerTransformRef.position - transform.position;
         toPlayer.y = 0f;
-        if (toPlayer.sqrMagnitude > attack.range * attack.range) return;
+        if (toPlayer.sqrMagnitude > attack.range * attack.range)
+        {
+            if (_doDebug) Debug.Log($"[{name}] MeleeAttack bail: out of range, dist={toPlayer.magnitude:F2} range={attack.range}, type={GetType().Name}", this);
+            return;
+        }
 
         timeOfNextAttack = Time.time + attack.cooldown;
         TryTrigger(attackTrigger);
+
+        Debug.Log($"[{name}] Attack triggered. type={GetType().Name}, useDamageAnimEvent={useDamageAnimEvent}, chargeTime={attack.chargeTime}", this);
 
         if (!useDamageAnimEvent) StartCoroutine(ChargeUpThenDamage());
     }
@@ -225,6 +251,7 @@ public class StandardEnemyAI : MonoBehaviour
 
     protected virtual void DoDamage()
     {
+        Debug.Log($"[{name}] StandardEnemyAI.DoDamage base called. type={GetType().Name}", this);
         if (IsDying || _playerHealthRef == null) return;
 
         // Only damage if player is still in range at the moment of impact.
