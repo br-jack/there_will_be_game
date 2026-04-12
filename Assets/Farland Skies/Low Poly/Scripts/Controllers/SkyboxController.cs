@@ -1,5 +1,6 @@
 ﻿using Borodar.FarlandSkies.Core.Helpers;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Borodar.FarlandSkies.LowPoly
 {
@@ -147,8 +148,9 @@ namespace Borodar.FarlandSkies.LowPoly
 
         // Private
 
-        private LensFlare _sunFlareComponent;
-        private LensFlare _moonFlareComponent;
+        ////NOTE: changed to the SRP lens flare component
+        private LensFlareComponentSRP _sunFlareComponent;
+        private LensFlareComponentSRP _moonFlareComponent;
 
         //---------------------------------------------------------------------
         // Shader Properties
@@ -505,13 +507,13 @@ namespace Borodar.FarlandSkies.LowPoly
             if (_sunEnabled)
             {
                 SkyboxMaterial.SetMatrix(SUN_MATRIX, _sunLight.transform.worldToLocalMatrix);
-                if (_sunFlare && _sunFlareComponent) _sunFlareComponent.brightness = _sunTint.a * _sunFlareBrightness;
+                if (_sunFlare && _sunFlareComponent) _sunFlareComponent.intensity = _sunTint.a * _sunFlareBrightness;
             }
 
             if (_moonEnabled)
             {
                 SkyboxMaterial.SetMatrix(MOON_MATRIX, _moonLight.transform.worldToLocalMatrix);
-                if (_moonFlare && _moonFlareComponent) _moonFlareComponent.brightness = _moonTint.a * _moonFlareBrightness;
+                if (_moonFlare && _moonFlareComponent) _moonFlareComponent.intensity = _moonTint.a * _moonFlareBrightness;
             }
         }
 
@@ -563,7 +565,7 @@ namespace Borodar.FarlandSkies.LowPoly
                 if (_sunLight)
                 {
                     _sunLight.gameObject.SetActive(true);
-                    _sunFlareComponent = _sunLight.GetComponent<LensFlare>();
+                    _sunFlareComponent = _sunLight.GetComponent<LensFlareComponentSRP>();
                 }
                 else
                 {
@@ -591,7 +593,7 @@ namespace Borodar.FarlandSkies.LowPoly
                 if (_moonLight)
                 {
                     _moonLight.gameObject.SetActive(true);
-                    _moonFlareComponent = _moonLight.GetComponent<LensFlare>();
+                    _moonFlareComponent = _moonLight.GetComponent<LensFlareComponentSRP>();
                 }
                 else
                 {
