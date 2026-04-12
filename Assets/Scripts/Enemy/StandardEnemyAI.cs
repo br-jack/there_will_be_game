@@ -11,6 +11,12 @@ using UnityEngine.AI;
     public float chargeTime;
 }
 
+[System.Serializable] public struct EnemyRetreat
+{
+    public bool enabled;
+    public float duration;
+    public float speedMultiplier;
+}
 
 public class StandardEnemyAI : MonoBehaviour
 {
@@ -40,6 +46,13 @@ public class StandardEnemyAI : MonoBehaviour
     [SerializeField] private float maxDeathTime = 4f;
     private const float KnockbackTime = 0.5f;
     private const float GroundCheckDistance = 0.4f;
+
+    [SerializeField] private EnemyRetreat retreat = new EnemyRetreat
+    {
+        enabled = false,
+        duration = 4f,
+        speedMultipler = 2,
+    }
 
     [Header("Animation (optional)")]
     [SerializeField] private Animator anim;
