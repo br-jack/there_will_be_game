@@ -13,6 +13,13 @@ namespace Score
         ShieldBypass
     }
 
+    public enum PerformanceTier
+    {
+        OneStar,
+        TwoStars,
+        ThreeStars,
+    }
+
     public class ScoreComponent
     {
         public int amount;
