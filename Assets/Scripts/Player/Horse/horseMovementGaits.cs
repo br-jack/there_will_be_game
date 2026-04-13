@@ -9,8 +9,6 @@ using UnityEngine.Rendering;
 
 public class horseMovementGaits : MonoBehaviour
 {   
-    //a bit of copy pasting from https://gist.github.com/Mike-Schvedov/b833a89b16e8b5a44df5707923169936
-    //has happened here, not sure whether any actually remains, come back and check
     public UnityEvent<gait> gaitChange;
     public UnityEvent jump;
     public float trotSpeed;
@@ -19,7 +17,11 @@ public class horseMovementGaits : MonoBehaviour
     public float chargeRequiredToCanter;
     public float chargeRequiredToGallop;
     public float jumpHeight = 20f; 
-    public float turnSpeedGrounded;
+    public float turnSpeedGroundedWalk;
+    public float turnSpeedGroundedTrot;
+    public float turnSpeedGroundedCanter;
+    public float turnSpeedGroundedGallop;
+
     public float turnSpeedMidair;
     public float acceleration = 2f;
     public float deceleration = 6f;
@@ -108,6 +110,31 @@ public class horseMovementGaits : MonoBehaviour
         setGait(newGait);
     }
 
+    private float getTurnSpeed()
+    {
+        
+        if (!_cc.isGrounded) 
+        {
+            return turnSpeedMidair;
+        }
+        else if (gait == gait.walking || gait == gait.still)
+        {
+            return turnSpeedGroundedWalk;
+        }
+        else if (gait == gait.trotting)
+        {
+            return turnSpeedGroundedTrot;
+        }
+        else if (gait == gait.cantering)
+        {
+            return turnSpeedGroundedCanter;
+        }
+        else /*if (gait == gait.galloping)*/
+        {
+            return turnSpeedGroundedGallop;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {       
@@ -145,11 +172,12 @@ public class horseMovementGaits : MonoBehaviour
 
         setGait(currentRunCharge); 
         
+        float turnSpeed = getTurnSpeed();
 
         //turn transform 
         if (Mathf.Abs(_turnInput) > 0.1f)
         {
-            _tf.Rotate(Vector3.up * _turnInput * (_cc.isGrounded ? turnSpeedGrounded : turnSpeedMidair) * Time.deltaTime );
+            _tf.Rotate(Vector3.up * _turnInput * turnSpeed * Time.deltaTime );
         }
         //should see if it would be fun for turning to decrease charge speed, so you have to 
         //go in a straight line to increase gait
