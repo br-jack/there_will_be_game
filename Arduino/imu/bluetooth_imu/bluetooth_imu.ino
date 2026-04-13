@@ -13,10 +13,10 @@
 #define BNO08X_RESET -1
 #define FAST_MODE
 
-constexpr int motor1DIRPin = A3;  // Motor 1 Direction pin of dual motor driver connected to digital pin 29
-constexpr int motor1SPDPin = A2;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 28
-constexpr int motor2SPDPin = A1;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 27
-constexpr int motor2DIRPin = A0;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
+constexpr int motor1_dir_pin = A3;  // Motor 1 Direction pin of dual motor driver connected to digital pin 29
+constexpr int motor1_spd_pin = A2;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 28
+constexpr int motor2_spd_pin = A1;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 27
+constexpr int motor2_dir_pin = A0;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
 
 enum class RumbleMode {
   Off,
@@ -90,9 +90,9 @@ void setup(void) {
 
   Serial.println(F("info:Reading events"));
 
-  pinMode(motor1DIRPin, OUTPUT);
+  pinMode(motor1_dir_pin, OUTPUT);
 
-  digitalWrite(motor1DIRPin, HIGH);
+  digitalWrite(motor1_dir_pin, HIGH);
 
   delay(100);
 }
@@ -141,7 +141,7 @@ void startRumble(RumbleMode mode, int duration) {
   currentRumbleInstance.fadeMs = 0;
   Serial.println(F("info:Rumble activated."));
 
-  analogWrite(motor1SPDPin, currentRumbleInstance.strength);
+  analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
 }
 
 void endRumble(void) {
@@ -166,7 +166,7 @@ void endRumble(void) {
   //currentRumbleInstance.fadeMs = 0;
   Serial.println(F("info:Rumble deactivated."));
 
-  analogWrite(motor1SPDPin, 0);
+  analogWrite(motor1_spd_pin, 0);
 }
 
 inline void outputSensorValues(void) {
@@ -233,34 +233,7 @@ inline RumbleMode parseRumbleModeByte(byte byte) {
   return RumbleMode::Constant;
 }
 
-void loop(void) {  // run over and over
-
-  delay(5);
-
-  outputSensorValues();
-
-  if (Serial.available() > 3) {
-    constexpr char rumbleChar = 'R';
-
-    const int incomingByte = Serial.read();
-
-    //rumble string format: "RMx\n" where M is the mode and x is the duration in ms
-    if (incomingByte == (int)rumbleChar) {
-
-      const int modeByte = Serial.read();
-
-      const int duration = Serial.parseInt();
-
-      //Serial.println(duration);  
-      startRumble(parseRumbleModeByte(modeByte), duration);
-    }
-    
-    while (Serial.available() > 0) {
-      //discard newline character and any other remaining characters in buffer
-      (void) Serial.read();
-    }
-  }
-
+inline void rumbleStep(void) {
   if (currentRumbleInstance.mode != RumbleMode::Off) {
     const unsigned long currentMs = millis();
 
@@ -283,7 +256,7 @@ void loop(void) {  // run over and over
             currentRumbleInstance.fadeMs = currentMs;
             if (currentRumbleInstance.strength < 255) {
               currentRumbleInstance.strength++;
-              analogWrite(motor1SPDPin, currentRumbleInstance.strength);
+              analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
             }
           }
 
@@ -299,7 +272,7 @@ void loop(void) {  // run over and over
             currentRumbleInstance.fadeMs = currentMs;
             if (currentRumbleInstance.strength > 0) {
               currentRumbleInstance.strength -= 5;
-              analogWrite(motor1SPDPin, currentRumbleInstance.strength);
+              analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
             }
           }
 
@@ -308,6 +281,41 @@ void loop(void) {  // run over and over
       }
     }
   }
+}
+
+inline void checkRumbleInput(void) {
+  if (Serial.available() > 3) {
+    constexpr char rumbleChar = 'R';
+
+    const int incomingByte = Serial.read();
+
+    //rumble string format: "RMx\n" where M is the mode and x is the duration in ms
+    if (incomingByte == (int)rumbleChar) {
+
+      const int modeByte = Serial.read();
+
+      const int duration = Serial.parseInt();
+
+      //Serial.println(duration);  
+      startRumble(parseRumbleModeByte(modeByte), duration);
+    }
+    
+    while (Serial.available() > 0) {
+      //discard newline character and any other remaining characters in buffer
+      (void) Serial.read();
+    }
+  }
+}
+
+void loop(void) {  // run over and over
+
+  delay(5);
+
+  rumbleStep();
+
+  outputSensorValues();
+
+  checkRumbleInput();
 
   // if (Serial.available()) {
   //   Serial.write(Serial.read());
