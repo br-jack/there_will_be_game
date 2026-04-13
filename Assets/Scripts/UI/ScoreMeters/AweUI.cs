@@ -12,6 +12,7 @@ namespace Score
 
             if (ScoreManager.Instance != null)
             {
+                max = ScoreManager.Instance.MaxAweScore;
                 ScoreManager.Instance.OnAweChanged += UpdateAweDisplay;
                 UpdateAweDisplay(ScoreManager.Instance.AweScore);
             }

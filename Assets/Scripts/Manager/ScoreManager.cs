@@ -13,7 +13,7 @@ namespace Score
         ShieldBypass
     }
 
-    public enum PerformanceTier
+    public enum ReportCard
     {
         OneStar,
         TwoStars,
@@ -40,6 +40,11 @@ namespace Score
         public int FearScore => fearScore;
         private int aweScore = 0;
         public int AweScore => aweScore;
+
+        [SerializeField] private int maxFearScore = 2000;
+        [SerializeField] private int maxAweScore = 2000;
+        public int MaxFearScore => maxFearScore;
+        public int MaxAweScore => maxAweScore;
 
         public event Action<int> OnFearChanged;
         public event Action<int> OnAweChanged;
@@ -88,6 +93,10 @@ namespace Score
             aweScore = 0;
             OnAweChanged?.Invoke(aweScore);
         }
-    }
 
+        public ReportCard GetReportCard()
+        {
+            
+        }
+    }
 }
