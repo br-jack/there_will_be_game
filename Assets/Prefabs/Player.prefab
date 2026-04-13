@@ -576,7 +576,6 @@ MonoBehaviour:
   runParticles: {fileID: 8481436098113573260}
   jumpParticles: {fileID: 7022321905512896264}
   _horseMovementGaits: {fileID: 4768003233324626996}
-  isGrounded: 0
 --- !u!143 &5198885869196984512
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3172,6 +3171,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7672999536482783943}
     m_Modifications:
+    - target: {fileID: 364211550610626168, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: maxLength
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 364211550610626168, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: sensitivity
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 364211550610626168, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: momentumDecay
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 364211550610626168, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: pivotTransform
+      value: 
+      objectReference: {fileID: 3283128650886327725}
     - target: {fileID: 798621022363076069, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
