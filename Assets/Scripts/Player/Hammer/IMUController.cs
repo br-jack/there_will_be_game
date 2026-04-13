@@ -155,7 +155,7 @@ namespace Hammer
 
                     if (!portOpen)
                     {
-                        Thread.Sleep(5000);
+                        Thread.Sleep(1000);
                     }
                 }
                 
