@@ -13,7 +13,7 @@ using UnityEngine.AI;
 
 public class StandardEnemyAI : MonoBehaviour
 {
-    private enum CombatState { Approaching, Stalking, Striking, Attacking, Retreating }
+    private enum CombatState { Approaching, Holding, Striking, Attacking, Retreating }
 
     // References
     [HideInInspector] public GameObject shield;
@@ -38,8 +38,8 @@ public class StandardEnemyAI : MonoBehaviour
 
     [Header("Strike Behavior")]
     [SerializeField] protected bool useStrike = true;
-    [SerializeField] private float stalkDistance = 6f;
-    [SerializeField] private float stalkDistanceVariance = 1.5f;
+    [SerializeField] private float holdDistance = 6f;
+    [SerializeField] private float holdDistanceVariance = 1.5f;
     [SerializeField] private float strikeSpeedMultiplier = 2.5f;
     [SerializeField] private float retreatSpeedMultiplier = 1.5f;
 
@@ -52,7 +52,7 @@ public class StandardEnemyAI : MonoBehaviour
     private const float GroundCheckDistance = 0.4f;
 
     private CombatState combatState = CombatState.Approaching;
-    private float actualStalkDistance;
+    private float actualHoldDistance;
 
     [Header("Animation (optional)")]
     [SerializeField] private Animator anim;
@@ -87,9 +87,9 @@ public class StandardEnemyAI : MonoBehaviour
         ShieldHit shieldHit = GetComponentInChildren<ShieldHit>();
         if (shieldHit != null) shield = shieldHit.gameObject;
 
-        // Each enemy gets a slightly different stalk distance (Stalk distance should ALWAYS be further than attack range).
-        actualStalkDistance = stalkDistance + UnityEngine.Random.Range(-stalkDistanceVariance, stalkDistanceVariance);
-        actualStalkDistance = Mathf.Max(actualStalkDistance, attack.range + 0.5f);
+        // Each enemy gets a slightly different hold distance (Stalk distance should ALWAYS be further than attack range).
+        actualHoldDistance = holdDistance + UnityEngine.Random.Range(-holdDistanceVariance, holdDistanceVariance);
+        actualHoldDistance = Mathf.Max(actualHoldDistance, attack.range + 0.5f);
 
         SetupNavMesh();
     }
@@ -165,7 +165,7 @@ public class StandardEnemyAI : MonoBehaviour
 
         switch (combatState)
         {
-            case CombatState.Stalking:
+            case CombatState.Holding:
                 // Wait for cooldown, then start striking.
                 if (Time.time >= timeOfNextAttack)
                 {
@@ -266,21 +266,21 @@ public class StandardEnemyAI : MonoBehaviour
         switch (combatState)
         {
             case CombatState.Approaching:
-                // Move toward stalk distance.
-                if (distToPlayer > actualStalkDistance)
+                // Move toward hold distance.
+                if (distToPlayer > actualHoldDistance)
                 {
                     velocity = moveDir * speed;
                 }
                 else
                 {
-                    combatState = CombatState.Stalking;
+                    combatState = CombatState.Holding;
                     timeOfNextAttack = Time.time + attack.cooldown;
                 }
                 break;
 
-            case CombatState.Stalking:
-                // Stand still at stalk distance, but re-approach if player moves away.
-                if (distToPlayer > actualStalkDistance + 1f)
+            case CombatState.Holding:
+                // Stand still at hold distance, but re-approach if player moves away.
+                if (distToPlayer > actualHoldDistance + 1f)
                 {
                     velocity = moveDir * speed;
                 }
@@ -309,13 +309,13 @@ public class StandardEnemyAI : MonoBehaviour
 
             case CombatState.Retreating:
                 // Move away from player.
-                if (distToPlayer < actualStalkDistance)
+                if (distToPlayer < actualHoldDistance)
                 {
                     velocity = -toPlayerDir * speed * retreatSpeedMultiplier;
                 }
                 else
                 {
-                    combatState = CombatState.Stalking;
+                    combatState = CombatState.Holding;
                 }
                 break;
         }
