@@ -17,6 +17,9 @@ public class PowerUpSpawner : MonoBehaviour
     public AudioClip boonFanfare;
     public AudioSource audioSource;
 
+    [SerializeField] private Transform player;
+    [SerializeField] private float spawnRadius = 5f;  
+
     private void Start()
     {
         if (boonText != null)
@@ -27,10 +30,10 @@ public class PowerUpSpawner : MonoBehaviour
 
     public void SpawnSpecificPowerUp(GameObject powerUpPrefab, string customMessage)
     {
-        int randomSpawnPointIndex = Random.Range(0, spawnPoints.Length);
-        Transform chosenSpawnPoint = spawnPoints[randomSpawnPointIndex];
+        Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
 
-        Vector3 spawnPosition = chosenSpawnPoint.position + Vector3.up * spawnHeightOffset;
+        Vector3 spawnPosition = player.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
+        spawnPosition += Vector3.up * spawnHeightOffset;
 
         Instantiate(powerUpPrefab, spawnPosition, Quaternion.identity);
 
