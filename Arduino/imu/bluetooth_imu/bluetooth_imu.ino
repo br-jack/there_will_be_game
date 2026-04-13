@@ -18,13 +18,6 @@ constexpr int motor1SPDPin = A2;  // Motor 1 Speed PWM pin of dual motor driver 
 constexpr int motor2SPDPin = A1;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 27
 constexpr int motor2DIRPin = A0;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
 
-unsigned long rumbleStartMs;
-unsigned long rumbleDuration;
-int rumbleStrength = 255;
-
-int rumbleCurrentFadeMs;
-constexpr int rumbleFadeInterval = 30;
-
 enum class RumbleMode {
   Off,
   Constant,
@@ -32,7 +25,17 @@ enum class RumbleMode {
   RampDown,
 };
 
-RumbleMode currentRumbleMode { RumbleMode::Off };
+struct RumbleInstance {
+  unsigned long startMs;
+  unsigned long duration;
+  int strength = 255;
+  int fadeMs;
+  RumbleMode mode { RumbleMode::Off };
+};
+
+constexpr int rumbleFadeInterval = 30;
+
+RumbleInstance currentRumbleInstance;
 
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
@@ -124,20 +127,21 @@ void startRumble(RumbleMode mode, int duration) {
     // delay(120);
   // }
 
-  currentRumbleMode = mode;
-  rumbleStartMs = millis();
+  //NOTE: reusing the same struct instance for performance
+  currentRumbleInstance.mode = mode;
+  currentRumbleInstance.startMs = millis();
   //NOTE: assume duration is unsigned
-  rumbleDuration = duration;
+  currentRumbleInstance.duration = duration;
   if (mode == RumbleMode::RampUp) {
-    rumbleStrength = 0;
+    currentRumbleInstance.strength = 0;
   }
   else {
-    rumbleStrength = 255;
+    currentRumbleInstance.strength = 255;
   }
-  rumbleCurrentFadeMs = 0;
+  currentRumbleInstance.fadeMs = 0;
   Serial.println(F("info:Rumble activated."));
 
-  analogWrite(motor1SPDPin, rumbleStrength);
+  analogWrite(motor1SPDPin, currentRumbleInstance.strength);
 }
 
 void endRumble(void) {
@@ -156,10 +160,10 @@ void endRumble(void) {
     // delay(120);
   // }
 
-  rumbleStartMs = 0;
-  rumbleDuration = 0;
-  currentRumbleMode = RumbleMode::Off;
-  rumbleCurrentFadeMs = 0;
+  //currentRumbleInstance.startMs = 0;
+  //currentRumbleInstance.duration = 0;
+  currentRumbleInstance.mode = RumbleMode::Off;
+  //currentRumbleInstance.fadeMs = 0;
   Serial.println(F("info:Rumble deactivated."));
 
   analogWrite(motor1SPDPin, 0);
@@ -259,29 +263,29 @@ void loop(void) {  // run over and over
     }
   }
 
-  if (currentRumbleMode != RumbleMode::Off) {
+  if (currentRumbleInstance.mode != RumbleMode::Off) {
     const unsigned long currentMs = millis();
 
     //handle millis wrap around (unlikely to occur)
-    if (currentMs < rumbleStartMs) {
-      rumbleStartMs = 0;
+    if (currentMs < currentRumbleInstance.startMs) {
+      currentRumbleInstance.startMs = 0;
     }
 
-    if ((currentMs - rumbleStartMs) >= rumbleDuration) {
+    if ((currentMs - currentRumbleInstance.startMs) >= currentRumbleInstance.duration) {
       endRumble();
     }
     else {
-      switch(currentRumbleMode) {
+      switch(currentRumbleInstance.mode) {
         case RumbleMode::RampUp: {
           //also handle millis wrap around
-          if (rumbleCurrentFadeMs == 0 || currentMs < rumbleCurrentFadeMs) {
-            rumbleCurrentFadeMs = currentMs;
+          if (currentRumbleInstance.fadeMs == 0 || currentMs < currentRumbleInstance.fadeMs) {
+            currentRumbleInstance.fadeMs = currentMs;
           }
-          else if ((currentMs - rumbleCurrentFadeMs) >= rumbleFadeInterval) {
-            rumbleCurrentFadeMs = currentMs;
-            if (rumbleStrength < 255) {
-              rumbleStrength++;
-              analogWrite(motor1SPDPin, rumbleStrength);
+          else if ((currentMs - currentRumbleInstance.fadeMs) >= rumbleFadeInterval) {
+            currentRumbleInstance.fadeMs = currentMs;
+            if (currentRumbleInstance.strength < 255) {
+              currentRumbleInstance.strength++;
+              analogWrite(motor1SPDPin, currentRumbleInstance.strength);
             }
           }
 
@@ -290,14 +294,14 @@ void loop(void) {  // run over and over
 
         case RumbleMode::RampDown: {
           //also handle millis wrap around
-          if (rumbleCurrentFadeMs == 0 || currentMs < rumbleCurrentFadeMs) {
-            rumbleCurrentFadeMs = currentMs;
+          if (currentRumbleInstance.fadeMs == 0 || currentMs < currentRumbleInstance.fadeMs) {
+            currentRumbleInstance.fadeMs = currentMs;
           }
-          else if ((currentMs - rumbleCurrentFadeMs) >= rumbleFadeInterval) {
-            rumbleCurrentFadeMs = currentMs;
-            if (rumbleStrength > 0) {
-              rumbleStrength -= 5;
-              analogWrite(motor1SPDPin, rumbleStrength);
+          else if ((currentMs - currentRumbleInstance.fadeMs) >= rumbleFadeInterval) {
+            currentRumbleInstance.fadeMs = currentMs;
+            if (currentRumbleInstance.strength > 0) {
+              currentRumbleInstance.strength -= 5;
+              analogWrite(motor1SPDPin, currentRumbleInstance.strength);
             }
           }
 
