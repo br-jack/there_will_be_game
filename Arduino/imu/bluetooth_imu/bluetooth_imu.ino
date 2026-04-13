@@ -253,10 +253,10 @@ void loop(void) {  // run over and over
       startRumble(mode, duration);
     }
     
-    // if (Serial.available() > 0) {
-    //   //discard newline character and any other remaining characters in buffer
-    //   (void) Serial.readString();
-    // }
+    while (Serial.available() > 0) {
+      //discard newline character and any other remaining characters in buffer
+      (void) Serial.read();
+    }
   }
 
   if (currentRumbleMode != RumbleMode::Off) {
