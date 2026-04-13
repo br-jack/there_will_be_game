@@ -53,7 +53,9 @@ public class ScorePopup : MonoBehaviour
                 return new Color(0.3f, 0.8f, 1f); // Light blue
             case ScoreType.ShieldBypass:
                 return new Color(1f, 0.84f, 0f); // Gold
-            default:
+            case ScoreType.OnFire:
+                return new Color(1f, 0.2f, 0.2f); // Bright red
+                default:
                 return Color.white;
         }
     }
