@@ -96,7 +96,9 @@ namespace Score
 
         public ReportCard GetReportCard()
         {
-            
+            // Leave the float cast, it's important because otherwise it does integer divison.
+            float fearProportion = (float) fearScore/maxFearScore;
+            float aweProportion = (float) aweScore/maxAweScore;
         }
     }
 }
