@@ -26,8 +26,6 @@ void setup(void) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  while (!Serial) delay(5);
-
   delay(20);
 
   Serial.println(F("info:Adafruit BNO08x test!"));
