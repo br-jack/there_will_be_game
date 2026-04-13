@@ -33,7 +33,7 @@ struct RumbleInstance {
   RumbleMode mode { RumbleMode::Off };
 };
 
-constexpr int rumbleFadeInterval = 30;
+constexpr int rumble_fade_interval = 30;
 
 RumbleInstance currentRumbleInstance;
 
@@ -214,6 +214,25 @@ inline void outputSensorValues(void) {
   }
 }
 
+inline RumbleMode parseRumbleModeByte(byte byte) {
+  switch(byte) {
+    case (int)'C': {
+      return RumbleMode::Constant;
+    }
+    case (int)'U': {
+      return RumbleMode::RampUp;
+    }
+    case (int)'D': {
+      return RumbleMode::RampDown;
+    }
+    default: {
+      break;
+    }
+  }
+
+  return RumbleMode::Constant;
+}
+
 void loop(void) {  // run over and over
 
   delay(5);
@@ -230,31 +249,10 @@ void loop(void) {  // run over and over
 
       const int modeByte = Serial.read();
 
-      RumbleMode mode;
-
-      switch(modeByte) {
-        case (int)'C': {
-          mode = RumbleMode::Constant;
-          break;
-        }
-        case (int)'U': {
-          mode = RumbleMode::RampUp;
-          break;
-        }
-        case (int)'D': {
-          mode = RumbleMode::RampDown;
-          break;
-        }
-        default: {
-          mode = RumbleMode::Constant;
-          break;
-        }
-      }
-
       const int duration = Serial.parseInt();
 
       //Serial.println(duration);  
-      startRumble(mode, duration);
+      startRumble(parseRumbleModeByte(modeByte), duration);
     }
     
     while (Serial.available() > 0) {
@@ -281,7 +279,7 @@ void loop(void) {  // run over and over
           if (currentRumbleInstance.fadeMs == 0 || currentMs < currentRumbleInstance.fadeMs) {
             currentRumbleInstance.fadeMs = currentMs;
           }
-          else if ((currentMs - currentRumbleInstance.fadeMs) >= rumbleFadeInterval) {
+          else if ((currentMs - currentRumbleInstance.fadeMs) >= rumble_fade_interval) {
             currentRumbleInstance.fadeMs = currentMs;
             if (currentRumbleInstance.strength < 255) {
               currentRumbleInstance.strength++;
@@ -297,7 +295,7 @@ void loop(void) {  // run over and over
           if (currentRumbleInstance.fadeMs == 0 || currentMs < currentRumbleInstance.fadeMs) {
             currentRumbleInstance.fadeMs = currentMs;
           }
-          else if ((currentMs - currentRumbleInstance.fadeMs) >= rumbleFadeInterval) {
+          else if ((currentMs - currentRumbleInstance.fadeMs) >= rumble_fade_interval) {
             currentRumbleInstance.fadeMs = currentMs;
             if (currentRumbleInstance.strength > 0) {
               currentRumbleInstance.strength -= 5;
