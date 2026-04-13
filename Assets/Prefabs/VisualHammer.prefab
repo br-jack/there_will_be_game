@@ -1,5 +1,51 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &872883434975298054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7422980362223259771}
+  - component: {fileID: 8479068076154358140}
+  m_Layer: 12
+  m_Name: HammerHead
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7422980362223259771
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872883434975298054}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -30.4, y: 18.760002, z: -27.65}
+  m_LocalScale: {x: 1.3333334, y: 1.3333334, z: 1.3333334}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3090912974106212065}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8479068076154358140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872883434975298054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76a65b67cf38ee7478330a8c73cbcd62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forwardSpeed: 0
+  getSpeedRelativeTo: {fileID: 0}
 --- !u!1 &1043326702827504670
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +57,7 @@ GameObject:
   - component: {fileID: 3605711341123913308}
   - component: {fileID: 8232399675555418615}
   - component: {fileID: 8061637968058501050}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HammerGhosts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +96,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -106,7 +152,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 2
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -116,7 +162,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.4
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4842,7 +4888,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5111490005755294600}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RightHandTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4875,7 +4921,7 @@ GameObject:
   - component: {fileID: 763704964846946753}
   - component: {fileID: 3199417569135181182}
   - component: {fileID: 3739323767163687195}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HammerChargeLines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4914,7 +4960,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 1
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -9708,7 +9754,7 @@ GameObject:
   - component: {fileID: 1962309316669574257}
   - component: {fileID: 6211702859106016224}
   - component: {fileID: 1736481844762692223}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HammerGlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9747,7 +9793,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 1
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -14539,6 +14585,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &5473451620664876475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7773187203068221852}
+  m_Layer: 12
+  m_Name: LeftElbowHint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7773187203068221852
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5473451620664876475}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3090912974106212065}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5555687402779521408
 GameObject:
   m_ObjectHideFlags: 0
@@ -14552,7 +14629,7 @@ GameObject:
   - component: {fileID: 8000864674359881068}
   - component: {fileID: 8892384873263243920}
   - component: {fileID: 5108536424463998545}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HammerParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14597,7 +14674,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -19392,7 +19469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c26f8eee71dcd34c89e2471cc55c7e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 0}
+  head: {fileID: 8479068076154358140}
   trailSpeedThreshold: 40
   ghostSpeedThreshold: 80
   trailLingerFrames: 30
@@ -19413,17 +19490,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gait: 0
-  hammerChargeState: 2
+  hammerChargeState: 0
   embers: {fileID: 314189850103815418}
   chargeLines: {fileID: 3199417569135181182}
   glow: {fileID: 6211702859106016224}
   trails: {fileID: 6278026725617630600}
   ghosts: {fileID: 8232399675555418615}
-  _stillAndWalkColor: {r: 0, g: 0, b: 0, a: 0}
-  _trotColor: {r: 0, g: 0, b: 0, a: 0}
-  _canterColor: {r: 0, g: 0, b: 0, a: 0}
-  _gallopColor: {r: 0, g: 0, b: 0, a: 0}
-  _ultraGallopColor: {r: 0, g: 0, b: 0, a: 0}
+  flash: {fileID: 5469538521649242149}
+  _stillAndWalkColor: {r: 0.4627451, g: 0.4627451, b: 0.4627451, a: 1}
+  _trotColor: {r: 0.64705884, g: 0.43529412, b: 0.10980392, a: 1}
+  _canterColor: {r: 0.7647059, g: 0.81960785, b: 0.8156863, a: 1}
+  _gallopColor: {r: 0.8784314, g: 0.62352943, b: 0, a: 1}
+  _ultraGallopColor: {r: 1, g: 0, b: 0.39215687, a: 1}
+  hammerMesh: {fileID: 4228330455635643790}
+  headMaterialIndex: 2
 --- !u!1 &6309594497319092797
 GameObject:
   m_ObjectHideFlags: 0
@@ -19435,7 +19515,7 @@ GameObject:
   - component: {fileID: 1058116434969186094}
   - component: {fileID: 5469538521649242149}
   - component: {fileID: 798621022363076069}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HammerStateChangeFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19465,7 +19545,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6309594497319092797}
   serializedVersion: 8
-  lengthInSec: 1
+  lengthInSec: 0.8
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -19474,7 +19554,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -19540,7 +19620,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.5
+      scalar: 0.9
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -19647,7 +19727,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.5411765, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -19711,7 +19791,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 3
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -20294,7 +20374,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 8
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -20397,66 +20477,8 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    m_BurstCount: 1
-    m_Bursts:
-    - serializedVersion: 2
-      time: 0
-      countCurve:
-        serializedVersion: 2
-        minMaxState: 0
-        scalar: 1
-        minScalar: 30
-        maxCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        minCurve:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-      cycleCount: 1
-      repeatInterval: 2
-      probability: 1
+    m_BurstCount: 0
+    m_Bursts: []
   SizeModule:
     enabled: 1
     curve:
@@ -20469,75 +20491,30 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 1
-          inSlope: -8.924206
-          outSlope: -8.924206
-          tangentMode: 34
+          value: 0.0102497935
+          inSlope: 3.6207922
+          outSlope: 3.6207922
+          tangentMode: 0
           weightedMode: 0
           inWeight: 0
-          outWeight: 0.33333334
+          outWeight: 0.5375855
         - serializedVersion: 3
-          time: 0.07585269
-          value: 0.32307494
-          inSlope: -1.5757053
-          outSlope: -1.5757053
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 0.15633737
-          value: 0.7876965
-          inSlope: -3.825095
-          outSlope: -3.825095
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 0.19842304
-          value: 0.22278106
-          inSlope: -3.5619771
-          outSlope: -3.5619771
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 0.24757719
-          value: 0.53240454
-          inSlope: -4.5647554
-          outSlope: -4.5647554
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 0.27884355
-          value: 0.050010204
-          inSlope: -3.5508213
-          outSlope: -3.5508213
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
-        - serializedVersion: 3
-          time: 0.3156494
-          value: 0.3564887
-          inSlope: 0.705267
-          outSlope: 0.705267
+          time: 0.49125963
+          value: 0.8153839
+          inSlope: -0.8556895
+          outSlope: -0.8556895
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.20162126
+          outWeight: 0.23785585
         - serializedVersion: 3
-          time: 0.9873657
+          time: 1
           value: 0
-          inSlope: -0.5307132
-          outSlope: -0.5307132
-          tangentMode: 34
+          inSlope: 0.8424091
+          outSlope: 0.8424091
+          tangentMode: 0
           weightedMode: 0
-          inWeight: 0.33333334
+          inWeight: 0.2990398
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -20844,8 +20821,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 1}
+        key0: {r: 0, g: 0, b: 0, a: 1}
+        key1: {r: 0, g: 0, b: 0, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -20869,7 +20846,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_ColorSpace: -1
+        m_ColorSpace: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
       minGradient:
@@ -24341,7 +24318,7 @@ ParticleSystemRenderer:
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
-  m_MaxParticleSize: 0.5
+  m_MaxParticleSize: 1
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 2
@@ -24380,7 +24357,7 @@ GameObject:
   - component: {fileID: 1152374681955046982}
   - component: {fileID: 314189850103815418}
   - component: {fileID: 8686399012987291408}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HammerEmbers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24419,7 +24396,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -29124,6 +29101,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &6680247476183967303
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3578911518660613120}
+  m_Layer: 12
+  m_Name: RightElbowHint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3578911518660613120
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680247476183967303}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3090912974106212065}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7381639999069247415
 GameObject:
   m_ObjectHideFlags: 0
@@ -29135,7 +29143,7 @@ GameObject:
   - component: {fileID: 3087537313316011443}
   - component: {fileID: 6278026725617630600}
   - component: {fileID: 4927455029946633051}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: HammerTrails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29174,7 +29182,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -33967,7 +33975,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1314028467660539702}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: LeftHandTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34027,15 +34035,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -34055,7 +34063,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       propertyPath: m_Name
-      value: hammer
+      value: VisualHammer
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34069,10 +34081,16 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1314028467660539702}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7676368825266902001}
+      addedObject: {fileID: 7773187203068221852}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3578911518660613120}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7422980362223259771}
+    m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5398387861095164506}
@@ -34085,41 +34103,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2114495943177407429}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6360334775068351510}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2131890989086541241}
   m_SourcePrefab: {fileID: 100100000, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
 --- !u!1 &2427141499873356891 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
   m_PrefabInstance: {fileID: 3274004247468986634}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7676368825266902001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2427141499873356891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b6d0a1dd8956af4385d7151cfe70551, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  head: {fileID: 0}
-  smallHitboxSize: {x: 0, y: 0, z: 0}
-  smallHitboxCenter: {x: 0, y: 0, z: 0}
-  mediumHitboxThreshold: 0
-  mediumHitboxSize: {x: 0, y: 0, z: 0}
-  mediumHitboxCenter: {x: 0, y: 0, z: 0}
-  largeHitboxThreshold: 0
-  largeHitboxSize: {x: 0, y: 0, z: 0}
-  largeHitboxxCenter: {x: 0, y: 0, z: 0}
-  extension: 0
-  k: 20
-  dampingCoef: 3
-  restLength: 1
-  maxLength: 10
-  sensitivity: 25
-  momentumDecay: 0.95
-  pivotTransform: {fileID: 0}
 --- !u!82 &5398387861095164506
 AudioSource:
   m_ObjectHideFlags: 0
@@ -34225,9 +34220,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2427141499873356891}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -34240,10 +34235,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &3382280051708372169
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34263,8 +34258,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5, y: 2.5, z: 1}
-  m_Center: {x: 0, y: 4.5, z: 0.4}
+  m_Size: {x: 1.5, y: 6, z: 5}
+  m_Center: {x: 0, y: 3, z: -1.5}
 --- !u!114 &2114495943177407429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34279,23 +34274,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseKnockbackForce: 12
   velocityKnockbackMultiplier: 1
---- !u!4 &3090912974106212065 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
-  m_PrefabInstance: {fileID: 3274004247468986634}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6217375704657944669
+--- !u!114 &6360334775068351510
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5630890325763975634}
+  m_GameObject: {fileID: 2427141499873356891}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 470dec3b8051d194a98d0bcdbfd45145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  head: {fileID: 8479068076154358140}
+  smallHitboxSize: {x: 1.5, y: 4.5, z: 1.5}
+  smallHitboxCenter: {x: 0, y: 3, z: 0.4}
+  mediumHitboxThreshold: 3
+  mediumHitboxSize: {x: 1.5, y: 6, z: 5}
+  mediumHitboxCenter: {x: 0, y: 3, z: -2.5}
+  largeHitboxThreshold: 12
+  largeHitboxSize: {x: 2, y: 6, z: 6.5}
+  largeHitboxCenter: {x: 0, y: 3, z: -2.5}
   pivotTransform: {fileID: 0}
   horseRigidBody: {fileID: 0}
   _targetHammer: {fileID: 0}
@@ -34305,3 +34304,31 @@ MonoBehaviour:
   rotationDamping: 5
   collisionDisableDistance: 2.5
   collisionReenableDistance: 0.3
+--- !u!114 &2131890989086541241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2427141499873356891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 124c91b44626ad0409933abfbae8bfb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOnFire: 0
+  fireDuration: 60
+  infiniteFireUnlocked: 0
+  useInfiniteFire: 0
+  fireVisual: {fileID: 0}
+  fireParticles: {fileID: 0}
+--- !u!4 &3090912974106212065 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
+  m_PrefabInstance: {fileID: 3274004247468986634}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4228330455635643790 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
+  m_PrefabInstance: {fileID: 3274004247468986634}
+  m_PrefabAsset: {fileID: 0}
