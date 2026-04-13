@@ -12,7 +12,7 @@
 <!--- If suggesting a new feature or change, please discuss it in an issue first -->
 <!--- If fixing a bug, there should be an issue describing it with steps to reproduce -->
 
-<!--- Where it says "Closes" below, replace "INSERT ISSUE NUMBER(S) HERE" 
+<!--- Where it says "Closes" below, replace "INSERT ISSUE NUMBER HERE" 
 with the issue number (e.g. "#1") of the related issue -->
 <!--- if this is related to multiple issues, use the full "Closes #x" statement for each one with a "," in-between (e.g. "Closes #1, Closes #2")-->
 
