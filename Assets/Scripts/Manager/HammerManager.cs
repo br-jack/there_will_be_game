@@ -32,11 +32,27 @@ public class HammerManager : MonoBehaviour
     */
 
     public Quaternion CalibrationQuaternion = new Quaternion(1, 1, 1, 1);
+    public void SaveCalibration(Quaternion calibrationQuaternion)
+    {
+        CalibrationQuaternion = calibrationQuaternion;
+        PlayerPrefs.SetFloat("x", calibrationQuaternion.x);
+        PlayerPrefs.SetFloat ("y", calibrationQuaternion.y);
+        PlayerPrefs.SetFloat("z", calibrationQuaternion.z);
+        PlayerPrefs.SetFloat("w", calibrationQuaternion.w);
+        PlayerPrefs.Save();
+    }
 
-    
+    public void LoadCalibration()
+    {
+        CalibrationQuaternion.x = PlayerPrefs.GetFloat("x", 1);
+        CalibrationQuaternion.y = PlayerPrefs.GetFloat("y", 1);
+        CalibrationQuaternion.z = PlayerPrefs.GetFloat("z", 1);
+        CalibrationQuaternion.w = PlayerPrefs.GetFloat("w", 1);
+    }
 
     private void Awake()
     {
+        LoadCalibration();
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
