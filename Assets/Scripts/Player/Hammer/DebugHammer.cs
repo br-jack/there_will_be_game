@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace Hammer
 {
+/*
+DebugHammer:
+Shows some data about hammer (kinda outdated) and calls calibration function.
+Basically all the DebugHammer scene functions.
+*/
     public class DebugHammer : MonoBehaviour
     {
         [SerializeField] private TMP_Text pitchSpeedText;
@@ -15,7 +20,7 @@ namespace Hammer
         [SerializeField] private TMP_Text zAccelText;
 
         [SerializeField] private TMP_Text accelButtonText;
-        [SerializeField] private HammerBehaviour hammerBehaviour;
+        [SerializeField] private TargetHammer hammerBehaviour;
 
         public void CalibrateHammer()
         {
