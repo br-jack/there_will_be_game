@@ -1467,10 +1467,6 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 364211550610626168, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
-      propertyPath: rigidBody
-      value: 
-      objectReference: {fileID: 2685238824458530283}
-    - target: {fileID: 364211550610626168, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
       propertyPath: sensitivity
       value: 25
       objectReference: {fileID: 0}
@@ -1545,35 +1541,8 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5003253198180856680, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6408591327099017589}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5630890325763975634, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1943810648994803527}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
---- !u!54 &2685238824458530283 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 5577740451161296096, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
-  m_PrefabInstance: {fileID: 7506373685645402379}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2742428231631341785 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5630890325763975634, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
-  m_PrefabInstance: {fileID: 7506373685645402379}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1943810648994803527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2742428231631341785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2289d23dd62f52479e1042c72e3c1b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseKnockbackForce: 12
-  velocityKnockbackMultiplier: 1
 --- !u!4 &3261977628211663459 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5003253198180856680, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
