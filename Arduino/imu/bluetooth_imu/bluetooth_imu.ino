@@ -216,7 +216,7 @@ void loop(void) {  // run over and over
 
   outputSensorValues();
 
-  if (Serial.available() > 1) {
+  if (Serial.available() > 3) {
     constexpr char rumbleChar = 'R';
 
     const int incomingByte = Serial.read();
