@@ -10,9 +10,7 @@ public class PlayerParticles : MonoBehaviour
     //[SerializeField] private HorseMovement horseMovement;
     [SerializeField] private horseMovementGaits _horseMovementGaits;
     private CharacterController _cc;
-
-    [SerializeField] private bool isGrounded;
-
+    
     private ParticleSystem.Particle[] _particleBuffer;
     
     void Awake()
@@ -94,7 +92,6 @@ public class PlayerParticles : MonoBehaviour
     void Update()
     {
         if (_cc != null) {
-            isGrounded = _cc.isGrounded;
             if (_cc.isGrounded)
             {
                 // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
