@@ -46,7 +46,7 @@ public class Projectile : MonoBehaviour
         if (owner != null && other.transform.IsChildOf(owner.transform)) return;
 
         // This comes before the player health so calls destroy() before harming the player if the projectile hits the hammer.
-        HammerBehaviour hammer = other.GetComponentInParent<HammerBehaviour>();
+        VisualHammer hammer = other.GetComponentInParent<VisualHammer>();
         if (hammer != null)
         {
             // Don't handle again if already hit hammer.
@@ -90,7 +90,7 @@ public class Projectile : MonoBehaviour
     }
 
     // Called when the projectile is blocked by the player's hammer
-    private void HandleProjectileHitsHammer(HammerBehaviour hammer)
+    private void HandleProjectileHitsHammer(VisualHammer hammer)
     {
         hasHitHammer = true;
         // If deflection setting is off, the object is destroyed.
