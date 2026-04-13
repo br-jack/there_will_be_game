@@ -82,6 +82,7 @@ public class EnemySpawner : MonoBehaviour
                 currentWaveIndex++;
                 waveTimer = 0f;
                 spawnTimer = 0f;
+                Debug.Log($"[EnemySpawner] Wave {currentWaveIndex + 1} started. Subscribers: {OnWaveStarted?.GetInvocationList().Length ?? 0}");
                 OnWaveStarted?.Invoke(currentWaveIndex + 1);
             }
             return;

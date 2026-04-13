@@ -16,7 +16,8 @@ public class RangedEnemyAI : StandardEnemyAI
         }
 
         Vector3 spawnPosition = transform.TransformPoint(spawnOffset);
-        Vector3 direction = (_playerTransformRef.position - spawnPosition).normalized;
+        Vector3 playerCenter = _playerTransformRef.position + Vector3.up * 1.2f;
+        Vector3 direction = (playerCenter - spawnPosition).normalized;
 
         // Horizontal spread to simulate archers won't be completely accurate.
         float spread = Random.Range(-3.0f, 3.0f);
