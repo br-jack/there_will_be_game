@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// Instead of dealing damage directly, spawns a projectile.
 public class RangedEnemyAI : StandardEnemyAI
 {
     [SerializeField] private Projectile projectile;

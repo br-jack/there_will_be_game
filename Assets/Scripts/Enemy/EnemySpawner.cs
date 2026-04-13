@@ -10,7 +10,6 @@ public class EnemySpawner : MonoBehaviour
     public struct Wave
     {
         public float duration;
-        public float breakDuration;
         public bool clearRemainingOnEnd;
         public float spawnInterval;
         public int meleeShielded;
@@ -18,6 +17,8 @@ public class EnemySpawner : MonoBehaviour
         public int ranged;
         public int rapid;
     }
+
+    private const float BreakDuration = 5f;
 
     [Header("Enemy Prefabs")]
     [SerializeField] private GameObject meleeEnemyPrefab;
@@ -76,13 +77,12 @@ public class EnemySpawner : MonoBehaviour
         if (onBreak)
         {
             breakTimer += Time.deltaTime;
-            if (breakTimer >= waves[currentWaveIndex].breakDuration)
+            if (breakTimer >= BreakDuration)
             {
                 onBreak = false;
                 currentWaveIndex++;
                 waveTimer = 0f;
                 spawnTimer = 0f;
-                Debug.Log($"[EnemySpawner] Wave {currentWaveIndex + 1} started. Subscribers: {OnWaveStarted?.GetInvocationList().Length ?? 0}");
                 OnWaveStarted?.Invoke(currentWaveIndex + 1);
             }
             return;

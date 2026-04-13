@@ -36399,24 +36399,14 @@ MonoBehaviour:
   minDistanceFromPlayer: 40
   maxDistanceFromPlayer: 250
   waves:
-  - duration: 90
-    breakDuration: 5
+  - duration: 15
     clearRemainingOnEnd: 0
     spawnInterval: 0.5
-    meleeShielded: 0
-    meleeUnshielded: 0
-    ranged: 0
-    rapid: 30
-  - duration: 60
-    breakDuration: 0
-    clearRemainingOnEnd: 0
-    spawnInterval: 0.5
-    meleeShielded: 0
-    meleeUnshielded: 0
-    ranged: 0
-    rapid: 60
-  - duration: 60
-    breakDuration: 0
+    meleeShielded: 10
+    meleeUnshielded: 30
+    ranged: 20
+    rapid: 10
+  - duration: 15
     clearRemainingOnEnd: 0
     spawnInterval: 0.25
     meleeShielded: 0
