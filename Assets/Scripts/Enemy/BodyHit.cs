@@ -18,6 +18,7 @@ public class BodyHit : MonoBehaviour
     [SerializeField] private int atACanterBonusScore = 20;
     [SerializeField] private int atAGallopBonusScore = 50;
 
+    [SerializeField] private int fireBonusScore = 50;
 
     void OnTriggerEnter(Collider other)
     {
@@ -74,6 +75,8 @@ public class BodyHit : MonoBehaviour
             HorseMovement horseMovement = player.GetComponent<HorseMovement>();
             if (horseMovement == null) return;
             */
+            
+            HammerFireController hammerFireController = FindObjectOfType<HammerFireController>();
 
             //hopefully the player has these! should probs do null checks
             CharacterController characterController = player.GetComponent<CharacterController>();
@@ -133,6 +136,12 @@ public class BodyHit : MonoBehaviour
             if (enemy != null && enemy.HasShield())
             {
                 scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
+            }
+            
+            // On fire bonus
+            if (hammerFireController != null && hammerFireController.IsOnFire)
+            {
+                scoreComponents.Add(new ScoreComponent(fireBonusScore, ScoreType.OnFire));
             }
             
             ScoreManager.Instance.AddScore(scoreComponents);

@@ -2,5 +2,6 @@ public enum PowerUpType
 {
     SpeedBoost,
     JumpBoost,
-    Heal
+    Heal,
+    InfiniteFire
 }

@@ -19,6 +19,9 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     private float _defaultCanterSpeed;
     private float _defaultTrotSpeed;
     private float _defaultJumpHeight;
+    
+    public HammerFireController hammerFireController;
+    
     public ParticleSystem jumpBoostParticles;
     public TrailRenderer jumpBoostTrail;
     private ParticleSystem _defaultJumpParticles;
@@ -74,6 +77,10 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         else if (powerUpType == PowerUpType.Heal)
         {
             ApplyHeal(amount);
+        }
+        else if (powerUpType == PowerUpType.InfiniteFire)
+        {
+            ApplyInfiniteFire();
         }
     }
 
@@ -197,5 +204,11 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         if (playerHealth != null){
             playerHealth.Heal(Mathf.RoundToInt(amount));
         }
+    }
+
+    private void ApplyInfiniteFire()
+    {
+        hammerFireController.UnlockInfiniteFire();
+        hammerFireController.IgniteHammer();
     }
 }

@@ -13,7 +13,8 @@ namespace Score
         ShieldBypass,
         atATrot,
         atACanter,
-        atAGallop
+        atAGallop,
+        OnFire
     }
 
     public class ScoreComponent
