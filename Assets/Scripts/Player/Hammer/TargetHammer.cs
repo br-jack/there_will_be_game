@@ -45,7 +45,6 @@ namespace Hammer
         }
 
         private IController _controllerRef;
-        private BoxCollider _hitbox;
 
         void Start()
         {
@@ -88,20 +87,6 @@ namespace Hammer
 
         void FixedUpdate()
         {
-            
-            if (head.forwardSpeed < mediumHitboxThreshold)
-            {
-                _hitbox.size = smallHitboxSize;
-                _hitbox.center = smallHitboxCenter;
-            } else if (head.forwardSpeed < largeHitboxThreshold)
-            {
-                _hitbox.size = mediumHitboxSize;
-                _hitbox.center = mediumHitboxCenter;
-            } else
-            {
-                _hitbox.size = largeHitboxSize;
-                _hitbox.center = largeHitboxCenter;
-            }
             
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
