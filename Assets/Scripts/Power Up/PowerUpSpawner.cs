@@ -7,11 +7,8 @@ public class PowerUpSpawner : MonoBehaviour
 
     public GameObject[] powerUpPrefabs;
 
-    public Transform[] spawnPoints;
+    public Transform spawnPoint;
     public float spawnHeightOffset = 10.0f;
-
-    public float spawnInterval = 60.0f;
-    public bool spawnImmediately = false;
 
     public TextMeshProUGUI boonText;
     public float messageDuration = 3.0f;
@@ -20,66 +17,105 @@ public class PowerUpSpawner : MonoBehaviour
     public AudioClip boonFanfare;
     public AudioSource audioSource;
 
+    [SerializeField] private Transform player;
+    [SerializeField] private float spawnRadius = 5f;
+
+    public Camera mainCamera;
+    public Camera cutsceneCamera;
+
+    public Vector3 cutsceneOffset = new Vector3(0f, 4f, -8f);
+    public float cutsceneLookSmooth = 5f;
+    public float returnDelay = 1f;
+    private Vector3 fixedCutscenePosition;
+
+    private GameObject currentSpawnedPowerUp;
+    private bool watchingFall = false;
+
     private void Start()
     {
         if (boonText != null)
         {
             boonText.gameObject.SetActive(false);
+            cutsceneCamera.gameObject.SetActive(false);
+            mainCamera.gameObject.SetActive(true);
         }
-
-        StartCoroutine(SpawnLoop());
     }
 
-    private IEnumerator SpawnLoop()
+    public void SpawnSpecificPowerUp(GameObject powerUpPrefab, string customMessage)
     {
-        if (spawnImmediately)
+        Vector3 spawnPosition = spawnPoint.position + Vector3.up * spawnHeightOffset;
+
+        currentSpawnedPowerUp = Instantiate(powerUpPrefab, spawnPosition, Quaternion.identity);
+
+        PowerUpPickup pickup = currentSpawnedPowerUp.GetComponent<PowerUpPickup>();
+        if (pickup != null)
         {
-            SpawnRandomPowerUp();
-
-            if (audioSource != null && boonFanfare != null)
-            {
-                audioSource.PlayOneShot(boonFanfare);
-            }
-
-            yield return StartCoroutine(ShowBoonMessage());
+            pickup.OnLanded += HandlePowerUpLanded;
         }
 
-        while (true)
+        if (audioSource != null && boonFanfare != null)
         {
-            yield return new WaitForSeconds(spawnInterval);
-
-            SpawnRandomPowerUp();
-
-            if (audioSource != null && boonFanfare != null)
-            {
-                audioSource.PlayOneShot(boonFanfare);
-            }
-
-            yield return StartCoroutine(ShowBoonMessage());
+            audioSource.PlayOneShot(boonFanfare);
         }
+
+        StartCoroutine(ShowBoonMessage(customMessage));
+        StartCutscene();
     }
 
-    private void SpawnRandomPowerUp()
+    private void StartCutscene()
     {
-
-        int randomPowerUpIndex = Random.Range(0, powerUpPrefabs.Length);
-        int randomSpawnPointIndex = Random.Range(0, spawnPoints.Length);
-
-        Transform chosenSpawnPoint = spawnPoints[randomSpawnPointIndex];
-
-        Vector3 spawnPosition = chosenSpawnPoint.position + Vector3.up * spawnHeightOffset;
-
-        Instantiate(powerUpPrefabs[randomPowerUpIndex], spawnPosition, Quaternion.identity);
+        mainCamera.gameObject.SetActive(false);
+        Vector3 directionFromPlayer = (spawnPoint.position - player.position).normalized;
+        fixedCutscenePosition = spawnPoint.position + directionFromPlayer * 12f + Vector3.up * 6f; // pull back and raise camera
+        cutsceneCamera.fieldOfView = 75f;
+        cutsceneCamera.transform.position = fixedCutscenePosition;
+        cutsceneCamera.gameObject.SetActive(true);
+        watchingFall = true;
     }
 
-    private IEnumerator ShowBoonMessage()
+    private void EndCutscene()
+    {
+        watchingFall = false;
+        cutsceneCamera.gameObject.SetActive(false);
+        mainCamera.gameObject.SetActive(true);
+    }
+
+    private void LateUpdate()
+    {
+        if (!watchingFall || cutsceneCamera == null || currentSpawnedPowerUp == null)
+        {
+            return;
+        }
+
+        cutsceneCamera.transform.position = fixedCutscenePosition;
+
+        Vector3 lookTarget = currentSpawnedPowerUp.transform.position + Vector3.up * 1.5f; // adjust the height as needed
+        Quaternion targetRotation = Quaternion.LookRotation(lookTarget - cutsceneCamera.transform.position);
+        cutsceneCamera.transform.rotation = Quaternion.Slerp(cutsceneCamera.transform.rotation, targetRotation, Time.deltaTime * cutsceneLookSmooth);
+    }
+
+    private void HandlePowerUpLanded()
+    {
+        StartCoroutine(ReturnToMainCameraAfterDelay());
+    }
+
+    private IEnumerator ReturnToMainCameraAfterDelay()
+    {
+        yield return new WaitForSeconds(returnDelay);
+        PowerUpPickup pickup = currentSpawnedPowerUp.GetComponent<PowerUpPickup>();
+        pickup.OnLanded -= HandlePowerUpLanded;
+
+        EndCutscene();
+    }
+
+    private IEnumerator ShowBoonMessage(string message)
     {
         if (boonText == null)
         {
             yield break;
         }
 
-        boonText.text = "A boon has been granted";
+        boonText.text = message;
         boonText.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(messageDuration);
