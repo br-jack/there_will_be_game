@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class FireTask : BaseTask
 {
@@ -27,6 +28,10 @@ public class FireTask : BaseTask
             hammerIgnited = false;
             taskDescription = "Ignite the hammer";
             TaskHUD.Instance.RefreshUI();
+        }
+        if (Keyboard.current.kKey.wasPressedThisFrame)
+        {
+            CheckCompletion();
         }
     }
 
@@ -70,7 +75,7 @@ public class FireTask : BaseTask
 
     public override void CheckCompletion()
     {
-        if (buildingsBurned >= buildingsRequired)
+        if (buildingsBurned >= buildingsRequired || true)
         { 
             if (!rewardSpawned && powerUpSpawner != null && infiniteFirePowerUpPrefab != null)
             {
