@@ -24,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7406743463563026406}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7406743463572565832
 MonoBehaviour:
@@ -145,23 +146,23 @@ MonoBehaviour:
     - Time: 40
       TintColor: {r: 0.75294125, g: 0.6156863, b: 0.50980395, a: 1}
       LightColor: {r: 0.6745098, g: 0.882353, b: 0.9215687, a: 1}
-      LightIntencity: 1
+      LightIntencity: 1.5
     - Time: 50
-      TintColor: {r: 0.75294125, g: 0.75294125, b: 0.75294125, a: 1}
-      LightColor: {r: 0.9215687, g: 0.9215687, b: 0.9215687, a: 1}
-      LightIntencity: 1
+      TintColor: {r: 0.645283, g: 0.5833335, b: 0.3883873, a: 1}
+      LightColor: {r: 1, g: 0.9372549, b: 0.80784315, a: 1}
+      LightIntencity: 1.1
     - Time: 70
       TintColor: {r: 0.75294125, g: 0.6156863, b: 0.50980395, a: 1}
       LightColor: {r: 0.6117647, g: 0.76470596, b: 0.82745105, a: 1}
-      LightIntencity: 1
+      LightIntencity: 1.5
     - Time: 75
       TintColor: {r: 1, g: 0.52156866, b: 0.52156866, a: 1}
       LightColor: {r: 0.7686275, g: 0.454902, b: 0.6745098, a: 1}
-      LightIntencity: 1
+      LightIntencity: 1.5
     - Time: 80
       TintColor: {r: 1, g: 0.454902, b: 0.5176471, a: 1}
       LightColor: {r: 0.7686275, g: 0.454902, b: 0.6745098, a: 1}
-      LightIntencity: 1
+      LightIntencity: 1.5
     - Time: 85
       TintColor: {r: 0.7686275, g: 0.454902, b: 0.6745098, a: 0}
       LightColor: {r: 0.7686275, g: 0.454902, b: 0.6745098, a: 1}

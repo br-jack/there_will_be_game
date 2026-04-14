@@ -47,20 +47,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SkyboxMaterial: {fileID: 2100000, guid: 4d0e0ffc7a6c1bf44b435e0b23260f8c, type: 2}
-  _topColor: {r: 0.2794118, g: 0.6421905, b: 1, a: 1}
-  _middleColor: {r: 1, g: 0.61764705, b: 0.9578093, a: 1}
-  _bottomColor: {r: 0.016868481, g: 0, b: 0.47794116, a: 1}
-  _topExponent: 1
-  _bottomExponent: 1
+  _topColor: {r: 0, g: 0.79215693, b: 0.98823535, a: 1}
+  _middleColor: {r: 0.79803926, g: 0.90196085, b: 0.9215687, a: 1}
+  _bottomColor: {r: 0, g: 0.63529414, b: 0.79215693, a: 1}
+  _topExponent: 0.85
+  _bottomExponent: 0.8
   _starsEnabled: 1
   _starsCubemap: {fileID: 8900000, guid: 0b891b1d885eb654ab18d7a3a5fc87e1, type: 3}
-  _starsTint: {r: 1, g: 1, b: 1, a: 1}
+  _starsTint: {r: 0.47581702, g: 0.47581702, b: 0.47581702, a: 0}
   _starsExtinction: 2
   _starsTwinklingSpeed: 10
   _sunEnabled: 1
   _sunTexture: {fileID: 2800000, guid: eb1e18ae3dbe9f348a7bc0d71a5cc811, type: 3}
   _sunLight: {fileID: 8806667431035089771}
-  _sunTint: {r: 0.703, g: 0.55044055, b: 0.366966, a: 1}
+  _sunTint: {r: 0.645283, g: 0.5833335, b: 0.3883873, a: 1}
   _sunSize: 0.75
   _sunHalo: 1
   _sunFlare: 1
@@ -68,15 +68,15 @@ MonoBehaviour:
   _moonEnabled: 1
   _moonTexture: {fileID: 2800000, guid: e894cff36344f5242801ae5fee4eda46, type: 3}
   _moonLight: {fileID: 8806667431035206103}
-  _moonTint: {r: 0.491, g: 0.53774476, b: 1, a: 1}
+  _moonTint: {r: 0.4039216, g: 0.47058827, b: 0.5294118, a: 0}
   _moonSize: 0.75
   _moonHalo: 1
   _moonFlare: 1
   _moonFlareBrightness: 0.3
   _cloudsEnabled: 1
-  _cloudsCubemap: {fileID: 8900000, guid: bfa1267ef40a77540ac2cfde9297f199, type: 3}
-  _cloudsTint: {r: 0.50799215, g: 0.48885787, b: 0.7656204, a: 1}
-  _cloudsHeight: 0
+  _cloudsCubemap: {fileID: 8900000, guid: d5d9dd79ad3016943b7f1ff5b201391e, type: 3}
+  _cloudsTint: {r: 0.47254905, g: 0.50784314, b: 0.5235294, a: 1}
+  _cloudsHeight: 0.25
   _cloudsRotation: 0
   _exposure: 1
   _adjustFogColor: 1
@@ -107,7 +107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8806667431029080315}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30070582, y: 0, z: 0, w: 0.95371693}
+  m_LocalRotation: {x: -0.19296762, y: 0.7874236, z: -0.30353352, w: -0.50059474}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -124,8 +124,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Color: {r: 1, g: 0.9372549, b: 0.80784315, a: 1}
+  m_Intensity: 1.1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -273,7 +273,7 @@ MonoBehaviour:
   useBackgroundCloudOcclusion: 0
   environmentOcclusion: 0
   useWaterOcclusion: 0
-  occlusionRadius: 0.1
+  occlusionRadius: 2.75
   sampleCount: 32
   occlusionOffset: 0.05
   scale: 3
@@ -359,7 +359,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8806667431029081071}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.000000048991197, y: 0.95371693, z: -0.30070582, w: -0.00000015538022}
+  m_LocalRotation: {x: -0.2101527, y: 0.7631732, z: -0.3018704, w: -0.53129727}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -376,7 +376,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.007843138, g: 0.3019608, b: 0.54509807, a: 1}
   m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LensFlareData: {fileID: 11400000, guid: bd7eaf3bd49c39f4cb77bd809459aa72, type: 2}
   version: 0
-  intensity: 0.3
+  intensity: 0
   maxAttenuationDistance: 100
   maxAttenuationScale: 100
   distanceAttenuationCurve:
@@ -525,7 +525,7 @@ MonoBehaviour:
   useBackgroundCloudOcclusion: 0
   environmentOcclusion: 0
   useWaterOcclusion: 0
-  occlusionRadius: 0.1
+  occlusionRadius: 2.16
   sampleCount: 32
   occlusionOffset: 0.05
   scale: 3
