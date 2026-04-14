@@ -65,7 +65,7 @@ public class PowerUpSpawner : MonoBehaviour
     private void StartCutscene()
     {
         mainCamera.gameObject.SetActive(false);
-        fixedCutscenePosition = currentSpawnedPowerUp.transform.position + cutsceneOffset;
+        fixedCutscenePosition = spawnPoint.position + cutsceneOffset;
         cutsceneCamera.transform.position = fixedCutscenePosition;
         cutsceneCamera.gameObject.SetActive(true);
         watchingFall = true;
