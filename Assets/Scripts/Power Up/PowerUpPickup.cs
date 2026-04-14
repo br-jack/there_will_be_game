@@ -76,7 +76,15 @@ public class PowerUpPickup : MonoBehaviour
 
         if (receiver != null)
         {
-            receiver.ApplyPowerUp(powerUpType, effectAmount, effectDuration);
+            if (powerUpType == PowerUpType.InfiniteFire)
+            {
+                receiver.ApplyPowerUp(powerUpType, 0f, 0f);
+            }
+            else
+            {
+                receiver.ApplyPowerUp(powerUpType, effectAmount, effectDuration);
+            }
+
             Destroy(gameObject);
         }
     }
