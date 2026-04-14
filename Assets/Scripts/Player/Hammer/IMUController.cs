@@ -71,7 +71,8 @@ namespace Hammer
         }
 
         public void Connect()
-        {
+        {   
+            
             int attempts = 0;
             while (_port == null)
             {
@@ -84,7 +85,7 @@ namespace Hammer
                     return;
                 }
             }
-
+           
             try
             {
                 _stream = new SerialPort(_port, 115200)

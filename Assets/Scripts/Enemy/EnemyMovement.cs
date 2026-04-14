@@ -128,7 +128,7 @@ public class EnemyMovement : MonoBehaviour
         
         if (_shieldBreakAudioSource == null)
         {
-            Debug.LogError("man there's no audio source");
+            Debug.LogError("man there's no audio source (10x football team members always trigger this!)");
         }
         _rb = GetComponent<Rigidbody>();
 

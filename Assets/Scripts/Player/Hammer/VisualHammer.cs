@@ -24,7 +24,7 @@ namespace Hammer
         [SerializeField] private Transform pivotTransform;
         //private Rigidbody _rb;
 
-        [SerializeField] private Rigidbody horseRigidBody;
+        //[SerializeField] private Rigidbody horseRigidBody;
 
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;

@@ -58,6 +58,7 @@ public class BodyHit : MonoBehaviour
         hitSounds.PlaySFX();
 
         AwardScore(enemy);
+        Debug.Log("why am i here?");
      
         // No shield blocking - kill the enemy
         enemy.KilledBy(other, attack);
@@ -79,73 +80,76 @@ public class BodyHit : MonoBehaviour
             HammerFireController hammerFireController = FindFirstObjectByType<HammerFireController>();
 
             //hopefully the player has these! should probs do null checks
+            
             CharacterController characterController = player.GetComponent<CharacterController>();
             PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
             horseMovementGaits horseMovementGaits = player.GetComponent<horseMovementGaits>();
-            
-            List<ScoreComponent> scoreComponents = new List<ScoreComponent>
-            {
-                // Base score
-                new ScoreComponent(baseScore, ScoreType.Base)
-            };
-            
-            // Speed bonus. Commented out for now as I think gait bonus is more intuitive.
-            /*
-            if (characterController.velocity.magnitude >= speedThreshold)
-            {
-                scoreComponents.Add(new ScoreComponent(speedBonusScore, ScoreType.Speed));
-            }
-            */
-
-            //gait bonus
-            if (horseMovementGaits != null)
-            {
-                switch (horseMovementGaits.getCurrentGait())
+            if (characterController != null) {
+                
+                List<ScoreComponent> scoreComponents = new List<ScoreComponent>
                 {
-                    case gait.walking:
-                        // no bonus
-                        break;
-                    case gait.trotting:
-                        scoreComponents.Add(new ScoreComponent(atATrotBonusScore, ScoreType.atATrot));
-                        break;
-                    case gait.cantering:
-                        scoreComponents.Add(new ScoreComponent(atACanterBonusScore, ScoreType.atACanter));
-                        break;
-                    case gait.galloping:
-                        scoreComponents.Add(new ScoreComponent(atAGallopBonusScore, ScoreType.atAGallop));
-                        break;
-                }
-            }
-            // Low health bonus
-            if (playerHealth != null)
-            {
-                float healthPercent = (float)playerHealth.Current / playerHealth.Max * 100f;
-                if (healthPercent <= lowHealthThreshold)
+                    // Base score
+                    new ScoreComponent(baseScore, ScoreType.Base)
+                };
+                
+                // Speed bonus. Commented out for now as I think gait bonus is more intuitive.
+                /*
+                if (characterController.velocity.magnitude >= speedThreshold)
                 {
-                    scoreComponents.Add(new ScoreComponent(lowHealthBonusScore, ScoreType.LowHealth));
+                    scoreComponents.Add(new ScoreComponent(speedBonusScore, ScoreType.Speed));
                 }
-            }
-            
-            // Air bonus
-            if (!characterController.isGrounded)
-            {
-                scoreComponents.Add(new ScoreComponent(airBonusScore, ScoreType.Air));
-            }
-            
+                */
 
-            // Shield bypass bonus
-            if (enemy != null && enemy.HasShield())
-            {
-                scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
+                //gait bonus
+                if (horseMovementGaits != null)
+                {
+                    switch (horseMovementGaits.getCurrentGait())
+                    {
+                        case gait.walking:
+                            // no bonus
+                            break;
+                        case gait.trotting:
+                            scoreComponents.Add(new ScoreComponent(atATrotBonusScore, ScoreType.atATrot));
+                            break;
+                        case gait.cantering:
+                            scoreComponents.Add(new ScoreComponent(atACanterBonusScore, ScoreType.atACanter));
+                            break;
+                        case gait.galloping:
+                            scoreComponents.Add(new ScoreComponent(atAGallopBonusScore, ScoreType.atAGallop));
+                            break;
+                    }
+                }
+                // Low health bonus
+                if (playerHealth != null)
+                {
+                    float healthPercent = (float)playerHealth.Current / playerHealth.Max * 100f;
+                    if (healthPercent <= lowHealthThreshold)
+                    {
+                        scoreComponents.Add(new ScoreComponent(lowHealthBonusScore, ScoreType.LowHealth));
+                    }
+                }
+                
+                // Air bonus
+                if (!characterController.isGrounded)
+                {
+                    scoreComponents.Add(new ScoreComponent(airBonusScore, ScoreType.Air));
+                }
+                
+
+                // Shield bypass bonus
+                if (enemy != null && enemy.HasShield())
+                {
+                    scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
+                }
+                
+                // On fire bonus
+                if (hammerFireController != null && hammerFireController.IsOnFire)
+                {
+                    scoreComponents.Add(new ScoreComponent(fireBonusScore, ScoreType.OnFire));
+                }
+                
+                ScoreManager.Instance.AddScore(scoreComponents);
             }
-            
-            // On fire bonus
-            if (hammerFireController != null && hammerFireController.IsOnFire)
-            {
-                scoreComponents.Add(new ScoreComponent(fireBonusScore, ScoreType.OnFire));
-            }
-            
-            ScoreManager.Instance.AddScore(scoreComponents);
         }
         else {
             Debug.LogWarning("Player not found - cannot award score");

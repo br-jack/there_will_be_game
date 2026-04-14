@@ -51,7 +51,12 @@ public class hammerStateEffects : MonoBehaviour
 
         _hammerMaterials = hammerMesh.materials;
 
-        Assert.IsTrue(_hammerMaterials[headMaterialIndex].name == "hammer_metal");
+        if (_hammerMaterials[headMaterialIndex].name != "hammer_metal (Instance)")
+        {
+            Debug.LogWarning("ohno it is not called hammer_metal (Instance), instead is is called: "
+                +_hammerMaterials[headMaterialIndex].name);
+        }
+
         
         _hammerMaterials[headMaterialIndex] = new Material(_hammerMaterials[headMaterialIndex]);
     }
