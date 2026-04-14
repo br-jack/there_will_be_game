@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _CloudsTex:
-        m_Texture: {fileID: 8900000, guid: d5d9dd79ad3016943b7f1ff5b201391e, type: 3}
+        m_Texture: {fileID: 8900000, guid: bfa1267ef40a77540ac2cfde9297f199, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MoonTex:
@@ -45,8 +45,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BottomExponent: 0.8
-    - _CloudsHeight: 0.25
+    - _BottomExponent: 1
+    - _CloudsHeight: 0
     - _CloudsRotation: 0
     - _Exponent: 1
     - _Exposure: 1
@@ -56,7 +56,7 @@ Material:
     - _StarsTwinklingSpeed: 10
     - _SunHalo: 1
     - _SunSize: 0.75
-    - _TopExponent: 0.85
+    - _TopExponent: 1
     m_Colors:
     - _BottomColor: {r: 0, g: 0.63529414, b: 0.79215693, a: 1}
     - _CloudsTint: {r: 0.47254905, g: 0.50784314, b: 0.5235294, a: 1}
