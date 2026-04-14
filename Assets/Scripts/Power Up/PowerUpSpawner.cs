@@ -26,6 +26,7 @@ public class PowerUpSpawner : MonoBehaviour
     public Vector3 cutsceneOffset = new Vector3(0f, 4f, -8f);
     public float cutsceneLookSmooth = 5f;
     public float returnDelay = 1f;
+    private Vector3 fixedCutscenePosition;
 
     private GameObject currentSpawnedPowerUp;
     private bool watchingFall = false;
@@ -64,6 +65,8 @@ public class PowerUpSpawner : MonoBehaviour
     private void StartCutscene()
     {
         mainCamera.gameObject.SetActive(false);
+        fixedCutscenePosition = currentSpawnedPowerUp.transform.position + cutsceneOffset;
+        cutsceneCamera.transform.position = fixedCutscenePosition;
         cutsceneCamera.gameObject.SetActive(true);
         watchingFall = true;
     }
@@ -82,8 +85,7 @@ public class PowerUpSpawner : MonoBehaviour
             return;
         }
 
-        Vector3 targetPosition = currentSpawnedPowerUp.transform.position + cutsceneOffset;
-        cutsceneCamera.transform.position = Vector3.Lerp(cutsceneCamera.transform.position, targetPosition, Time.deltaTime * cutsceneLookSmooth);
+        cutsceneCamera.transform.position = fixedCutscenePosition;
 
         Vector3 lookTarget = currentSpawnedPowerUp.transform.position;
         Quaternion targetRotation = Quaternion.LookRotation(lookTarget - cutsceneCamera.transform.position);
