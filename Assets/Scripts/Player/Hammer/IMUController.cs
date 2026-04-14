@@ -124,16 +124,20 @@ namespace Hammer
                 while (_running)
                 {
                     string recievedData = null;
+
                     try
                     {
                         recievedData = _stream.ReadLine();
                         _dataQueue.Enqueue(recievedData);
                     }
-                    catch (Exception ex)
+
+                    //Seems to cause a memory leak, so only enable this when debugging Bluetooth
+                    catch (Exception /*ex*/)
                     {
-                        //Seems to cause a memory leak, so only enable this when debugging Bluetooth
-                        // Debug.LogWarning($"Error reading data: {ex.Message}");
+                       Debug.LogWarning("There was an error in reading blutooth data! Apparently printing the error message causes a memory leak, so not doing that."); 
+                        //Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
+                    
 
                 }
             }

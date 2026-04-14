@@ -7,9 +7,9 @@ public class BodyHit : MonoBehaviour
     public LayerMask shieldMask;
     public hitSound hitSounds;
 
-    [SerializeField] private float speedThreshold = 5f;
+    //[SerializeField] private float speedThreshold = 5f;
     [SerializeField] private int baseScore = 10;
-    [SerializeField] private int speedBonusScore = 30;
+    //[SerializeField] private int speedBonusScore = 30;
     [SerializeField] private int lowHealthBonusScore = 20;
     [SerializeField] private int lowHealthThreshold = 30;
     [SerializeField] private int airBonusScore = 25;
@@ -76,17 +76,18 @@ public class BodyHit : MonoBehaviour
             if (horseMovement == null) return;
             */
             
-            HammerFireController hammerFireController = FindObjectOfType<HammerFireController>();
+            HammerFireController hammerFireController = FindFirstObjectByType<HammerFireController>();
 
             //hopefully the player has these! should probs do null checks
             CharacterController characterController = player.GetComponent<CharacterController>();
             PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
             horseMovementGaits horseMovementGaits = player.GetComponent<horseMovementGaits>();
             
-            List<ScoreComponent> scoreComponents = new List<ScoreComponent>();
-            
-            // Base score
-            scoreComponents.Add(new ScoreComponent(baseScore, ScoreType.Base));
+            List<ScoreComponent> scoreComponents = new List<ScoreComponent>
+            {
+                // Base score
+                new ScoreComponent(baseScore, ScoreType.Base)
+            };
             
             // Speed bonus. Commented out for now as I think gait bonus is more intuitive.
             /*

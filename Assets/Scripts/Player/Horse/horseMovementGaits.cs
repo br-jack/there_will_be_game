@@ -9,6 +9,7 @@ using UnityEngine.Rendering;
 
 public class horseMovementGaits : MonoBehaviour
 {   
+    [Header("Movement Variables")]
     public UnityEvent<gait> gaitChange;
     public UnityEvent jump;
     public float trotSpeed;
@@ -22,16 +23,18 @@ public class horseMovementGaits : MonoBehaviour
     public float turnSpeedGroundedTrot;
     public float turnSpeedGroundedCanter;
     public float turnSpeedGroundedGallop;
-
     public float turnSpeedMidair;
     public float acceleration = 2f;
     public float deceleration = 6f;
-    public float minTimeBetweenJumps = 0.25f; //for how long are you unable to jump after jumping
+    public float minTimeBetweenJumps; //for how long are you unable to jump after jumping
     public float chargeDecay;
+    public float gravity; 
+
+    [Header("Read-only in editor")]
     public float currentRunCharge; //should be private, but i want to see it! 
     public gait gait; //currently pointless, just to see gait in editor
     public float currentSpeed = 0f; //just to see in editor
-    public float gravity = -9.81f; 
+    
 
     private float jumpLockedTime;
 
