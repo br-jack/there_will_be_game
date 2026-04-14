@@ -6,11 +6,21 @@ public class HorseAnim : MonoBehaviour
 {
     [SerializeField] private float speed;
     private Animator _horseAnimator;
-    private HorseMovement _horseMovement;
+    private horseMovementGaits _horseMovementGaits;
+    private CharacterController _cc;
+
+    public void animateJump()
+    {
+        _horseAnimator.SetTrigger("Jump");
+    }
+
     void Awake()
     {
+        
         _horseAnimator = GetComponent<Animator>();
-        _horseMovement = GetComponentInParent<HorseMovement>();
+        _horseMovementGaits = GetComponentInParent<horseMovementGaits>();
+        _cc = GetComponentInParent<CharacterController>();
+
         if (_horseAnimator.enabled) //this is here because the animator panel is bugged in this unity version :(
         {
             _horseAnimator.Rebind();
@@ -23,20 +33,25 @@ public class HorseAnim : MonoBehaviour
         _horseAnimator.ResetTrigger("Gallop3");
     }
 
+    
+
     // Update is called once per frame
     void Update()
     {
-        Action jump = _horseMovement.jumpStarted;
+       // Action jump = _horseMovementGaits.jumpStarted;
 
         if(_horseAnimator != null)
         {
 
-            speed = _horseMovement.GetCurrentSpeed();
+            speed = _horseMovementGaits.getCurrentSpeed();
             _horseAnimator.SetFloat("Speed", speed);
-            //Debug.LogError("horszz");
-            bool grounded = _horseMovement.CheckForGroundBelow(out RaycastHit groundHit, 1.0f);
 
-            if (_horseMovement.JumpButtonPressed && grounded)
+            //Debug.LogError("horszz");
+            bool grounded = _cc.isGrounded;
+
+            //we probably need to reset the jump trigger if we didn't jump. idk how it works
+            /* 
+            if (_horseMovementGaits.JumpButtonPressed && grounded)
             {
                 _horseAnimator.SetTrigger("Jump");
             }
@@ -44,20 +59,27 @@ public class HorseAnim : MonoBehaviour
             {
                 _horseAnimator.ResetTrigger("Jump");
             }
+            */
             _horseAnimator.SetBool("Grounded",grounded);
-            if (speed  > 19)
+
+                
+
+            //replaced speed checks with gaits
+            if (_horseMovementGaits.getCurrentGait() == gait.galloping 
+            || _horseMovementGaits.getCurrentGait() == gait.cantering)
             {
                 _horseAnimator.SetTrigger("Gallop3");
                 _horseAnimator.ResetTrigger("Gallop1");
                 _horseAnimator.ResetTrigger("Gallop0");
                 //Debug.LogError("horszz");
             }
-            else if (speed > 8){
+            else if (_horseMovementGaits.getCurrentGait() == gait.trotting){
                 _horseAnimator.SetTrigger("Gallop1");
                 _horseAnimator.ResetTrigger("Gallop3");
                 _horseAnimator.ResetTrigger("Gallop0");
             }
-            else if (speed > 1)
+            //should be check for walking gait here, but 'still' gait is currently not implemented
+            else if (_cc.velocity.magnitude > 0.1f) 
             {
                 _horseAnimator.SetTrigger("Gallop0");
                 _horseAnimator.ResetTrigger("Gallop1");
