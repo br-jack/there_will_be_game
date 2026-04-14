@@ -2362,9 +2362,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1246009855}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1246009857}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!4 &79496445 stripped
 Transform:
@@ -3327,9 +3324,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1103564325}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1103564327}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &113084808
 PrefabInstance:
@@ -4552,6 +4546,7 @@ MonoBehaviour:
   maxLeashDistance: 7
   kickPower: 10
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &151501453
 Rigidbody:
@@ -4580,37 +4575,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &151501455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 151501447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!4 &155159892 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6280155018817424375, guid: af93023d5a9813f4190f92ac33a91575, type: 3}
@@ -7607,9 +7571,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 151501453}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 151501455}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &243864479
 PrefabInstance:
@@ -11507,9 +11468,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 578476441}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 578476443}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!4 &369649108 stripped
 Transform:
@@ -15012,6 +14970,7 @@ MonoBehaviour:
   maxLeashDistance: 4
   kickPower: 12
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &514618172
 Rigidbody:
@@ -15040,37 +14999,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &514618174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 514618166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1001 &515252285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16332,6 +16260,7 @@ MonoBehaviour:
   maxLeashDistance: 7
   kickPower: 10
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &578476441
 Rigidbody:
@@ -16360,37 +16289,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &578476443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 578476435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!4 &579349310 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7506395813771068564, guid: 6d6c634a1d8a2584295813e32a138c74, type: 3}
@@ -18798,7 +18696,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 743921864}
     m_Modifications:
     - target: {fileID: -4505212103197417152, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: m_Size.z
@@ -23551,9 +23449,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1207743027}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1207743029}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &841968472
 PrefabInstance:
@@ -24663,6 +24558,7 @@ MonoBehaviour:
   maxLeashDistance: 7
   kickPower: 10
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &893432190
 Rigidbody:
@@ -24691,37 +24587,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &893432192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 893432184}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1001 &895087796
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25407,9 +25272,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1720901964}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1720901966}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1 &908022430 stripped
 GameObject:
@@ -26471,9 +26333,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 514618172}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 514618174}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &933678373
 PrefabInstance:
@@ -31137,6 +30996,7 @@ MonoBehaviour:
   maxLeashDistance: 7
   kickPower: 10
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &1103564325
 Rigidbody:
@@ -31165,37 +31025,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1103564327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1103564319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1001 &1104078748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33532,9 +33361,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2057861277}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2057861279}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &1169636518
 PrefabInstance:
@@ -34752,6 +34578,7 @@ MonoBehaviour:
   maxLeashDistance: 7
   kickPower: 10
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &1196436716
 Rigidbody:
@@ -34780,37 +34607,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1196436718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1196436710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1001 &1197792115
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35243,6 +35039,7 @@ MonoBehaviour:
   maxLeashDistance: 7
   kickPower: 10
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &1207743027
 Rigidbody:
@@ -35271,37 +35068,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1207743029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1207743021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1001 &1208243626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35658,9 +35424,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2116681631}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2116681633}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &1210397203
 PrefabInstance:
@@ -36805,6 +36568,7 @@ MonoBehaviour:
   maxLeashDistance: 7
   kickPower: 10
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &1246009855
 Rigidbody:
@@ -36833,37 +36597,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1246009857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246009849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!4 &1246253440 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4131579818306828312, guid: 522626ef427f215488fdff7832e3f2ef, type: 3}
@@ -40705,26 +40438,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b605ab55a659c41ed934bbcd82dbb8f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meleeEnemyPrefab: {fileID: 4937528112206273530, guid: 958da4c8e8c7d48169847e9e756975ce, type: 3}
-  rapidEnemyPrefab: {fileID: 4993346534810899319, guid: 0efbe9a0fe2994794be8f454b182b63d, type: 3}
-  rangedEnemyPrefab: {fileID: 4937528112206273530, guid: 525c1ca2571d54d5380ac4f07f2d7659, type: 3}
-  minDistanceFromPlayer: 40
-  maxDistanceFromPlayer: 250
-  waves:
-  - duration: 15
-    clearRemainingOnEnd: 0
-    spawnInterval: 0.5
-    meleeShielded: 10
-    meleeUnshielded: 30
-    ranged: 20
-    rapid: 10
-  - duration: 15
-    clearRemainingOnEnd: 0
-    spawnInterval: 0.25
-    meleeShielded: 0
-    meleeUnshielded: 10
-    ranged: 10
-    rapid: 10
+  meleeEnemyPrefab: {fileID: 0}
+  rapidEnemyPrefab: {fileID: 0}
+  rangedEnemyPrefab: {fileID: 0}
+  minDistanceFromPlayer: 15
+  maxDistanceFromPlayer: 100
+  waves: []
 --- !u!1001 &1354978145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41485,9 +41204,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 893432190}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 893432192}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &1373873818
 PrefabInstance:
@@ -50880,6 +50596,7 @@ MonoBehaviour:
   maxLeashDistance: 7
   kickPower: 10
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &1720901964
 Rigidbody:
@@ -50908,37 +50625,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1720901966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1720901958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!4 &1721651345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7181693757253062610, guid: 02f3cf3dd410daa48af991972b56ebf1, type: 3}
@@ -58833,9 +58519,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1196436716}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1196436718}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &1962541804
 PrefabInstance:
@@ -61661,6 +61344,7 @@ MonoBehaviour:
   maxLeashDistance: 7
   kickPower: 10
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &2057861277
 Rigidbody:
@@ -61689,37 +61373,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &2057861279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2057861271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1001 &2058389431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64459,6 +64112,7 @@ MonoBehaviour:
   maxLeashDistance: 7
   kickPower: 10
   kickCooldown: 1.5
+  moveSpeed: 11
   _playerTransformRef: {fileID: 0}
 --- !u!54 &2116681631
 Rigidbody:
@@ -64487,37 +64141,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &2116681633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2116681625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.5
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!4 &2118473249 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1874817041526625042, guid: d2be1762587d4434f88620eaf1fa7879, type: 3}
@@ -66986,25 +66609,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1131709874}
-    - target: {fileID: 9122157507146511921, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 9159076853481680353, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 9185267288411473464, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 9193947638620630301, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
 --- !u!1001 &6126506868503943783
@@ -67458,7 +67062,6 @@ SceneRoots:
   - {fileID: 139368893}
   - {fileID: 1321140118}
   - {fileID: 201162544}
-  - {fileID: 652765277}
   - {fileID: 5061453144199501980}
   - {fileID: 498810730}
   - {fileID: 1360215374}
@@ -67475,6 +67078,7 @@ SceneRoots:
   - {fileID: 1382921500}
   - {fileID: 1353685249}
   - {fileID: 216739649}
-  - {fileID: 1526014572}
   - {fileID: 1963458287}
   - {fileID: 1980488917}
+  - {fileID: 6126506868503943783}
+  - {fileID: 6436993632978313787}
