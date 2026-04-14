@@ -110862,12 +110862,28 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 2328368170324340334, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 65586f2fde3974c4e9469dfe6cf89338, type: 2}
     - target: {fileID: 2636759613974309699, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2685238824458530283, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732115283321365669, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732115283321365669, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2732115283321365669, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2742428231631341785, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
@@ -111051,7 +111067,27 @@ PrefabInstance:
       value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: reverseSpeed
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: turnSpeedGrounded
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: turnSpeedGroundedTrot
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: turnSpeedGroundedWalk
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: turnSpeedGroundedCanter
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: turnSpeedGroundedGallop
       value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 5019991307706842844, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}

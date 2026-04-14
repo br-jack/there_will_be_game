@@ -1,5 +1,6 @@
 public enum gait
 {
+    reverse,
     still,
     walking,
     trotting,

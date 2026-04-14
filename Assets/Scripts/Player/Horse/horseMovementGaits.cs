@@ -14,6 +14,7 @@ public class horseMovementGaits : MonoBehaviour
     public float trotSpeed;
     public float canterSpeed;
     public float gallopSpeed;
+    public float reverseSpeed;
     public float chargeRequiredToCanter;
     public float chargeRequiredToGallop;
     public float jumpHeight = 20f; 
@@ -48,7 +49,7 @@ public class horseMovementGaits : MonoBehaviour
     private Transform _tf;
     
     //These input functions (I believe) occur before Update(), 
-    //so we can update _move in each of them and then apply it in update()
+    //so we can update the _xInput variables in them, and then use those variables in Update()
     public void OnJump(InputAction.CallbackContext context)
     {
         _jumpInput = context.ReadValueAsButton();
@@ -56,7 +57,7 @@ public class horseMovementGaits : MonoBehaviour
 
     public void onSteer(InputAction.CallbackContext context)
     {
-        Debug.Log("hi! steering");
+        //Debug.Log("hi! steering");
         _turnInput = context.ReadValue<float>();
 
     }
@@ -64,13 +65,13 @@ public class horseMovementGaits : MonoBehaviour
     //not sure which of accelerate and brake will take priority!
     public void onAccelerate(InputAction.CallbackContext context)
     {
-        Debug.Log("accelerating!");
+        //Debug.Log("accelerating!");
         _throttleInput = context.ReadValue<float>();
     }
 
     public void onBrake(InputAction.CallbackContext context)
     {
-        Debug.Log("braking!");
+        //Debug.Log("braking!");
         _brakeInput = context.ReadValue<float>();
     }
     
@@ -103,7 +104,11 @@ public class horseMovementGaits : MonoBehaviour
     private void setGait(float runCharge)
     {
         gait newGait;
-        if (runCharge <= 0f) newGait = gait.walking;
+        if (runCharge <= 0f) {
+            if (currentSpeed < -0.1f) newGait = gait.reverse;
+            else if (currentSpeed >  0.1f) newGait = gait.walking;
+            else newGait = gait.still;
+        }
         else if (runCharge <= chargeRequiredToCanter) newGait = gait.trotting;
         else if (runCharge <= chargeRequiredToGallop) newGait = gait.cantering;
         else newGait = gait.galloping;
@@ -141,8 +146,10 @@ public class horseMovementGaits : MonoBehaviour
         if (jumpLockedTime > 0.0f) {jumpLockedTime -= Time.deltaTime;} 
         else {jumpLockedTime = 0.0f;}
 
+        //this code for calculating target speed has become very messy and hard to understand. I will try to rewrite it more cleanly soon!
         //identify a target speed to accelerate towards
-        float targetSpeed = 0f;
+        float targetSpeed = 0f; 
+        if (((_throttleInput - _brakeInput) < -0.1f) && currentSpeed <= 0.1f) targetSpeed = reverseSpeed; //reversing
         if ((_throttleInput - _brakeInput) > 0.1f)  //accelerating
         {
             if (currentRunCharge > chargeRequiredToGallop)
@@ -157,15 +164,17 @@ public class horseMovementGaits : MonoBehaviour
 
                 //if within a range of canter speed and grounded, add charge towards galloping
                 if ((canterSpeed - currentSpeed < 0.25f) && _cc.isGrounded) currentRunCharge += Time.deltaTime;
-                else currentRunCharge = chargeRequiredToCanter + 0.1f; 
-                //^^otherwise reset charge to a little over needed to maintain canter
+                else if (_cc.isGrounded) currentRunCharge = chargeRequiredToCanter + 0.1f; 
+                //^^otherwise, if grounded, reset charge to a little over needed to maintain canter
 
             } else 
             {
                 targetSpeed = trotSpeed; 
 
-                //if within a range of walk speed and grounded, add charge towards cantering
-                if ((trotSpeed - currentSpeed < 0.25f) && _cc.isGrounded) currentRunCharge += Time.deltaTime; 
+                //if within a range of trot speed and grounded, add charge towards cantering
+                if ((trotSpeed - currentSpeed < 0.25f) && _cc.isGrounded) currentRunCharge += Time.deltaTime;
+                else if (_cc.isGrounded) currentRunCharge = 0.1f; 
+                //^^otherwise reset charge
             }
         }
         else if (currentRunCharge > 0) {currentRunCharge -= Time.deltaTime * chargeDecay;}
