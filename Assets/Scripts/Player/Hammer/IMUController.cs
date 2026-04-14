@@ -18,7 +18,7 @@ namespace Hammer
         private bool _running;
         private readonly ConcurrentQueue<string> _dataQueue = new ConcurrentQueue<string>();
 
-        private bool _portOpen = false;
+        //private bool _portOpen = false;
         private const int TimeoutMs = 50;
 
         private string _port = null;
@@ -95,13 +95,13 @@ namespace Hammer
                 _stream.DtrEnable = true;
                 _stream.Open();
                 _stream.ReadTimeout = TimeoutMs;
-                _portOpen = true;
+                //_portOpen = true;
                 // if youre connected but not getting any data you may have another serial monitor open for this port
                 Debug.Log("Connected (allegedly)");
             }
             catch (System.Exception e)
             {
-                _portOpen = false;
+                //_portOpen = false;
                 Debug.LogWarning("Failed to connect to port: ");
                 Debug.LogWarning(e);
             }
@@ -233,7 +233,7 @@ namespace Hammer
 
             _dataQueue.Clear();
 
-            _portOpen = false;
+            //_portOpen = false;
             _stream.Close();
             Debug.Log("Port closed");
         }

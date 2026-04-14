@@ -22,7 +22,7 @@ namespace Hammer
         public Vector3 largeHitboxCenter;
         
         [SerializeField] private Transform pivotTransform;
-        private Rigidbody _rb;
+        //private Rigidbody _rb;
 
         [SerializeField] private Rigidbody horseRigidBody;
 
@@ -35,19 +35,21 @@ namespace Hammer
         //[SerializeField] private float rotationSpringStrength = 2000f;
         //[SerializeField] private float rotationDamping = 240f;
 
+        /*
         [Header("Collision Distance Settings")]
         [Tooltip("Beyond this distance, collisions are disabled so the hammer can snap back freely")]
         [SerializeField] private float collisionDisableDistance = 2.5f;
         [Tooltip("Must get this close to re-enable collisions")]
         [SerializeField] private float collisionReenableDistance = 0.3f;
+        */
 
-        private bool _collisionsEnabled = true;
+        //private bool _collisionsEnabled = true;
         
         private BoxCollider _hitbox;
 
         void Awake()
         {
-            _rb = GetComponent<Rigidbody>();
+            //_rb = GetComponent<Rigidbody>();
             _hitbox = GetComponent<BoxCollider>();
             Debug.Assert(_hitbox != null);
         }
