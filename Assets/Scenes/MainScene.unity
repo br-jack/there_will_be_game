@@ -85013,6 +85013,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 946544759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1704336720 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3f02ba14be2e94bb27bb865a227e4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1704449355 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1546397609650506094, guid: 6e2c86c593386d8489f46b6d47479587, type: 3}
@@ -89616,6 +89627,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1279637789338581969, guid: 6d8300810529d904c98e1fa1c6ac58fe, type: 3}
   m_PrefabInstance: {fileID: 2065234936}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1833760116 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 654467425185220409, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1836053316
 PrefabInstance:
@@ -111873,9 +111889,45 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_ActionEvents.Array.data[17].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1486947147}
+    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1704336720}
+    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1704336720}
+    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnDrift
+      objectReference: {fileID: 0}
+    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: onDrift
+      objectReference: {fileID: 0}
+    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: horseMovementGaits, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_ActionEvents.Array.data[20].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: horseMovementGaits, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4356928742128170327, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -111949,12 +112001,24 @@ PrefabInstance:
       value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: horseVisual
+      value: 
+      objectReference: {fileID: 1833760116}
+    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: reverseSpeed
       value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: turnSpeedGrounded
       value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: driftSpeedThreshold
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: driftLateralSlippage
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: turnSpeedGroundedTrot
@@ -112625,7 +112689,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3919838540913894575, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
