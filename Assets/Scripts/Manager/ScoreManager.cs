@@ -98,16 +98,14 @@ namespace Score
         {
             // Leave the float cast, it's important because otherwise it does integer divison.
             float fearProportion = (float) fearScore/maxFearScore;
-            float aweProportion = (float) aweScore/maxAweScore;
-            float mixedScore = fearProportion * 0.7f + aweProportion * 0.3f;
 
             ReportCard reportCard;
 
-            if (mixedScore >= 0.75f)
+            if (fearProportion >= 0.75f)
             {
                 reportCard = ReportCard.ThreeStars;
             }
-            else if (mixedScore >= 0.4f)
+            else if (fearProportion >= 0.4f)
             {
                 reportCard = ReportCard.TwoStars;
             }
