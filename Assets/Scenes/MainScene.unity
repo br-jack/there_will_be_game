@@ -2362,6 +2362,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1246009855}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1246009856}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!4 &79496445 stripped
 Transform:
@@ -3324,6 +3327,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1103564325}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1103564326}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &113084808
 PrefabInstance:
@@ -4575,6 +4581,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &151501454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151501447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!4 &155159892 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6280155018817424375, guid: af93023d5a9813f4190f92ac33a91575, type: 3}
@@ -7571,6 +7613,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 151501453}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 151501454}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &243864479
 PrefabInstance:
@@ -11468,6 +11513,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 578476441}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 578476442}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!4 &369649108 stripped
 Transform:
@@ -14999,6 +15047,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &514618173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514618166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!1001 &515252285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16289,6 +16373,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &578476442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578476435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!4 &579349310 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7506395813771068564, guid: 6d6c634a1d8a2584295813e32a138c74, type: 3}
@@ -23449,6 +23569,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1207743027}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1207743028}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &841968472
 PrefabInstance:
@@ -24587,6 +24710,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &893432191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893432184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!1001 &895087796
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25272,6 +25431,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1720901964}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1720901965}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1 &908022430 stripped
 GameObject:
@@ -26333,6 +26495,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 514618172}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 514618173}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &933678373
 PrefabInstance:
@@ -31025,6 +31190,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1103564326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103564319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!1001 &1104078748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33361,6 +33562,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2057861277}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2057861278}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &1169636518
 PrefabInstance:
@@ -34607,6 +34811,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1196436717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196436710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!1001 &1197792115
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35068,6 +35308,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1207743028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207743021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!1001 &1208243626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35424,6 +35700,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2116681631}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2116681632}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &1210397203
 PrefabInstance:
@@ -36597,6 +36876,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1246009856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246009849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!4 &1246253440 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4131579818306828312, guid: 522626ef427f215488fdff7832e3f2ef, type: 3}
@@ -41204,6 +41519,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 893432190}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 893432191}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &1373873818
 PrefabInstance:
@@ -50625,6 +50943,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1720901965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720901958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!4 &1721651345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7181693757253062610, guid: 02f3cf3dd410daa48af991972b56ebf1, type: 3}
@@ -58519,6 +58873,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1196436716}
+    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1196436717}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!1001 &1962541804
 PrefabInstance:
@@ -61373,6 +61730,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &2057861278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057861271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!1001 &2058389431
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64141,6 +64534,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &2116681632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2116681625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 0}
+  _playerHealthRef: {fileID: 0}
+  _playerTransformRef: {fileID: 0}
+  speed: 5
+  smoothVelocity: 0.35
+  rotationSpeed: 8
+  attack:
+    damage: 10
+    range: 2.5
+    cooldown: 2
+    chargeTime: 0.25
+  useStrike: 1
+  holdDistance: 6
+  holdDistanceVariance: 1.5
+  strikeSpeedMultiplier: 2.5
+  retreatSpeedMultiplier: 1.5
+  stopFromPlayerDistance: 1.5
+  maxDeathTime: 4
+  anim: {fileID: 0}
+  speedParam: Speed
+  attackTrigger: Attack
+  hitTrigger: Hit
+  deadTrigger: Die
+  useDamageAnimEvent: 0
 --- !u!4 &2118473249 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1874817041526625042, guid: d2be1762587d4434f88620eaf1fa7879, type: 3}
