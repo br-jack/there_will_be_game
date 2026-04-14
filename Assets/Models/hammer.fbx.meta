@@ -3,7 +3,37 @@ guid: cdf701568beb54346b28a2f4ed0a9fc6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Default_Material
+    second: {fileID: 2100000, guid: e550925f0d8bfb94c83dd3b282ca9714, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hammer_gem
+    second: {fileID: 2100000, guid: 367702b8f7df9d94e9ac6dda41fa204e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hammer_gilt
+    second: {fileID: 2100000, guid: e550925f0d8bfb94c83dd3b282ca9714, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hammer_laurel
+    second: {fileID: 2100000, guid: f942e42f71a869b4cb72602573f3704e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hammer_metal
+    second: {fileID: 2100000, guid: 5e5a213bae0dff1469bba5a84fcca18a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hammer_wood
+    second: {fileID: 2100000, guid: 9cca0932e08366744af58acb3038490d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -88,7 +118,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.01
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

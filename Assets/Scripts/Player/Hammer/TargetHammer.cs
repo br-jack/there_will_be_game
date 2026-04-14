@@ -87,6 +87,7 @@ namespace Hammer
 
         void FixedUpdate()
         {
+            
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
             frameAcceleration = _controllerRef.GetAcceleration();
