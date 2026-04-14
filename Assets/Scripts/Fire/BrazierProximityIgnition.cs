@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BrazierProximityIgnite : MonoBehaviour
 {
-    [SerializeField] private MeshCollider hammerHitbox;
+    [SerializeField] private Collider hammerHitbox;
     [SerializeField] private HammerFireController hammerFireController;
     [SerializeField] private float igniteDistance = 1f;
 

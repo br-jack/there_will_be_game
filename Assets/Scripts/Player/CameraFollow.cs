@@ -4,8 +4,8 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public Transform player;
-    public HorseMovement horseMovement;
-    private Camera camera;
+    public horseMovementGaits horseMovement;
+    private new Camera camera;
 
     [SerializeField] private Vector3 offsetFromPlayerPosition = new Vector3(0, 6.0f, -6);
     [SerializeField] private Vector3 playerLookAtOffset = Vector3.up * 1.0f;
@@ -20,7 +20,7 @@ public class CameraFollow : MonoBehaviour
     {
         camera = GetComponent<Camera>();
         camera.fieldOfView = baseFOV;
-        horseMovement = player.GetComponent<HorseMovement>();
+        horseMovement = player.GetComponent<horseMovementGaits>();
     }
 
     void LateUpdate()
@@ -28,7 +28,7 @@ public class CameraFollow : MonoBehaviour
         transform.position = player.position + player.TransformDirection(offsetFromPlayerPosition);
         transform.LookAt(player.position + playerLookAtOffset);
 
-        float currentSpeed = horseMovement.GetCurrentSpeed();
+        float currentSpeed = horseMovement.getCurrentSpeed();
         float speed01 = Mathf.Clamp01(currentSpeed / speedForMaxFOV);
         float targetFOV = Mathf.Lerp(baseFOV, maxFOV, speed01);
 

@@ -18,7 +18,7 @@ namespace Hammer
         private bool _running;
         private readonly ConcurrentQueue<string> _dataQueue = new ConcurrentQueue<string>();
 
-        private bool _portOpen = false;
+        //private bool _portOpen = false;
         private const int TimeoutMs = 50;
 
         private string _port = null;
@@ -71,7 +71,8 @@ namespace Hammer
         }
 
         public void Connect()
-        {
+        {   
+            
             int attempts = 0;
             while (_port == null)
             {
@@ -84,7 +85,7 @@ namespace Hammer
                     return;
                 }
             }
-
+           
             try
             {
                 _stream = new SerialPort(_port, 115200)
@@ -95,13 +96,13 @@ namespace Hammer
                 _stream.DtrEnable = true;
                 _stream.Open();
                 _stream.ReadTimeout = TimeoutMs;
-                _portOpen = true;
+                //_portOpen = true;
                 // if youre connected but not getting any data you may have another serial monitor open for this port
                 Debug.Log("Connected (allegedly)");
             }
             catch (System.Exception e)
             {
-                _portOpen = false;
+                //_portOpen = false;
                 Debug.LogWarning("Failed to connect to port: ");
                 Debug.LogWarning(e);
             }
@@ -124,16 +125,20 @@ namespace Hammer
                 while (_running)
                 {
                     string recievedData = null;
+
                     try
                     {
                         recievedData = _stream.ReadLine();
                         _dataQueue.Enqueue(recievedData);
                     }
-                    catch (Exception ex)
+
+                    //Seems to cause a memory leak, so only enable this when debugging Bluetooth
+                    catch (Exception /*ex*/)
                     {
-                        //Seems to cause a memory leak, so only enable this when debugging Bluetooth
-                        // Debug.LogWarning($"Error reading data: {ex.Message}");
+                       Debug.LogWarning("There was an error in reading blutooth data! Apparently printing the error message causes a memory leak, so not doing that."); 
+                        //Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
+                    
 
                 }
             }
@@ -229,7 +234,7 @@ namespace Hammer
 
             _dataQueue.Clear();
 
-            _portOpen = false;
+            //_portOpen = false;
             _stream.Close();
             Debug.Log("Port closed");
         }
