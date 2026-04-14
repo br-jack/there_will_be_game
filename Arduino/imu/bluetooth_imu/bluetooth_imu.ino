@@ -50,45 +50,45 @@ void setup(void) {
   //   ; // wait for serial port to connect. Needed for native USB port only
   // }
 
-  // Serial.begin(9600);
-  // Serial.print("AT+ROLE0");
-  // Serial.end();
-  Serial.begin(115200);
+  // Serial1.begin(9600);
+  // Serial1.print("AT+ROLE0");
+  // Serial1.end();
+  Serial1.begin(115200);
 
-  while (!Serial) delay(5);
+  while (!Serial1) delay(5);
 
   delay(20);
 
-  Serial.println(F("info:Adafruit BNO08x test!"));
+  Serial1.println(F("info:Adafruit BNO08x test!"));
 
   // Try to initialize!
   if (!bno08x.begin_I2C()) {
-    //if (!bno08x.begin_UART(&Serial)) {  // Requires a device with > 300 byte UART buffer!
+    //if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte UART buffer!
     //if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
-    Serial.println(F("info:Failed to find BNO08x chip"));
+    Serial1.println(F("info:Failed to find BNO08x chip"));
     while (1) {
       delay(120); 
       //see https://github.com/adafruit/Adafruit_BNO08x/issues/34#issuecomment-2533685723
       rp2040.reboot();
     }
   }
-  Serial.println(F("info:BNO08x Found!"));
+  Serial1.println(F("info:BNO08x Found!"));
 
   for (int n = 0; n < bno08x.prodIds.numEntries; n++) {
-    Serial.print("Part ");
-    Serial.print(bno08x.prodIds.entry[n].swPartNumber);
-    Serial.print(": Version :");
-    Serial.print(bno08x.prodIds.entry[n].swVersionMajor);
-    Serial.print(".");
-    Serial.print(bno08x.prodIds.entry[n].swVersionMinor);
-    Serial.print(".");
-    Serial.print(bno08x.prodIds.entry[n].swVersionPatch);
-    Serial.print(" Build ");
-    Serial.println(bno08x.prodIds.entry[n].swBuildNumber);
+    Serial1.print("Part ");
+    Serial1.print(bno08x.prodIds.entry[n].swPartNumber);
+    Serial1.print(": Version :");
+    Serial1.print(bno08x.prodIds.entry[n].swVersionMajor);
+    Serial1.print(".");
+    Serial1.print(bno08x.prodIds.entry[n].swVersionMinor);
+    Serial1.print(".");
+    Serial1.print(bno08x.prodIds.entry[n].swVersionPatch);
+    Serial1.print(" Build ");
+    Serial1.println(bno08x.prodIds.entry[n].swBuildNumber);
   }
   setReports();
 
-  Serial.println(F("info:Reading events"));
+  Serial1.println(F("info:Reading events"));
 
   pinMode(motor1_dir_pin, OUTPUT);
 
@@ -99,12 +99,12 @@ void setup(void) {
 
 // Here is where you define the sensor outputs you want to receive
 void setReports(void) {
-  Serial.println(F("info:Setting desired reports"));
+  Serial1.println(F("info:Setting desired reports"));
   if (!bno08x.enableReport(SH2_GAME_ROTATION_VECTOR)) {
-    Serial.println(F("info:Could not enable game vector"));
+    Serial1.println(F("info:Could not enable game vector"));
   }
   if (!bno08x.enableReport(SH2_LINEAR_ACCELERATION, 20000)) {
-    Serial.println(F("info:Could not enable linear acceleration"));
+    Serial1.println(F("info:Could not enable linear acceleration"));
   }
 
   //https://github.com/sparkfun/SparkFun_BNO08x_Arduino_Library/issues/2
@@ -139,7 +139,7 @@ void startRumble(RumbleMode mode, int duration) {
     currentRumbleInstance.strength = 255;
   }
   currentRumbleInstance.fadeMs = 0;
-  Serial.println(F("info:Rumble activated."));
+  Serial1.println(F("info:Rumble activated."));
 
   analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
 }
@@ -164,19 +164,19 @@ void endRumble(void) {
   //currentRumbleInstance.duration = 0;
   currentRumbleInstance.mode = RumbleMode::Off;
   //currentRumbleInstance.fadeMs = 0;
-  Serial.println(F("info:Rumble deactivated."));
+  Serial1.println(F("info:Rumble deactivated."));
 
   analogWrite(motor1_spd_pin, 0);
 }
 
 inline void outputSensorValues(void) {
   if (bno08x.wasReset()) {
-    Serial.print(F("info:Sensor was reset "));
+    Serial1.print(F("info:Sensor was reset "));
     setReports();
   }
 
   if (!bno08x.getSensorEvent(&sensorValue)) {
-    //Serial.println("info:Unable to get sensor event!");
+    //Serial1.println("info:Unable to get sensor event!");
     return;
   }
   switch (sensorValue.sensorId) {
@@ -194,7 +194,7 @@ inline void outputSensorValues(void) {
         q.concat(sensorValue.un.gameRotationVector.k);
 
 
-        Serial.println(q);
+        Serial1.println(q);
         break;
       }
 
@@ -208,7 +208,7 @@ inline void outputSensorValues(void) {
         q.concat(sensorValue.un.linearAcceleration.y);
         q.concat(":");
         q.concat(sensorValue.un.linearAcceleration.z);
-        Serial.println(q);
+        Serial1.println(q);
         break;
       }
   }
@@ -284,25 +284,25 @@ inline void rumbleStep(void) {
 }
 
 inline void checkRumbleInput(void) {
-  if (Serial.available() > 3) {
+  if (Serial1.available() > 3) {
     constexpr char rumbleChar = 'R';
 
-    const int incomingByte = Serial.read();
+    const int incomingByte = Serial1.read();
 
     //rumble string format: "RMx\n" where M is the mode and x is the duration in ms
     if (incomingByte == (int)rumbleChar) {
 
-      const int modeByte = Serial.read();
+      const int modeByte = Serial1.read();
 
-      const int duration = Serial.parseInt();
+      const int duration = Serial1.parseInt();
 
-      //Serial.println(duration);  
+      //Serial1.println(duration);  
       startRumble(parseRumbleModeByte(modeByte), duration);
     }
     
-    while (Serial.available() > 0) {
+    while (Serial1.available() > 0) {
       //discard newline character and any other remaining characters in buffer
-      (void) Serial.read();
+      (void) Serial1.read();
     }
   }
 }
@@ -317,7 +317,7 @@ void loop(void) {  // run over and over
 
   checkRumbleInput();
 
-  // if (Serial.available()) {
-  //   Serial.write(Serial.read());
+  // if (Serial1.available()) {
+  //   Serial.write(Serial1.read());
   // }
 }

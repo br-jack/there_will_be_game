@@ -118,10 +118,9 @@ namespace Hammer
             MoveToTargetRotation();
         }
 
-    }
-    
-    public void OnCollisionEnter(Collider other)
-    {
-        _controllerRef.Rumble(5000);
+        public void OnCollisionEnter(Collision collision)
+        {
+            _targetHammer.Rumble();
+        }
     }
 }
