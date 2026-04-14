@@ -89,7 +89,7 @@ public class PowerUpSpawner : MonoBehaviour
 
         cutsceneCamera.transform.position = fixedCutscenePosition;
 
-        Vector3 lookTarget = currentSpawnedPowerUp.transform.position;
+        Vector3 lookTarget = currentSpawnedPowerUp.transform.position + Vector3.up * 1.5f; // adjust the height as needed
         Quaternion targetRotation = Quaternion.LookRotation(lookTarget - cutsceneCamera.transform.position);
         cutsceneCamera.transform.rotation = Quaternion.Slerp(cutsceneCamera.transform.rotation, targetRotation, Time.deltaTime * cutsceneLookSmooth);
     }
