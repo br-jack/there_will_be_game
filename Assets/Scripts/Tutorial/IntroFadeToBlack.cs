@@ -46,13 +46,13 @@ public class IntroFadeText : MonoBehaviour
 
     private void OnEnable()
     {
-        HammerBehaviour.OnHammerSwing += HandleHammerSwing;
+        TargetHammer.OnHammerSwing += HandleHammerSwing;
         HorseMovement.OnTutorialJump += HandleJump;
     }
 
     private void OnDisable()
     {
-        HammerBehaviour.OnHammerSwing -= HandleHammerSwing;
+        TargetHammer.OnHammerSwing -= HandleHammerSwing;
         HorseMovement.OnTutorialJump -= HandleJump;
     }
 

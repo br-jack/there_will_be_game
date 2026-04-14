@@ -10,7 +10,8 @@ namespace Score
         Speed,
         LowHealth,
         Air,
-        ShieldBypass
+        ShieldBypass,
+        OnFire
     }
 
     public class ScoreComponent

@@ -14,6 +14,7 @@ public class BodyHit : MonoBehaviour
     [SerializeField] private int lowHealthThreshold = 30;
     [SerializeField] private int airBonusScore = 25;
     [SerializeField] private int shieldBypassBonusScore = 40;
+    [SerializeField] private int fireBonusScore = 50;
 
     void OnTriggerEnter(Collider other)
     {
@@ -67,7 +68,9 @@ public class BodyHit : MonoBehaviour
         if (horseMovement == null) return;
 
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
-        
+
+        HammerFireController hammerFireController = FindObjectOfType<HammerFireController>();
+
         List<ScoreComponent> scoreComponents = new List<ScoreComponent>();
         
         // Base score
@@ -99,6 +102,12 @@ public class BodyHit : MonoBehaviour
         if (enemy != null && enemy.HasShield())
         {
             scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
+        }
+
+        // On fire bonus
+        if (hammerFireController != null && hammerFireController.IsOnFire)
+        {
+            scoreComponents.Add(new ScoreComponent(fireBonusScore, ScoreType.OnFire));
         }
         
         ScoreManager.Instance.AddScore(scoreComponents);
