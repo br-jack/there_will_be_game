@@ -22,7 +22,8 @@ public class FootballPlayer : MonoBehaviour
 
     void Start()
     {
-        movementScript = GetComponent<EnemyMovement>();
+        enemyAI = GetComponent<StandardEnemyAI>();
+        agent = GetComponent<NavMeshAgent>();
         homeAnchor = transform.position;
     }
 
