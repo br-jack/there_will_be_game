@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4663798712677685914}
   - component: {fileID: 8127056350891754337}
   - component: {fileID: 4174055868499882783}
-  - component: {fileID: 4194378951080035842}
+  - component: {fileID: 8010883017928701387}
   m_Layer: 0
   m_Name: SM_road_01
   m_TagString: Untagged
@@ -59,6 +59,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -85,8 +88,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4194378951080035842
-MeshCollider:
+--- !u!65 &8010883017928701387
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -103,7 +106,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 88949cbe15442b94cac30c2bd1c6ddd8, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 4.000001, y: 0.13, z: 4.0008845}
+  m_Center: {x: 0.00000047683716, y: 0.06, z: 0}
