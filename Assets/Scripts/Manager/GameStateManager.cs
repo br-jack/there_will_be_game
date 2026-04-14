@@ -14,6 +14,7 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private InputActionReference _pauseAction;
 
     private GameObject _pausePanel;
+    private GameOverUI _gameOverUI;
     private PlayerLives _playerLives;
     private HorseMovement _horseMovement;
     private EnemySpawner[] _enemySpawners;
@@ -65,17 +66,19 @@ public class GameStateManager : MonoBehaviour
         _playerLives = FindFirstObjectByType<PlayerLives>();
         if (_playerLives != null) _playerLives.OnGameOver += HandleGameOver;
 
-        // Pause Menu starts inactive; FindObjectsOfTypeAll includes inactive,
-        // filter by active scene to skip prefab assets.
+        // Pause Menu and GameOverPanel start inactive; FindObjectsOfTypeAll
+        // includes inactive, filter by active scene to skip prefab assets.
         _pausePanel = null;
+        _gameOverUI = null;
         Scene activeScene = SceneManager.GetActiveScene();
         foreach (Transform t in Resources.FindObjectsOfTypeAll<Transform>())
         {
-            if (t.name == "Pause Menu" && t.gameObject.scene == activeScene)
-            {
-                _pausePanel = t.gameObject;
-                break;
-            }
+            if (t.gameObject.scene != activeScene) continue;
+
+            if (t.name == "Pause Menu") _pausePanel = t.gameObject;
+            else if (t.name == "GameOverPanel") _gameOverUI = t.GetComponent<GameOverUI>();
+
+            if (_pausePanel != null && _gameOverUI != null) break;
         }
     }
 
@@ -135,6 +138,11 @@ public class GameStateManager : MonoBehaviour
             case GameState.GameOver:
                 Time.timeScale = 0f;
                 SetSpawning(false);
+                if (_gameOverUI != null)
+                {
+                    ReportCard tier = ScoreManager.Instance.GetReportCard();
+                    _gameOverUI.Show(tier);
+                }
                 break;
         }
     }

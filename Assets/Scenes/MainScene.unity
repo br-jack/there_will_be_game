@@ -4236,6 +4236,81 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80848987e53f5f8498e7631859d66440, type: 3}
+--- !u!1 &162684169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 162684170}
+  - component: {fileID: 162684172}
+  - component: {fileID: 162684171}
+  m_Layer: 5
+  m_Name: GameOverPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &162684170
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162684169}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1486947146}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &162684171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162684169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &162684172
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162684169}
+  m_CullTransparentMesh: 1
 --- !u!4 &164940545 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2321231537738836020, guid: b524aaacccc16f1489a4270e28fd8f61, type: 3}
@@ -36564,19 +36639,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14a9c70830858341b472ad7fdbbf00c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aliveEnemies: []
-  enemyPrefab: {fileID: 611199081197747249, guid: fcc0ec1d890944f60b62135293d9e971, type: 3}
-  formationType: 0
-  formationColumns: 5
-  formationSpacing: {x: 2, y: 2}
-  attackRingRadius: 2
-  joinFormationDistance: 32
-  breakFormationDistance: 2
-  anchorStandoffBuffer: 1.5
-  spawnCount: 25
-  spawnJitter: 0.75
-  spawnRadius: 0.5
-  spawningEnabled: 1
+  meleeEnemyPrefab: {fileID: 0}
+  rapidEnemyPrefab: {fileID: 0}
+  rangedEnemyPrefab: {fileID: 0}
+  minDistanceFromPlayer: 15
+  maxDistanceFromPlayer: 100
+  waves: []
 --- !u!4 &1353685249
 Transform:
   m_ObjectHideFlags: 0
@@ -40835,12 +40903,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1879296612164912189, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 162684170}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
---- !u!1 &1486947147 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8345642027356060840, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+--- !u!224 &1486947146 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1879296612164912189, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
   m_PrefabInstance: {fileID: 1486947145}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1487196684 stripped
