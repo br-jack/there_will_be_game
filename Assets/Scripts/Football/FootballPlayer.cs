@@ -7,7 +7,8 @@ public class FootballPlayer : MonoBehaviour
     public Collider pitchCollider;
     public Transform targetGoal;
     
-    private EnemyMovement movementScript;
+    private StandardEnemyAI enemyAI;
+    private NavMeshAgent agent;
     private Vector3 homeAnchor;
     private bool isFootballActive = false;
 
