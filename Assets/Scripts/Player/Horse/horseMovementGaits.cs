@@ -49,14 +49,16 @@ public class horseMovementGaits : MonoBehaviour
     //private bool _jumpButtonHeld;
 
     [Header("Drifting Settings")]
-    public float driftLateralSlippage = 0.95f;
+    public float driftLateralSlippage = 0.8f;
     public float driftSteerMultiplier = 1.5f;
-    public float driftSpeedThreshold = 10f;
+    public float driftSpeedThreshold = 19f;
+    public float driftFrictionMultiplyer = 0.8f;
     public Transform horseVisual; //not added yet
 
     private bool _isDrifting;
     private bool _driftInput; 
     private Vector3 _driftVelocity;
+
     private float _visualLean;
 
     private CharacterController _cc;
@@ -238,7 +240,7 @@ public class horseMovementGaits : MonoBehaviour
 
     private void HandleDriftLogic()
     {
-        if (_driftInput && _cc.isGrounded && currentSpeed > driftSpeedThreshold && Mathf.Abs(_turnInput) > 0.1f)
+        if (_driftInput && _cc.isGrounded && currentSpeed > driftSpeedThreshold && Mathf.Abs(_turnInput) > 0.8f)
         {
             _isDrifting = true;
         }
@@ -266,10 +268,11 @@ public class horseMovementGaits : MonoBehaviour
     {
         Vector3 forwardMove = transform.forward * currentSpeed;
 
-        if (_isDrifting)
+        if (_isDrifting && _cc.isGrounded)
         {
             Vector3 lateralDirection = transform.right * _turnInput;
             _driftVelocity = Vector3.Lerp(_driftVelocity, lateralDirection * currentSpeed * driftLateralSlippage, Time.deltaTime * 2f);
+            forwardMove *= driftFrictionMultiplyer; //drifting reduces forward move due to friction
         }
         else
         {

@@ -4742,8 +4742,8 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 6
-  maxLeashDistance: 7
+  detectionRadius: 8
+  maxLeashDistance: 9
   kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
@@ -4909,8 +4909,8 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 6
-  maxLeashDistance: 7
+  detectionRadius: 8
+  maxLeashDistance: 9
   kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
@@ -20498,9 +20498,9 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 3
-  maxLeashDistance: 4
-  kickPower: 12
+  detectionRadius: 4
+  maxLeashDistance: 5
+  kickPower: 15
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
 --- !u!54 &514618172
@@ -26672,8 +26672,8 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 6
-  maxLeashDistance: 7
+  detectionRadius: 8
+  maxLeashDistance: 9
   kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
@@ -45039,8 +45039,8 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 6
-  maxLeashDistance: 7
+  detectionRadius: 8
+  maxLeashDistance: 9
   kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
@@ -56489,8 +56489,8 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 6
-  maxLeashDistance: 7
+  detectionRadius: 8
+  maxLeashDistance: 9
   kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
@@ -60191,8 +60191,8 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 6
-  maxLeashDistance: 7
+  detectionRadius: 8
+  maxLeashDistance: 9
   kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
@@ -60733,8 +60733,8 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 6
-  maxLeashDistance: 7
+  detectionRadius: 8
+  maxLeashDistance: 9
   kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
@@ -86490,8 +86490,8 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 6
-  maxLeashDistance: 7
+  detectionRadius: 8
+  maxLeashDistance: 9
   kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
@@ -107320,8 +107320,8 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 6
-  maxLeashDistance: 7
+  detectionRadius: 8
+  maxLeashDistance: 9
   kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
@@ -110168,8 +110168,8 @@ MonoBehaviour:
   ball: {fileID: 218395965}
   pitchCollider: {fileID: 12523617}
   targetGoal: {fileID: 511292331}
-  detectionRadius: 6
-  maxLeashDistance: 7
+  detectionRadius: 8
+  maxLeashDistance: 9
   kickPower: 10
   kickCooldown: 1.5
   _playerTransformRef: {fileID: 0}
@@ -111094,6 +111094,10 @@ PrefabInstance:
       propertyPath: fireworks
       value: 
       objectReference: {fileID: 895883096}
+    - target: {fileID: 9177947728799044577, guid: e9d524b9054604f488b2d9ea31e0a41f, type: 3}
+      propertyPath: fireworksSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 89de8aba9b595564ea8a8ec30009a51b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -112708,6 +112712,10 @@ PrefabInstance:
     - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: driftLateralSlippage
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: driftSteerMultiplier
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: turnSpeedGroundedTrot
