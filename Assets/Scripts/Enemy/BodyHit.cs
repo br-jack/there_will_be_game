@@ -120,7 +120,7 @@ public class BodyHit : MonoBehaviour
         }
 
         // Shield bypass bonus
-        if (enemy != null && enemy.HasShield())
+        if (hasShield)
         {
             scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
         }
