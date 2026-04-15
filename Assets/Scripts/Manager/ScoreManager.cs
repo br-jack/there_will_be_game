@@ -85,6 +85,24 @@ namespace Score
             aweScore = 0;
             OnAweChanged?.Invoke(aweScore);
         }
+
+        public void RemoveFear(int amount)
+        {
+            if (amount <= 0)
+            {
+                Debug.LogError("RemoveFear amount must be positive.");
+                return;
+            }
+
+            fearScore -= amount;
+
+            if (fearScore < 0)
+            {
+                fearScore = 0;
+            }
+
+            OnFearChanged?.Invoke(fearScore);
+        }
     }
 
 }
