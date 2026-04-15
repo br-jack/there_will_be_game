@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
 public class Football : MonoBehaviour
 {
+    public UnityEvent footballKicked;
     private Vector3 initialPosition;
     private Quaternion initialRotation;
     private Rigidbody rb;
-
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -17,8 +18,10 @@ public class Football : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // ToDo: Play a kick sound + add particle effects
-        if (collision.gameObject.CompareTag("Hammer") || collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Hammer") 
+            || collision.gameObject.CompareTag("Enemy"))
         {
+            footballKicked.Invoke();
             Debug.Log("Ball kicked by: " + collision.gameObject.name);
         }
     }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class PowerUpPickup : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class PowerUpPickup : MonoBehaviour
     private bool landed = false;
     private Vector3 basePosition;
     private float spawnTime;
+    public Action OnLanded;
 
     private void Start()
     {
@@ -67,6 +69,7 @@ public class PowerUpPickup : MonoBehaviour
             }
 
             basePosition = transform.position;
+            OnLanded?.Invoke();
         }
     }
 
@@ -76,7 +79,15 @@ public class PowerUpPickup : MonoBehaviour
 
         if (receiver != null)
         {
-            receiver.ApplyPowerUp(powerUpType, effectAmount, effectDuration);
+            if (powerUpType == PowerUpType.InfiniteFire)
+            {
+                receiver.ApplyPowerUp(powerUpType, 0f, 0f);
+            }
+            else
+            {
+                receiver.ApplyPowerUp(powerUpType, effectAmount, effectDuration);
+            }
+
             Destroy(gameObject);
         }
     }
