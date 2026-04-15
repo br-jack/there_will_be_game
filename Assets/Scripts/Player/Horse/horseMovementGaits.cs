@@ -255,7 +255,7 @@ public class horseMovementGaits : MonoBehaviour
         _tf.Rotate(Vector3.up * _turnInput * finalTurnSpeed * Time.deltaTime);
 
         //purely visual (doesnt affect acc rotation but a fake visula horse instead for effect)
-        float targetLean = _isDrifting ? _turnInput * 30f : 0f;
+        float targetLean = _isDrifting ? _turnInput * 50f : 0f;
         _visualLean = Mathf.Lerp(_visualLean, targetLean, Time.deltaTime * 5f);
         
         if (horseVisual != null)
