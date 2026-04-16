@@ -20,6 +20,11 @@ public class BodyHit : MonoBehaviour
 
     [SerializeField] private int fireBonusScore = 50;
 
+    public void hitBySlamAttack()
+    {
+        
+    }
+    
     void OnTriggerEnter(Collider other)
     {
         AttackHitbox attack = other.GetComponent<AttackHitbox>();

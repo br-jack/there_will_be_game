@@ -292,13 +292,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   hitSounds: {fileID: 0}
-  speedThreshold: 5
   baseScore: 10
-  speedBonusScore: 30
   lowHealthBonusScore: 20
   lowHealthThreshold: 30
   airBonusScore: 25
   shieldBypassBonusScore: 40
+  atATrotBonusScore: 5
+  atACanterBonusScore: 20
+  atAGallopBonusScore: 50
+  fireBonusScore: 50
 --- !u!82 &464961176925626355
 AudioSource:
   m_ObjectHideFlags: 0
@@ -706,8 +708,8 @@ MonoBehaviour:
     cooldown: 2
     chargeTime: 0.25
   useStrike: 1
-  stalkDistance: 6
-  stalkDistanceVariance: 2
+  holdDistance: 6
+  holdDistanceVariance: 1.5
   strikeSpeedMultiplier: 1.75
   retreatSpeedMultiplier: 1.25
   stopFromPlayerDistance: -1

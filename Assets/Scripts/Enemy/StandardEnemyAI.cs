@@ -423,6 +423,24 @@ public class StandardEnemyAI : MonoBehaviour
         if (useStrike) combatState = CombatState.Approaching;
     }
 
+    public void getKilledBasic(Vector3 knockback)
+    {
+        IsDying = true;
+        IsKnockedBack = true;
+        knockbackTimer = KnockbackTime;
+        deathTimer = maxDeathTime;
+
+        if (agent != null) agent.enabled = false;
+
+
+        rb.AddForce(knockback);
+
+        Debug.Log("i died :(");
+
+        TryTrigger(deadTrigger);
+        OnDied?.Invoke();
+    }
+
     public void KilledBy(Collider other, AttackHitbox hitBox)
     {
         if (IsDying) return;

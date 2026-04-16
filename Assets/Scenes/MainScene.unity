@@ -17434,6 +17434,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5173085384453476340, guid: 03c45291987e4bd4a8fe4673b7e5e52a, type: 3}
   m_PrefabInstance: {fileID: 187990532}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &409506952 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2835114687108540813, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &409506955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409506952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0a56633832194a4883400fffca81017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &410605509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -112597,6 +112614,18 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5496355663994616816, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5496355663994616816, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5496355663994616816, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 5538864975155007579, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -112760,6 +112789,10 @@ PrefabInstance:
     - target: {fileID: 6816715455798896038, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840669216427172599, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: _slamRadius
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6862502123097538488, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -113188,7 +113221,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2835114687108540813, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 409506955}
   m_SourcePrefab: {fileID: 100100000, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
 --- !u!65 &5061453144199501985 stripped
 BoxCollider:
