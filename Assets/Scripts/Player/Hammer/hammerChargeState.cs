@@ -1,5 +1,6 @@
-public enum hammerChargeState {
-    uncharged, 
-    charging, 
+public enum hammerChargeState
+{
+    uncharged,
+    charging,
     charged
 }

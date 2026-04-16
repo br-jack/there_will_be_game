@@ -19,8 +19,8 @@ public class hammerHead : MonoBehaviour
     {
         //find scalar speed of hammer head in the forwards direction
         Vector3 positionChange = _tf.position - posPrevFrame;
-        Vector3 velocityGlobal = positionChange/Time.deltaTime;
-        Vector3 velocityLocal =  getSpeedRelativeTo.InverseTransformDirection(velocityGlobal);
+        Vector3 velocityGlobal = positionChange / Time.deltaTime;
+        Vector3 velocityLocal = getSpeedRelativeTo.InverseTransformDirection(velocityGlobal);
         forwardSpeed = velocityLocal.z;
 
         posPrevFrame = _tf.position;

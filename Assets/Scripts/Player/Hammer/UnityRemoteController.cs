@@ -1,4 +1,4 @@
-﻿#if (UNITY_IOS || UNITY_ANDROID) 
+﻿#if (UNITY_IOS || UNITY_ANDROID)
 using UnityEngine;
 using UnityEngine.InputSystem;
 #if UNITY_ANDROID

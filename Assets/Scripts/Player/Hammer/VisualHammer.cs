@@ -20,7 +20,7 @@ namespace Hammer
         public float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
         public Vector3 largeHitboxSize;
         public Vector3 largeHitboxCenter;
-        
+
         [SerializeField] private Transform pivotTransform;
         //private Rigidbody _rb;
 
@@ -44,7 +44,7 @@ namespace Hammer
         */
 
         //private bool _collisionsEnabled = true;
-        
+
         private BoxCollider _hitbox;
 
         void Awake()
@@ -101,16 +101,18 @@ namespace Hammer
             {
                 _hitbox.size = smallHitboxSize;
                 _hitbox.center = smallHitboxCenter;
-            } else if (head.forwardSpeed < largeHitboxThreshold)
+            }
+            else if (head.forwardSpeed < largeHitboxThreshold)
             {
                 _hitbox.size = mediumHitboxSize;
                 _hitbox.center = mediumHitboxCenter;
-            } else
+            }
+            else
             {
                 _hitbox.size = largeHitboxSize;
                 _hitbox.center = largeHitboxCenter;
             }
-            
+
             // maybe horse acceleration?
             //_rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, horseRigidBody.linearVelocity, 0.8f);
 
