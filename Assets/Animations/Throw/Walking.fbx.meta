@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 20429c545e7310045969ae5b9502edf3
+guid: 20aba5c057f56bc4a863ab4d4f1305da
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -80,7 +80,7 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human:
-    - boneName: Hips
+    - boneName: Root
       humanName: Hips
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -401,40 +401,40 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: Character_Signifer(Clone)
+    - name: Character_Legionary(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Armature
-      parentName: Character_Signifer(Clone)
+      parentName: Character_Legionary(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}
     - name: Root
       parentName: Armature
       position: {x: -3.305475e-19, y: 0.00029152792, z: 0.00014701611}
-      rotation: {x: 0.7083787, y: -0.000011612377, z: -0.000011654265, w: 0.7058326}
+      rotation: {x: 0.7083787, y: -0.000011612376, z: -0.000011654264, w: 0.7058326}
       scale: {x: 1, y: 1, z: 1}
     - name: Hips
       parentName: Root
       position: {x: -0.000000008723558, y: 0.008562728, z: -0.0002651211}
-      rotation: {x: 0.04265616, y: 0.000016317947, z: -0.000000706865, w: 0.99908984}
+      rotation: {x: 0.04265616, y: 0.000016317945, z: -0.00000070686525, w: 0.99908984}
       scale: {x: 1, y: 0.99999994, z: 0.99999994}
     - name: Spine_01
       parentName: Hips
-      position: {x: -5.8058347e-18, y: 0.0015880354, z: -7.4505804e-11}
+      position: {x: -1.1957733e-17, y: 0.0015880354, z: -7.4505804e-11}
       rotation: {x: -0.082424924, y: 0.70228654, z: -0.08242484, w: 0.7022863}
       scale: {x: 1, y: 0.99999994, z: 1}
     - name: Spine_02
       parentName: Spine_01
-      position: {x: 1.4901161e-10, y: 0.0015703626, z: -2.4980017e-18}
-      rotation: {x: 0.046084903, y: 0.99893755, z: -0.0000000047748667, w: 0.000000194694}
+      position: {x: 1.4901161e-10, y: 0.0015703626, z: 5.8286707e-18}
+      rotation: {x: 0.046084903, y: 0.99893755, z: -0.000000004775086, w: 0.00000019469398}
       scale: {x: 0.9999999, y: 1.0000001, z: 1}
     - name: Spine_03
       parentName: Spine_02
-      position: {x: -1.4901161e-10, y: 0.0016822142, z: 5.551115e-19}
-      rotation: {x: 0.3590941, y: 0.93330145, z: -0.00000013710013, w: -0.00000009700792}
+      position: {x: -1.4901161e-10, y: 0.0016822142, z: 4.9960035e-17}
+      rotation: {x: 0.3590941, y: 0.93330145, z: -0.00000013710033, w: -0.000000097007835}
       scale: {x: 1, y: 1.0000004, z: 1}
     - name: Clavicle_L
       parentName: Spine_03
@@ -503,8 +503,8 @@ ModelImporter:
       scale: {x: 1, y: 1.0000001, z: 1}
     - name: Thumb_02
       parentName: Thumb_01
-      position: {x: -8.9406965e-10, y: 0.0006095293, z: 6.891787e-10}
-      rotation: {x: -0.0353392, y: 0.0029304915, z: -0.0076407026, w: 0.9993419}
+      position: {x: -6.0070304e-10, y: 0.0006095293, z: 6.891787e-10}
+      rotation: {x: -0.03533613, y: 0.0029304468, z: -0.007639615, w: 0.999342}
       scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
     - name: Thumb_02_end
       parentName: Thumb_02
@@ -513,18 +513,18 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Neck
       parentName: Spine_03
-      position: {x: -6.1467287e-10, y: 0.0015507375, z: 2.2204459e-17}
-      rotation: {x: 0.000000009570957, y: 0.0000000010975603, z: -0.21445808, w: 0.9767332}
+      position: {x: -6.1467287e-10, y: 0.0015507375, z: -2.8310687e-17}
+      rotation: {x: 0.000000009570965, y: 0.000000001097546, z: -0.21445808, w: 0.9767332}
       scale: {x: 1, y: 0.99999994, z: 1}
     - name: Head
       parentName: Neck
-      position: {x: 4.6566126e-11, y: 0.001011161, z: -2.220446e-18}
+      position: {x: 4.6566126e-11, y: 0.001011161, z: 1.110223e-18}
       rotation: {x: 0.21853736, y: -0.672489, z: 0.21853735, w: 0.67248905}
       scale: {x: 0.99999994, y: 0.9999999, z: 0.99999994}
     - name: Eyebrows
       parentName: Head
-      position: {x: 4.310665e-12, y: 0.0016389885, z: 0.0004009561}
-      rotation: {x: -0.3562715, y: -0.0000000057444964, z: 0.000000012201884, w: 0.9343825}
+      position: {x: 4.3106586e-12, y: 0.0016389885, z: 0.0004009561}
+      rotation: {x: -0.3562715, y: -0.00000000574455, z: 0.000000012201894, w: 0.9343825}
       scale: {x: 1, y: 1, z: 1}
     - name: Eyebrows_end
       parentName: Eyebrows
@@ -534,7 +534,7 @@ ModelImporter:
     - name: Eyes
       parentName: Head
       position: {x: 9.790184e-12, y: 0.0014223626, z: 0.0005708774}
-      rotation: {x: -0.3562715, y: -0.0000000057444955, z: 0.000000012201886, w: 0.9343825}
+      rotation: {x: -0.3562715, y: -0.00000000574455, z: 0.000000012201895, w: 0.9343825}
       scale: {x: 1, y: 1, z: 1}
     - name: Eyes_end
       parentName: Eyes
@@ -666,16 +666,16 @@ ModelImporter:
       position: {x: -0, y: 0.0007648139, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: Character_Signifer
-      parentName: Character_Signifer(Clone)
+    - name: Character_Legionary
+      parentName: Character_Legionary(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: Scabbard_Signifer
-      parentName: Character_Signifer(Clone)
-      position: {x: -0.20261829, y: 0.73244756, z: -0.0077052223}
-      rotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071067}
-      scale: {x: 0.01, y: 0.01, z: 0.01}
+    - name: Helmet_Legionary
+      parentName: Character_Legionary(Clone)
+      position: {x: -0, y: 1.6904424, z: -0.005358882}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -688,7 +688,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 82821dac8beae1a45aa3b9ee5434b0fa, type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: b8b423484b923cc49b8a6087dffde98c, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
