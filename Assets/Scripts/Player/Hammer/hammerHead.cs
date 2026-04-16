@@ -8,7 +8,8 @@ public class hammerHead : MonoBehaviour
     public Transform getSpeedRelativeTo;
     private Transform _tf;
     private Vector3 posPrevFrame;
-    public float _slamRadius;
+    public float slamRadius;
+    public float slamKnockbackAmount;
 
     InputAction temporarySlamActivate;
 
@@ -50,13 +51,13 @@ public class hammerHead : MonoBehaviour
 
     private void killAllInRadius()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position,_slamRadius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position,slamRadius);
         foreach(Collider c in colliders)
         {
             if(c.GetComponentInParent<StandardEnemyAI>())
             {
                 Vector3 knockbackDirection = c.ClosestPoint(transform.position) - transform.position; //knock away
-                c.GetComponentInParent<StandardEnemyAI>().getKilledBasic(knockbackDirection * 10f);
+                c.GetComponentInParent<StandardEnemyAI>().getKilledBasic(knockbackDirection * slamKnockbackAmount);
             }
         } 
     }
