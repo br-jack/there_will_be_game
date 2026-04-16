@@ -1,14 +1,12 @@
 using System;
 using System.ComponentModel;
 using UnityEngine;
+
 //this script and hammerStateEffects should likely be one script, they do the same thing. 
 
 public class hammerParticleSystemBehaviour : MonoBehaviour
 {
     public hammerHead head;
-    private Transform _tf;
-    private Vector3 posPrevFrame;
-
     public float trailSpeedThreshold;
 
     public float ghostSpeedThreshold;

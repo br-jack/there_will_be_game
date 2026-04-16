@@ -22,6 +22,7 @@ public class hammerStateEffects : MonoBehaviour
     private ParticleSystem.MainModule _ghostsMain;
     public ParticleSystem flash;
     private ParticleSystem.MainModule _flashMain;
+    public ParticleSystem explosion;
 
     public Color _stillAndWalkColor;
     public Color _trotColor;
@@ -37,6 +38,11 @@ public class hammerStateEffects : MonoBehaviour
     {
         flash.Play();
         gait = newGait;
+    }
+
+    public void doSlamEffects()
+    {
+        explosion.Play();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

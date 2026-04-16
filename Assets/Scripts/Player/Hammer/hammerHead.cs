@@ -10,6 +10,7 @@ public class hammerHead : MonoBehaviour
     private Vector3 posPrevFrame;
     public float slamRadius;
     public float slamKnockbackAmount;
+    public UnityEvent slam;
 
     InputAction temporarySlamActivate;
 
@@ -38,6 +39,7 @@ public class hammerHead : MonoBehaviour
         if (temporarySlamActivate.WasPerformedThisFrame()) //temporary
         {
             killAllInRadius();
+            slam.Invoke();
             Debug.Log("boom!");
         }
 
