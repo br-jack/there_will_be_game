@@ -1,192 +1,233 @@
-using UnityEngine;
 using System.Collections.Generic;
-using TMPro;
+using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
-    /**
-    aliveEnemies: stores enemies currently in play.
-    formationColumns: max cols in formation (rows decided automatically).
-    formationSpacing: spacing between enemies in formation.
-    attackRingRadius: how far from players do the enemies stop to attack?
-    joinFormationDistance: max distance from formation that an enemy tries to join.
-    breakFormationDistance: max distance from player that an enemy leaves the formation.
-    */
-    public List<EnemyMovement> aliveEnemies = new List<EnemyMovement>();
-    public GameObject enemyPrefab;
-    private Transform _playerTransformRef;
+    private enum EnemyType { MeleeShielded, MeleeUnshielded, Ranged, Rapid }
 
-    [Header("Formation")]
-    public FormationType formationType = FormationType.Grid;
-    public int formationColumns = 5;
-    public Vector2 formationSpacing = new Vector2(3.0f, 3.0f);
-    public float attackRingRadius = 2.0f;
-    public float joinFormationDistance = 32f;
-    public float breakFormationDistance = 2f;
-    public float anchorStandoffBuffer = 1.5f;
-
-    [Header("Spawn")]
-    [SerializeField] private int spawnCount = 25;
-    public float spawnJitter = 0.75f;
-    public float spawnRadius = 0.5f;
-    private Vector3 _formationAnchor;
-    private float _formationCheckTimer = 0.0f;
-    private float _formationCheckInterval = 0.1f;
-
-    public enum FormationType
+    [System.Serializable]
+    public struct Wave
     {
-        Grid
+        public float duration;
+        public bool clearRemainingOnEnd;
+        public float spawnInterval;
+        public int meleeShielded;
+        public int meleeUnshielded;
+        public int ranged;
+        public int rapid;
     }
+
+    private const float BreakDuration = 5f;
+
+    [Header("Enemy Prefabs")]
+    [SerializeField] private GameObject meleeEnemyPrefab;
+    [SerializeField] private GameObject rapidEnemyPrefab;
+    [SerializeField] private GameObject rangedEnemyPrefab;
+
+    [SerializeField] private float minDistanceFromPlayer = 15f;
+    [SerializeField] private float maxDistanceFromPlayer = 100f;
+    private float navMeshSearchRadius = 2.5f;
+
+    [Header("Waves")]
+    // Spawner stays on the last wave once the waves have ran out.
+    [SerializeField] private Wave[] waves;
+
+    // Fires when a new wave begins. The int is the 1-based wave number.
+    public event System.Action<int> OnWaveStarted;
+
+    private Transform player;
+
+    // Keep track of enemies of each enemy type.
+    private readonly List<StandardEnemyAI> aliveMeleeShielded = new List<StandardEnemyAI>();
+    private readonly List<StandardEnemyAI> aliveMeleeUnshielded = new List<StandardEnemyAI>();
+    private readonly List<StandardEnemyAI> aliveRanged = new List<StandardEnemyAI>();
+    private readonly List<StandardEnemyAI> aliveRapid = new List<StandardEnemyAI>();
+
+    private int currentWaveIndex = 0;
+    private float waveTimer = 0f;
+    private float breakTimer = 0f;
+    private bool onBreak = false;
+    private float spawnTimer = 0f;
+
     private void Start()
     {
-        _formationAnchor = transform.position;
-        GameObject _playerRef = GameObject.FindWithTag("Player");
-        if (_playerRef != null) _playerTransformRef = _playerRef.transform;
-
-        SpawnFormation(spawnCount, transform.position);
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+        }
+        OnWaveStarted?.Invoke(1);
     }
 
-    void Update()
+    private void Update()
     {
-        _formationCheckTimer += Time.deltaTime;
+        // Prune dead enemies.
+        aliveMeleeShielded.RemoveAll(e => e == null);
+        aliveMeleeUnshielded.RemoveAll(e => e == null);
+        aliveRanged.RemoveAll(e => e == null);
+        aliveRapid.RemoveAll(e => e == null);
 
-        if (_formationCheckTimer >= _formationCheckInterval)
+        if (player == null || waves == null || waves.Length == 0)
         {
-            UpdateFormationTargets();
-            _formationCheckTimer = 0.0f;
+            return;
         }
 
-        if (_playerTransformRef != null)
+        // Rest period between waves — no spawning.
+        if (onBreak)
         {
-            /* Anchor speed is set to the formation speed of the enemies in the formation.
-            If there are no enemies in the formation, use default value. */
-            float formationSpeed = 2f;
-            if (aliveEnemies.Count > 0)
+            breakTimer += Time.deltaTime;
+            if (breakTimer >= BreakDuration)
             {
-                formationSpeed = aliveEnemies[0].formationSpeed;
+                onBreak = false;
+                currentWaveIndex++;
+                waveTimer = 0f;
+                spawnTimer = 0f;
+                OnWaveStarted?.Invoke(currentWaveIndex + 1);
             }
+            return;
+        }
 
-            Vector3 anchorToPlayer = _playerTransformRef.position - _formationAnchor;
+        Wave currentWave = waves[currentWaveIndex];
 
-            float stopRadius = GetAnchorStopRadius();
-
-            // Check whether the formation anchor is close enough to the player already before moving it.
-            if (anchorToPlayer.magnitude < stopRadius)
+        // Advance to the next wave.
+        waveTimer += Time.deltaTime;
+        if (waveTimer >= currentWave.duration && currentWaveIndex < waves.Length - 1)
+        {
+            if (currentWave.clearRemainingOnEnd)
             {
-                // If the anchor position is less than a threshold distance to the player, don't move it
+                ClearAllEnemies();
             }
-            else
+            onBreak = true;
+            breakTimer = 0f;
+            return;
+        }
+
+        // Spawn on interval.
+        if (currentWave.spawnInterval <= 0f) return;
+
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer >= currentWave.spawnInterval)
+        {
+            spawnTimer = 0f;
+            TrySpawnWeighted(currentWave);
+        }
+    }
+
+    private void TrySpawnWeighted(Wave wave)
+    {
+        // Calculate remaining capacity for each type.
+        int remainMeleeShielded = Mathf.Max(0, wave.meleeShielded - aliveMeleeShielded.Count);
+        int remainMeleeUnshielded = Mathf.Max(0, wave.meleeUnshielded - aliveMeleeUnshielded.Count);
+        int remainRanged = Mathf.Max(0, wave.ranged - aliveRanged.Count);
+        int remainRapid = Mathf.Max(0, wave.rapid - aliveRapid.Count);
+
+        int total = remainMeleeShielded + remainMeleeUnshielded + remainRanged + remainRapid;
+        if (total <= 0) return;
+
+        // Weighted random pick.
+        int roll = Random.Range(0, total);
+        
+        // [0, remainMeleeShielded], [remainMeleeShielded, remainMeleeShielded + remainMeleeUnshielded], [remainMeleeShielded + remainMeleeUnshielded, remainMeleeShielded + remainMeleeUnshielded + remainRanged], [remainMeleeShielded + remainMeleeUnshielded + remainRanged, total]
+        if (roll < remainMeleeShielded)
+        {
+            SpawnEnemy(EnemyType.MeleeShielded);
+        }
+        else if (roll < remainMeleeShielded + remainMeleeUnshielded)
+        {
+            SpawnEnemy(EnemyType.MeleeUnshielded);
+        }
+        else if (roll < remainMeleeShielded + remainMeleeUnshielded + remainRanged)
+        {
+            SpawnEnemy(EnemyType.Ranged);
+        }
+        else
+        {
+            SpawnEnemy(EnemyType.Rapid);
+        }
+    }
+
+    private void SpawnEnemy(EnemyType type)
+    {
+        GameObject prefab;
+        bool keepShield;
+
+        switch (type)
+        {
+            case EnemyType.MeleeShielded:
+                prefab = meleeEnemyPrefab;
+                keepShield = true;
+                break;
+            case EnemyType.MeleeUnshielded:
+                prefab = meleeEnemyPrefab;
+                keepShield = false;
+                break;
+            case EnemyType.Ranged:
+                prefab = rangedEnemyPrefab;
+                keepShield = false;
+                break;
+            case EnemyType.Rapid:
+                prefab = rapidEnemyPrefab;
+                keepShield = false;
+                break;
+            default:
+                return;
+        }
+
+        if (prefab == null) return;
+
+        // Try to find a valid NavMesh position near the player.
+        for (int attempt = 0; attempt < 10; attempt++)
+        {
+            float angle = Random.Range(0f, Mathf.PI * 2f);
+            float distance = Random.Range(minDistanceFromPlayer, maxDistanceFromPlayer);
+            Vector3 offset = new Vector3(Mathf.Cos(angle) * distance, 0f, Mathf.Sin(angle) * distance);
+            Vector3 candidate = player.position + offset;
+
+            if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
             {
-                /* The anchor is further away from the player than the threshold.
-                Move it by displacement = speed * time,
-                BUT make sure the movement doesn't move the anchor any closer to the player than stopping distance */
-                float displacement = Mathf.Min(formationSpeed * Time.deltaTime, anchorToPlayer.magnitude - stopRadius);
-                _formationAnchor = _formationAnchor + anchorToPlayer.normalized * displacement;
+                GameObject spawned = Instantiate(prefab, hit.position, Quaternion.identity);
+                StandardEnemyAI ai = spawned.GetComponent<StandardEnemyAI>();
+                if (ai != null)
+                {
+                    // Strip shield if this type shouldn't have one.
+                    if (!keepShield && ai.shield != null)
+                    {
+                        Destroy(ai.shield);
+                        ai.shield = null;
+                    }
+
+                    // Track in the correct list.
+                    switch (type)
+                    {
+                        case EnemyType.MeleeShielded:   aliveMeleeShielded.Add(ai); break;
+                        case EnemyType.MeleeUnshielded: aliveMeleeUnshielded.Add(ai); break;
+                        case EnemyType.Ranged:          aliveRanged.Add(ai); break;
+                        case EnemyType.Rapid:           aliveRapid.Add(ai); break;
+                    }
+                }
+                return;
             }
-
         }
     }
 
-    public void SpawnFormation(int count, Vector3 spawnPosition)
+    private void ClearAllEnemies()
     {
-        _formationAnchor = spawnPosition;
+        ClearList(aliveMeleeShielded);
+        ClearList(aliveMeleeUnshielded);
+        ClearList(aliveRanged);
+        ClearList(aliveRapid);
+    }
 
-        Vector3 forward = transform.forward;
-        if (_playerTransformRef != null)
+    private void ClearList(List<StandardEnemyAI> list)
+    {
+        for (int i = 0; i < list.Count; i++)
         {
-            Vector3 toPlayer = _playerTransformRef.position - _formationAnchor;
-            if (toPlayer.sqrMagnitude > 0.001f) forward = toPlayer.normalized;
+            if (list[i] != null)
+            {
+                Destroy(list[i].gameObject);
+            }
         }
-
-        var (cols, rows) = GetFormationDimensions(count);
-
-        for (int i = 0; i < count; i++)
-        {
-            Vector3 offset = GetGridSpacing(i, count, forward, cols, rows);
-            Vector2 noise = Random.insideUnitCircle * spawnJitter;
-            Vector3 pos = _formationAnchor + offset + new Vector3(noise.x, 0f, noise.y);
-            pos.y = spawnPosition.y;
-
-            GameObject enemy = Instantiate(enemyPrefab, pos, transform.rotation);
-            EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
-            if (enemyMovement == null) continue;
-            enemyMovement.spawner = this;
-            aliveEnemies.Add(enemyMovement);
-        }
-
-        UpdateFormationTargets();
-    }
-
-    public void RemoveEnemy(EnemyMovement enemy)
-    {
-        aliveEnemies.Remove(enemy);
-        UpdateFormationTargets();
-    }
-
-    public void UpdateFormationTargets()
-    {
-        // Calculating directionToPlayer
-        Vector3 directionToPlayer = Vector3.forward;
-
-        if (_playerTransformRef != null)
-        {
-            Vector3 formationToPlayer = _playerTransformRef.position - _formationAnchor;
-
-            if (formationToPlayer.sqrMagnitude < 0.01f) formationToPlayer = Vector3.forward;
-            // Error mitigation: if distance of anchorToPlayer ~ 0 then use a fallback
-            directionToPlayer = formationToPlayer.normalized;
-        }
-
-        if (aliveEnemies.Count == 0) return;
-
-        var (cols, rows) = GetFormationDimensions(aliveEnemies.Count);
-
-        // Give each enemy E in the formation their formation target
-        int formationIndex = 0;
-        for (int i = 0; i < aliveEnemies.Count; i++)
-        {
-            EnemyMovement E = aliveEnemies[i];
-            if (E == null) continue;
-
-            Vector3 offset = GetGridSpacing(formationIndex, aliveEnemies.Count, directionToPlayer, cols, rows);
-            E.SetFormationTarget(_formationAnchor + offset, directionToPlayer);
-            formationIndex++;
-        }
-    }
-
-    private (int cols, int rows) GetFormationDimensions(int totalCount)
-    {
-        // If there are fewer enemies than max columns, return enemies. Otherwise, return max columns.
-        int cols = (totalCount < formationColumns) ? totalCount : formationColumns;
-
-        // Rows are automatically decided based on {enemy count, columns}
-        int rows = Mathf.Max(1, Mathf.CeilToInt(totalCount / (float)cols));
-
-        return (cols, rows);
-    }
-
-    private Vector3 GetGridSpacing(int index, int totalCount, Vector3 forwardDirection, int cols, int rows)
-    {
-        // Calculate (column, row) of the current index
-        int C = index % cols;
-        int R = Mathf.FloorToInt(index / cols);
-
-        // Calculate the centre of the grid (by removing half the total width/length)
-        float centreX = C * formationSpacing.x - (cols - 1) * formationSpacing.x * 0.5f;
-        float centreZ = R * formationSpacing.y - (rows - 1) * formationSpacing.y * 0.5f;
-
-        // Project the grid offset into world space using the formation's right and forward axes.
-        Vector3 right = Vector3.Cross(Vector3.up, forwardDirection).normalized;
-        Vector3 forward = forwardDirection;
-        return right * centreX + forward * centreZ;
-    }
-
-    private float GetAnchorStopRadius()
-    {
-        var (cols, rows) = GetFormationDimensions(aliveEnemies.Count);
-        float depth = (rows - 1) * formationSpacing.y;
-
-        // base distance that enemies should stay away from player + 1/2 the formation depth + small extra offset
-        return attackRingRadius + depth * 0.5f + anchorStandoffBuffer;
+        list.Clear();
     }
 }

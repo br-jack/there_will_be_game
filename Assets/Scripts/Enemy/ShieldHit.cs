@@ -5,31 +5,18 @@ public class ShieldHit : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
-        if (attack == null)
-        {
-            return;
-        }
+        if (attack == null) return;
 
-        EnemyMovement enemy = GetComponentInParent<EnemyMovement>();
-        if (enemy == null)
-        {
-            return;
-        }
-        if (enemy.IsKnockedBack)
-        {
-            return;
-        }
+        StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
+        if (enemy == null) return;
+        if (enemy.IsKnockedBack) return;
+
         Debug.Log($"ShieldHit triggered by {other.gameObject.name}");
 
         enemy.MarkShieldHit();
-        
-        // Calculate knockback based on attack velocity
+
         float knockbackForce = attack.GetKnockbackForce();
-        
-        //Stagger enemy
         Vector3 knockbackDirection = enemy.transform.position - other.transform.position;
-        
-        // Faster hits launch enemies higher so they travel farther
         float upwardForceRatio = Mathf.Clamp(knockbackForce / 75f, 0.2f, 1.5f);
         knockbackDirection.y = upwardForceRatio;
         knockbackDirection.Normalize();
