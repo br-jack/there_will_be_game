@@ -105,16 +105,11 @@ public class HorseAnim : MonoBehaviour
             else if (_cc.velocity.magnitude > 0.1f) 
             {
                 _horseAnimator.SetInteger("Gait",1);
-
-                
                 //Debug.LogError("hors");
             }
             else
             {
                 _horseAnimator.SetInteger("Gait",0);
-
-                //horseAnimator.ResetTrigger("Gallop1");
-
             }
         }
         else
