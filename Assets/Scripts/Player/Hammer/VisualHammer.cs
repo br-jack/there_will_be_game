@@ -22,7 +22,7 @@ namespace Hammer
         public Vector3 largeHitboxCenter;
 
         [SerializeField] private Transform pivotTransform;
-        [SerializeFrield] private Rigidbody _rb;
+        private Rigidbody _rb;
 
         //[SerializeField] private Rigidbody horseRigidBody;
 
@@ -49,7 +49,7 @@ namespace Hammer
 
         void Awake()
         {
-            //_rb = GetComponent<Rigidbody>();
+            _rb = GetComponent<Rigidbody>();
             _hitbox = GetComponent<BoxCollider>();
             Debug.Assert(_hitbox != null);
         }
