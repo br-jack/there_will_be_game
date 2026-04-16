@@ -10,7 +10,11 @@ namespace Score
         Speed,
         LowHealth,
         Air,
-        ShieldBypass
+        ShieldBypass,
+        atATrot,
+        atACanter,
+        atAGallop,
+        OnFire
     }
 
     public enum ReportCard

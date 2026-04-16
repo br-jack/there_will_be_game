@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8339629706695140088}
   - component: {fileID: 8393862051255336773}
   - component: {fileID: 4399091791770355712}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Soldier
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 87239505607784755}
   - component: {fileID: 3825456421266901065}
   - component: {fileID: 7558864114923480485}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BodyHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,6 +384,9 @@ MonoBehaviour:
   lowHealthThreshold: 30
   airBonusScore: 25
   shieldBypassBonusScore: 40
+  atATrotBonusScore: 5
+  atACanterBonusScore: 20
+  atAGallopBonusScore: 50
 --- !u!82 &7558864114923480485
 AudioSource:
   m_ObjectHideFlags: 0
@@ -495,7 +498,7 @@ GameObject:
   - component: {fileID: 8238429626968606762}
   - component: {fileID: 3878966871341973484}
   - component: {fileID: 5835659165937718887}
-  m_Layer: 3
+  m_Layer: 9
   m_Name: Shield
   m_TagString: Shield
   m_Icon: {fileID: 0}
@@ -512,7 +515,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.016, y: 0.897, z: 0.701}
-  m_LocalScale: {x: 0.8832601, y: 0.83393997, z: 0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4817801517837622803}
@@ -589,7 +592,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.6, y: 1.25, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3878966871341973484
 MonoBehaviour:

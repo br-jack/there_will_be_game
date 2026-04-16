@@ -24,18 +24,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          lfs: true
+          lfs: false
           
       # Cache
       - uses: actions/cache@v5
         with:
           path: Library
-          key: Library-Caligula-Linux
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-Caligula-
-            Library-
-
-      # Test
+            Library- 
+        
+        # Test
       - name: Run tests
         uses: game-ci/unity-test-runner@v4
         env:
@@ -69,16 +68,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          lfs: true
+          lfs: false
           
       # Cache
       - uses: actions/cache@v5
         with:
           path: Library
-          key: Library-Caligula-Windows
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-Caligula-
-            Library-
+            Library- 
 
       # Build
       - name: Build project
