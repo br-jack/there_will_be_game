@@ -2382,9 +2382,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 143379230}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 143379229}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
 --- !u!4 &79431040 stripped
@@ -4751,37 +4748,6 @@ MonoBehaviour:
   kickCooldown: 1.5
   moveSpeed: 11
   _playerTransformRef: {fileID: 0}
---- !u!114 &143379230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 143379225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 11
-  formationSpeed: 11
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0.01
-  currentKnockbackTimer: 0
-  onDeathTimer: 5
-  deathGroundCheckDistance: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!4 &144297038 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2620614992390784229, guid: 4b6eaf456d1a1b94491510a66634c774, type: 3}
@@ -5025,37 +4991,6 @@ MonoBehaviour:
   kickCooldown: 2
   moveSpeed: 11
   _playerTransformRef: {fileID: 0}
---- !u!114 &151501459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 151501447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 0
-  formationSpeed: 0
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0
-  currentKnockbackTimer: 0
-  onDeathTimer: 0
-  deathGroundCheckDistance: 0.3
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!4 &155159892 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6280155018817424375, guid: af93023d5a9813f4190f92ac33a91575, type: 3}
@@ -8183,9 +8118,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 151501455}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 151501459}
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 151501458}
@@ -60689,37 +60621,6 @@ MonoBehaviour:
   kickCooldown: 2
   moveSpeed: 11
   _playerTransformRef: {fileID: 0}
---- !u!114 &1196436722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1196436710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94204de25b4424d9892180b8e555102b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultSpeed: 0
-  formationSpeed: 0
-  spawner: {fileID: 0}
-  shield: {fileID: 0}
-  arriveRadius: 0.6
-  stopRadius: 0.18
-  velocityLerp: 0.25
-  slotJitterRadius: 0.08
-  minForwardClearLen: 0.45
-  _playerHealthRef: {fileID: 0}
-  _playerTransformRef: {fileID: 0}
-  hasFormationTarget: 0
-  knockbackTime: 0
-  currentKnockbackTimer: 0
-  onDeathTimer: 0
-  deathGroundCheckDistance: 0.3
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1001 &1197792115
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -76181,6 +76082,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 792093824157126630, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+    - {fileID: 1477311832899122197, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
     m_RemovedGameObjects:
     - {fileID: 2447194060461479100, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
     m_AddedGameObjects:
@@ -104733,9 +104635,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1196436718}
-    - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1196436722}
     - targetCorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1196436721}
