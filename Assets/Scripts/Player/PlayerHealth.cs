@@ -26,6 +26,8 @@ public class PlayerHealth : MonoBehaviour
     [Header("Score Penalty")]
     [SerializeField] private int fearPenaltyOnRespawn = 500;
 
+    [SerializeField] private Renderer[] playerRenderers;
+
     private int current;
     private bool isRespawning = false;
 
@@ -81,7 +83,7 @@ public class PlayerHealth : MonoBehaviour
 
             return;
         }
-
+        SetPlayerVisible(false);
         //OnDeath?.Invoke();
         StartCoroutine(RespawnAfterDelay());
     }
@@ -143,10 +145,18 @@ public class PlayerHealth : MonoBehaviour
         }
 
         ResetHealthToFull();
-
+        SetPlayerVisible(true);
         playerLives.MakeInvincibleFor(respawnInvincibilityDuration);
 
         invulnerabilityFlash.PlayFlash();
+    }
+
+    private void SetPlayerVisible(bool visible)
+    {
+        foreach (Renderer rend in playerRenderers)
+        {
+            rend.enabled = visible;
+        }
     }
 
 }
