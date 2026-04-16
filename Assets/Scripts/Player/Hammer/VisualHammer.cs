@@ -22,7 +22,7 @@ namespace Hammer
         public Vector3 largeHitboxCenter;
 
         [SerializeField] private Transform pivotTransform;
-        //private Rigidbody _rb;
+        [SerializeFrield] private Rigidbody _rb;
 
         //[SerializeField] private Rigidbody horseRigidBody;
 
@@ -116,6 +116,7 @@ namespace Hammer
             // maybe horse acceleration?
             //_rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, horseRigidBody.linearVelocity, 0.8f);
 
+            _rb.linearVelocity = _targetHammer.Velocity;
             MoveToTargetPosition();
             MoveToTargetRotation();
         }
