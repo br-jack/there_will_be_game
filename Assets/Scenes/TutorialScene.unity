@@ -2448,6 +2448,53 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8686296449933936549, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
   m_PrefabInstance: {fileID: 1486947145}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2120864315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2120864316}
+  - component: {fileID: 2120864317}
+  m_Layer: 0
+  m_Name: PointTask
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2120864316
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120864315}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -30.793848, y: 16.884762, z: -27.941341}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2120864317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120864315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ae1e0e2c5ebd6546b27be73294d8a83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskName: 
+  taskDescription: 
+  isComplete: 0
 --- !u!1001 &2237668133860025892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4515,3 +4562,4 @@ SceneRoots:
   - {fileID: 1382921500}
   - {fileID: 494643042}
   - {fileID: 2237668133860025892}
+  - {fileID: 2120864316}
