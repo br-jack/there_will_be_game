@@ -7,27 +7,36 @@ public class PlayerParticles : MonoBehaviour
     public ParticleSystem runParticles;
     public ParticleSystem jumpParticles;
     
-    [SerializeField] private HorseMovement horseMovement;
-
+    //[SerializeField] private HorseMovement horseMovement;
+    [SerializeField] private horseMovementGaits _horseMovementGaits;
+    private CharacterController _cc;
+    
     private ParticleSystem.Particle[] _particleBuffer;
     
     void Awake()
     {
+        _cc = GetComponent<CharacterController>();
         if (jumpTrail != null)
         {
             jumpTrail.emitting = false;
+        }
+
+        if (runParticles != null)
+        {
+            var emission = jumpParticles.emission;
+            emission.enabled = false;
         }
 
     }
     
     public void OnEnable()
     {
-        horseMovement.jumpStarted += TriggerJumpParticles;
+        _horseMovementGaits.jumpStarted += TriggerJumpParticles;
     }
 
     public void OnDisable()
     {
-        horseMovement.jumpStarted -= TriggerJumpParticles; 
+        _horseMovementGaits.jumpStarted -= TriggerJumpParticles; 
     }
 
     private IEnumerator PlayJumpParticles()
@@ -43,10 +52,15 @@ public class PlayerParticles : MonoBehaviour
         
         yield return new WaitForSeconds(0.1f);
 
+        //just decrease particles always for now, i don't understand how this works because i am foolish!
+        DecreaseParticles(jumpParticles);
+
+        /*
         if (!horseMovement.JumpButtonHeld)
         {
             DecreaseParticles(jumpParticles);
         }
+        */
     }
     
     private void DecreaseParticles(ParticleSystem pSystem)
@@ -77,20 +91,28 @@ public class PlayerParticles : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (horseMovement.IsGrounded)
-        {
-            // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
-            // sizeOverLifetime.sizeMultiplier = 1;
-            
-            runParticles.Play();
-            if (jumpTrail != null)
+        if (_cc != null) {
+            if (_cc.isGrounded)
             {
-                jumpTrail.emitting = false;
+                // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
+                // sizeOverLifetime.sizeMultiplier = 1;
+
+                if (runParticles != null && !runParticles.isEmitting)
+                {
+                    var emission = runParticles.emission;
+                    emission.enabled = true;
+                }
+                
+                if (jumpTrail != null)
+                {
+                    jumpTrail.emitting = false;
+                }
             }
-        }
-        else
-        {
-            runParticles.Stop();
+            else
+            {
+                var emission = runParticles.emission;
+                emission.enabled = false;
+            }
         }
     }
 }

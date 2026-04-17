@@ -11,6 +11,9 @@ namespace Score
         LowHealth,
         Air,
         ShieldBypass,
+        atATrot,
+        atACanter,
+        atAGallop,
         OnFire
     }
 
