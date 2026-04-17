@@ -14,7 +14,7 @@ public class HorseAnim : MonoBehaviour
     public void animateJump()
     {
         _horseAnimator.SetTrigger("Jump");
-        Debug.LogError("horszz");
+        //Debug.LogError("horszz");
         currentlyJumping = true;
     }
 
