@@ -7,7 +7,6 @@ public class TutorialReachPointTask : BaseTask
     private void Start()
     {
         taskName = "Approach the marked area";
-        taskDescription = "Walk to the glowing marker";
         StartTask();
     }
 
