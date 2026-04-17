@@ -23,7 +23,7 @@ public class PlayerParticles : MonoBehaviour
 
         if (runParticles != null)
         {
-            var emission = jumpParticles.emission;
+            var emission = runParticles.emission;
             emission.enabled = false;
         }
 
@@ -53,7 +53,7 @@ public class PlayerParticles : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         //just decrease particles always for now, i don't understand how this works because i am foolish!
-        DecreaseParticles(jumpParticles);
+        //DecreaseParticles(jumpParticles);
 
         /*
         if (!horseMovement.JumpButtonHeld)
