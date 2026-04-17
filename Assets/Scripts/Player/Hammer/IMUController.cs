@@ -16,7 +16,8 @@ namespace Hammer
 
         private Thread _ioThread;
         private volatile bool _running;
-        private readonly ConcurrentQueue<string> _dataQueue = new ConcurrentQueue<string>();
+        private readonly ConcurrentQueue<string> sendQueue = new ConcurrentQueue<string>();
+        private readonly ConcurrentQueue<string> recvQueue = new ConcurrentQueue<string>();
 
         private const int TimeoutMs = 50;
         
@@ -163,8 +164,15 @@ namespace Hammer
                 {
                     try
                     {
+                        if (!sendQueue.IsEmpty)
+                        {
+                            sendQueue.TryDequeue(out string dataToSend);
+
+                            _stream.WriteLine(dataToSend);
+                        }
+                        
                         string receivedData = _stream.ReadLine();
-                        _dataQueue.Enqueue(receivedData);
+                        recvQueue.Enqueue(receivedData);
                     }
                     catch// (Exception ex)
                     {
@@ -182,7 +190,7 @@ namespace Hammer
 
         private void ParseStream()
         {
-            while (_dataQueue.TryDequeue(out string data))
+            while (recvQueue.TryDequeue(out string data))
             {
                 Debug.Log($"[Main Thread] Received: {data}");
                 string[] parsedData = data.Trim().Split(':');
@@ -263,7 +271,7 @@ namespace Hammer
             }
             
             Debug.Log("Sending Rumble Request");
-            _stream.WriteLine($"RD{msDuration}");
+            sendQueue.Enqueue($"RD{msDuration}");
         }
 
         public void Cleanup()
@@ -276,7 +284,8 @@ namespace Hammer
             }
             _ioThread = null;
 
-            _dataQueue.Clear();
+            recvQueue.Clear();
+            sendQueue.Clear();
 
             _stream?.Close();
             _stream = null;
