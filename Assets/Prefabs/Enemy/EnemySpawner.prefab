@@ -47,23 +47,25 @@ MonoBehaviour:
   meleeEnemyPrefab: {fileID: 4937528112206273530, guid: 958da4c8e8c7d48169847e9e756975ce, type: 3}
   rapidEnemyPrefab: {fileID: 4993346534810899319, guid: 0efbe9a0fe2994794be8f454b182b63d, type: 3}
   rangedEnemyPrefab: {fileID: 4937528112206273530, guid: 525c1ca2571d54d5380ac4f07f2d7659, type: 3}
-  minDistanceFromPlayer: 50
-  maxDistanceFromPlayer: 150
   waves:
-  - duration: 30
+  - duration: 10
     clearRemainingOnEnd: 0
-    spawnInterval: 0.5
+    spawnInterval: 0.016666668
     meleeShielded: 0
-    meleeUnshielded: 25
+    meleeUnshielded: 300
     ranged: 0
     rapid: 0
-  - duration: 120
+    minDistanceFromPlayer: 90
+    maxDistanceFromPlayer: 300
+  - duration: 1
     clearRemainingOnEnd: 0
-    spawnInterval: 3
+    spawnInterval: 0.01666667
     meleeShielded: 0
     meleeUnshielded: 70
     ranged: 10
     rapid: 0
+    minDistanceFromPlayer: 40
+    maxDistanceFromPlayer: 60
   - duration: 120
     clearRemainingOnEnd: 0
     spawnInterval: 8
@@ -71,6 +73,8 @@ MonoBehaviour:
     meleeUnshielded: 90
     ranged: 30
     rapid: 5
+    minDistanceFromPlayer: 15
+    maxDistanceFromPlayer: 100
   - duration: 500
     clearRemainingOnEnd: 0
     spawnInterval: 16
@@ -78,3 +82,5 @@ MonoBehaviour:
     meleeUnshielded: 40
     ranged: 20
     rapid: 10
+    minDistanceFromPlayer: 15
+    maxDistanceFromPlayer: 100
