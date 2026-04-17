@@ -1214,7 +1214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8400582436032926241}
   - component: {fileID: -2375476118679158137}
-  - component: {fileID: 6241579195651849968}
+  - component: {fileID: 7946049107334299951}
   m_Layer: 0
   m_Name: marketStallBF
   m_TagString: Untagged
@@ -1289,8 +1289,8 @@ MonoBehaviour:
   explosionRadius: 3
   soundVolume: 1
   destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
---- !u!64 &6241579195651849968
-MeshCollider:
+--- !u!65 &7946049107334299951
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1307,10 +1307,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 4.4, y: 3.5, z: 4.4}
+  m_Center: {x: 7.25, y: 1.2, z: 6.5}
 --- !u!1 &4280079560169031800
 GameObject:
   m_ObjectHideFlags: 0

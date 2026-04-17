@@ -1817,6 +1817,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6644311477858102710}
   - component: {fileID: 925796404625792202}
+  - component: {fileID: 365601287731056869}
   m_Layer: 0
   m_Name: marketStallPot
   m_TagString: Untagged
@@ -1881,6 +1882,27 @@ MonoBehaviour:
   explosionRadius: 3
   soundVolume: 1
   destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
+--- !u!65 &365601287731056869
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8537775288727986331}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.2, y: 3, z: 3.2}
+  m_Center: {x: -0.8, y: 1.4, z: 10.3}
 --- !u!1 &8751621085866106887
 GameObject:
   m_ObjectHideFlags: 0

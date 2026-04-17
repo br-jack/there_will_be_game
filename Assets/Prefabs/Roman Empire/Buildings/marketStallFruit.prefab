@@ -182,7 +182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7147908631259322474}
   - component: {fileID: -3841579785581729699}
-  - component: {fileID: 1636766660144512920}
+  - component: {fileID: 4355384005013465669}
   m_Layer: 0
   m_Name: marketStallFruit
   m_TagString: Untagged
@@ -256,8 +256,8 @@ MonoBehaviour:
   explosionRadius: 3
   soundVolume: 1
   destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
---- !u!64 &1636766660144512920
-MeshCollider:
+--- !u!65 &4355384005013465669
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -274,10 +274,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 4.4, y: 3.4, z: 2.1}
+  m_Center: {x: 12.2, y: 1.5, z: 6.8}
 --- !u!1 &678389863719897840
 GameObject:
   m_ObjectHideFlags: 0
