@@ -133,9 +133,9 @@ namespace Hammer
                     }
 
                     //Seems to cause a memory leak, so only enable this when debugging Bluetooth
-                    catch (Exception /*ex*/)
+                    catch //(Exception /*ex*/)
                     {
-                       Debug.LogWarning("There was an error in reading blutooth data! Apparently printing the error message causes a memory leak, so not doing that."); 
+                       //Debug.LogWarning("There was an error in reading blutooth data! Apparently printing the error message causes a memory leak, so not doing that."); 
                         //Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
                     
