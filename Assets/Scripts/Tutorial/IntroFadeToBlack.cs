@@ -27,6 +27,8 @@ public class IntroFadeText : MonoBehaviour
     [SerializeField] private GameObject healthBarUI;
     [SerializeField] private GameObject boonTextUI;
     [SerializeField] private GameObject taskPanelUI;
+    [SerializeField] private GameObject villageArrowUI;
+    [SerializeField] private GameObject waveAnnouncerUI;
 
     [Header("Tutorial Prompt UI")]
     [SerializeField] private GameObject tutorialPromptUI;
@@ -201,5 +203,7 @@ public class IntroFadeText : MonoBehaviour
         healthBarUI.SetActive(false);
         boonTextUI.SetActive(false);
         taskPanelUI.SetActive(false);
+        villageArrowUI.SetActive(false);
+        waveAnnouncerUI.SetActive(false);
     }
 }
