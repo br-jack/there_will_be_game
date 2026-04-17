@@ -26358,6 +26358,52 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1644906529341077085, guid: 9142e78439d28a040a07c1a3e24d7442, type: 3}
   m_PrefabInstance: {fileID: 610406208}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &528525036
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 528525038}
+  - component: {fileID: 528525037}
+  m_Layer: 0
+  m_Name: GameTimer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &528525037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528525036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1eb64635bd754db687298f44f0ce2ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 300
+  timerText: {fileID: 1671670062}
+--- !u!4 &528525038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528525036}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 433.25, y: 379.75, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &531526145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -86311,7 +86357,6 @@ GameObject:
   - component: {fileID: 1671670061}
   - component: {fileID: 1671670063}
   - component: {fileID: 1671670062}
-  - component: {fileID: 1671670064}
   m_Layer: 5
   m_Name: TimerText
   m_TagString: Untagged
@@ -86437,20 +86482,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1671670060}
   m_CullTransparentMesh: 1
---- !u!114 &1671670064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671670060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1eb64635bd754db687298f44f0ce2ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 10
-  timerText: {fileID: 1671670062}
 --- !u!1001 &1674892259
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -115769,3 +115800,4 @@ SceneRoots:
   - {fileID: 216739649}
   - {fileID: 1963458287}
   - {fileID: 2237668133860025892}
+  - {fileID: 528525038}
