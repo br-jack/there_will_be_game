@@ -635,7 +635,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -646,7 +646,7 @@
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -657,7 +657,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -668,7 +668,7 @@
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -679,7 +679,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -690,7 +690,7 @@
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -701,7 +701,7 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -712,7 +712,7 @@
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -723,7 +723,7 @@
                     "path": "*/{Submit}",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
+                    "groups": "Gamepad;Touch;Joystick;XR;Main",
                     "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -734,7 +734,7 @@
                     "path": "*/{Cancel}",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR",
+                    "groups": "Gamepad;Touch;Joystick;XR;Main",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -745,7 +745,7 @@
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -756,7 +756,7 @@
                     "path": "<Pen>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -778,7 +778,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -789,7 +789,7 @@
                     "path": "<Pen>/tip",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -822,7 +822,7 @@
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -833,7 +833,7 @@
                     "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "MiddleClick",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -844,7 +844,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Main",
                     "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -876,8 +876,8 @@
     ],
     "controlSchemes": [
         {
-            "name": "Keyboard&Mouse",
-            "bindingGroup": "Keyboard&Mouse",
+            "name": "Main",
+            "bindingGroup": "Main",
             "devices": [
                 {
                     "devicePath": "<Keyboard>",
@@ -888,13 +888,7 @@
                     "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
-                }
-            ]
-        },
-        {
-            "name": "Gamepad",
-            "bindingGroup": "Gamepad",
-            "devices": [
+                },
                 {
                     "devicePath": "<Gamepad>",
                     "isOptional": false,
