@@ -27,6 +27,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int fearPenaltyOnRespawn = 500;
 
     [SerializeField] private Renderer[] playerRenderers;
+    [SerializeField] private DeathTextUI deathTextUI;
 
     private int current;
     private bool isRespawning = false;
@@ -116,6 +117,10 @@ public class PlayerHealth : MonoBehaviour
     {
         isRespawning = true;
         ScoreManager.Instance.RemoveFear(fearPenaltyOnRespawn);
+        if (deathTextUI != null)
+        {
+            deathTextUI.ShowDeathText();
+        }
         yield return new WaitForSeconds(respawnDelay);
         RespawnPlayer();
         isRespawning = false;
