@@ -41,10 +41,10 @@ public class horseMovementGaits : MonoBehaviour
     [SerializeField] private Vector3 verticalVelocity = Vector3.zero; //serialised as bugged i think
     public Action jumpStarted;
     
-    private float _throttleInput;
-    private float _turnInput;
-    private float _brakeInput;
-    private bool _jumpInput;
+    [SerializeField] private float _throttleInput;
+    [SerializeField] private float _turnInput;
+    [SerializeField] private float _brakeInput;
+    [SerializeField] private bool _jumpInput;
     //private bool _jumpButtonPressed;
     //private bool _jumpButtonHeld;
 
@@ -63,6 +63,8 @@ public class horseMovementGaits : MonoBehaviour
 
     private CharacterController _cc;
     private Transform _tf;
+
+    [SerializeField] private bool isGrounded;
     
     //These input functions (I believe) occur before Update(), 
     //so we can update the _xInput variables in them, and then use those variables in Update()
@@ -163,7 +165,10 @@ public class horseMovementGaits : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {       
+    {
+
+        isGrounded = _cc.isGrounded;
+        
         if (jumpLockedTime > 0.0f) {jumpLockedTime -= Time.deltaTime;} 
         else {jumpLockedTime = 0.0f;}
 
