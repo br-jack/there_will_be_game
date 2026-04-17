@@ -589,14 +589,14 @@ MonoBehaviour:
   trotSpeed: 13
   canterSpeed: 19
   gallopSpeed: 25
-  reverseSpeed: 0
+  reverseSpeed: -3
   chargeRequiredToCanter: 1.5
   chargeRequiredToGallop: 3.5
   jumpHeight: 16
-  turnSpeedGroundedWalk: 80
-  turnSpeedGroundedTrot: 60
-  turnSpeedGroundedCanter: 40
-  turnSpeedGroundedGallop: 20
+  turnSpeedGroundedWalk: 160
+  turnSpeedGroundedTrot: 115
+  turnSpeedGroundedCanter: 85
+  turnSpeedGroundedGallop: 60
   turnSpeedMidair: 15
   acceleration: 16
   deceleration: 25
@@ -607,6 +607,11 @@ MonoBehaviour:
   gait: 1
   currentSpeed: 0
   verticalVelocity: {x: 0, y: -1, z: 0}
+  driftLateralSlippage: 0.8
+  driftSteerMultiplier: 1.25
+  driftSpeedThreshold: 17
+  driftFrictionMultiplyer: 0.8
+  horseVisual: {fileID: 654467425185220409}
 --- !u!114 &9012345678901234567
 MonoBehaviour:
   m_ObjectHideFlags: 0
