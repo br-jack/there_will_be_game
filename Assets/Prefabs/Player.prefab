@@ -313,14 +313,6 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 9a96326d-3d86-498c-a863-7e3a2455f7d1
-    m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f7bbe2b4-f8e9-469f-8823-060ee45a8374
-    m_ActionName: 'Player/Fire[/Mouse/leftButton]'
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 7945e04d-11c0-4981-9f36-6fff31b258f4
     m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
@@ -425,8 +417,8 @@ MonoBehaviour:
     m_ActionName: Player/Steer
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4768003233324626996}
-        m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
@@ -464,7 +456,7 @@ MonoBehaviour:
     m_ActionId: 49d66869-2414-469f-9248-f9689d2d0b00
     m_ActionName: 'Player/gearDown[/XInputControllerWindows/leftShoulder,/Keyboard/q]'
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Gamepad
+  m_DefaultControlScheme: Main
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -519,16 +511,11 @@ MonoBehaviour:
   gait: 1
   currentSpeed: 0
   verticalVelocity: {x: 0, y: -1, z: 0}
-  _throttleInput: 0
-  _turnInput: 0
-  _brakeInput: 0
-  _jumpInput: 0
   driftLateralSlippage: 0.8
   driftSteerMultiplier: 1.25
   driftSpeedThreshold: 17
   driftFrictionMultiplyer: 0.8
   horseVisual: {fileID: 654467425185220409}
-  isGrounded: 0
 --- !u!114 &9012345678901234567
 MonoBehaviour:
   m_ObjectHideFlags: 0
