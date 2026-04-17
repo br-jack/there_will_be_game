@@ -28,7 +28,8 @@ public class horseMovementGaits : MonoBehaviour
     public float deceleration = 6f;
     public float minTimeBetweenJumps; //for how long are you unable to jump after jumping
     public float chargeDecay;
-    public float gravity; 
+    public float gravity;
+    public static Action OnTutorialJump;
 
     [Header("Read-only in editor")]
     public float currentRunCharge; //should be private, but i want to see it! 
@@ -209,6 +210,7 @@ public class horseMovementGaits : MonoBehaviour
                     //not sure why we are invoking two things here! once i understand, ill try to do with just one
                     jumpStarted.Invoke();
                     jump.Invoke();
+                    OnTutorialJump?.Invoke();
                     jumpLockedTime = minTimeBetweenJumps;
                 }
                 
