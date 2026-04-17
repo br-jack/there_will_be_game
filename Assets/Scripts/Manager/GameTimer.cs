@@ -1,13 +1,12 @@
 using TMPro;
 using UnityEngine;
 
-// Counts down from `duration` seconds while the game is in the Playing state,
-// updating a TMP_Text with an mm:ss readout. When it reaches zero, transitions
-// GameStateManager into GameOver, which triggers the existing GameOverUI.Show
-// flow.
+// Edit duration to edit the time that counts down.
+// There's a text reference to assign so that the correct mm::ss is displayed while the game plays
+// When timer reaches 0, it transitions the GameStateManager into GameOver, which shows the GameOver panel.
 public class GameTimer : MonoBehaviour
 {
-    [SerializeField] private float duration = 300f;   // 5 minutes
+    [SerializeField] private float duration = 300f;
     [SerializeField] private TMP_Text timerText;
 
     private float _timeRemaining;
@@ -23,10 +22,6 @@ public class GameTimer : MonoBehaviour
     {
         if (_finished) return;
 
-        // Freeze the timer during pause and game-over. Other states (including
-        // the default Menu state when pressing Play directly on MainScene in
-        // the editor) still tick — Time.timeScale=0 during pause freezes
-        // Time.deltaTime anyway, the explicit check is belt-and-braces.
         GameStateManager gsm = GameStateManager.Instance;
         if (gsm != null && (gsm.CurState == GameState.Paused || gsm.CurState == GameState.GameOver)) return;
 
