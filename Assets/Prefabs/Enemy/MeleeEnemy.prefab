@@ -2033,7 +2033,7 @@ MonoBehaviour:
     damage: 10
     range: 2
     cooldown: 2
-    chargeTime: 0.85
+    chargeTime: 1.1
   useStrike: 1
   holdDistance: 6
   holdDistanceVariance: 1.5
@@ -2046,7 +2046,7 @@ MonoBehaviour:
   attackTrigger: Attack
   hitTrigger: Hit
   deadTrigger: Die
-  useDamageAnimEvent: 0
+  useDamageAnimEvent: 1
 --- !u!95 &8617838431146807415
 Animator:
   serializedVersion: 7
@@ -2730,15 +2730,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4659700895981420, guid: 9ce7b7c5a512af242a53ea0c2c6b97a9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.00055
       objectReference: {fileID: 0}
     - target: {fileID: 4659700895981420, guid: 9ce7b7c5a512af242a53ea0c2c6b97a9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.00083
       objectReference: {fileID: 0}
     - target: {fileID: 4659700895981420, guid: 9ce7b7c5a512af242a53ea0c2c6b97a9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.00004
       objectReference: {fileID: 0}
     - target: {fileID: 4659700895981420, guid: 9ce7b7c5a512af242a53ea0c2c6b97a9, type: 3}
       propertyPath: m_LocalRotation.w
