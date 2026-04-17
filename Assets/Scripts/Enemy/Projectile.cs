@@ -29,6 +29,7 @@ public class Projectile : MonoBehaviour
         rb.linearVelocity += Physics.gravity * gravityScale * Time.fixedDeltaTime;
         if (rb.linearVelocity.sqrMagnitude > 0.0001f)
         {
+
             transform.forward = rb.linearVelocity.normalized;
         }
     }
