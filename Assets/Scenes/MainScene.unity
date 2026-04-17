@@ -84156,9 +84156,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7110818281145674817, guid: 622bd2dc79ba5b94a880bc6db26a5715, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1636003414}
-    - targetCorrespondingSourceObject: {fileID: 7110818281145674817, guid: 622bd2dc79ba5b94a880bc6db26a5715, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1636003415}
   m_SourcePrefab: {fileID: 100100000, guid: 622bd2dc79ba5b94a880bc6db26a5715, type: 3}
 --- !u!4 &1636003410 stripped
@@ -84166,24 +84163,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7630614140603266811, guid: 622bd2dc79ba5b94a880bc6db26a5715, type: 3}
   m_PrefabInstance: {fileID: 1636003409}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1636003414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 586709010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fragmentsPrefab: {fileID: 0}
-  breakForceThreshold: 15
-  explosionForce: 300
-  explosionRadius: 3
-  soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
 --- !u!114 &1636003415
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -55,19 +55,26 @@ MonoBehaviour:
     spawnInterval: 0.5
     meleeShielded: 0
     meleeUnshielded: 25
-    ranged: 10
+    ranged: 0
     rapid: 0
   - duration: 120
     clearRemainingOnEnd: 0
     spawnInterval: 3
-    meleeShielded: 5
-    meleeUnshielded: 15
+    meleeShielded: 0
+    meleeUnshielded: 70
     ranged: 10
-    rapid: 5
+    rapid: 0
   - duration: 120
     clearRemainingOnEnd: 0
     spawnInterval: 8
     meleeShielded: 5
-    meleeUnshielded: 20
-    ranged: 10
+    meleeUnshielded: 90
+    ranged: 30
     rapid: 5
+  - duration: 500
+    clearRemainingOnEnd: 0
+    spawnInterval: 16
+    meleeShielded: 20
+    meleeUnshielded: 40
+    ranged: 20
+    rapid: 10
