@@ -58,9 +58,18 @@ public class HammerManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        Application.targetFrameRate = 60;
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        //Aim for around 60fps
+        if (120 <= Screen.currentResolution.refreshRateRatio.value)
+        {
+            QualitySettings.vSyncCount = 2;
+        }
+        else
+        {
+            QualitySettings.vSyncCount = 1;
+        }
         
         // Caligula is a PC game, this is only for testing with Unity Remote        
         #if (UNITY_IOS || UNITY_ANDROID)
