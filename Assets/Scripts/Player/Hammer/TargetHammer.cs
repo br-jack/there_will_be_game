@@ -39,10 +39,8 @@ namespace Hammer
         private Vector3 frameAcceleration;
         private Vector3 velocity;
 
-        public Vector3 Velocity
-        {
-            get { return velocity; }
-        }
+        public Vector3 Velocity => velocity;
+        public Vector3 Acceleration => frameAcceleration;
 
         private IController _controllerRef;
 
