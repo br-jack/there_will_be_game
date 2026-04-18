@@ -24,7 +24,7 @@ namespace Hammer
         [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
 
-        //[SerializeField] private Rigidbody horseRigidBody;
+        [SerializeField] private Rigidbody horseRigidBody;
 
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
@@ -56,21 +56,29 @@ namespace Hammer
 
         private void MoveToTargetPosition()
         {
+            transform.position = _targetHammer.transform.position;
             Vector3 toTarget = _targetHammer.transform.position - transform.position;
+            float distance = toTarget.magnitude;
+
             Vector3 springForce = toTarget * positionSpringStrength;
-            Vector3 dampingForce = -_rb.linearVelocity * positionDamping;
-            _rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
+
+            // horses are much faster than hammers
+            // Vector3 dampingForce = -(_rb.linearVelocity - horseRigidBody.linearVelocity) * positionDamping;
+
+            _rb.AddForce(springForce, ForceMode.Acceleration);
         }
 
         private void MoveToTargetRotation()
         {
+            transform.rotation = _targetHammer.transform.rotation;
             Quaternion rotationDiff = _targetHammer.transform.rotation * Quaternion.Inverse(transform.rotation);
-            rotationDiff.ToAngleAxis(out float angle, out Vector3 axis);
+            rotationDiff.ToAngleAxis(out float angle, out Vector3 rotationAxis);
+
             if (angle > 180f) angle -= 360f;
 
-            if (axis.sqrMagnitude > 0.001f)
+            if (rotationAxis.sqrMagnitude > 0.001f)
             {
-                Vector3 springTorque = axis.normalized * (angle * Mathf.Deg2Rad * rotationSpringStrength);
+                Vector3 springTorque = rotationAxis.normalized * (angle * Mathf.Deg2Rad * rotationSpringStrength);
                 Vector3 dampingTorque = -_rb.angularVelocity * rotationDamping;
                 _rb.AddTorque(springTorque + dampingTorque, ForceMode.Acceleration);
             }
