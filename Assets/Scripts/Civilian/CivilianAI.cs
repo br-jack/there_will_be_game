@@ -4,7 +4,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody))]
 
-public struct RandomMovementSettings
+[System.Serializable] public struct RandomMovementSettings
 {
     public float radius;
     public float minInterval;
@@ -12,7 +12,7 @@ public struct RandomMovementSettings
     public float speed;
 }
 
-public struct RunAwaySettings
+[System.Serializable] public struct RunAwaySettings
 {
     public float startRunningRadius;
     public float stopRunningRadius;
@@ -30,7 +30,7 @@ public class CivilianAI : MonoBehaviour
         minInterval = 2f,
         maxInterval = 5f,
         speed = 2f
-    }
+    };
 
     [SerializeField] private RunAwaySettings runAwaySettings = new RunAwaySettings
     {
@@ -39,10 +39,28 @@ public class CivilianAI : MonoBehaviour
         speed = 6f,
         targetDistance = 15f,
         refreshInterval = 0.2f
+    };
+
+    private enum State
+    {
+        RandomMovement,
+        RunAway
     }
+
+    private State state = State.RandomMovement;
+    private NavMeshAgent agent;
+    private Transform playerTransform;
+    private float nextMovementTime;
+    private float nextRunAwayRefreshTime;
+
     void Start()
     {
-        
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = randomMovement.speed;
+
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null) playerTransform = player.transform;
+
     }
     void Update()
     {
