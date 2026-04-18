@@ -27,7 +27,7 @@ public class DestructibleObject : MonoBehaviour
             Resources.Load<AudioClip>("DestructionSFX3")
         };
 
-        destructionParticlesPrefab = Resources.Load<GameObject>("BuildingDestructionParticles");
+        //destructionParticlesPrefab = Resources.Load<GameObject>("BuildingDestructionParticles");
     }
 
     void Start() {
