@@ -98,6 +98,26 @@ namespace Score
             OnAweChanged?.Invoke(aweScore);
         }
 
+        public void RemoveFear(int amount)
+        {
+            if (amount <= 0)
+            {
+                Debug.LogError("RemoveFear amount must be positive.");
+                return;
+            }
+
+            fearScore -= amount;
+
+            if (fearScore < 0)
+            {
+                fearScore = 0;
+            }
+
+            OnFearChanged?.Invoke(fearScore);
+        }
+    
+
+
         public ReportCard GetReportCard()
         {
             // Leave the float cast, it's important because otherwise it does integer divison.
