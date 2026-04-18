@@ -24,6 +24,7 @@ public class StandardEnemyAI : MonoBehaviour
     private NavMeshAgent agent;
 
     [Header("Movement")]
+    [Range(0f, 300f)][SerializeField] private float maxPlayerDetectionDistance = 70f;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float smoothVelocity = 0.35f;
     [SerializeField] private float rotationSpeed = 8f;
@@ -148,7 +149,7 @@ public class StandardEnemyAI : MonoBehaviour
             return;
         }
 
-        _isPlayerDetected = CheckPlayerInDetectionRange(_playerTransformRef.position, 20f);
+        _isPlayerDetected = CheckPlayerInDetectionRange(_playerTransformRef.position, maxPlayerDetectionDistance);
 
         if (_isPlayerDetected)
         {
