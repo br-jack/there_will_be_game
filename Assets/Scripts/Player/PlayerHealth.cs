@@ -121,6 +121,7 @@ public class PlayerHealth : MonoBehaviour
         playerParticles.SuppressParticles = true; // Suppress particles during respawn to avoid weird effects.
         playerParticles.StopAllMovementParticles();
         ScoreManager.Instance.RemoveFear(fearPenaltyOnRespawn);
+        ScoreManager.Instance.ResetAwe();
         if (deathTextUI != null)
         {
             deathTextUI.ShowDeathText();
