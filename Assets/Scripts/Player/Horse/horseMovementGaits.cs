@@ -45,6 +45,7 @@ public class horseMovementGaits : MonoBehaviour
     private float _turnInput;
     private float _brakeInput;
     private bool _jumpInput;
+    
     //private bool _jumpButtonPressed;
     //private bool _jumpButtonHeld;
 
@@ -209,6 +210,7 @@ public class horseMovementGaits : MonoBehaviour
                     //not sure why we are invoking two things here! once i understand, ill try to do with just one
                     jumpStarted.Invoke();
                     jump.Invoke();
+
                     jumpLockedTime = minTimeBetweenJumps;
                 }
                 

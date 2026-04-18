@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handIKIsEnabled: 1
-  ForwardLeanIsEnabled: 1
+  forwardLeanIsEnabled: 1
   stateChangeTime: 2
 --- !u!206 &-7680601472470074052
 BlendTree:
@@ -48,7 +48,7 @@ BlendTree:
   m_BlendType: 0
 --- !u!1107 &-7012966456343890353
 AnimatorStateMachine:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -70,7 +70,7 @@ AnimatorStateMachine:
   m_DefaultState: {fileID: 7985831091353858831}
 --- !u!1101 &-5607230191648984537
 AnimatorStateTransition:
-  m_ObjectHideFlags: 3
+  m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -123,7 +123,7 @@ BlendTree:
   m_BlendType: 0
 --- !u!1102 &-2321237999907214087
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -149,7 +149,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1102 &-1524464228571471710
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -214,7 +214,7 @@ BlendTree:
   m_BlendType: 0
 --- !u!1107 &-279747390464255533
 AnimatorStateMachine:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -342,7 +342,7 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
 --- !u!1107 &761405344537230103
 AnimatorStateMachine:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -364,7 +364,7 @@ AnimatorStateMachine:
   m_DefaultState: {fileID: 1149400806323141906}
 --- !u!1102 &1149400806323141906
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -405,7 +405,7 @@ BlendTree:
   m_BlendType: 0
 --- !u!1102 &4775495775761188265
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -432,7 +432,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1107 &6860514022188245731
 AnimatorStateMachine:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -454,7 +454,7 @@ AnimatorStateMachine:
   m_DefaultState: {fileID: 4775495775761188265}
 --- !u!1102 &6960341961689901643
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -480,7 +480,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1107 &7019414951748189083
 AnimatorStateMachine:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -502,7 +502,7 @@ AnimatorStateMachine:
   m_DefaultState: {fileID: 6960341961689901643}
 --- !u!1102 &7156153125859232105
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -559,7 +559,7 @@ BlendTree:
   m_BlendType: 0
 --- !u!1102 &7985831091353858831
 AnimatorState:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -585,7 +585,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1107 &9057237508209017034
 AnimatorStateMachine:
-  serializedVersion: 5
+  serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
