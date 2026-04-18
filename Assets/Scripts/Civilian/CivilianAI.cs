@@ -96,6 +96,14 @@ public class CivilianAI : MonoBehaviour
             
         }
 
+        if (movementState == MovementState.RandomMovement)
+        {
+            
+        }
+        else
+        {
+            
+        }
     }
 
     private void SetupNavMesh()
