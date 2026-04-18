@@ -33,6 +33,11 @@ public class PlayerHealth : MonoBehaviour
     private horseMovementGaits horseMovement;
     private Hammer.TargetHammer targetHammer;
 
+    [Header("Hammer VFX")]
+    [SerializeField] private GameObject hammerParticlesRoot;
+    [SerializeField] private GameObject hammerFireVisual;
+    [SerializeField] private HammerFireController hammerFireController;
+
     private int current;
     private bool isRespawning = false;
 
@@ -93,6 +98,7 @@ public class PlayerHealth : MonoBehaviour
         }
         SetPlayerVisible(false);
         SetControlEnabled(false);
+        HideHammerEffects();
         //OnDeath?.Invoke();
         StartCoroutine(RespawnAfterDelay());
     }
@@ -166,6 +172,7 @@ public class PlayerHealth : MonoBehaviour
         ResetHealthToFull();
         SetPlayerVisible(true);
         SetControlEnabled(true);
+        RestoreHammerEffectsAfterRespawn();
         playerLives.MakeInvincibleFor(respawnInvincibilityDuration);
 
         invulnerabilityFlash.PlayFlash();
@@ -183,6 +190,20 @@ public class PlayerHealth : MonoBehaviour
     {
         horseMovement.canControl = enabled;
         targetHammer.canControl = enabled;
+    }
+
+    private void HideHammerEffects()
+    {
+        hammerParticlesRoot.SetActive(false);
+        hammerFireVisual.SetActive(false);
+    }
+
+    private void RestoreHammerEffectsAfterRespawn()
+    {
+        hammerParticlesRoot.SetActive(true);
+
+        bool shouldShowFire = hammerFireController != null && hammerFireController.InfiniteFireUnlocked;
+        hammerFireVisual.SetActive(shouldShowFire);
     }
 
 }

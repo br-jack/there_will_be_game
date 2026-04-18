@@ -29571,6 +29571,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1021683431279831278, guid: 898eca34617b8bc44a22514125c8f461, type: 3}
   m_PrefabInstance: {fileID: 1484094637}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &633292410 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7375919086776572427, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &634014917
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -97756,6 +97761,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1842891375}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1844517545 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6950854453233727276, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1847853274
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -116074,6 +116084,18 @@ PrefabInstance:
       propertyPath: respawnPoint
       value: 
       objectReference: {fileID: 658775823}
+    - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: hammerFireVisual
+      value: 
+      objectReference: {fileID: 1844517545}
+    - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: hammerParticlesRoot
+      value: 
+      objectReference: {fileID: 633292410}
+    - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: hammerFireController
+      value: 
+      objectReference: {fileID: 5061453144199501991}
     - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: playerRenderers.Array.size
       value: 18
