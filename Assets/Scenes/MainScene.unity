@@ -4788,11 +4788,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0247afa4fc33b042a7437e59ac40637, type: 3}
---- !u!1 &158393202 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6943448444753039144, guid: 7714b110239f6bb458fab42c064c03f4, type: 3}
-  m_PrefabInstance: {fileID: 1260635645}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &160399603
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16409,10 +16404,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7562384519745139376, guid: 1da3f70589d8b364e89ce0de0dc7a276, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1207688421}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1da3f70589d8b364e89ce0de0dc7a276, type: 3}
 --- !u!4 &385554203 stripped
 Transform:
@@ -55931,10 +55923,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1923081183}
     m_Modifications:
-    - target: {fileID: 2093098160625545102, guid: b10f39acd04ad6547962977665239a62, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -6992570716016184496, guid: 1b9bde3ee8ce29145a62fb232552a0ba, type: 3}
     - target: {fileID: 7007232850793266878, guid: b10f39acd04ad6547962977665239a62, type: 3}
       propertyPath: m_Name
       value: SM_house_roman_02 (2)
@@ -55986,39 +55974,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7007232850793266878, guid: b10f39acd04ad6547962977665239a62, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1104078751}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b10f39acd04ad6547962977665239a62, type: 3}
 --- !u!4 &1104078749 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8975252477229501984, guid: b10f39acd04ad6547962977665239a62, type: 3}
   m_PrefabInstance: {fileID: 1104078748}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1104078750 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7007232850793266878, guid: b10f39acd04ad6547962977665239a62, type: 3}
-  m_PrefabInstance: {fileID: 1104078748}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1104078751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104078750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fragmentsPrefab: {fileID: 6715626158020419613, guid: 84095a70912720d45bec469c3d533067, type: 3}
-  breakForceThreshold: 15
-  explosionForce: 300
-  explosionRadius: 3
-  soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
 --- !u!4 &1104170060 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7976152493149307653, guid: bdf45c5e62be4044caa44c143d677707, type: 3}
@@ -59955,34 +59917,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ec797d7d582e0d40b0ea402dd1eaab1, type: 3}
---- !u!1 &1206379917 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6943448444753039144, guid: 7714b110239f6bb458fab42c064c03f4, type: 3}
-  m_PrefabInstance: {fileID: 2136093907}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1207688417 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7562384519745139376, guid: 1da3f70589d8b364e89ce0de0dc7a276, type: 3}
-  m_PrefabInstance: {fileID: 385554202}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1207688421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1207688417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fragmentsPrefab: {fileID: 6065925278350735727, guid: ea205e6035a695c41aae434e97385a41, type: 3}
-  breakForceThreshold: 15
-  explosionForce: 300
-  explosionRadius: 3
-  soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
 --- !u!1 &1207743021 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1517552264688272, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
@@ -66714,10 +66648,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6943448444753039144, guid: 7714b110239f6bb458fab42c064c03f4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2094127843}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7714b110239f6bb458fab42c064c03f4, type: 3}
 --- !u!1 &1261737953
 GameObject:
@@ -70967,10 +70898,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2449828112311059827, guid: 809f3d45438e7f444a5b79bdea08c3c4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1966218133}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 809f3d45438e7f444a5b79bdea08c3c4, type: 3}
 --- !u!4 &1378888557 stripped
 Transform:
@@ -95852,39 +95780,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4949304631493383876, guid: 500f9a08d8d2c6e45859ba24236b9f7b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1914163272}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 500f9a08d8d2c6e45859ba24236b9f7b, type: 3}
 --- !u!4 &1914163270 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3004087642458688076, guid: 500f9a08d8d2c6e45859ba24236b9f7b, type: 3}
   m_PrefabInstance: {fileID: 1914163269}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1914163271 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4949304631493383876, guid: 500f9a08d8d2c6e45859ba24236b9f7b, type: 3}
-  m_PrefabInstance: {fileID: 1914163269}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1914163272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1914163271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fragmentsPrefab: {fileID: 2888821634824391364, guid: b76019e82f93d3d4f983a814fa625bf2, type: 3}
-  breakForceThreshold: 15
-  explosionForce: 300
-  explosionRadius: 3
-  soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
 --- !u!1001 &1918528471
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -103090,29 +102992,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8485552798474587737, guid: e9d524b9054604f488b2d9ea31e0a41f, type: 3}
   m_PrefabInstance: {fileID: 1146068428503181121}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1966218129 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2449828112311059827, guid: 809f3d45438e7f444a5b79bdea08c3c4, type: 3}
-  m_PrefabInstance: {fileID: 1378888556}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1966218133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1966218129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fragmentsPrefab: {fileID: 4216611334923917644, guid: 3db962ca80ba103429aa363cab4b76cc, type: 3}
-  breakForceThreshold: 15
-  explosionForce: 300
-  explosionRadius: 3
-  soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
 --- !u!1001 &1966582702
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -107655,24 +107534,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7716853356786750866, guid: 7714b110239f6bb458fab42c064c03f4, type: 3}
   m_PrefabInstance: {fileID: 1260635645}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2094127843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158393202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fragmentsPrefab: {fileID: 4216611334923917644, guid: 3db962ca80ba103429aa363cab4b76cc, type: 3}
-  breakForceThreshold: 15
-  explosionForce: 300
-  explosionRadius: 3
-  soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
 --- !u!4 &2094212731 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7010024144754228842, guid: 7018112f2cb987149a450595033be5e0, type: 3}
@@ -108843,34 +108704,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6943448444753039144, guid: 7714b110239f6bb458fab42c064c03f4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2136093912}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7714b110239f6bb458fab42c064c03f4, type: 3}
 --- !u!4 &2136093908 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7716853356786750866, guid: 7714b110239f6bb458fab42c064c03f4, type: 3}
   m_PrefabInstance: {fileID: 2136093907}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2136093912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1206379917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fragmentsPrefab: {fileID: 4216611334923917644, guid: 3db962ca80ba103429aa363cab4b76cc, type: 3}
-  breakForceThreshold: 15
-  explosionForce: 300
-  explosionRadius: 3
-  soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
 --- !u!4 &2136630053 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8396521272413702653, guid: 410d9636670658b45b9184524d54dfce, type: 3}
