@@ -9,6 +9,7 @@ namespace Score
             
             if (ScoreManager.Instance != null)
             {
+                max = ScoreManager.Instance.MaxFearScore;
                 ScoreManager.Instance.OnFearChanged += HandleScoreChanged;
                 UpdateScoreUI(ScoreManager.Instance.FearScore);
             }
