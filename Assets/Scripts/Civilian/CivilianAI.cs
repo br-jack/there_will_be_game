@@ -26,7 +26,6 @@ public class CivilianAI : MonoBehaviour
 {
     private enum MovementState { RandomMovement, RunAway }
     [HideInInspector] public Transform _playerTransformRef;
-    private NavMeshAgent agent;
     [SerializeField] private RandomMovementSettings randomMovement = new RandomMovementSettings
     {
         radius = 8f,
@@ -64,6 +63,12 @@ public class CivilianAI : MonoBehaviour
     private float nextMovementTime;
     private float nextRunAwayRefreshTime;
 
+    void Awake()
+    {
+        if (animator == null) animator = GetComponentInChildren<Animator>();
+        SetupNavMesh();
+    }
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -71,10 +76,36 @@ public class CivilianAI : MonoBehaviour
 
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null) playerTransform = player.transform;
-
     }
     void Update()
     {
-        
+        if (_playerTransformRef == null)
+        {
+            return;
+        }
+
+        float distanceToPlayer = Vector3.Distance(transform.position, _playerTransformRef.position)
+
+        // Switching between states
+        if (movementState == MovementState.RandomMovement && distanceToPlayer < runAway.startRunningRadius)
+        {
+            
+        }
+        else if (movementState == MovementState.RunAway && distanceToPlayer > runAway.stopRunningRadius)
+        {
+            
+        }
+
+    }
+
+    private void SetupNavMesh()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            Debug.Log("No NavMesh agent found for the CivilianAI");
+            return;
+        }
+        agent.speed = randomMovement.speed;
     }
 }
