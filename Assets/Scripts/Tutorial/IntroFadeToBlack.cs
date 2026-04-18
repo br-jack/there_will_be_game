@@ -39,6 +39,17 @@ public class IntroFadeText : MonoBehaviour
     [SerializeField] private int swingsRequired = 3;
     [SerializeField] private int jumpsRequired = 1;
 
+    [Header("Tutorial Task")]
+    [SerializeField] private TutorialReachPointTask tutorialTask;
+
+    [Header("Reward")]
+    [SerializeField] private PowerUpSpawner powerUpSpawner;
+    [SerializeField] private GameObject tutorialRewardPrefab;
+    [SerializeField] private string rewardMessage = "A boon has been granted";
+
+    private bool taskStarted = false;
+    private bool rewardSpawned = false;
+
     private bool introFinished = false;
     private bool firstPromptCompleted = false;
     private bool secondPromptCompleted = false;
@@ -50,12 +61,14 @@ public class IntroFadeText : MonoBehaviour
     {
         TargetHammer.OnHammerSwing += HandleHammerSwing;
         horseMovementGaits.OnTutorialJump += HandleJump;
+        TaskManager.OnAnyTaskCompleted += HandleTaskCompleted;
     }
 
     private void OnDisable()
     {
         TargetHammer.OnHammerSwing -= HandleHammerSwing;
         horseMovementGaits.OnTutorialJump -= HandleJump;
+        TaskManager.OnAnyTaskCompleted -= HandleTaskCompleted;
     }
 
     private void Start()
@@ -190,10 +203,44 @@ public class IntroFadeText : MonoBehaviour
             if (currentJumps >= jumpsRequired)
             {
                 secondPromptCompleted = true;
-                taskPanelUI.SetActive(true);
-                promptText.text = thirdPromptMessage;
+                StartTutorialTask();
             }
         }
+    }
+
+    private void StartTutorialTask()
+    {
+        if (taskStarted)
+        {
+            return;
+        }
+
+        taskStarted = true;
+
+        taskPanelUI.SetActive(true);
+
+        tutorialTask.StartTask();
+
+        promptText.text = thirdPromptMessage;
+    }
+
+    private void HandleTaskCompleted(BaseTask completedTask)
+    {
+        if (!taskStarted || rewardSpawned)
+        {
+            return;
+        }
+
+        if (completedTask != tutorialTask)
+        {
+            return;
+        }
+
+        rewardSpawned = true;
+
+        powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
+
+        promptText.text = "Collect your reward";
     }
 
     private void HideGameplayUIAtStart()
