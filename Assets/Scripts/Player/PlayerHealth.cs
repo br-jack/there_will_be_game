@@ -28,6 +28,7 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] private Renderer[] playerRenderers;
     [SerializeField] private DeathTextUI deathTextUI;
+    private PlayerParticles playerParticles;
 
     private int current;
     private bool isRespawning = false;
@@ -46,6 +47,7 @@ public class PlayerHealth : MonoBehaviour
     private void Start()
     {
         if (playerLives == null) playerLives = GetComponent<PlayerLives>();
+        if (playerParticles == null) playerParticles = GetComponent<PlayerParticles>();
         ResetHealthToFull();
     }
 
@@ -116,6 +118,8 @@ public class PlayerHealth : MonoBehaviour
     private IEnumerator RespawnAfterDelay()
     {
         isRespawning = true;
+        playerParticles.SuppressParticles = true; // Suppress particles during respawn to avoid weird effects.
+        playerParticles.StopAllMovementParticles();
         ScoreManager.Instance.RemoveFear(fearPenaltyOnRespawn);
         if (deathTextUI != null)
         {
@@ -123,6 +127,9 @@ public class PlayerHealth : MonoBehaviour
         }
         yield return new WaitForSeconds(respawnDelay);
         RespawnPlayer();
+        yield return null;
+        playerParticles.StopAllMovementParticles();
+        playerParticles.SuppressParticles = false;
         isRespawning = false;
     }
 
