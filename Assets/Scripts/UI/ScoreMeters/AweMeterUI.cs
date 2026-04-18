@@ -8,6 +8,7 @@ namespace Score
         {
             if (ScoreManager.Instance != null)
             {
+                max = ScoreManager.Instance.MaxAweScore;
                 ScoreManager.Instance.OnAweChanged += HandleScoreChanged;
                 UpdateScoreUI(ScoreManager.Instance.AweScore);
             }

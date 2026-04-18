@@ -17,6 +17,13 @@ namespace Score
         OnFire
     }
 
+    public enum ReportCard
+    {
+        OneStar,
+        TwoStars,
+        ThreeStars,
+    }
+
     public class ScoreComponent
     {
         public int amount;
@@ -37,6 +44,11 @@ namespace Score
         public int FearScore => fearScore;
         private int aweScore = 0;
         public int AweScore => aweScore;
+
+        [SerializeField] private int maxFearScore = 2000;
+        [SerializeField] private int maxAweScore = 2000;
+        public int MaxFearScore => maxFearScore;
+        public int MaxAweScore => maxAweScore;
 
         public event Action<int> OnFearChanged;
         public event Action<int> OnAweChanged;
@@ -85,6 +97,28 @@ namespace Score
             aweScore = 0;
             OnAweChanged?.Invoke(aweScore);
         }
-    }
 
+        public ReportCard GetReportCard()
+        {
+            // Leave the float cast, it's important because otherwise it does integer divison.
+            float fearProportion = (float) fearScore/maxFearScore;
+
+            ReportCard reportCard;
+
+            if (fearProportion >= 0.75f)
+            {
+                reportCard = ReportCard.ThreeStars;
+            }
+            else if (fearProportion >= 0.4f)
+            {
+                reportCard = ReportCard.TwoStars;
+            }
+            else
+            {
+                reportCard = ReportCard.OneStar;
+            }
+
+            return reportCard;
+        }
+    }
 }

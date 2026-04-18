@@ -128,7 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 196213214}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 332402041}
   - component: {fileID: 332402043}
   - component: {fileID: 332402042}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Roll Speed Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 422017820}
   - component: {fileID: 422017819}
   - component: {fileID: 422017818}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 506696884}
   - component: {fileID: 506696883}
   - component: {fileID: 506696882}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Play Game Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,9 +479,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
-        m_MethodName: LoadGame
+      - m_Target: {fileID: 6619865191583738451, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
+        m_TargetAssemblyTypeName: GameStateManager, Assembly-CSharp
+        m_MethodName: Button_CalibrationDone
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -540,7 +540,7 @@ GameObject:
   - component: {fileID: 574027609}
   - component: {fileID: 574027611}
   - component: {fileID: 574027610}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Star Game TXT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -677,7 +677,7 @@ GameObject:
   - component: {fileID: 600872241}
   - component: {fileID: 600872240}
   - component: {fileID: 600872239}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Directional Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -799,7 +799,7 @@ GameObject:
   - component: {fileID: 854620209}
   - component: {fileID: 854620208}
   - component: {fileID: 854620207}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -980,6 +980,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5630890325763975634, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 7676368825266902001, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
       propertyPath: pivotTransform
       value: 
@@ -1011,7 +1015,7 @@ GameObject:
   - component: {fileID: 896106723}
   - component: {fileID: 896106725}
   - component: {fileID: 896106724}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Accel Btn TXT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1148,7 +1152,7 @@ GameObject:
   - component: {fileID: 994837372}
   - component: {fileID: 994837374}
   - component: {fileID: 994837373}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Yaw Speed Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1287,7 +1291,7 @@ GameObject:
   - component: {fileID: 1119556389}
   - component: {fileID: 1119556388}
   - component: {fileID: 1119556391}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Calibrate IMU Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1439,7 +1443,7 @@ GameObject:
   - component: {fileID: 1129509658}
   - component: {fileID: 1129509660}
   - component: {fileID: 1129509659}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Pitch Speed Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1576,7 +1580,7 @@ GameObject:
   - component: {fileID: 1530288999}
   - component: {fileID: 1530288998}
   - component: {fileID: 1530288997}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1655,7 +1659,7 @@ GameObject:
   - component: {fileID: 1727837315}
   - component: {fileID: 1727837317}
   - component: {fileID: 1727837316}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: X Accel Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1792,7 +1796,7 @@ GameObject:
   - component: {fileID: 1890693762}
   - component: {fileID: 1890693764}
   - component: {fileID: 1890693763}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Y Accel Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1929,7 +1933,7 @@ GameObject:
   - component: {fileID: 1985192913}
   - component: {fileID: 1985192915}
   - component: {fileID: 1985192914}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Z Accel Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2063,6 +2067,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 382918228374735486, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 889244070202556962, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
       propertyPath: flipXInAttitudeQuaternion
       value: 1
@@ -2114,6 +2122,10 @@ PrefabInstance:
     - target: {fileID: 6729019708239801087, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
       propertyPath: m_Name
       value: GlobalManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6729019708239801087, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
