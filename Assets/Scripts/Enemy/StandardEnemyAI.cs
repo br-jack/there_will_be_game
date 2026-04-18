@@ -75,6 +75,8 @@ public class StandardEnemyAI : MonoBehaviour
     private float timeOfNextAttack;
     private float deathTimer;
 
+    private bool _isPlayerDetected;
+
     // Debug throttling
     private float _dbgTimer;
     private bool _doDebug;
@@ -146,16 +148,29 @@ public class StandardEnemyAI : MonoBehaviour
             return;
         }
 
-        if (useStrike)
-        {
-            StrikeUpdate();
-        }
-        else
-        {
-            ClassicAttackUpdate();
-        }
+        _isPlayerDetected = CheckPlayerInDetectionRange(_playerTransformRef.position, 20f);
 
-        UpdateAnim();
+        if (_isPlayerDetected)
+        {
+            if (useStrike)
+            {
+                StrikeUpdate();
+            }
+            else
+            {
+                ClassicAttackUpdate();
+            }
+            
+            UpdateAnim();
+        }
+    }
+
+    bool CheckPlayerInDetectionRange(Vector3 playerPosition, float maxDetectionDistance)
+    {
+        float distance = Vector3.Distance(transform.position, playerPosition);
+        
+        return distance <= maxDetectionDistance;
+        // bool playerDetected = Physics.Raycast(transform.position, vectorToPlayer, detectionDistance, layerMask);
     }
 
     // Stalk, Strike and Retreat state system
@@ -224,6 +239,8 @@ public class StandardEnemyAI : MonoBehaviour
 
         if (IsDying || IsKnockedBack) return;
         if (_playerTransformRef == null) return;
+
+        if (!_isPlayerDetected) return;
 
         Vector3 toPlayer = _playerTransformRef.position - transform.position;
         toPlayer.y = 0f;
