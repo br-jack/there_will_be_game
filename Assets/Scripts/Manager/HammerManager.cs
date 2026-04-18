@@ -62,6 +62,8 @@ public class HammerManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         //Aim for around 60fps
+        //Application.targetFrameRate = 60;
+        
         if (120 <= Screen.currentResolution.refreshRateRatio.value)
         {
             QualitySettings.vSyncCount = 2;
