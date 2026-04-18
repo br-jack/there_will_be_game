@@ -24,6 +24,9 @@ using UnityEngine.AI;
 
 public class CivilianAI : MonoBehaviour
 {
+    private enum MovementState { RandomMovement, RunAway }
+    [HideInInspector] public Transform _playerTransformRef;
+    private NavMeshAgent agent;
     [SerializeField] private RandomMovementSettings randomMovement = new RandomMovementSettings
     {
         radius = 8f,
