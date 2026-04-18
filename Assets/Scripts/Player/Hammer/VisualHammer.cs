@@ -23,9 +23,7 @@ namespace Hammer
         
         [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
-
-        [SerializeField] private Rigidbody horseRigidBody;
-
+        
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
 
@@ -56,7 +54,6 @@ namespace Hammer
 
         private void MoveToTargetPosition()
         {
-            transform.position = _targetHammer.transform.position;
             Vector3 toTarget = _targetHammer.transform.position - transform.position;
             float distance = toTarget.magnitude;
 
@@ -70,7 +67,6 @@ namespace Hammer
 
         private void MoveToTargetRotation()
         {
-            transform.rotation = _targetHammer.transform.rotation;
             Quaternion rotationDiff = _targetHammer.transform.rotation * Quaternion.Inverse(transform.rotation);
             rotationDiff.ToAngleAxis(out float angle, out Vector3 rotationAxis);
 
