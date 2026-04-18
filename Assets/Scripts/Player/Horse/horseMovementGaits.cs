@@ -46,6 +46,7 @@ public class horseMovementGaits : MonoBehaviour
     private float _turnInput;
     private float _brakeInput;
     private bool _jumpInput;
+    
     //private bool _jumpButtonPressed;
     //private bool _jumpButtonHeld;
 
