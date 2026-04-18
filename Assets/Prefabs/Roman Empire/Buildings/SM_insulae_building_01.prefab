@@ -49,15 +49,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: a5f8c0a899c5b3045a825b1c7791465c, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f54ef9f0a37974a48be0ce4828230666, type: 2}
     - target: {fileID: -7511558181221131132, guid: a5f8c0a899c5b3045a825b1c7791465c, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 3a4e765759a5b934b94cb33bfa3ea800, type: 2}
     - target: {fileID: -7511558181221131132, guid: a5f8c0a899c5b3045a825b1c7791465c, type: 3}
-      propertyPath: m_Materials.Array.data[2]
+      propertyPath: 'm_Materials.Array.data[2]'
       value: 
       objectReference: {fileID: 2100000, guid: 66db976ec3e70334ca96c2ee9fc811fb, type: 2}
     - target: {fileID: 919132149155446097, guid: a5f8c0a899c5b3045a825b1c7791465c, type: 3}
@@ -71,6 +71,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a5f8c0a899c5b3045a825b1c7791465c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8172641324063344564}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a5f8c0a899c5b3045a825b1c7791465c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 819434012967569089}
   m_SourcePrefab: {fileID: 100100000, guid: a5f8c0a899c5b3045a825b1c7791465c, type: 3}
 --- !u!1 &1247321750878505384 stripped
 GameObject:
@@ -99,3 +102,21 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4070407857570179305, guid: a5f8c0a899c5b3045a825b1c7791465c, type: 3}
+--- !u!114 &819434012967569089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247321750878505384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fragmentsPrefab: {fileID: 8549859866353486020, guid: eceb29cdc68221147af94f90023ad054, type: 3}
+  breakForceThreshold: 15
+  explosionForce: 300
+  explosionRadius: 3
+  soundVolume: 1
+  destructionParticlesPrefab: {fileID: 0}
