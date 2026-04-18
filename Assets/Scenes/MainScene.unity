@@ -2688,6 +2688,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1923081183}
     m_Modifications:
+    - target: {fileID: 446095774473593415, guid: 393d824dbadce7749b35addd3b99e891, type: 3}
+      propertyPath: m_Name
+      value: SM_insulae_building_01 Blue Variant (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 971380121166248189, guid: 393d824dbadce7749b35addd3b99e891, type: 3}
       propertyPath: m_LocalPosition.x
       value: 47.180782
@@ -2727,10 +2731,6 @@ PrefabInstance:
     - target: {fileID: 971380121166248189, guid: 393d824dbadce7749b35addd3b99e891, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 446095774473593415, guid: 393d824dbadce7749b35addd3b99e891, type: 3}
-      propertyPath: m_Name
-      value: SM_insulae_building_01 Blue Variant (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -57471,98 +57471,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 413851488231839629, guid: 6589f770e1195be4695e78f04d499267, type: 3}
   m_PrefabInstance: {fileID: 466828015}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1143498693
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1923081183}
-    m_Modifications:
-    - target: {fileID: 2721461348301426155, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: 'm_Materials.Array.data[4]'
-      value: 
-      objectReference: {fileID: 2100000, guid: b03c6e7faa9a9004e858bc1da089d665, type: 2}
-    - target: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -51.26209
-      objectReference: {fileID: 0}
-    - target: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -4.8646674
-      objectReference: {fileID: 0}
-    - target: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -259.88724
-      objectReference: {fileID: 0}
-    - target: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.2251979
-      objectReference: {fileID: 0}
-    - target: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.00076036
-      objectReference: {fileID: 0}
-    - target: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.9743114
-      objectReference: {fileID: 0}
-    - target: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.001635051
-      objectReference: {fileID: 0}
-    - target: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -0.163
-      objectReference: {fileID: 0}
-    - target: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 153.971
-      objectReference: {fileID: 0}
-    - target: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.127
-      objectReference: {fileID: 0}
-    - target: {fileID: 4522861822626884670, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      propertyPath: m_Name
-      value: SM_attachment_building_01 (6)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4522861822626884670, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1143498696}
-  m_SourcePrefab: {fileID: 100100000, guid: 40f05fac5add48948aba9704812c4459, type: 3}
 --- !u!4 &1143498694 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 3859512801633089156, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-  m_PrefabInstance: {fileID: 1143498693}
+  m_CorrespondingSourceObject: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+  m_PrefabInstance: {fileID: 7673738271383919777}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1143498695 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4522861822626884670, guid: 40f05fac5add48948aba9704812c4459, type: 3}
-  m_PrefabInstance: {fileID: 1143498693}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1143498696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1143498695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fragmentsPrefab: {fileID: 5909059775131210127, guid: 616c1c26539dd4b478610c4745516e41, type: 3}
-  breakForceThreshold: 15
-  explosionForce: 300
-  explosionRadius: 3
-  soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
 --- !u!1001 &1144504058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -104534,10 +104447,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1923081183}
     m_Modifications:
-    - target: {fileID: 8712893013589068122, guid: 7791d6a67dded294db2abf3cd6c4aac0, type: 3}
-      propertyPath: m_Name
-      value: SM_insulae_building_01 Red Variant (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 8332146003079975904, guid: 7791d6a67dded294db2abf3cd6c4aac0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 47.180782
@@ -104577,6 +104486,10 @@ PrefabInstance:
     - target: {fileID: 8332146003079975904, guid: 7791d6a67dded294db2abf3cd6c4aac0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8712893013589068122, guid: 7791d6a67dded294db2abf3cd6c4aac0, type: 3}
+      propertyPath: m_Name
+      value: SM_insulae_building_01 Red Variant (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -113557,6 +113470,63 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 944000493}
   m_SourcePrefab: {fileID: 100100000, guid: 65997bec15c9bb24586eb679c2204640, type: 3}
+--- !u!1001 &7673738271383919777
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1923081183}
+    m_Modifications:
+    - target: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -51.26209
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.8646674
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -259.88724
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.2251979
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.00076036
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9743114
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.001635051
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -0.163
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 153.971
+      objectReference: {fileID: 0}
+    - target: {fileID: 3965274190483265845, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.127
+      objectReference: {fileID: 0}
+    - target: {fileID: 4345036249077629839, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
+      propertyPath: m_Name
+      value: SM_attachment_building_01 (6)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5b0b2f41f61eecf459183db649f945b9, type: 3}
 --- !u!1001 &8541715547584544876
 PrefabInstance:
   m_ObjectHideFlags: 0
