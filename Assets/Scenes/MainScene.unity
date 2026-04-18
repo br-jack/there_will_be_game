@@ -10423,7 +10423,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 917171982}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -77767,9 +77767,6 @@ PrefabInstance:
       addedObject: {fileID: 662462363}
     - targetCorrespondingSourceObject: {fileID: 1879296612164912189, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 662462363}
-    - targetCorrespondingSourceObject: {fileID: 1879296612164912189, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1671670061}
     - targetCorrespondingSourceObject: {fileID: 1879296612164912189, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       insertIndex: -1
@@ -84019,6 +84016,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8652388482759790862, guid: bbb04b5e36111854ab7580ce494787a2, type: 3}
   m_PrefabInstance: {fileID: 212919122}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &1565777967 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3427620268590751907, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1569463590
 PrefabInstance:
@@ -116115,7 +116117,7 @@ PrefabInstance:
     - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: 'playerRenderers.Array.data[9]'
       value: 
-      objectReference: {fileID: 1693581465}
+      objectReference: {fileID: 1565777967}
     - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: 'playerRenderers.Array.data[10]'
       value: 
@@ -116500,3 +116502,4 @@ SceneRoots:
   - {fileID: 658775823}
   - {fileID: 2237668133860025892}
   - {fileID: 528525038}
+  - {fileID: 329924415}

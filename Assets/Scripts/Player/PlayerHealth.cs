@@ -30,6 +30,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private DeathTextUI deathTextUI;
     private PlayerParticles playerParticles;
 
+    private horseMovementGaits horseMovement;
+    private Hammer.TargetHammer targetHammer;
+
     private int current;
     private bool isRespawning = false;
 
@@ -46,6 +49,8 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
+        if (horseMovement == null) horseMovement = GetComponent<horseMovementGaits>();
+        if (targetHammer == null) targetHammer = FindFirstObjectByType<Hammer.TargetHammer>();
         if (playerLives == null) playerLives = GetComponent<PlayerLives>();
         if (playerParticles == null) playerParticles = GetComponent<PlayerParticles>();
         ResetHealthToFull();
@@ -87,6 +92,7 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
         SetPlayerVisible(false);
+        SetControlEnabled(false);
         //OnDeath?.Invoke();
         StartCoroutine(RespawnAfterDelay());
     }
@@ -159,6 +165,7 @@ public class PlayerHealth : MonoBehaviour
 
         ResetHealthToFull();
         SetPlayerVisible(true);
+        SetControlEnabled(true);
         playerLives.MakeInvincibleFor(respawnInvincibilityDuration);
 
         invulnerabilityFlash.PlayFlash();
@@ -170,6 +177,12 @@ public class PlayerHealth : MonoBehaviour
         {
             rend.enabled = visible;
         }
+    }
+
+    private void SetControlEnabled(bool enabled)
+    {
+        horseMovement.canControl = enabled;
+        targetHammer.canControl = enabled;
     }
 
 }
