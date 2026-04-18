@@ -24,6 +24,22 @@ public struct RunAwaySettings
 
 public class CivilianAI : MonoBehaviour
 {
+    [SerializeField] private RandomMovementSettings randomMovement = new RandomMovementSettings
+    {
+        radius = 8f,
+        minInterval = 2f,
+        maxInterval = 5f,
+        speed = 2f
+    }
+
+    [SerializeField] private RunAwaySettings runAwaySettings = new RunAwaySettings
+    {
+        startRunningRadius = 10f,
+        stopRunningRadius = 18f,
+        speed = 6f,
+        targetDistance = 15f,
+        refreshInterval = 0.2f
+    }
     void Start()
     {
         
