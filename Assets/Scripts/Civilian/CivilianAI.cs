@@ -106,6 +106,14 @@ public class CivilianAI : MonoBehaviour
         }
     }
 
+    private void PickNewRandomMovementPoint()
+    {
+        Vector3 potential = transform.position + Random.insideUnitSphere * randomMovement.radius;
+        if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, randomMovement.radius, NavMesh.AllAreas)) agent.SetDestination(hit.position);
+        nextMovementTime = Time.time + Random.Range(randomMovement.minInterval, randomMovement.maxInterval);
+    }
+
+    private void 
     private void SetupNavMesh()
     {
         agent = GetComponent<NavMeshAgent>();
