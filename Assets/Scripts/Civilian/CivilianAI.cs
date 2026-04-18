@@ -44,6 +44,14 @@ public class CivilianAI : MonoBehaviour
         refreshInterval = 0.2f
     };
 
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private movementState = MovementState.RandomMovement;
+
+    // Timers
+    private float nextMovementTimes;
+    private float nextRunAwayRefreshTime;
+
     private enum State
     {
         RandomMovement,
