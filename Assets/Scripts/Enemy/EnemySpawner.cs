@@ -16,8 +16,6 @@ public class EnemySpawner : MonoBehaviour
         public int meleeUnshielded;
         public int ranged;
         public int rapid;
-        public float minDistanceFromPlayer;
-        public float maxDistanceFromPlayer;
     }
 
     private const float BreakDuration = 5f;
@@ -26,7 +24,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject meleeEnemyPrefab;
     [SerializeField] private GameObject rapidEnemyPrefab;
     [SerializeField] private GameObject rangedEnemyPrefab;
-    
+
+    [SerializeField] private float minDistanceFromPlayer = 15f;
+    [SerializeField] private float maxDistanceFromPlayer = 100f;
     private float navMeshSearchRadius = 2.5f;
 
     [Header("Waves")]
@@ -131,23 +131,23 @@ public class EnemySpawner : MonoBehaviour
         // [0, remainMeleeShielded], [remainMeleeShielded, remainMeleeShielded + remainMeleeUnshielded], [remainMeleeShielded + remainMeleeUnshielded, remainMeleeShielded + remainMeleeUnshielded + remainRanged], [remainMeleeShielded + remainMeleeUnshielded + remainRanged, total]
         if (roll < remainMeleeShielded)
         {
-            SpawnEnemy(EnemyType.MeleeShielded, wave.minDistanceFromPlayer, wave.maxDistanceFromPlayer);
+            SpawnEnemy(EnemyType.MeleeShielded);
         }
         else if (roll < remainMeleeShielded + remainMeleeUnshielded)
         {
-            SpawnEnemy(EnemyType.MeleeUnshielded, wave.minDistanceFromPlayer, wave.maxDistanceFromPlayer);
+            SpawnEnemy(EnemyType.MeleeUnshielded);
         }
         else if (roll < remainMeleeShielded + remainMeleeUnshielded + remainRanged)
         {
-            SpawnEnemy(EnemyType.Ranged, wave.minDistanceFromPlayer, wave.maxDistanceFromPlayer);
+            SpawnEnemy(EnemyType.Ranged);
         }
         else
         {
-            SpawnEnemy(EnemyType.Rapid, wave.minDistanceFromPlayer, wave.maxDistanceFromPlayer);
+            SpawnEnemy(EnemyType.Rapid);
         }
     }
 
-    private void SpawnEnemy(EnemyType type, float minDistanceFromPlayer, float maxDistanceFromPlayer)
+    private void SpawnEnemy(EnemyType type)
     {
         GameObject prefab;
         bool keepShield;
