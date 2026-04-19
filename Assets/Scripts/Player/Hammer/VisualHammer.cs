@@ -69,7 +69,7 @@ namespace Hammer
             // Vector3 dampingForce = -(_rb.linearVelocity - horseRigidBody.linearVelocity) * positionDamping;
             Vector3 dampingForce = -_rb.linearVelocity * positionDamping;
 
-            _rb.AddForce(springForce, ForceMode.Acceleration);
+            _rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
         }
 
         private void MoveToTargetRotation()
