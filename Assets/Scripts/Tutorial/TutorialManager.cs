@@ -54,6 +54,8 @@ public class TutorialManager : MonoBehaviour
     [Header("Tutorial Exit")]
     [SerializeField] private Transform tutorialDoorTarget;
     [SerializeField] private string exitPromptMessage = "Congratulations, continue to the door to exit the tutorial";
+    [SerializeField] private TransitionToMain tutorialDoor;
+
 
     private GameObject spawnedTutorialReward;
     private bool rewardCollected = false;
@@ -285,7 +287,7 @@ public class TutorialManager : MonoBehaviour
         }
 
         rewardCollected = true;
-
+        tutorialDoor.EnableDoor();
         promptText.text = exitPromptMessage;
 
         taskArrow.SetTarget(tutorialDoorTarget);

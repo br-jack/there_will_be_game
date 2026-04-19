@@ -5,14 +5,25 @@ public class TransitionToMain : MonoBehaviour
 {
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private string sceneToLoad = "MainScene";
+    private Collider triggerCollider;
+
+    private void Awake()
+    {
+        triggerCollider = GetComponent<Collider>();
+        triggerCollider.enabled = false;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger entered by: " + other.gameObject.name);
-        if (other.CompareTag(playerTag))
+        
+        if (other.CompareTag(playerTag) && triggerCollider.enabled)
         {
-            Debug.Log("Player entered trigger, transitioning to main scene.");
             SceneManager.LoadScene(sceneToLoad);
         }
+    }
+
+    public void EnableDoor()
+    {
+        triggerCollider.enabled = true;
     }
 }
