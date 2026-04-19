@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using Hammer;
 
-public class IntroFadeText : MonoBehaviour
+public class TutorialManager : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject introOverlay;
@@ -51,6 +51,13 @@ public class IntroFadeText : MonoBehaviour
     [Header("3D Tutorial Arrow")]
     [SerializeField] private TaskArrow3D taskArrow;
 
+    [Header("Tutorial Exit")]
+    [SerializeField] private Transform tutorialDoorTarget;
+    [SerializeField] private string exitPromptMessage = "Congratulations, continue to the door to exit the tutorial";
+
+    private GameObject spawnedTutorialReward;
+    private bool rewardCollected = false;
+
     private bool taskStarted = false;
     private bool rewardSpawned = false;
 
@@ -66,6 +73,7 @@ public class IntroFadeText : MonoBehaviour
         TargetHammer.OnHammerSwing += HandleHammerSwing;
         horseMovementGaits.OnTutorialJump += HandleJump;
         TaskManager.OnAnyTaskCompleted += HandleTaskCompleted;
+        PowerUpPickup.OnPowerUpCollected += HandlePowerUpCollected;
     }
 
     private void OnDisable()
@@ -73,6 +81,7 @@ public class IntroFadeText : MonoBehaviour
         TargetHammer.OnHammerSwing -= HandleHammerSwing;
         horseMovementGaits.OnTutorialJump -= HandleJump;
         TaskManager.OnAnyTaskCompleted -= HandleTaskCompleted;
+        PowerUpPickup.OnPowerUpCollected -= HandlePowerUpCollected;
     }
 
     private void Start()
@@ -246,7 +255,7 @@ public class IntroFadeText : MonoBehaviour
         rewardSpawned = true;
         tutorialMarker.SetActive(false);
 
-        powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
+        spawnedTutorialReward = powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
 
         promptText.text = "Collect your reward";
     }
@@ -261,5 +270,25 @@ public class IntroFadeText : MonoBehaviour
         boonTextUI.SetActive(false);
         taskPanelUI.SetActive(false);
         waveAnnouncerUI.SetActive(false);
+    }
+
+    private void HandlePowerUpCollected(PowerUpPickup collectedPowerUp)
+    {
+        if (!rewardSpawned || rewardCollected)
+        {
+            return;
+        }
+
+        if (collectedPowerUp.gameObject != spawnedTutorialReward)
+        {
+            return;
+        }
+
+        rewardCollected = true;
+
+        promptText.text = exitPromptMessage;
+
+        taskArrow.SetTarget(tutorialDoorTarget);
+        taskArrow.Show(true);
     }
 }
