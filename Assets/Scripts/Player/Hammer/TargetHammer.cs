@@ -33,6 +33,8 @@ namespace Hammer
         private float extensionVelocity;
         private float momentum = 0;
 
+        public bool canControl { get; set; } = true;
+
         [SerializeField] private Transform pivotTransform;
 
         private Quaternion attitude;
@@ -85,7 +87,14 @@ namespace Hammer
 
         void FixedUpdate()
         {
-            
+            if (!canControl)
+            {
+                velocity = Vector3.zero;
+                frameAcceleration = Vector3.zero;
+                extensionVelocity = 0;
+                momentum = 0;
+                return;
+            }
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
             frameAcceleration = _controllerRef.GetAcceleration();
