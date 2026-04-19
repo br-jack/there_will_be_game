@@ -35,6 +35,8 @@ public class horseMovementGaits : MonoBehaviour
     public float currentRunCharge; //should be private, but i want to see it! 
     public gait gait; //currently pointless, just to see gait in editor
     public float currentSpeed = 0f; //just to see in editor
+
+    public bool canControl { get; set; } = true;
     
 
     private float jumpLockedTime;
@@ -147,7 +149,17 @@ public class horseMovementGaits : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {       
+    {
+        if (!canControl)
+        {
+            currentSpeed = 0f;
+            _throttleInput = 0f;
+            _brakeInput = 0f;
+            _turnInput = 0f;
+            _jumpInput = false;
+            verticalVelocity = Vector3.zero;
+            return;
+        }
         if (jumpLockedTime > 0.0f) {jumpLockedTime -= Time.deltaTime;} 
         else {jumpLockedTime = 0.0f;}
 
