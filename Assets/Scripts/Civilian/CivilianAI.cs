@@ -101,6 +101,22 @@ public class CivilianAI : MonoBehaviour
             }
         }
 
+        UpdateAnimation();
+    }
+
+    private void UpdateAnimation()
+    {
+        if (animator == null || string.IsNullOrEmpty(speedParam))
+        {
+            return;
+        } 
+
+        float agentVelocity = 0f;
+        if (agent != null)
+        {
+            agentVelocity = agent.velocity.magnitude;
+        }
+        animator.SetFloat(speedParam, agentVelocity);
     }
 
     private void PickNewRandomMovementPoint()
