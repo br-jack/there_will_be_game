@@ -16,7 +16,6 @@ using UnityEngine.AI;
     public float speed;
     public float targetDistance;
     public float refreshInterval;
-
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -33,7 +32,7 @@ public class CivilianAI : MonoBehaviour
         speed = 2f
     };
 
-    [SerializeField] private RunAwaySettings runAwaySettings = new RunAwaySettings
+    [SerializeField] private RunAwaySettings runAway = new RunAwaySettings
     {
         startRunningRadius = 10f,
         stopRunningRadius = 18f,
@@ -44,21 +43,12 @@ public class CivilianAI : MonoBehaviour
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
-    [SerializeField] private movementState = MovementState.RandomMovement;
+    [SerializeField] private string speedParam = "Speed";
+
+    private MovementState movementState = MovementState.RandomMovement;
+    private NavMeshAgent agent;
 
     // Timers
-    private float nextMovementTimes;
-    private float nextRunAwayRefreshTime;
-
-    private enum State
-    {
-        RandomMovement,
-        RunAway
-    }
-
-    private State state = State.RandomMovement;
-    private NavMeshAgent agent;
-    private Transform playerTransform;
     private float nextMovementTime;
     private float nextRunAwayRefreshTime;
 
@@ -70,20 +60,17 @@ public class CivilianAI : MonoBehaviour
 
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.speed = randomMovement.speed;
-
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null) playerTransform = player.transform;
+        ResolvePlayerRefs();
     }
     void Update()
     {
         if (_playerTransformRef == null)
         {
+            ResolvePlayerRefs();
             return;
         }
 
-        float distanceToPlayer = Vector3.Distance(transform.position, _playerTransformRef.position)
+        float distanceToPlayer = Vector3.Distance(transform.position, _playerTransformRef.position);
 
         // Switching between states
         if (movementState == MovementState.RandomMovement && distanceToPlayer < runAway.startRunningRadius)
@@ -107,7 +94,7 @@ public class CivilianAI : MonoBehaviour
 
     private void PickNewRandomMovementPoint()
     {
-        Vector3 potential = transform.position + Random.insideUnitSphere * randomMovement.radius;
+        Vector3 potentialPick = transform.position + Random.insideUnitSphere * randomMovement.radius;
         if (NavMesh.SamplePosition(potentialPick, out NavMeshHit hit, randomMovement.radius, NavMesh.AllAreas))
         {
             agent.SetDestination(hit.position);
@@ -135,5 +122,13 @@ public class CivilianAI : MonoBehaviour
             return;
         }
         agent.speed = randomMovement.speed;
+    }
+
+    private void ResolvePlayerRefs()
+    {
+        if (_playerTransformRef != null) return;
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null) return;
+        _playerTransformRef = player.transform;
     }
 }
