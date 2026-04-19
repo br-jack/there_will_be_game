@@ -11,6 +11,7 @@ namespace Hammer
      */
     public class VisualHammer : MonoBehaviour
     {
+        [SerializeField] private CharacterController _horseCC;
         public hammerHead head;
         public Vector3 smallHitboxSize;
         public Vector3 smallHitboxCenter;
@@ -66,8 +67,8 @@ namespace Hammer
             Vector3 springForce = toTarget * positionSpringStrength;
 
             // horses are much faster than hammers
-            // Vector3 dampingForce = -(_rb.linearVelocity - horseRigidBody.linearVelocity) * positionDamping;
-            Vector3 dampingForce = -_rb.linearVelocity * positionDamping;
+            Vector3 dampingForce = -(_rb.linearVelocity - _horseCC.velocity) * positionDamping;
+            // Vector3 dampingForce = -_rb.linearVelocity * positionDamping;
 
             _rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
         }
