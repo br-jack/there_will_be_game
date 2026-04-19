@@ -116,8 +116,8 @@ namespace Hammer
             // maybe horse acceleration?
             //_rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, horseRigidBody.linearVelocity, 0.8f);
 
-            MoveToTargetPosition();
-            MoveToTargetRotation();
+            // MoveToTargetPosition();
+            // MoveToTargetRotation();
         }
 
     }

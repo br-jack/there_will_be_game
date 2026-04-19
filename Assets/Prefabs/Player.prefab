@@ -6997,6 +6997,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7672999536482783943}
     m_Modifications:
+    - target: {fileID: 2007879889780083079, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_ConnectedBody
+      value: 
+      objectReference: {fileID: 2147540564368440581}
     - target: {fileID: 2131890989086541241, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: fireVisual
       value: 
@@ -8244,6 +8248,11 @@ PrefabInstance:
 --- !u!4 &12181328284975977 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5003253198180856680, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+  m_PrefabInstance: {fileID: 4991227111524642817}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &2147540564368440581 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 6379910031664844036, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
   m_PrefabInstance: {fileID: 4991227111524642817}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &4632399603067790969 stripped
