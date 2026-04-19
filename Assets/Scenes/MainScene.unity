@@ -26310,6 +26310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543759119}
+  - component: {fileID: 543759120}
   m_Layer: 0
   m_Name: BodyHitbox
   m_TagString: Untagged
@@ -26332,6 +26333,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 897623690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &543759120
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543759118}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.55
+  m_Height: 2.05
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &544451579 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1604042591102041221, guid: 5c612bc010161fa4581396e1c102cd08, type: 3}
