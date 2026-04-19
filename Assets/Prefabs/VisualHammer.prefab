@@ -34286,6 +34286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470dec3b8051d194a98d0bcdbfd45145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _horseCC: {fileID: 0}
   head: {fileID: 8479068076154358140}
   smallHitboxSize: {x: 1.5, y: 4.5, z: 1.5}
   smallHitboxCenter: {x: 0, y: 3, z: 0.4}
@@ -34299,9 +34300,9 @@ MonoBehaviour:
   _targetHammer: {fileID: 0}
   useSpring: 1
   positionSpringStrength: 400
-  positionDamping: 20
+  positionDamping: 40
   rotationSpringStrength: 200
-  rotationDamping: 10
+  rotationDamping: 20
 --- !u!114 &2131890989086541241
 MonoBehaviour:
   m_ObjectHideFlags: 0

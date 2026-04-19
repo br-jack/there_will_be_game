@@ -622,6 +622,15 @@ MonoBehaviour:
   maxHealth: 100
   damageFlash: {fileID: 0}
   invulnerabilityFlash: {fileID: 7439884306161422662}
+  respawnPoint: {fileID: 0}
+  respawnDelay: 1
+  respawnInvincibilityDuration: 2
+  fearPenaltyOnRespawn: 500
+  playerRenderers: []
+  deathTextUI: {fileID: 0}
+  hammerParticlesRoot: {fileID: 0}
+  hammerFireVisual: {fileID: 0}
+  hammerFireController: {fileID: 0}
 --- !u!114 &7439884306161422662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7040,6 +7049,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _horseCC
+      value: 
+      objectReference: {fileID: 5198885869196984512}
     - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: _targetHammer
       value: 
