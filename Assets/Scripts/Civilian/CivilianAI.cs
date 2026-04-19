@@ -88,12 +88,19 @@ public class CivilianAI : MonoBehaviour
 
         if (movementState == MovementState.RandomMovement)
         {
-            
+            if (Time.time >= nextMovementTime || agent.remainingDistance < 0.5f)
+            {
+                PickNewRandomMovementPoint();
+            }
         }
         else
         {
-            
+            if (Time.time >= nextRunAwayRefreshTime)
+            {
+                PickNewRunAwayPoint();
+            }
         }
+
     }
 
     private void PickNewRandomMovementPoint()
