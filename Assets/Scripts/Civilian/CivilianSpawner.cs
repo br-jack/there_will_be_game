@@ -17,13 +17,4 @@ public class CivilianSpawner : MonoBehaviour
             Instantiate(civilianPrefab, point.position, point.rotation);
         }
     }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        foreach (Transform child in transform)
-        {
-            Gizmos.DrawSphere(child.position, 0.5f);
-        }
-    }
 }
