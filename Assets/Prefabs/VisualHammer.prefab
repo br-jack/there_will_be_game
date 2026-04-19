@@ -34265,8 +34265,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.5, y: 6, z: 5}
-  m_Center: {x: 0, y: 3, z: -1.5}
+  m_Size: {x: 0.9, y: 6.35, z: 1.97}
+  m_Center: {x: 0, y: 2.55, z: -0.1}
 --- !u!114 &2114495943177407429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34297,11 +34297,12 @@ MonoBehaviour:
   head: {fileID: 8479068076154358140}
   pivotTransform: {fileID: 0}
   _targetHammer: {fileID: 0}
-  useSpring: 1
+  useSpring: 0
   positionSpringStrength: 2000
   positionDamping: 240
   rotationSpringStrength: 2000
   rotationDamping: 240
+  useDynamicHitbox: 0
   smallHitboxSize: {x: 1.5, y: 4.5, z: 1.5}
   smallHitboxCenter: {x: 0, y: 3, z: 0.4}
   mediumHitboxThreshold: 3

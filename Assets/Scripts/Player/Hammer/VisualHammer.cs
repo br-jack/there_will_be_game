@@ -34,8 +34,9 @@ namespace Hammer
         [Tooltip("Must get this close to re-enable collisions")]
         [SerializeField] private float collisionReenableDistance = 0.3f;
         */
-        
+
         [Header("Dynamic Hitbox")]
+        [SerializeField] private bool useDynamicHitbox = true;
         [SerializeField] private Vector3 smallHitboxSize;
         [SerializeField] private Vector3 smallHitboxCenter;
         [SerializeField] private float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
@@ -99,18 +100,21 @@ namespace Hammer
 
         void FixedUpdate()
         {
-            if (head.forwardSpeed < mediumHitboxThreshold)
+            if (useDynamicHitbox)
             {
-                _hitbox.size = smallHitboxSize;
-                _hitbox.center = smallHitboxCenter;
-            } else if (head.forwardSpeed < largeHitboxThreshold)
-            {
-                _hitbox.size = mediumHitboxSize;
-                _hitbox.center = mediumHitboxCenter;
-            } else
-            {
-                _hitbox.size = largeHitboxSize;
-                _hitbox.center = largeHitboxCenter;
+                if (head.forwardSpeed < mediumHitboxThreshold)
+                {
+                    _hitbox.size = smallHitboxSize;
+                    _hitbox.center = smallHitboxCenter;
+                } else if (head.forwardSpeed < largeHitboxThreshold)
+                {
+                    _hitbox.size = mediumHitboxSize;
+                    _hitbox.center = mediumHitboxCenter;
+                } else
+                {
+                    _hitbox.size = largeHitboxSize;
+                    _hitbox.center = largeHitboxCenter;
+                }
             }
             
             // maybe horse acceleration?
