@@ -7,7 +7,12 @@ public class BodyHit : MonoBehaviour
     public LayerMask shieldMask;
     public hitSound hitSounds;
 
-    [SerializeField] private ScoreSettings scoreSettings;
+    private ScoreSettings scoreSettings;
+
+    void Awake()
+    {
+        scoreSettings = Resources.Load<ScoreSettings>("ScoreSettings");
+    }
 
     void OnTriggerEnter(Collider other)
     {

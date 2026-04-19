@@ -6,8 +6,13 @@ public class CivilianHit : MonoBehaviour
 {
     public hitSound hitSounds;
 
-    [SerializeField] private ScoreSettings scoreSettings;
+    private ScoreSettings scoreSettings;
     [SerializeField] private float scoreMultiplier = 0.8f;
+
+    void Awake()
+    {
+        scoreSettings = Resources.Load<ScoreSettings>("ScoreSettings");
+    }
 
     void OnTriggerEnter(Collider other)
     {
