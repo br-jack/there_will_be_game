@@ -27,7 +27,6 @@ public class IntroFadeText : MonoBehaviour
     [SerializeField] private GameObject healthBarUI;
     [SerializeField] private GameObject boonTextUI;
     [SerializeField] private GameObject taskPanelUI;
-    [SerializeField] private GameObject villageArrowUI;
     [SerializeField] private GameObject waveAnnouncerUI;
 
     [Header("Tutorial Prompt UI")]
@@ -48,6 +47,10 @@ public class IntroFadeText : MonoBehaviour
     [SerializeField] private string rewardMessage = "A boon has been granted";
 
     [SerializeField] private GameObject tutorialMarker;
+
+    [Header("3D Tutorial Arrow")]
+    [SerializeField] private TaskArrow3D taskArrow;
+
     private bool taskStarted = false;
     private bool rewardSpawned = false;
 
@@ -222,6 +225,7 @@ public class IntroFadeText : MonoBehaviour
 
         tutorialMarker.SetActive(true);
         tutorialTask.StartTask();
+        taskArrow.Show(true);
 
         promptText.text = thirdPromptMessage;
     }
@@ -237,6 +241,7 @@ public class IntroFadeText : MonoBehaviour
         {
             return;
         }
+        taskArrow.Show(false);
 
         rewardSpawned = true;
         tutorialMarker.SetActive(false);
@@ -248,13 +253,13 @@ public class IntroFadeText : MonoBehaviour
 
     private void HideGameplayUIAtStart()
     {
+        taskArrow.Show(false);
         tutorialMarker.SetActive(false);
         fearBarUI.SetActive(false);
         aweBarUI.SetActive(false);
         healthBarUI.SetActive(false);
         boonTextUI.SetActive(false);
         taskPanelUI.SetActive(false);
-        villageArrowUI.SetActive(false);
         waveAnnouncerUI.SetActive(false);
     }
 }
