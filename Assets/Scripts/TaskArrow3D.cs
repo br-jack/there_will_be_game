@@ -6,34 +6,38 @@ public class TaskArrow3D : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Transform target;
 
-    private Camera camera;
-
-    private void Start()
-    {
-        camera = Camera.main;
-    }
+    [Header("Position Settings")]
+    [SerializeField] private float heightAbovePlayer = 4f;
+    [SerializeField] private float followSmooth = 100000f;
 
     private void Update()
     {
-        Vector3 direction = target.position - player.position;
+        UpdatePosition();
+        UpdateRotation();
+    }
 
-        direction.y = 0f; // Flatten the y
+    private void UpdatePosition()
+    {
+        Vector3 desiredPosition = player.position + Vector3.up * heightAbovePlayer;
+
+        transform.position = Vector3.Lerp(
+            transform.position,
+            desiredPosition,
+            Time.deltaTime * followSmooth
+        );
+    }
+
+    private void UpdateRotation()
+    {
+        Vector3 direction = target.position - player.position;
+        direction.y = 0f;
 
         if (direction.sqrMagnitude < 0.001f)
         {
             return;
         }
 
-        direction.Normalize();
-
-        // Convert world direction into camera space
-        Vector3 localDir = camera.transform.InverseTransformDirection(direction);
-
-        // Calculate angle for rotation
-        float angle = Mathf.Atan2(localDir.x, localDir.z) * Mathf.Rad2Deg;
-
-        // Rotate arrow around Z so it behaves like UI
-        transform.localRotation = Quaternion.Euler(0f, 0f, -angle);
+        transform.rotation = Quaternion.LookRotation(direction) * Quaternion.Euler(90f, 0f, 0f);
     }
 
     // gonna need these eventually
