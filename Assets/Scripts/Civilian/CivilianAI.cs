@@ -14,7 +14,6 @@ using UnityEngine.AI;
     public float startRunningRadius;
     public float stopRunningRadius;
     public float speed;
-    public float targetDistance;
     public float refreshInterval;
 }
 
@@ -37,7 +36,6 @@ public class CivilianAI : MonoBehaviour
         startRunningRadius = 10f,
         stopRunningRadius = 18f,
         speed = 6f,
-        targetDistance = 15f,
         refreshInterval = 0.2f
     };
 
@@ -132,8 +130,8 @@ public class CivilianAI : MonoBehaviour
     private void PickNewRunAwayPoint()
     {
         Vector3 awayDirection = (transform.position - _playerTransformRef.position).normalized;
-        Vector3 potentialPick = transform.position + awayDirection * runAway.targetDistance;
-        if (NavMesh.SamplePosition(potentialPick, out NavMeshHit hit, runAway.targetDistance, NavMesh.AllAreas))
+        Vector3 potentialPick = transform.position + awayDirection * runAway.stopRunningRadius;
+        if (NavMesh.SamplePosition(potentialPick, out NavMeshHit hit, runAway.stopRunningRadius, NavMesh.AllAreas))
         {
             agent.SetDestination(hit.position);
         }
