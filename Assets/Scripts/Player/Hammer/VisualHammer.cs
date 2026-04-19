@@ -69,10 +69,23 @@ namespace Hammer
 
             Vector3 springForce = toTarget * positionSpringStrength;
 
-            // horses are much faster than hammers
+            //// horses are much faster than hammers
             // Vector3 dampingForce = -(_rb.linearVelocity - _horseCC.velocity) * positionDamping;
             Vector3 dampingForce = -_rb.linearVelocity * positionDamping;
 
+            //_rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
+
+            //if (_collisionsEnabled && distance > collisionDisableDistance)
+            //{
+            //    _collisionsEnabled = false;
+            //    if (_hitbox != null) _hitbox.enabled = false;
+            //}
+            //else if (!_collisionsEnabled && distance < collisionReenableDistance)
+            //{
+            //    _collisionsEnabled = true;
+            //    if (_hitbox != null) _hitbox.enabled = true;
+            //}
+            
             _rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
         }
 
