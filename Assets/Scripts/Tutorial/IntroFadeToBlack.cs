@@ -47,6 +47,7 @@ public class IntroFadeText : MonoBehaviour
     [SerializeField] private GameObject tutorialRewardPrefab;
     [SerializeField] private string rewardMessage = "A boon has been granted";
 
+    [SerializeField] private GameObject tutorialMarker;
     private bool taskStarted = false;
     private bool rewardSpawned = false;
 
@@ -219,6 +220,7 @@ public class IntroFadeText : MonoBehaviour
 
         taskPanelUI.SetActive(true);
 
+        tutorialMarker.SetActive(true);
         tutorialTask.StartTask();
 
         promptText.text = thirdPromptMessage;
@@ -237,6 +239,7 @@ public class IntroFadeText : MonoBehaviour
         }
 
         rewardSpawned = true;
+        tutorialMarker.SetActive(false);
 
         powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
 
@@ -245,6 +248,7 @@ public class IntroFadeText : MonoBehaviour
 
     private void HideGameplayUIAtStart()
     {
+        tutorialMarker.SetActive(false);
         fearBarUI.SetActive(false);
         aweBarUI.SetActive(false);
         healthBarUI.SetActive(false);
