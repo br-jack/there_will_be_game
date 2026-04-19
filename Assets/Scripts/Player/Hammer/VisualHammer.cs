@@ -13,21 +13,13 @@ namespace Hammer
     {
         [SerializeField] private CharacterController _horseCC;
         public hammerHead head;
-        public Vector3 smallHitboxSize;
-        public Vector3 smallHitboxCenter;
-        public float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
-        public Vector3 mediumHitboxSize;
-        public Vector3 mediumHitboxCenter;
-        public float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
-        public Vector3 largeHitboxSize;
-        public Vector3 largeHitboxCenter;
         
         [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
         
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
-
+        
         [Header("Spring Settings")] 
         [SerializeField] private bool useSpring = true;
         [SerializeField] private float positionSpringStrength = 2000f;
@@ -42,6 +34,16 @@ namespace Hammer
         [Tooltip("Must get this close to re-enable collisions")]
         [SerializeField] private float collisionReenableDistance = 0.3f;
         */
+        
+        [Header("Dynamic Hitbox")]
+        [SerializeField] private Vector3 smallHitboxSize;
+        [SerializeField] private Vector3 smallHitboxCenter;
+        [SerializeField] private float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
+        [SerializeField] private Vector3 mediumHitboxSize;
+        [SerializeField] private Vector3 mediumHitboxCenter;
+        [SerializeField] private float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
+        [SerializeField] private Vector3 largeHitboxSize;
+        [SerializeField] private Vector3 largeHitboxCenter;
 
         //private bool _collisionsEnabled = true;
         
