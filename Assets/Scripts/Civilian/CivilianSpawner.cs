@@ -4,10 +4,6 @@ public class CivilianSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject civilianPrefab;
 
-    [Header("Gizmos")]
-    [SerializeField] private Color gizmoColor = Color.yellow;
-    [SerializeField] private float gizmoRadius = 0.5f;
-
     void Awake()
     {
         if (civilianPrefab == null)
@@ -24,10 +20,10 @@ public class CivilianSpawner : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = gizmoColor;
+        Gizmos.color = Color.yellow;
         foreach (Transform child in transform)
         {
-            Gizmos.DrawSphere(child.position, gizmoRadius);
+            Gizmos.DrawSphere(child.position, 0.5f);
         }
     }
 }
