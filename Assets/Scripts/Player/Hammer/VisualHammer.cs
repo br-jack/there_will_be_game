@@ -61,6 +61,7 @@ namespace Hammer
 
             // horses are much faster than hammers
             // Vector3 dampingForce = -(_rb.linearVelocity - horseRigidBody.linearVelocity) * positionDamping;
+            Vector3 dampingForce = -_rb.linearVelocity * positionDamping;
 
             _rb.AddForce(springForce, ForceMode.Acceleration);
         }
@@ -68,13 +69,14 @@ namespace Hammer
         private void MoveToTargetRotation()
         {
             Quaternion rotationDiff = _targetHammer.transform.rotation * Quaternion.Inverse(transform.rotation);
-            rotationDiff.ToAngleAxis(out float angle, out Vector3 rotationAxis);
+            rotationDiff.normalized.ToAngleAxis(out float angle, out Vector3 rotationAxis);
 
+            //map range from 0 <= angle <= 360 to -180 <= angle <= 180
             if (angle > 180f) angle -= 360f;
 
             if (rotationAxis.sqrMagnitude > 0.001f)
             {
-                Vector3 springTorque = rotationAxis.normalized * (angle * Mathf.Deg2Rad * rotationSpringStrength);
+                Vector3 springTorque = rotationAxis.normalized * ((angle * Mathf.Deg2Rad) * rotationSpringStrength);
                 Vector3 dampingTorque = -_rb.angularVelocity * rotationDamping;
                 _rb.AddTorque(springTorque + dampingTorque, ForceMode.Acceleration);
             }
