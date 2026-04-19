@@ -112195,32 +112195,36 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LinearLimit.limit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_RotationDriveMode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_XDrive.positionDamper
-      value: 20
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_XDrive.positionSpring
-      value: 100
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_YDrive.positionDamper
-      value: 20
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_YDrive.positionSpring
-      value: 100
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_ZDrive.positionDamper
-      value: 20
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_ZDrive.positionSpring
-      value: 100
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_LinearLimitSpring.spring
@@ -112228,11 +112232,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_SlerpDrive.positionDamper
-      value: 100
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_SlerpDrive.positionSpring
       value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3501600432212435468, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_LinearLimit.contactDistance
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3518905436336741756, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
