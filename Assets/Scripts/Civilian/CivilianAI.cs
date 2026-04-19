@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(Rigidbody))]
-
 [System.Serializable] public struct RandomMovementSettings
 {
     public float radius;
@@ -22,6 +19,8 @@ using UnityEngine.AI;
 
 }
 
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody))]
 public class CivilianAI : MonoBehaviour
 {
     private enum MovementState { RandomMovement, RunAway }
