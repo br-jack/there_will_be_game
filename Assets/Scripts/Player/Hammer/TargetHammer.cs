@@ -85,7 +85,7 @@ namespace Hammer
             transform.position = pivotTransform.position + transform.rotation * Vector3.forward * extension;
         }
 
-        void FixedUpdate()
+        void Update()
         {
             if (!canControl)
             {
