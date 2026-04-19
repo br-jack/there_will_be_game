@@ -906,7 +906,7 @@ MonoBehaviour:
   - {fileID: 1686391742984204268, guid: 264ff4363d258424aa694dabe49286e1, type: 3}
   - {fileID: 1686391742984204268, guid: 483af88ed68028c4aa8eac30dd833a89, type: 3}
   - {fileID: 6749940139257082442, guid: ef9175d09d8d5f74bb7259263c779e7f, type: 3}
-  spawnPoint: {fileID: 0}
+  spawnPoint: {fileID: 1466229040}
   spawnHeightOffset: 10
   boonText: {fileID: 2001586327}
   messageDuration: 3
@@ -1666,6 +1666,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1466229039
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1466229040}
+  m_Layer: 0
+  m_Name: powerUpSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1466229040
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466229039}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 25.38573, y: 12.76, z: -36.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4844,3 +4875,4 @@ SceneRoots:
   - {fileID: 2237668133860025892}
   - {fileID: 2120864316}
   - {fileID: 1849360416}
+  - {fileID: 1466229040}
