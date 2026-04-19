@@ -34324,6 +34324,71 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31ad988e37418764f88e6038d4e9aac8, type: 3}
+--- !u!1001 &656670458
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -3130684987835473812, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: runAway.targetDistance
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -3130684987835473812, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: runAway.refreshInterval
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517552264688272, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_Name
+      value: Civilian
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946331863093674, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946331863093674, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946331863093674, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -21
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946331863093674, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946331863093674, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946331863093674, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946331863093674, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946331863093674, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946331863093674, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4946331863093674, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b1721ce81ef124752b01ec203f0fa791, type: 3}
 --- !u!4 &656973118 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2092314073500460607, guid: 5c612bc010161fa4581396e1c102cd08, type: 3}
@@ -57187,6 +57252,7 @@ GameObject:
   - component: {fileID: 1121613214}
   - component: {fileID: 1121613213}
   - component: {fileID: 1121613212}
+  - component: {fileID: 1121613218}
   m_Layer: 0
   m_Name: CivilianTest
   m_TagString: Untagged
@@ -57332,6 +57398,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1121613218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121613211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f4e1b0ec5444a6a9b2a8d299d60256, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerTransformRef: {fileID: 0}
+  randomMovement:
+    radius: 8
+    minInterval: 2
+    maxInterval: 5
+    speed: 2
+  runAway:
+    startRunningRadius: 10
+    stopRunningRadius: 18
+    speed: 6
+    targetDistance: 15
+    refreshInterval: 0.2
+  anim: {fileID: 0}
+  speedParam: Speed
 --- !u!4 &1124950396 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7640758384914149554, guid: 4c2b94caa8a583843bc20ee05ea0d9e1, type: 3}
@@ -113963,3 +114055,4 @@ SceneRoots:
   - {fileID: 1963458287}
   - {fileID: 2237668133860025892}
   - {fileID: 1121613217}
+  - {fileID: 656670458}

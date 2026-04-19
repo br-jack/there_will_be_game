@@ -41,8 +41,8 @@ public class CivilianAI : MonoBehaviour
         refreshInterval = 0.2f
     };
 
-    [Header("Animation")]
-    [SerializeField] private Animator animator;
+    [Header("Animation (optional)")]
+    [SerializeField] private Animator anim;
     [SerializeField] private string speedParam = "Speed";
 
     private MovementState movementState = MovementState.RandomMovement;
@@ -54,7 +54,7 @@ public class CivilianAI : MonoBehaviour
 
     void Awake()
     {
-        if (animator == null) animator = GetComponentInChildren<Animator>();
+        if (anim == null) anim = GetComponentInChildren<Animator>();
         SetupNavMesh();
     }
 
@@ -101,22 +101,22 @@ public class CivilianAI : MonoBehaviour
             }
         }
 
-        UpdateAnimation();
+        UpdateAnim();
     }
 
-    private void UpdateAnimation()
+    private void UpdateAnim()
     {
-        if (animator == null || string.IsNullOrEmpty(speedParam))
+        if (anim == null || string.IsNullOrEmpty(speedParam))
         {
             return;
-        } 
+        }
 
         float agentVelocity = 0f;
         if (agent != null)
         {
             agentVelocity = agent.velocity.magnitude;
         }
-        animator.SetFloat(speedParam, agentVelocity);
+        anim.SetFloat(speedParam, agentVelocity);
     }
 
     private void PickNewRandomMovementPoint()
