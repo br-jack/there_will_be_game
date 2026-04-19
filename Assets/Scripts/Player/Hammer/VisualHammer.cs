@@ -57,7 +57,7 @@ namespace Hammer
         {
             if (!useSpring)
             {
-                _rb.MovePosition(_targetHammer.transform.position);
+                transform.position = _targetHammer.transform.position;
                 return;
             }
             Vector3 toTarget = _targetHammer.transform.position - transform.position;
@@ -76,7 +76,7 @@ namespace Hammer
         {
             if (!useSpring)
             {
-                _rb.MoveRotation(_targetHammer.transform.rotation);
+                transform.rotation = _targetHammer.transform.rotation;
                 return;
             }
             Quaternion rotationDiff = _targetHammer.transform.rotation * Quaternion.Inverse(transform.rotation);
