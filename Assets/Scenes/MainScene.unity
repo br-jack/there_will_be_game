@@ -18335,6 +18335,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1018385781566011002, guid: b677ee971c53d4942bf2a8201f2f1a7b, type: 3}
   m_PrefabInstance: {fileID: 1963466524}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &447179571 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2521183655892129222, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 124c91b44626ad0409933abfbae8bfb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &447917209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19435,7 +19446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 0
-  size: {x: 461.20728, y: 118.01456, z: 507.32358}
+  size: {x: 461.20728, y: 118.01456, z: 507.32355}
   overrideRendererFilters: 0
   minRendererVolumeSize: 0.1
   objectLayerMask:
@@ -19475,7 +19486,7 @@ Transform:
   m_GameObject: {fileID: 494643040}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 54.730103, y: 27.10942, z: 49.884384}
+  m_LocalPosition: {x: 54.730103, y: 27.10942, z: 49.88437}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -68645,11 +68656,11 @@ PrefabInstance:
     - target: {fileID: 2153783776197419678, guid: 3d1d66175f2e14e4ab9771027cf98890, type: 3}
       propertyPath: hammerHitbox
       value: 
-      objectReference: {fileID: 5061453144199501985}
+      objectReference: {fileID: 0}
     - target: {fileID: 2153783776197419678, guid: 3d1d66175f2e14e4ab9771027cf98890, type: 3}
       propertyPath: hammerFireController
       value: 
-      objectReference: {fileID: 5061453144199501991}
+      objectReference: {fileID: 0}
     - target: {fileID: 2705092729477217938, guid: 3d1d66175f2e14e4ab9771027cf98890, type: 3}
       propertyPath: m_Name
       value: Lux01
@@ -73312,7 +73323,7 @@ MonoBehaviour:
   isComplete: 0
   powerUpSpawner: {fileID: 750377874}
   infiniteFirePowerUpPrefab: {fileID: 6749940139257082442, guid: ef9175d09d8d5f74bb7259263c779e7f, type: 3}
-  hammerFireController: {fileID: 5061453144199501991}
+  hammerFireController: {fileID: 0}
   rewardMessage: The eternal flame boon has been granted
   statueArrowUI: {fileID: 662462362}
   buildingsRequired: 8
@@ -105434,6 +105445,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5791541256387958200, guid: 1ad9bd9d8b5c4a34196333d64b6158fa, type: 3}
   m_PrefabInstance: {fileID: 1454077902}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2022096475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2022096476}
+  m_Layer: 6
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2022096476
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022096475}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 743921864}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2022452533
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -111654,6 +111696,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2677247790769911592, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: hammerFireController
+      value: 
+      objectReference: {fileID: 447179571}
     - target: {fileID: 2684117953140027285, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -113029,7 +113075,7 @@ PrefabInstance:
     - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: hammerFireController
       value: 
-      objectReference: {fileID: 5061453144199501991}
+      objectReference: {fileID: 447179571}
     - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: playerRenderers.Array.size
       value: 18
@@ -113132,25 +113178,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 2022096476}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
---- !u!65 &5061453144199501985 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 411242483379982146, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-  m_PrefabInstance: {fileID: 5061453144199501980}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5061453144199501991 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3949864244404710962, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-  m_PrefabInstance: {fileID: 5061453144199501980}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 124c91b44626ad0409933abfbae8bfb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!23 &5061453144199501993 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 1291212790039488005, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
@@ -113612,7 +113645,6 @@ SceneRoots:
   - {fileID: 1604236705}
   - {fileID: 1321140118}
   - {fileID: 201162544}
-  - {fileID: 5061453144199501980}
   - {fileID: 498810730}
   - {fileID: 1360215374}
   - {fileID: 982937838}
@@ -113633,3 +113665,4 @@ SceneRoots:
   - {fileID: 658775823}
   - {fileID: 2237668133860025892}
   - {fileID: 528525038}
+  - {fileID: 5061453144199501980}
