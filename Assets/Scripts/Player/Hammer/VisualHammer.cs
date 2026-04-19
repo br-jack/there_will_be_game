@@ -27,7 +27,8 @@ namespace Hammer
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
 
-        [Header("Spring Settings")]
+        [Header("Spring Settings")] 
+        [SerializeField] private bool useSpring = true;
         [SerializeField] private float positionSpringStrength = 2000f;
         [SerializeField] private float positionDamping = 240f;
         [SerializeField] private float rotationSpringStrength = 2000f;
@@ -54,6 +55,11 @@ namespace Hammer
 
         private void MoveToTargetPosition()
         {
+            if (!useSpring)
+            {
+                _rb.MovePosition(_targetHammer.transform.position);
+                return;
+            }
             Vector3 toTarget = _targetHammer.transform.position - transform.position;
             float distance = toTarget.magnitude;
 
@@ -68,6 +74,11 @@ namespace Hammer
 
         private void MoveToTargetRotation()
         {
+            if (!useSpring)
+            {
+                _rb.MoveRotation(_targetHammer.transform.rotation);
+                return;
+            }
             Quaternion rotationDiff = _targetHammer.transform.rotation * Quaternion.Inverse(transform.rotation);
             rotationDiff.normalized.ToAngleAxis(out float angle, out Vector3 rotationAxis);
 
