@@ -34296,14 +34296,12 @@ MonoBehaviour:
   largeHitboxSize: {x: 2, y: 6, z: 6.5}
   largeHitboxCenter: {x: 0, y: 3, z: -2.5}
   pivotTransform: {fileID: 0}
-  horseRigidBody: {fileID: 0}
   _targetHammer: {fileID: 0}
+  useSpring: 1
   positionSpringStrength: 500
-  positionDamping: 80
-  rotationSpringStrength: 30
-  rotationDamping: 5
-  collisionDisableDistance: 2.5
-  collisionReenableDistance: 0.3
+  positionDamping: 22
+  rotationSpringStrength: 300
+  rotationDamping: 16
 --- !u!114 &2131890989086541241
 MonoBehaviour:
   m_ObjectHideFlags: 0
