@@ -75,11 +75,15 @@ public class CivilianAI : MonoBehaviour
         // Switching between states
         if (movementState == MovementState.RandomMovement && distanceToPlayer < runAway.startRunningRadius)
         {
-            
+            movementState = MovementState.RunAway;
+            agent.speed = runAway.speed;
+            PickNewRunAwayPoint();
         }
         else if (movementState == MovementState.RunAway && distanceToPlayer > runAway.stopRunningRadius)
         {
-            
+            movementState = MovementState.RandomMovement;
+            agent.speed = randomMovement.speed;
+            PickNewRandomMovementPoint();
         }
 
         if (movementState == MovementState.RandomMovement)
