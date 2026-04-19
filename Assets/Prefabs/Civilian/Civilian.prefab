@@ -946,7 +946,7 @@ GameObject:
   - component: {fileID: -3674928665403327532}
   - component: {fileID: 7610704253365664017}
   - component: {fileID: -266577907326631511}
-  - component: {fileID: -3130684987835473812}
+  - component: {fileID: 9006935523512060209}
   m_Layer: 0
   m_Name: Civilian
   m_TagString: Untagged
@@ -1065,7 +1065,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &-3130684987835473812
+--- !u!114 &9006935523512060209
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1079,15 +1079,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTransformRef: {fileID: 0}
   randomMovement:
-    radius: 8
+    radius: 20
     minInterval: 2
     maxInterval: 5
-    speed: 2
+    speed: 3
   runAway:
-    startRunningRadius: 16
-    stopRunningRadius: 22
+    startRunningRadius: 20
+    stopRunningRadius: 40
     speed: 10
-    targetDistance: 15
     refreshInterval: 0.2
   anim: {fileID: 0}
   speedParam: Speed
