@@ -2422,6 +2422,12 @@ MonoBehaviour:
   horseMovement: {fileID: 1702517270}
   targetHammer: {fileID: 1784825538}
   playerHealth: {fileID: 1702517269}
+  playerTransform: {fileID: 743921864}
+  autoFaceTurnSpeed: 5
+  keepFacingEnemyWhileLocked: 1
+  cameraTransform: {fileID: 0}
+  playerEnemyFacingOffset: 45
+  offsetPlayerToRight: 1
   enemyIntroPromptMessage: An enemy approaches. Watch your health.
   enemyKillPromptMessage: Now defeat the enemy to gain Fear and Awe.
 --- !u!1 &1817797211
@@ -2784,9 +2790,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 4937528112206273530, guid: 958da4c8e8c7d48169847e9e756975ce, type: 3}
   spawnPoint: {fileID: 474253707}
-  messageText: {fileID: 0}
-  messageDuration: 2.5
-  spawnMessage: An enemy approaches
   spawnSound: {fileID: 0}
   audioSource: {fileID: 0}
   mainCamera: {fileID: 139368896}

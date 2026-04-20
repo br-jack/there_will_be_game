@@ -62,6 +62,11 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TargetHammer targetHammer;
     [SerializeField] private PlayerHealth playerHealth;
 
+    [Header("Enemy Facing")]
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private float autoFaceTurnSpeed = 5f;
+    [SerializeField] private Transform cameraTransform;
+
     [SerializeField] private string enemyIntroPromptMessage = "An enemy approaches. Watch your health.";
     [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
 
@@ -336,6 +341,8 @@ public class TutorialManager : MonoBehaviour
 
         currentTutorialEnemy = tutorialEnemySpawner.SpawnTutorialEnemy();
         currentTutorialEnemy.OnDied += HandleTutorialEnemyDied;
+        SnapFaceTarget(currentTutorialEnemy.transform);
+        SnapCameraToTarget(currentTutorialEnemy.transform);
     }
 
     private void HandlePlayerHealthChanged(int current, int max)
@@ -378,5 +385,41 @@ public class TutorialManager : MonoBehaviour
         taskArrow.SetTarget(tutorialDoorTarget);
         taskArrow.Show(true);
         promptText.text = exitPromptMessage;
+    }
+
+    private void SnapFaceTarget(Transform target)
+    {
+        if (playerTransform == null || target == null)
+        {
+            return;
+        }
+
+        Vector3 direction = target.position - playerTransform.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.001f)
+        {
+            return;
+        }
+
+        Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
+        playerTransform.rotation = lookRotation * Quaternion.Euler(0f, 45f, 0f);
+    }
+
+    private void SnapCameraToTarget(Transform target)
+    {
+        if (cameraTransform == null || target == null)
+        {
+            return;
+        }
+
+        Vector3 direction = target.position - cameraTransform.position;
+
+        if (direction.sqrMagnitude < 0.001f)
+        {
+            return;
+        }
+
+        cameraTransform.rotation = Quaternion.LookRotation(direction, Vector3.up);
     }
 }
