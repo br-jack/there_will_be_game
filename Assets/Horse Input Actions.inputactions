@@ -64,7 +64,7 @@
                     "name": "Steer",
                     "type": "Value",
                     "id": "9f98c0ca-7934-4d05-ab41-6e084afad791",
-                    "expectedControlType": "Analog",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -551,6 +551,28 @@
                     "name": "",
                     "id": "1e20c403-759b-495a-a5ba-4bb74315bec2",
                     "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b8ab1af5-1b78-492d-9703-887a2f79b23b",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "170ddfcc-b129-4f72-8794-704b9ad12cfb",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
