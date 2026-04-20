@@ -56,6 +56,20 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private string exitPromptMessage = "Congratulations, continue to the door to exit the tutorial";
     [SerializeField] private TransitionToMain tutorialDoor;
 
+    [Header("Tutorial Enemy")]
+    [SerializeField] private TutorialEnemySpawner tutorialEnemySpawner;
+    [SerializeField] private horseMovementGaits horseMovement;
+    [SerializeField] private TargetHammer targetHammer;
+    [SerializeField] private PlayerHealth playerHealth;
+
+    [SerializeField] private string enemyIntroPromptMessage = "An enemy approaches. Watch your health.";
+    [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
+
+    private StandardEnemyAI currentTutorialEnemy;
+    private bool enemyPhaseStarted = false;
+    private bool enemyHasHitPlayer = false;
+    private bool enemyDefeated = false;
+
 
     private GameObject spawnedTutorialReward;
     private bool rewardCollected = false;
@@ -76,6 +90,7 @@ public class TutorialManager : MonoBehaviour
         horseMovementGaits.OnTutorialJump += HandleJump;
         TaskManager.OnAnyTaskCompleted += HandleTaskCompleted;
         PowerUpPickup.OnPowerUpCollected += HandlePowerUpCollected;
+        playerHealth.OnHealthChanged += HandlePlayerHealthChanged;
     }
 
     private void OnDisable()
@@ -84,6 +99,7 @@ public class TutorialManager : MonoBehaviour
         horseMovementGaits.OnTutorialJump -= HandleJump;
         TaskManager.OnAnyTaskCompleted -= HandleTaskCompleted;
         PowerUpPickup.OnPowerUpCollected -= HandlePowerUpCollected;
+        playerHealth.OnHealthChanged -= HandlePlayerHealthChanged;
     }
 
     private void Start()
@@ -287,10 +303,80 @@ public class TutorialManager : MonoBehaviour
         }
 
         rewardCollected = true;
-        tutorialDoor.EnableDoor();
-        promptText.text = exitPromptMessage;
 
+        StartTutorialEnemyPhase();
+    }
+
+    private void SetPlayerControl(bool enabled)
+    {
+        horseMovement.canControl = enabled;
+        targetHammer.canControl = enabled;
+    }
+
+    private void StartTutorialEnemyPhase()
+    {
+        if (enemyPhaseStarted)
+        {
+            return;
+        }
+
+        enemyPhaseStarted = true;
+
+        // Show health now so the player can see it drop
+        healthBarUI.SetActive(true);
+
+        // Lock player while the enemy spawns in
+        SetPlayerControl(false);
+
+        // Update prompt
+        promptText.text = enemyIntroPromptMessage;
+
+        // The door should still remain disabled here
+        taskArrow.Show(false);
+
+        currentTutorialEnemy = tutorialEnemySpawner.SpawnTutorialEnemy();
+        currentTutorialEnemy.OnDied += HandleTutorialEnemyDied;
+    }
+
+    private void HandlePlayerHealthChanged(int current, int max)
+    {
+        if (!enemyPhaseStarted || enemyHasHitPlayer || enemyDefeated)
+        {
+            return;
+        }
+
+        if (current < max)
+        {
+            enemyHasHitPlayer = true;
+
+            // Give controls back now that the player has seen damage
+            SetPlayerControl(true);
+
+            // Show score + awe so the player can see them update after the kill
+            fearBarUI.SetActive(true);
+            aweBarUI.SetActive(true);
+
+            // Point the arrow at the enemy now
+            taskArrow.SetTarget(currentTutorialEnemy.transform);
+            taskArrow.Show(true);
+
+            promptText.text = enemyKillPromptMessage;
+        }
+    }
+
+    private void HandleTutorialEnemyDied()
+    {
+        if (enemyDefeated)
+        {
+            return;
+        }
+
+        enemyDefeated = true;
+
+        currentTutorialEnemy.OnDied -= HandleTutorialEnemyDied;
+        tutorialDoor.EnableDoor();
         taskArrow.SetTarget(tutorialDoorTarget);
         taskArrow.Show(true);
+        promptText.text = exitPromptMessage;
     }
 }

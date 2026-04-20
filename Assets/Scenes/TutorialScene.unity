@@ -690,6 +690,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7549535118096911905, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
   m_PrefabInstance: {fileID: 1486947145}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &474253706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 474253707}
+  m_Layer: 0
+  m_Name: TutorialEnemySpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &474253707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474253706}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.25, y: 13.01, z: -48.335}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &494643040
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,6 +858,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
+--- !u!1 &519686003 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 832686439150977982, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+  m_PrefabInstance: {fileID: 2237668133860025892}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &609954429 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6899548887213444036, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
@@ -2274,6 +2310,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 946544759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1702517269 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e4a969cf45b4a8f8e2ff1f88c1987f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1702517270 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3f02ba14be2e94bb27bb865a227e4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1784825538 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4632399603067790969, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6d0a1dd8956af4385d7151cfe70551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1802088971
 GameObject:
   m_ObjectHideFlags: 0
@@ -2349,6 +2418,12 @@ MonoBehaviour:
   tutorialDoorTarget: {fileID: 120522945}
   exitPromptMessage: Congratulations, continue to the door to exit the tutorial
   tutorialDoor: {fileID: 120522943}
+  tutorialEnemySpawner: {fileID: 1988149511}
+  horseMovement: {fileID: 1702517270}
+  targetHammer: {fileID: 1784825538}
+  playerHealth: {fileID: 1702517269}
+  enemyIntroPromptMessage: An enemy approaches. Watch your health.
+  enemyKillPromptMessage: Now defeat the enemy to gain Fear and Awe.
 --- !u!1 &1817797211
 GameObject:
   m_ObjectHideFlags: 0
@@ -2689,12 +2764,36 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
   m_PrefabInstance: {fileID: 2237668133860025892}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_GameObject: {fileID: 519686003}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b605ab55a659c41ed934bbcd82dbb8f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1988149511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519686003}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a25aa62c4bf5ea40829a9645587253d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 4937528112206273530, guid: 958da4c8e8c7d48169847e9e756975ce, type: 3}
+  spawnPoint: {fileID: 474253707}
+  messageText: {fileID: 0}
+  messageDuration: 2.5
+  spawnMessage: An enemy approaches
+  spawnSound: {fileID: 0}
+  audioSource: {fileID: 0}
+  mainCamera: {fileID: 139368896}
+  cutsceneCamera: {fileID: 1604236704}
+  player: {fileID: 743921864}
+  returnDelay: 1
+  cutsceneLookSmooth: 5
 --- !u!114 &2001586327 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8398739667222277767, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
@@ -2843,10 +2942,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 832686439150977982, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1988149511}
   m_SourcePrefab: {fileID: 100100000, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
 --- !u!1001 &2578049513352222774
 PrefabInstance:
@@ -4955,3 +5061,4 @@ SceneRoots:
   - {fileID: 1466229040}
   - {fileID: 2578049513352222774}
   - {fileID: 120522945}
+  - {fileID: 474253707}
