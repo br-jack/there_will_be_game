@@ -113,6 +113,8 @@ namespace Hammer
 
         void FixedUpdate()
         {
+            
+            Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");
             if (useDynamicHitbox)
             {
                 if (head.forwardSpeed < mediumHitboxThreshold)
