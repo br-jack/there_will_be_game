@@ -21,7 +21,7 @@ public class ShieldHit : MonoBehaviour
         knockbackDirection.y = upwardForceRatio;
         knockbackDirection.Normalize();
 
-        enemy.ApplyKnockback(knockbackDirection * knockbackForce);
+        enemy.ApplyKnockback(knockbackDirection * knockbackForce, playHitAnim: false);
         enemy.BreakShield();
     }
 }

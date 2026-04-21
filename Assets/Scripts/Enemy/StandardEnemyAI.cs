@@ -57,6 +57,8 @@ public class StandardEnemyAI : MonoBehaviour
     [Header("Animation (optional)")]
     [SerializeField] private Animator anim;
     [SerializeField] private string speedParam = "Speed";
+    [SerializeField] private string idleBoolParam = "IsIdle";
+    [SerializeField] private float idleSpeedThreshold = 0.1f;
     [SerializeField] private string attackTrigger = "Attack";
     [SerializeField] private string shieldBreakTrigger = "ShieldBreak";
     [SerializeField] private string hitTrigger = "Hit";
@@ -361,6 +363,7 @@ public class StandardEnemyAI : MonoBehaviour
         Destroy(shield);
         shield = null;
         _shieldBreakAudioSource?.Play();
+        TryTrigger(shieldBreakTrigger);
     }
 
     private IEnumerator ChargeUpThenDamage()
@@ -386,7 +389,7 @@ public class StandardEnemyAI : MonoBehaviour
         if (useDamageAnimEvent) DoDamage();
     }
 
-    public void ApplyKnockback(Vector3 force, bool playHitAnimation = true)
+    public void ApplyKnockback(Vector3 force, bool playHitAnim = true)
     {
         IsKnockedBack = true;
         knockbackTimer = KnockbackTime;
@@ -477,6 +480,9 @@ public class StandardEnemyAI : MonoBehaviour
             animSpeed = new Vector2(v.x, v.z).magnitude;
         }
         anim.SetFloat(speedParam, animSpeed);
+
+        if (!string.IsNullOrEmpty(idleBoolParam))
+            anim.SetBool(idleBoolParam, animSpeed < idleSpeedThreshold);
     }
 
     private bool IsGrounded()
