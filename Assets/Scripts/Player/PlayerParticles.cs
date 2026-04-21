@@ -58,19 +58,19 @@ public class PlayerParticles : MonoBehaviour
             jumpTrail.emitting = true;
         }
 
+        ////NOTE: Currently we don't have an analog jump, so we don't use this
+        /*
         //Reduce particle lifetime and size if jump button is released early
         
-        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
 
-        //just decrease particles always for now, i don't understand how this works because i am foolish!
-        DecreaseParticles(jumpParticles);
-
-        /*
         if (!horseMovement.JumpButtonHeld)
         {
             DecreaseParticles(jumpParticles);
         }
         */
+
+        yield return null;
     }
     
     private void DecreaseParticles(ParticleSystem pSystem)
