@@ -21,7 +21,8 @@ public class EnemySpawner : MonoBehaviour
     private const float BreakDuration = 5f;
 
     [Header("Enemy Prefabs")]
-    [SerializeField] private GameObject meleeEnemyPrefab;
+    [SerializeField] private GameObject meleeUnshieldedEnemyPrefab;
+    [SerializeField] private GameObject meleeShieldedEnemyPrefab;
     [SerializeField] private GameObject rapidEnemyPrefab;
     [SerializeField] private GameObject rangedEnemyPrefab;
 
@@ -155,11 +156,11 @@ public class EnemySpawner : MonoBehaviour
         switch (type)
         {
             case EnemyType.MeleeShielded:
-                prefab = meleeEnemyPrefab;
+                prefab = meleeShieldedEnemyPrefab;
                 keepShield = true;
                 break;
             case EnemyType.MeleeUnshielded:
-                prefab = meleeEnemyPrefab;
+                prefab = meleeUnshieldedEnemyPrefab;
                 keepShield = false;
                 break;
             case EnemyType.Ranged:
@@ -193,7 +194,6 @@ public class EnemySpawner : MonoBehaviour
                     // Strip shield if this type shouldn't have one.
                     if (!keepShield && ai.shield != null)
                     {
-                        Destroy(ai.shield);
                         ai.shield = null;
                     }
 
