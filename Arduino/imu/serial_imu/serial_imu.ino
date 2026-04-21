@@ -127,7 +127,8 @@ void loop(void) {  // run over and over
 
   outputSensorValues();
 
-  // if (Serial.available()) {
-  //   Serial.write(Serial.read());
-  // }
+  //flush input buffer (so game IO thread doesn't wait on trying to write vibration data)
+  while (Serial.available()) {
+    Serial.read();
+  }
 }

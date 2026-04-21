@@ -107,6 +107,7 @@ namespace Hammer
                     _stream.DtrEnable = true;
                     _stream.Open();
                     _stream.ReadTimeout = TimeoutMs;
+                    _stream.WriteTimeout = TimeoutMs * 2;
                     if (_stream.IsOpen)
                     {
                         // if youre connected but not getting any data you may have another serial monitor open for this port
