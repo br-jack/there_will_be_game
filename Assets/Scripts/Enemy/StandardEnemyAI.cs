@@ -25,6 +25,7 @@ public class StandardEnemyAI : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float speed = 5f;
+    [SerializeField, Range(0f, 0.3f)] private float speedVariance = 0.1f;
     [SerializeField] private float smoothVelocity = 0.35f;
     [SerializeField] private float rotationSpeed = 8f;
 
@@ -53,6 +54,7 @@ public class StandardEnemyAI : MonoBehaviour
 
     private CombatState combatState = CombatState.Approaching;
     private float actualHoldDistance;
+    private float actualSpeed;
 
     [Header("Animation (optional)")]
     [SerializeField] private Animator anim;
@@ -94,6 +96,8 @@ public class StandardEnemyAI : MonoBehaviour
         actualHoldDistance = holdDistance + UnityEngine.Random.Range(-holdDistanceVariance, holdDistanceVariance);
         actualHoldDistance = Mathf.Max(actualHoldDistance, attack.range + 0.5f);
 
+        actualSpeed = speed * (1f + UnityEngine.Random.Range(-speedVariance, speedVariance));
+
         SetupNavMesh();
     }
 
@@ -122,7 +126,7 @@ public class StandardEnemyAI : MonoBehaviour
         agent.updatePosition = false;
         agent.updateRotation = false;
         agent.angularSpeed = 0f;
-        agent.speed = speed;
+        agent.speed = actualSpeed;
         agent.stoppingDistance = attack.range * 0.7f;
 
         var capsule = GetComponent<CapsuleCollider>();
@@ -272,7 +276,7 @@ public class StandardEnemyAI : MonoBehaviour
                 // Move toward hold distance.
                 if (distToPlayer > actualHoldDistance)
                 {
-                    velocity = moveDir * speed;
+                    velocity = moveDir * actualSpeed;
                 }
                 else
                 {
@@ -284,7 +288,7 @@ public class StandardEnemyAI : MonoBehaviour
                 // Stand still at hold distance, but re-approach if player moves away.
                 if (distToPlayer > actualHoldDistance + 1f)
                 {
-                    velocity = moveDir * speed;
+                    velocity = moveDir * actualSpeed;
                 }
                 else
                 {
@@ -296,7 +300,7 @@ public class StandardEnemyAI : MonoBehaviour
                 // Charge toward player, but stop at attack range.
                 if (distToPlayer > attack.range * 0.95)
                 {
-                    velocity = moveDir * speed * strikeSpeedMultiplier;
+                    velocity = moveDir * actualSpeed * strikeSpeedMultiplier;
                 }
                 else
                 {
@@ -313,7 +317,7 @@ public class StandardEnemyAI : MonoBehaviour
                 // Move away from player.
                 if (distToPlayer < actualHoldDistance)
                 {
-                    velocity = -toPlayerDir * speed * retreatSpeedMultiplier;
+                    velocity = -toPlayerDir * actualSpeed * retreatSpeedMultiplier;
                 }
                 else
                 {
@@ -327,7 +331,7 @@ public class StandardEnemyAI : MonoBehaviour
     private void ClassicMovement(float distToPlayer, Vector3 moveDir)
     {
         // Slow down as we approach stop distance.
-        float currentSpeed = speed;
+        float currentSpeed = actualSpeed;
         float stopDist = attack.range * 0.7f;
         float arriveDist = attack.range + stopFromPlayerDistance;
         if (distToPlayer < stopDist)
