@@ -25,7 +25,7 @@ public class StandardEnemyAI : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float speed = 5f;
-    [SerializeField, Range(0f, 0.3f)] private float speedVariance = 0.1f;
+    [SerializeField, Range(0f, 0.3f)] private float speedVariance = 0.15f;
     [SerializeField] private float smoothVelocity = 0.35f;
     [SerializeField] private float rotationSpeed = 8f;
 
@@ -40,7 +40,7 @@ public class StandardEnemyAI : MonoBehaviour
     [Header("Strike Behavior")]
     [SerializeField] protected bool useStrike = true;
     [SerializeField] private float holdDistance = 6f;
-    [SerializeField] private float holdDistanceVariance = 1.5f;
+    [SerializeField, Range(0f, 0.5f)] private float holdDistanceVariance = 0.3f;
     [SerializeField] private float strikeSpeedMultiplier = 2.5f;
     [SerializeField] private float retreatSpeedMultiplier = 1.5f;
 
@@ -93,7 +93,7 @@ public class StandardEnemyAI : MonoBehaviour
         if (shieldHit != null) shield = shieldHit.gameObject;
 
         // Each enemy gets a slightly different hold distance (Stalk distance should ALWAYS be further than attack range).
-        actualHoldDistance = holdDistance + UnityEngine.Random.Range(-holdDistanceVariance, holdDistanceVariance);
+        actualHoldDistance = holdDistance * (1f + UnityEngine.Random.Range(-holdDistanceVariance, holdDistanceVariance));
         actualHoldDistance = Mathf.Max(actualHoldDistance, attack.range + 0.5f);
 
         actualSpeed = speed * (1f + UnityEngine.Random.Range(-speedVariance, speedVariance));
