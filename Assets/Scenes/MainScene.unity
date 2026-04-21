@@ -5208,6 +5208,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -5596,6 +5597,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -21840,6 +21842,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -28029,6 +28032,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -35601,29 +35605,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31ad988e37418764f88e6038d4e9aac8, type: 3}
---- !u!4 &656973118 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2092314073500460607, guid: 5c612bc010161fa4581396e1c102cd08, type: 3}
-  m_PrefabInstance: {fileID: 1381977469}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &656973122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 544451579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fragmentsPrefab: {fileID: 8744520496280417264, guid: 745f4e2f7e455a1419c0bc567c71b4a4, type: 3}
-  breakForceThreshold: 15
-  explosionForce: 300
-  explosionRadius: 3
-  soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
 --- !u!1 &658775822
 GameObject:
   m_ObjectHideFlags: 0
@@ -46859,6 +46840,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -58419,6 +58401,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -62410,6 +62393,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -63018,6 +63002,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -90169,6 +90154,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -111399,6 +111385,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -114347,6 +114334,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 5
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -115398,20 +115386,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      propertyPath: waves.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      propertyPath: maxDistanceFromPlayer
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      propertyPath: minDistanceFromPlayer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: meleeShieldedEnemyPrefab
       value: 
       objectReference: {fileID: 4937528112206273530, guid: 5dd8860ca05a94622a88ff0ad3edb3f6, type: 3}
+    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      propertyPath: waves.Array.data[3].rapid
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: meleeUnshieldedEnemyPrefab
       value: 
       objectReference: {fileID: 4937528112206273530, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
-      propertyPath: waves.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
-      propertyPath: waves.Array.data[3].rapid
-      value: 5
+      propertyPath: waves.Array.data[0].ranged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: waves.Array.data[3].ranged
@@ -115419,7 +115419,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: waves.Array.data[0].duration
-      value: 30
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: waves.Array.data[1].duration
@@ -115434,12 +115434,20 @@ PrefabInstance:
       value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      propertyPath: waves.Array.data[0].meleeShielded
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: waves.Array.data[3].meleeShielded
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: waves.Array.data[3].spawnInterval
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      propertyPath: waves.Array.data[0].meleeUnshielded
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: waves.Array.data[3].meleeUnshielded
@@ -118112,3 +118120,4 @@ SceneRoots:
   - {fileID: 470345988}
   - {fileID: 1155708057}
   - {fileID: 1391350001}
+  - {fileID: 528525038}
