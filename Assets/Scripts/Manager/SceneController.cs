@@ -43,4 +43,9 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene("hammerTest");
     }
+
+    public static void LoadTutorial()
+    {
+        SceneManager.LoadScene("TutorialScene");
+    }
 }
