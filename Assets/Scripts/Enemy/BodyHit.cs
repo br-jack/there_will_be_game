@@ -29,7 +29,7 @@ public class BodyHit : MonoBehaviour
         if (enemy == null) return;
         if (enemy.IsKnockedBack) return;
         if (enemy.ShieldWasJustHit) return;
-
+        if (!enemy.CanBeKilled) return;
         Vector3 attackPosition = other.transform.position;
         Vector3 enemyPosition = enemy.transform.position;
         Vector3 direction = (enemyPosition - attackPosition).normalized;

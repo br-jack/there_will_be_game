@@ -37,7 +37,8 @@ public class horseMovementGaits : MonoBehaviour
     public float currentSpeed = 0f; //just to see in editor
 
     public bool canControl { get; set; } = true;
-    
+    public float tutorialSpeedMultiplier { get; set; } = 1f;
+    public bool tutorialAllowJump { get; set; } = true;
 
     private float jumpLockedTime;
 
@@ -226,6 +227,9 @@ public class horseMovementGaits : MonoBehaviour
         //should see if it would be fun for turning to decrease charge speed, so you have to 
         //go in a straight line to increase gait
 
+        // apply tutorial movement limiter
+        targetSpeed *= tutorialSpeedMultiplier;
+
         //accelerate
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed,
             (currentSpeed < targetSpeed ? acceleration : deceleration) * Time.deltaTime);
@@ -233,7 +237,7 @@ public class horseMovementGaits : MonoBehaviour
 
         //apply gravity if midair, or a small static push if on the ground
         verticalVelocity.y = _cc.isGrounded ? Mathf.Max(verticalVelocity.y-1f,-1f) : verticalVelocity.y + (gravity * Time.deltaTime); 
-        if (_jumpInput && _cc.isGrounded) 
+        if (_jumpInput && _cc.isGrounded && tutorialAllowJump) 
             {
                 if (jumpLockedTime <= 0.0f)
                 {
