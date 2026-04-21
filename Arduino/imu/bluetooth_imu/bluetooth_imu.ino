@@ -1,4 +1,3 @@
-#include <SoftwareSerial.h>
 // Basic demo for readings from Adafruit BNO08x
 // Install this manually
 #include <Adafruit_BNO08x.h>
@@ -14,6 +13,30 @@
 #define BNO08X_RESET -1
 #define FAST_MODE
 
+constexpr int motor1_dir_pin = A3;  // Motor 1 Direction pin of dual motor driver connected to digital pin 29
+constexpr int motor1_spd_pin = A2;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 28
+constexpr int motor2_spd_pin = A1;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 27
+constexpr int motor2_dir_pin = A0;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
+
+enum class RumbleMode {
+  Off,
+  Constant,
+  RampUp,
+  RampDown,
+};
+
+struct RumbleInstance {
+  unsigned long startMs;
+  unsigned long duration;
+  int strength = 255;
+  int fadeMs;
+  RumbleMode mode { RumbleMode::Off };
+};
+
+constexpr int rumble_fade_interval = 30;
+
+RumbleInstance currentRumbleInstance;
+
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
 
@@ -22,7 +45,7 @@ void setup(void) {
   delay(100);
 
   // Open serial communications and wait for port to open:
-  // Serial.begin(19200);
+  // Serial.begin(115200);
   // while (!Serial) {
   //   ; // wait for serial port to connect. Needed for native USB port only
   // }
@@ -36,20 +59,20 @@ void setup(void) {
 
   delay(20);
 
-  Serial1.println("Adafruit BNO08x test!");
+  Serial1.println(F("info:Adafruit BNO08x test!"));
 
   // Try to initialize!
   if (!bno08x.begin_I2C()) {
     //if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte UART buffer!
     //if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
-    Serial1.println("Failed to find BNO08x chip");
+    Serial1.println(F("info:Failed to find BNO08x chip"));
     while (1) {
       delay(120); 
       //see https://github.com/adafruit/Adafruit_BNO08x/issues/34#issuecomment-2533685723
       rp2040.reboot();
     }
   }
-  Serial1.println("BNO08x Found!");
+  Serial1.println(F("info:BNO08x Found!"));
 
   for (int n = 0; n < bno08x.prodIds.numEntries; n++) {
     Serial1.print("Part ");
@@ -65,40 +88,95 @@ void setup(void) {
   }
   setReports();
 
-  Serial1.println("Reading events");
+  Serial1.println(F("info:Reading events"));
+
+  pinMode(motor1_dir_pin, OUTPUT);
+
+  digitalWrite(motor1_dir_pin, HIGH);
+
   delay(100);
 }
 
 // Here is where you define the sensor outputs you want to receive
 void setReports(void) {
-  Serial1.println("Setting desired reports");
+  Serial1.println(F("info:Setting desired reports"));
   if (!bno08x.enableReport(SH2_GAME_ROTATION_VECTOR)) {
-    Serial1.println("Could not enable game vector");
+    Serial1.println(F("info:Could not enable game vector"));
   }
   if (!bno08x.enableReport(SH2_LINEAR_ACCELERATION, 20000)) {
-    Serial1.println("Could not enable linear acceleration");
+    Serial1.println(F("info:Could not enable linear acceleration"));
   }
+
+  //https://github.com/sparkfun/SparkFun_BNO08x_Arduino_Library/issues/2
+  //delay(100); // This delay allows enough time for the BNO085 to accept the new configuration and clear its reset status
 }
 
-
-void loop() {  // run over and over
-
-  delay(5);
-
-  // if (Serial1.available()) {
-  //   Serial.write(Serial1.read());
-  // }
-  // if (Serial.available()) {
-  //   Serial1.write(Serial.read());
+void startRumble(RumbleMode mode, int duration) {
+  // fade in from min to max in increments of 5 points:
+  // for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
+    // sets the value (range from 0 to 255):
+    // wait for 30 milliseconds to see the dimming effect
+    // delay(120);
   // }
 
+  // fade out from max to min in increments of 5 points:
+  // for (int fadeValue = 255; fadeValue >= 0; fadeValue -= 5) {
+    // sets the value (range from 0 to 255):
+    // analogWrite(motor1SPDPin, fadeValue);
+    // wait for 30 milliseconds to see the dimming effect
+    // delay(120);
+  // }
+
+  //NOTE: reusing the same struct instance for performance
+  currentRumbleInstance.mode = mode;
+  currentRumbleInstance.startMs = millis();
+  //NOTE: assume duration is unsigned
+  currentRumbleInstance.duration = duration;
+  if (mode == RumbleMode::RampUp) {
+    currentRumbleInstance.strength = 0;
+  }
+  else {
+    currentRumbleInstance.strength = 255;
+  }
+  currentRumbleInstance.fadeMs = 0;
+  Serial1.println(F("info:Rumble activated."));
+
+  analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
+}
+
+void endRumble(void) {
+  // fade in from min to max in increments of 5 points:
+  // for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
+    // sets the value (range from 0 to 255):
+    // wait for 30 milliseconds to see the dimming effect
+    // delay(120);
+  // }
+
+  // fade out from max to min in increments of 5 points:
+  // for (int fadeValue = 255; fadeValue >= 0; fadeValue -= 5) {
+    // sets the value (range from 0 to 255):
+    // analogWrite(motor1SPDPin, fadeValue);
+    // wait for 30 milliseconds to see the dimming effect
+    // delay(120);
+  // }
+
+  //currentRumbleInstance.startMs = 0;
+  //currentRumbleInstance.duration = 0;
+  currentRumbleInstance.mode = RumbleMode::Off;
+  //currentRumbleInstance.fadeMs = 0;
+  Serial1.println(F("info:Rumble deactivated."));
+
+  analogWrite(motor1_spd_pin, 0);
+}
+
+inline void outputSensorValues(void) {
   if (bno08x.wasReset()) {
-    Serial1.print("sensor was reset ");
+    Serial1.print(F("info:Sensor was reset "));
     setReports();
   }
 
   if (!bno08x.getSensorEvent(&sensorValue)) {
-    //Serial1.println("Unable to get sensor event!");
+    //Serial1.println("info:Unable to get sensor event!");
     return;
   }
   switch (sensorValue.sensorId) {
@@ -134,4 +212,112 @@ void loop() {  // run over and over
         break;
       }
   }
+}
+
+inline RumbleMode parseRumbleModeByte(byte byte) {
+  switch(byte) {
+    case (int)'C': {
+      return RumbleMode::Constant;
+    }
+    case (int)'U': {
+      return RumbleMode::RampUp;
+    }
+    case (int)'D': {
+      return RumbleMode::RampDown;
+    }
+    default: {
+      break;
+    }
+  }
+
+  return RumbleMode::Constant;
+}
+
+inline void rumbleStep(void) {
+  if (currentRumbleInstance.mode != RumbleMode::Off) {
+    const unsigned long currentMs = millis();
+
+    //handle millis wrap around (unlikely to occur)
+    if (currentMs < currentRumbleInstance.startMs) {
+      currentRumbleInstance.startMs = 0;
+    }
+
+    if ((currentMs - currentRumbleInstance.startMs) >= currentRumbleInstance.duration) {
+      endRumble();
+    }
+    else {
+      switch(currentRumbleInstance.mode) {
+        case RumbleMode::RampUp: {
+          //also handle millis wrap around
+          if (currentRumbleInstance.fadeMs == 0 || currentMs < currentRumbleInstance.fadeMs) {
+            currentRumbleInstance.fadeMs = currentMs;
+          }
+          else if ((currentMs - currentRumbleInstance.fadeMs) >= rumble_fade_interval) {
+            currentRumbleInstance.fadeMs = currentMs;
+            if (currentRumbleInstance.strength < 255) {
+              currentRumbleInstance.strength++;
+              analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
+            }
+          }
+
+          break;
+        }
+
+        case RumbleMode::RampDown: {
+          //also handle millis wrap around
+          if (currentRumbleInstance.fadeMs == 0 || currentMs < currentRumbleInstance.fadeMs) {
+            currentRumbleInstance.fadeMs = currentMs;
+          }
+          else if ((currentMs - currentRumbleInstance.fadeMs) >= rumble_fade_interval) {
+            currentRumbleInstance.fadeMs = currentMs;
+            if (currentRumbleInstance.strength > 0) {
+              currentRumbleInstance.strength -= 5;
+              analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
+            }
+          }
+
+          break;
+        }
+      }
+    }
+  }
+}
+
+inline void checkRumbleInput(void) {
+  if (Serial1.available() > 3) {
+    constexpr char rumbleChar = 'R';
+
+    const int incomingByte = Serial1.read();
+
+    //rumble string format: "RMx\n" where M is the mode and x is the duration in ms
+    if (incomingByte == (int)rumbleChar) {
+
+      const int modeByte = Serial1.read();
+
+      const int duration = Serial1.parseInt();
+
+      //Serial1.println(duration);  
+      startRumble(parseRumbleModeByte(modeByte), duration);
+    }
+    
+    while (Serial1.available() > 0) {
+      //discard newline character and any other remaining characters in buffer
+      (void) Serial1.read();
+    }
+  }
+}
+
+void loop(void) {  // run over and over
+
+  delay(5);
+
+  rumbleStep();
+
+  outputSensorValues();
+
+  checkRumbleInput();
+
+  // if (Serial1.available()) {
+  //   Serial.write(Serial1.read());
+  // }
 }
