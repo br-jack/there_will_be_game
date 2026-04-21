@@ -41,7 +41,7 @@ public class PowerUpSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnSpecificPowerUp(GameObject powerUpPrefab, string customMessage)
+    public GameObject SpawnSpecificPowerUp(GameObject powerUpPrefab, string customMessage)
     {
         Vector3 spawnPosition = spawnPoint.position + Vector3.up * spawnHeightOffset;
 
@@ -60,6 +60,7 @@ public class PowerUpSpawner : MonoBehaviour
 
         StartCoroutine(ShowBoonMessage(customMessage));
         StartCutscene();
+        return currentSpawnedPowerUp;
     }
 
     private void StartCutscene()
