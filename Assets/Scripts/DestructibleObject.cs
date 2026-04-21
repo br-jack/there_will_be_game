@@ -27,7 +27,7 @@ public class DestructibleObject : MonoBehaviour
             Resources.Load<AudioClip>("DestructionSFX3")
         };
 
-        destructionParticlesPrefab = Resources.Load<GameObject>("BuildingDestructionParticles");
+        //destructionParticlesPrefab = Resources.Load<GameObject>("BuildingDestructionParticles");
     }
 
     void Start() {
@@ -56,7 +56,7 @@ public class DestructibleObject : MonoBehaviour
             AudioSource.PlayClipAtPoint(clip, transform.position, soundVolume);
 
         if (destructionParticlesPrefab != null)
-            Instantiate(destructionParticlesPrefab, transform.position, Quaternion.identity);
+            Instantiate(destructionParticlesPrefab, myCollider.bounds.center, Quaternion.identity);
 
         GameObject fragments = Instantiate(fragmentsPrefab,
                                            transform.position,
@@ -70,16 +70,24 @@ public class DestructibleObject : MonoBehaviour
             Destroy(rb.gameObject, 10f);
         }
 
+        SetState(false);
+
         StartCoroutine(HandleRespawn());
-        myRenderer.enabled = false;
-        myCollider.enabled = false;
     }
 
     IEnumerator HandleRespawn()
     {
         yield return new WaitForSeconds(30f);
-        myRenderer.enabled = true;
-        myCollider.enabled = true;
+        SetState(true);
         broken = false;
+    }
+
+    void SetState(bool active)
+    {
+        foreach (Renderer r in GetComponentsInChildren<Renderer>(true))
+            r.enabled = active;
+
+        foreach (Collider col in GetComponentsInChildren<Collider>(true))
+            col.enabled = active;
     }
 }

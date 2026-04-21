@@ -20,6 +20,9 @@ public class EnemySpawner : MonoBehaviour
 
     private const float BreakDuration = 5f;
 
+    // Toggled by GameStateManager so spawning halts on pause / game over.
+    [HideInInspector] public bool spawningEnabled = true;
+
     [Header("Enemy Prefabs")]
     [SerializeField] private GameObject meleeEnemyPrefab;
     [SerializeField] private GameObject rapidEnemyPrefab;
@@ -67,6 +70,9 @@ public class EnemySpawner : MonoBehaviour
         aliveMeleeUnshielded.RemoveAll(e => e == null);
         aliveRanged.RemoveAll(e => e == null);
         aliveRapid.RemoveAll(e => e == null);
+
+        // Halt wave/break/spawn timers while disabled (paused or game over).
+        if (!spawningEnabled) return;
 
         if (player == null || waves == null || waves.Length == 0)
         {

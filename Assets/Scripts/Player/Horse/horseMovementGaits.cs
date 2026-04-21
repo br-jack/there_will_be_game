@@ -28,13 +28,17 @@ public class horseMovementGaits : MonoBehaviour
     public float deceleration = 6f;
     public float minTimeBetweenJumps; //for how long are you unable to jump after jumping
     public float chargeDecay;
-    public float gravity; 
+    public float gravity;
+    public static Action OnTutorialJump;
 
     [Header("Read-only in editor")]
     public float currentRunCharge; //should be private, but i want to see it! 
     public gait gait; //currently pointless, just to see gait in editor
     public float currentSpeed = 0f; //just to see in editor
-    
+
+    public bool canControl { get; set; } = true;
+    public float tutorialSpeedMultiplier { get; set; } = 1f;
+    public bool tutorialAllowJump { get; set; } = true;
 
     private float jumpLockedTime;
 
@@ -164,7 +168,17 @@ public class horseMovementGaits : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {       
+    {
+        if (!canControl)
+        {
+            currentSpeed = 0f;
+            _throttleInput = 0f;
+            _brakeInput = 0f;
+            _turnInput = 0f;
+            _jumpInput = false;
+            verticalVelocity = Vector3.zero;
+            return;
+        }
         if (jumpLockedTime > 0.0f) {jumpLockedTime -= Time.deltaTime;} 
         else {jumpLockedTime = 0.0f;}
 
@@ -213,6 +227,9 @@ public class horseMovementGaits : MonoBehaviour
         //should see if it would be fun for turning to decrease charge speed, so you have to 
         //go in a straight line to increase gait
 
+        // apply tutorial movement limiter
+        targetSpeed *= tutorialSpeedMultiplier;
+
         //accelerate
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed,
             (currentSpeed < targetSpeed ? acceleration : deceleration) * Time.deltaTime);
@@ -220,7 +237,7 @@ public class horseMovementGaits : MonoBehaviour
 
         //apply gravity if midair, or a small static push if on the ground
         verticalVelocity.y = _cc.isGrounded ? Mathf.Max(verticalVelocity.y-1f,-1f) : verticalVelocity.y + (gravity * Time.deltaTime); 
-        if (_jumpInput && _cc.isGrounded) 
+        if (_jumpInput && _cc.isGrounded && tutorialAllowJump) 
             {
                 if (jumpLockedTime <= 0.0f)
                 {
@@ -228,7 +245,7 @@ public class horseMovementGaits : MonoBehaviour
                     //not sure why we are invoking two things here! once i understand, ill try to do with just one
                     jumpStarted.Invoke();
                     jump.Invoke();
-
+                    OnTutorialJump?.Invoke();
                     jumpLockedTime = minTimeBetweenJumps;
                 }
                 

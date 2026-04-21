@@ -8,6 +8,7 @@ public abstract class BaseTask : MonoBehaviour
 
     public virtual void StartTask()
     {
+        isComplete = false;
         TaskManager.Instance.RegisterTask(this);
     }
 
