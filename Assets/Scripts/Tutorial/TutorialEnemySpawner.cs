@@ -8,6 +8,7 @@ public class TutorialEnemySpawner : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform spawnPoint;
 
+    // Just here in case Jack wants to add SFX
     [Header("Audio")]
     [SerializeField] private AudioClip spawnSound;
     [SerializeField] private AudioSource audioSource;
@@ -22,6 +23,8 @@ public class TutorialEnemySpawner : MonoBehaviour
     private GameObject currentSpawnedEnemy;
     private bool watchingSpawn = false;
     private Vector3 fixedCutscenePosition;
+
+    public float CutsceneDuration => returnDelay;
 
     private void Start()
     {

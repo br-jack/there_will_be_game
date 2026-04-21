@@ -374,7 +374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 743921864}
-  horseMovement: {fileID: 0}
+  horseMovement: {fileID: 1702517270}
   offsetFromPlayerPosition: {x: 0, y: 4, z: -8}
   playerLookAtOffset: {x: 0, y: 2.13, z: 0}
   baseFOV: 60
@@ -2434,12 +2434,13 @@ MonoBehaviour:
   targetHammer: {fileID: 1784825538}
   playerHealth: {fileID: 1702517269}
   enemyKillUnlockDelay: 1
+  forcedSlowMoveMultiplier: 0.2
+  hammerHitbox: {fileID: 139781251}
   playerTransform: {fileID: 743921864}
   autoFaceTurnSpeed: 5
   cameraTransform: {fileID: 139368893}
   enemyIntroPromptMessage: An enemy approaches. Watch your health.
   enemyKillPromptMessage: Now defeat the enemy to gain Fear and Awe.
-  hammerHitbox: {fileID: 139781251}
 --- !u!1 &1817797211
 GameObject:
   m_ObjectHideFlags: 0

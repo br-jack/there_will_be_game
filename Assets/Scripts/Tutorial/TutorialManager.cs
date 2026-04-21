@@ -62,6 +62,8 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TargetHammer targetHammer;
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private float enemyKillUnlockDelay = 1f;
+    [SerializeField] private float forcedSlowMoveMultiplier = 0.2f;
+    [SerializeField] private AttackHitbox hammerHitbox;
 
     [Header("Enemy Facing")]
     [SerializeField] private Transform playerTransform;
@@ -71,12 +73,13 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private string enemyIntroPromptMessage = "An enemy approaches. Watch your health.";
     [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
 
-    [SerializeField] private AttackHitbox hammerHitbox;
+    
 
     private StandardEnemyAI currentTutorialEnemy;
     private bool enemyPhaseStarted = false;
     private bool enemyHasHitPlayer = false;
     private bool enemyDefeated = false;
+    private bool enemyCutsceneFinished = false;
 
 
     private GameObject spawnedTutorialReward;
@@ -260,6 +263,7 @@ public class TutorialManager : MonoBehaviour
 
         tutorialMarker.SetActive(true);
         tutorialTask.StartTask();
+        taskArrow.SetTarget(tutorialMarker.transform);
         taskArrow.Show(true);
 
         promptText.text = thirdPromptMessage;
@@ -331,12 +335,14 @@ public class TutorialManager : MonoBehaviour
         }
 
         enemyPhaseStarted = true;
+        enemyCutsceneFinished = false;
 
         // Show health now so the player can see it drop
         healthBarUI.SetActive(true);
 
         // Lock player while the enemy spawns in
         SetPlayerControl(false);
+        SetPlayerForcedSlowMovement(false);
 
         // Update prompt
         promptText.text = enemyIntroPromptMessage;
@@ -349,11 +355,36 @@ public class TutorialManager : MonoBehaviour
         currentTutorialEnemy.OnDied += HandleTutorialEnemyDied;
         SnapFaceTarget(currentTutorialEnemy.transform);
         SnapCameraToTarget(currentTutorialEnemy.transform);
+
+        StartCoroutine(BeginForcedSlowMovementAfterEnemyCutscene());
+    }
+
+    private IEnumerator BeginForcedSlowMovementAfterEnemyCutscene()
+    {
+        if (tutorialEnemySpawner != null)
+        {
+            yield return new WaitForSeconds(tutorialEnemySpawner.CutsceneDuration);
+        }
+
+        enemyCutsceneFinished = true;
+
+        SetPlayerControl(true);
+        SetPlayerForcedSlowMovement(true);
+
+        // Keep the hammer from killing the enemy before the demonstration hit
+        if (hammerHitbox != null)
+        {
+            Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
+            if (hitboxCollider != null)
+            {
+                hitboxCollider.enabled = false;
+            }
+        }
     }
 
     private void HandlePlayerHealthChanged(int current, int max)
     {
-        if (!enemyPhaseStarted || enemyHasHitPlayer || enemyDefeated)
+        if (!enemyPhaseStarted || enemyHasHitPlayer || enemyDefeated || !enemyCutsceneFinished)
         {
             return;
         }
@@ -364,6 +395,10 @@ public class TutorialManager : MonoBehaviour
 
             // Give controls back now that the player has seen damage
             SetPlayerControl(true);
+            SetPlayerForcedSlowMovement(false);
+
+            Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
+            hitboxCollider.enabled = true;
 
             // Show score + awe so the player can see them update after the kill
             fearBarUI.SetActive(true);
@@ -439,5 +474,19 @@ public class TutorialManager : MonoBehaviour
         }
 
         cameraTransform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+    }
+
+    private void SetPlayerForcedSlowMovement(bool enabled)
+    {
+        if (enabled)
+        {
+            horseMovement.tutorialSpeedMultiplier = forcedSlowMoveMultiplier;
+            horseMovement.tutorialAllowJump = false;
+        }
+        else
+        {
+            horseMovement.tutorialSpeedMultiplier = 1f;
+            horseMovement.tutorialAllowJump = true;
+        }
     }
 }
