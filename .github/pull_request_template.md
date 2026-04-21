@@ -12,11 +12,11 @@
 <!--- If suggesting a new feature or change, please discuss it in an issue first -->
 <!--- If fixing a bug, there should be an issue describing it with steps to reproduce -->
 
-<!--- Where it says "Closes" below, replace "INSERT ISSUE NUMBER(S) HERE" 
+<!--- Where it says "Closes" below, replace "INSERT ISSUE NUMBER HERE" 
 with the issue number (e.g. "#1") of the related issue -->
-<!--- if this is related to multiple issues, add all the relevant issue numbers with an "and" in-between -->
+<!--- if this is related to multiple issues, use the full "Closes #x" statement for each one with a "," in-between (e.g. "Closes #1, Closes #2")-->
 
-Closes INSERT ISSUE NUMBER(S) HERE
+Closes INSERT ISSUE NUMBER HERE
 
 ## Motivation and Context
 <!--- Why is this change required? What problem does it solve? -->

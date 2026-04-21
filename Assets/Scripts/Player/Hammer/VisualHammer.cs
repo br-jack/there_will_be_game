@@ -118,5 +118,9 @@ namespace Hammer
             MoveToTargetRotation();
         }
 
+        public void OnCollisionEnter(Collision collision)
+        {
+            _targetHammer.Rumble();
+        }
     }
 }

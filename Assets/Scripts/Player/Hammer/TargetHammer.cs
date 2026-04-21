@@ -51,10 +51,7 @@ namespace Hammer
         private Vector3 frameAcceleration;
         private Vector3 velocity;
 
-        public Vector3 Velocity
-        {
-            get { return velocity; }
-        }
+        public Vector3 Velocity => velocity;
 
         private IController _controllerRef;
 
@@ -131,6 +128,10 @@ namespace Hammer
             }
         }
 
+        public void Rumble()
+        {
+            _controllerRef.Rumble(5000);
+        }
     }
 
 }
