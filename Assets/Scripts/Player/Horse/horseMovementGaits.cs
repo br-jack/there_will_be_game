@@ -34,6 +34,8 @@ public class horseMovementGaits : MonoBehaviour
     public float currentRunCharge; //should be private, but i want to see it! 
     public gait gait; //currently pointless, just to see gait in editor
     public float currentSpeed = 0f; //just to see in editor
+
+    public bool canControl { get; set; } = true;
     
 
     private float jumpLockedTime;
@@ -48,6 +50,19 @@ public class horseMovementGaits : MonoBehaviour
     
     //private bool _jumpButtonPressed;
     //private bool _jumpButtonHeld;
+
+    [Header("Drifting Settings")]
+    public float driftLateralSlippage = 0.8f;
+    public float driftSteerMultiplier = 1.5f;
+    public float driftSpeedThreshold = 19f;
+    public float driftFrictionMultiplyer = 0.8f;
+    public Transform horseVisual; //not added yet
+
+    private bool _isDrifting;
+    private bool _driftInput; 
+    private Vector3 _driftVelocity;
+
+    private float _visualLean;
 
     private CharacterController _cc;
     private Transform _tf;
@@ -77,6 +92,11 @@ public class horseMovementGaits : MonoBehaviour
     {
         //Debug.Log("braking!");
         _brakeInput = context.ReadValue<float>();
+    }
+
+    public void OnDrift(InputAction.CallbackContext context)
+    {
+        _driftInput = context.ReadValueAsButton();
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -146,7 +166,17 @@ public class horseMovementGaits : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {       
+    {
+        if (!canControl)
+        {
+            currentSpeed = 0f;
+            _throttleInput = 0f;
+            _brakeInput = 0f;
+            _turnInput = 0f;
+            _jumpInput = false;
+            verticalVelocity = Vector3.zero;
+            return;
+        }
         if (jumpLockedTime > 0.0f) {jumpLockedTime -= Time.deltaTime;} 
         else {jumpLockedTime = 0.0f;}
 
@@ -216,9 +246,55 @@ public class horseMovementGaits : MonoBehaviour
                 
                 
             }
-        
-        Vector3 move = transform.forward * currentSpeed + verticalVelocity;
-        _cc.Move(move * Time.deltaTime);
 
+        HandleDriftLogic();
+        ApplyMovement();
+
+    }
+
+    private void HandleDriftLogic()
+    {
+        if (_driftInput && _cc.isGrounded && currentSpeed > driftSpeedThreshold && Mathf.Abs(_turnInput) > 0.8f)
+        {
+            _isDrifting = true;
+        }
+        else if (_cc.isGrounded)
+        {
+            _isDrifting = false;
+        }
+
+        float finalTurnSpeed = getTurnSpeed();
+        if (_isDrifting) finalTurnSpeed *= driftSteerMultiplier;
+        
+        _tf.Rotate(Vector3.up * _turnInput * finalTurnSpeed * Time.deltaTime);
+
+        //purely visual (doesnt affect acc rotation but a fake visula horse instead for effect)
+        float targetLean = _isDrifting ? _turnInput * 50f : 0f;
+        _visualLean = Mathf.Lerp(_visualLean, targetLean, Time.deltaTime * 5f);
+        
+        if (horseVisual != null)
+        {
+            horseVisual.localRotation = Quaternion.Euler(0, _visualLean, 0);
+        }
+    }
+
+    private void ApplyMovement()
+    {
+        Vector3 forwardMove = transform.forward * currentSpeed;
+
+        if (_isDrifting && _cc.isGrounded)
+        {
+            Vector3 lateralDirection = transform.right * _turnInput;
+            _driftVelocity = Vector3.Lerp(_driftVelocity, lateralDirection * currentSpeed * driftLateralSlippage, Time.deltaTime * 2f);
+            forwardMove *= driftFrictionMultiplyer; //drifting reduces forward move due to friction
+        }
+        else
+        {
+            _driftVelocity = Vector3.Lerp(_driftVelocity, Vector3.zero, Time.deltaTime * 5f);
+        }
+
+        Vector3 finalMove = forwardMove + _driftVelocity + (Vector3.up * verticalVelocity.y);
+        
+        _cc.Move(finalMove * Time.deltaTime);
     }
 }
