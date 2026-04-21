@@ -58,6 +58,7 @@ public class StandardEnemyAI : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private string speedParam = "Speed";
     [SerializeField] private string attackTrigger = "Attack";
+    [SerializeField] private string shieldBreakTrigger = "ShieldBreak";
     [SerializeField] private string hitTrigger = "Hit";
     [SerializeField] private string deadTrigger = "Die";
     [SerializeField] private bool useDamageAnimEvent = false;
@@ -385,7 +386,7 @@ public class StandardEnemyAI : MonoBehaviour
         if (useDamageAnimEvent) DoDamage();
     }
 
-    public void ApplyKnockback(Vector3 force)
+    public void ApplyKnockback(Vector3 force, bool playHitAnimation = true)
     {
         IsKnockedBack = true;
         knockbackTimer = KnockbackTime;
@@ -398,7 +399,7 @@ public class StandardEnemyAI : MonoBehaviour
             rb.AddForce(force, ForceMode.Impulse);
         }
 
-        TryTrigger(hitTrigger);
+        if (playHitAnim) TryTrigger(hitTrigger);
     }
 
     private void HandleKnockback()
