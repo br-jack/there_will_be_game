@@ -381,6 +381,17 @@ MonoBehaviour:
   maxFOV: 75
   speedForMaxFOV: 35
   fovSmoothSpeed: 5
+--- !u!114 &139781251 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3899397982394933326, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2289d23dd62f52479e1042c72e3c1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &161789089 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3724703206710352185, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
@@ -2422,14 +2433,13 @@ MonoBehaviour:
   horseMovement: {fileID: 1702517270}
   targetHammer: {fileID: 1784825538}
   playerHealth: {fileID: 1702517269}
+  enemyKillUnlockDelay: 1
   playerTransform: {fileID: 743921864}
   autoFaceTurnSpeed: 5
-  keepFacingEnemyWhileLocked: 1
-  cameraTransform: {fileID: 0}
-  playerEnemyFacingOffset: 45
-  offsetPlayerToRight: 1
+  cameraTransform: {fileID: 139368893}
   enemyIntroPromptMessage: An enemy approaches. Watch your health.
   enemyKillPromptMessage: Now defeat the enemy to gain Fear and Awe.
+  hammerHitbox: {fileID: 139781251}
 --- !u!1 &1817797211
 GameObject:
   m_ObjectHideFlags: 0
@@ -3025,6 +3035,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: 34baa2142571ba644a746ecac0a29664, type: 2}
+    - target: {fileID: 3975603167161416501, guid: 711fab8c44033a34ea4ed9859709ec5b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6377954720230770654, guid: 711fab8c44033a34ea4ed9859709ec5b, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3451,6 +3465,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1155874705986502382, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1180059677133535238, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1200129008534201883, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}

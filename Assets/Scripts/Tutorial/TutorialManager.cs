@@ -61,6 +61,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private horseMovementGaits horseMovement;
     [SerializeField] private TargetHammer targetHammer;
     [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private float enemyKillUnlockDelay = 1f;
 
     [Header("Enemy Facing")]
     [SerializeField] private Transform playerTransform;
@@ -69,6 +70,8 @@ public class TutorialManager : MonoBehaviour
 
     [SerializeField] private string enemyIntroPromptMessage = "An enemy approaches. Watch your health.";
     [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
+
+    [SerializeField] private AttackHitbox hammerHitbox;
 
     private StandardEnemyAI currentTutorialEnemy;
     private bool enemyPhaseStarted = false;
@@ -316,6 +319,8 @@ public class TutorialManager : MonoBehaviour
     {
         horseMovement.canControl = enabled;
         targetHammer.canControl = enabled;
+        Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
+        hitboxCollider.enabled = enabled;
     }
 
     private void StartTutorialEnemyPhase()
@@ -340,6 +345,7 @@ public class TutorialManager : MonoBehaviour
         taskArrow.Show(false);
 
         currentTutorialEnemy = tutorialEnemySpawner.SpawnTutorialEnemy();
+        currentTutorialEnemy.EnableTutorialKillLockMode();
         currentTutorialEnemy.OnDied += HandleTutorialEnemyDied;
         SnapFaceTarget(currentTutorialEnemy.transform);
         SnapCameraToTarget(currentTutorialEnemy.transform);
@@ -368,6 +374,18 @@ public class TutorialManager : MonoBehaviour
             taskArrow.Show(true);
 
             promptText.text = enemyKillPromptMessage;
+            currentTutorialEnemy.SetCanBeKilled(false);
+            StartCoroutine(EnableEnemyKillAfterDelay(enemyKillUnlockDelay));
+        }
+    }
+
+    private IEnumerator EnableEnemyKillAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (currentTutorialEnemy != null)
+        {
+            currentTutorialEnemy.SetCanBeKilled(true);
         }
     }
 
