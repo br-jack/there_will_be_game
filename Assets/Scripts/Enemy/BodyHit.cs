@@ -4,7 +4,6 @@ using Score;
 
 public class BodyHit : MonoBehaviour
 {
-    public LayerMask shieldMask;
     public hitSound hitSounds;
 
     private ScoreSettings scoreSettings;
@@ -22,19 +21,17 @@ public class BodyHit : MonoBehaviour
         StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
         if (enemy == null) return;
         if (enemy.IsKnockedBack) return;
-        if (enemy.ShieldWasJustHit) return;
 
-        Vector3 attackPosition = other.transform.position;
-        Vector3 enemyPosition = enemy.transform.position;
-        Vector3 direction = (enemyPosition - attackPosition).normalized;
-        float distance = Vector3.Distance(attackPosition, enemyPosition);
-
-        if (Physics.Raycast(attackPosition, direction, distance, shieldMask)) return;
+        if (enemy.HasShield())
+        {
+            enemy.BreakShieldFromAttack(other, attack);
+            return;
+        }
 
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
         hitSounds.PlaySFX();
 
-        AwardScore(enemy.HasShield());
+        AwardScore(false);
         enemy.KilledBy(other, attack);
     }
 

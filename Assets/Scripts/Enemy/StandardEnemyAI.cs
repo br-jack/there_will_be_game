@@ -69,20 +69,14 @@ public class StandardEnemyAI : MonoBehaviour
 
     public bool IsKnockedBack { get; private set; }
     public bool IsDying { get; private set; }
-    public bool ShieldWasJustHit { get; private set; }
     public event Action OnDied;
 
     public bool HasShield() => shield != null;
-    public void MarkShieldHit() => ShieldWasJustHit = true;
 
     // Timers
     private float knockbackTimer;
     private float timeOfNextAttack;
     private float deathTimer;
-
-    // Debug throttling
-    private float _dbgTimer;
-    private bool _doDebug;
 
     void Awake()
     {
@@ -132,18 +126,16 @@ public class StandardEnemyAI : MonoBehaviour
         var capsule = GetComponent<CapsuleCollider>();
         if (capsule != null)
         {
-            agent.radius = capsule.radius;
+            agent.radius = capsule.radius * 1.5f;
             agent.height = capsule.height;
             agent.baseOffset = capsule.center.y - capsule.height * 0.5f;
         }
+
+        agent.avoidancePriority = UnityEngine.Random.Range(30, 70);
     }
 
     void Update()
     {
-        _dbgTimer -= Time.deltaTime;
-        _doDebug = _dbgTimer <= 0f;
-        if (_doDebug) _dbgTimer = 1f;
-
         if (IsDying) { KillEnemy(); return; }
         if (IsKnockedBack) { HandleKnockback(); return; }
 
@@ -227,8 +219,6 @@ public class StandardEnemyAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        ShieldWasJustHit = false;
-
         if (IsDying || IsKnockedBack) return;
         if (_playerTransformRef == null) return;
 
@@ -369,6 +359,16 @@ public class StandardEnemyAI : MonoBehaviour
         TryTrigger(shieldBreakTrigger);
     }
 
+    public void BreakShieldFromAttack(Collider attacker, AttackHitbox attack)
+    {
+        float force = attack.GetKnockbackForce();
+        Vector3 dir = transform.position - attacker.transform.position;
+        dir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
+        dir.Normalize();
+        ApplyKnockback(dir * force, playHitAnim: false);
+        BreakShield();
+    }
+
     private IEnumerator ChargeUpThenDamage()
     {
         if (attack.chargeTime > 0f) yield return new WaitForSeconds(attack.chargeTime);
@@ -482,10 +482,11 @@ public class StandardEnemyAI : MonoBehaviour
             Vector3 v = rb.linearVelocity;
             animSpeed = new Vector2(v.x, v.z).magnitude;
         }
+        if (animSpeed < idleSpeedThreshold) animSpeed = 0f;
         anim.SetFloat(speedParam, animSpeed);
 
         if (!string.IsNullOrEmpty(idleBoolParam))
-            anim.SetBool(idleBoolParam, animSpeed < idleSpeedThreshold);
+            anim.SetBool(idleBoolParam, animSpeed == 0f);
     }
 
     private bool IsGrounded()

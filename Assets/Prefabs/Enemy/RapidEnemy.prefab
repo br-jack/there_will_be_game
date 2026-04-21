@@ -1269,7 +1269,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4993346534810899319}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1469,6 +1469,7 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   speed: 8
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
@@ -1478,14 +1479,17 @@ MonoBehaviour:
     chargeTime: 0.6
   useStrike: 0
   holdDistance: 6
-  holdDistanceVariance: 1.5
+  holdDistanceVariance: 0.5
   strikeSpeedMultiplier: 1
   retreatSpeedMultiplier: 1.25
   stopFromPlayerDistance: -1
-  maxDeathTime: 2.5
+  maxDeathTime: 1
   anim: {fileID: 8527222825716324602}
   speedParam: Speed
+  idleBoolParam: IsIdle
+  idleSpeedThreshold: 0.1
   attackTrigger: Attack
+  shieldBreakTrigger: ShieldBreak
   hitTrigger: Hit
   deadTrigger: Die
   useDamageAnimEvent: 0
@@ -1580,9 +1584,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56e0f9c281748342bf1f7467b43504c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldMask:
-    serializedVersion: 2
-    m_Bits: 8
   hitSounds: {fileID: 0}
 --- !u!82 &557793406485813118
 AudioSource:
