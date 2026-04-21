@@ -277,7 +277,6 @@ public class StandardEnemyAI : MonoBehaviour
                 else
                 {
                     combatState = CombatState.Holding;
-                    timeOfNextAttack = Time.time + attack.cooldown;
                 }
                 break;
 
