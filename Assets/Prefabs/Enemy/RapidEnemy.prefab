@@ -1469,20 +1469,20 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   _playerBodyCollider: {fileID: 0}
-  speed: 16
+  speed: 14
   speedVariance: 0.1
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
-    damage: 6
+    damage: 3
     range: 2
     cooldown: 1.5
     chargeTime: 0.6
   useStrike: 0
-  holdDistance: 5
+  holdDistance: 1
   holdDistanceVariance: 0.1
   strikeSpeedMultiplier: 1
-  retreatSpeedMultiplier: 1.25
+  retreatSpeedMultiplier: 1
   strikeStopRatio: 0.7
   stopFromPlayerDistance: -1
   sightRange: 25
