@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DestructibleObject : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class DestructibleObject : MonoBehaviour
     private AudioClip[] destructionSounds;
     public float soundVolume = 1f;
     public GameObject destructionParticlesPrefab;
+    private static Queue<GameObject> activeFragments = new Queue<GameObject>();
+    private static int maxFragments = 5000;
 
     void Awake()
     {
@@ -63,11 +66,22 @@ public class DestructibleObject : MonoBehaviour
                                            transform.rotation);
         fragments.SetActive(true);
 
-        foreach (Rigidbody rb in fragments.GetComponentsInChildren<Rigidbody>())
+        foreach (Transform child in fragments.transform)
         {
+            Rigidbody rb = child.GetComponent<Rigidbody>();
+            if (rb == null) continue;
+
+            while (activeFragments.Count >= maxFragments)
+            {
+                GameObject oldest = activeFragments.Dequeue();
+                if (oldest != null)
+                    Destroy(oldest);
+            }
+
             rb.isKinematic = false;
             rb.AddExplosionForce(explosionForce, impactPoint, explosionRadius, 1f);
-            Destroy(rb.gameObject, 10f);
+            activeFragments.Enqueue(child.gameObject);
+            Destroy(child.gameObject, 6f);
         }
 
         SetState(false);
@@ -77,7 +91,7 @@ public class DestructibleObject : MonoBehaviour
 
     IEnumerator HandleRespawn()
     {
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(60f);
         SetState(true);
         broken = false;
     }
