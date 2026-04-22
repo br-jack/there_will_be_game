@@ -34404,14 +34404,14 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 500
-    positionDamper: 15
+    positionSpring: 1000
+    positionDamper: 10
     maximumForce: 3.4028233e+38
     useAcceleration: 1
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
-    positionDamper: 100
+    positionSpring: 1500
+    positionDamper: 150
     maximumForce: 3.4028233e+38
     useAcceleration: 1
   m_SlerpDrive:
@@ -34420,7 +34420,7 @@ ConfigurableJoint:
     positionDamper: 25
     maximumForce: 3.4028233e+38
     useAcceleration: 1
-  m_ProjectionMode: 0
+  m_ProjectionMode: 1
   m_ProjectionDistance: 0.1
   m_ProjectionAngle: 180
   m_ConfiguredInWorldSpace: 0
