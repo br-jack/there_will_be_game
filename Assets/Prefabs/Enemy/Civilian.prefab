@@ -1078,7 +1078,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f4e1b0ec5444a6a9b2a8d299d60256, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTransformRef: {fileID: 0}
   randomMovement:
     radius: 8
     minIdleDuration: 3
@@ -1087,8 +1086,8 @@ MonoBehaviour:
   runAway:
     startRunningRadius: 20
     stopRunningRadius: 30
-    speed: 6
-    refreshInterval: 0.2
+    speed: 10
+    refreshInterval: 0.1
   smoothVelocity: 0.35
   rotationSpeed: 8
   anim: {fileID: 0}

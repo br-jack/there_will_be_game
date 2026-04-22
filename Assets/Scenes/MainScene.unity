@@ -5207,6 +5207,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -5596,6 +5597,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -21841,6 +21843,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -28031,6 +28034,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -35472,7 +35476,7 @@ Transform:
   m_GameObject: {fileID: 650454780}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 23, y: 1, z: 173}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35899,6 +35903,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 592346705864518835, guid: 11ce3320821230745816c2578192952d, type: 3}
   m_PrefabInstance: {fileID: 754029127}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &681788205
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 681788206}
+  m_Layer: 0
+  m_Name: Civilian1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &681788206
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681788205}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 26, y: 1, z: 173}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1209418221}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &689116395
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46839,6 +46874,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -58400,6 +58436,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -62392,6 +62429,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -63001,6 +63039,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -63441,6 +63480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   civilianPrefab: {fileID: 1517552264688272, guid: aa0684218d12c45d5adb940a06244028, type: 3}
+  navMeshSearchRadius: 50
 --- !u!4 &1209418221
 Transform:
   m_ObjectHideFlags: 0
@@ -63455,6 +63495,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 650454781}
+  - {fileID: 1372079781}
+  - {fileID: 2101594394}
+  - {fileID: 681788206}
+  - {fileID: 1247271095}
+  - {fileID: 1964427056}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1210397203
@@ -69480,6 +69525,37 @@ MonoBehaviour:
   explosionRadius: 3
   soundVolume: 1
   destructionParticlesPrefab: {fileID: 0}
+--- !u!1 &1247271094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1247271095}
+  m_Layer: 0
+  m_Name: Civilian1 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1247271095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247271094}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 29, y: 1, z: 173}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1209418221}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1249536147 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 3203764305564173723, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
@@ -74344,6 +74420,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 893432192}
   m_SourcePrefab: {fileID: 100100000, guid: 7ac849f0e9589aa4a8be16b5dcb6f54a, type: 3}
+--- !u!1 &1372079780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1372079781}
+  m_Layer: 0
+  m_Name: Civilian2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1372079781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1372079780}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 20, y: 1, z: 173}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1209418221}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1373873818
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -90153,6 +90260,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -108650,6 +108758,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1964427055
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1964427056}
+  m_Layer: 0
+  m_Name: Civilian1 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1964427056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964427055}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 32, y: 1, z: 173}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1209418221}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1966218129 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2449828112311059827, guid: 809f3d45438e7f444a5b79bdea08c3c4, type: 3}
@@ -111384,6 +111523,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -113759,6 +113899,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2242547530859108581, guid: 70ace9fe05aba3f48acb57311b40d68b, type: 3}
   m_PrefabInstance: {fileID: 830162552}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2101594393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2101594394}
+  m_Layer: 0
+  m_Name: Civilian1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2101594394
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101594393}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 17, y: 1, z: 173}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1209418221}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2103755002 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4213692679030389661, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
@@ -114333,6 +114504,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 5
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -115386,6 +115558,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      propertyPath: civilianPrefab
+      value: 
+      objectReference: {fileID: 1517552264688272, guid: aa0684218d12c45d5adb940a06244028, type: 3}
+    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: waves.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -115401,6 +115577,10 @@ PrefabInstance:
       propertyPath: meleeShieldedEnemyPrefab
       value: 
       objectReference: {fileID: 4937528112206273530, guid: 5dd8860ca05a94622a88ff0ad3edb3f6, type: 3}
+    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      propertyPath: waves.Array.data[0].rapid
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: waves.Array.data[3].rapid
       value: 5
@@ -115434,8 +115614,12 @@ PrefabInstance:
       value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
+      propertyPath: waves.Array.data[0].civilians
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: waves.Array.data[0].meleeShielded
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8956705819117657272, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
       propertyPath: waves.Array.data[3].meleeShielded

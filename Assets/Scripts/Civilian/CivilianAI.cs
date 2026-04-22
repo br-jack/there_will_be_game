@@ -23,7 +23,6 @@ using UnityEngine.Serialization;
 public class CivilianAI : MonoBehaviour
 {
     private enum MovementState { RandomMovement, Idling, RunAway }
-    [HideInInspector] public Transform _playerTransformRef;
 
     [SerializeField] private RandomMovementSettings randomMovement = new RandomMovementSettings
     {
@@ -49,55 +48,57 @@ public class CivilianAI : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private string speedParam = "Speed";
 
-    private MovementState movementState = MovementState.RandomMovement;
+    private MovementState state = MovementState.RandomMovement;
     private NavMeshAgent agent;
     private Rigidbody rb;
-
+    private Transform playerRef;
     private float currentSpeed;
-
     private float idleEndTime;
     private float nextRunAwayRefreshTime;
 
     void Awake()
     {
         if (anim == null) anim = GetComponentInChildren<Animator>();
+
         rb = GetComponent<Rigidbody>();
-        SetupNavMesh();
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        agent = GetComponent<NavMeshAgent>();
+        agent.updatePosition = false;
+        agent.updateRotation = false;
+        agent.angularSpeed = 0f;
+
         EnsureOnNavMesh();
     }
 
     void Start()
     {
-        ResolvePlayerRefs();
+        ResolvePlayerRef();
         EnterRandomMovement();
     }
 
     void Update()
     {
-        if (_playerTransformRef == null)
-        {
-            ResolvePlayerRefs();
-            return;
-        }
+        if (playerRef == null) { ResolvePlayerRef(); return; }
 
-        float distanceToPlayer = Vector3.Distance(transform.position, _playerTransformRef.position);
+        float distToPlayer = HorizontalDistance(transform.position, playerRef.position);
 
-        // Run-away takes priority over wandering / idling.
-        if (movementState != MovementState.RunAway && distanceToPlayer < runAway.startRunningRadius)
+        // Run-away preempts everything.
+        if (state != MovementState.RunAway && distToPlayer < runAway.startRunningRadius)
         {
             EnterRunAway();
         }
-        else if (movementState == MovementState.RunAway && distanceToPlayer > runAway.stopRunningRadius)
+        else if (state == MovementState.RunAway && distToPlayer > runAway.stopRunningRadius)
         {
             EnterRandomMovement();
         }
 
-        // Per-state tick.
-        switch (movementState)
+        switch (state)
         {
             case MovementState.RandomMovement:
-                bool arrived = agent != null && !agent.pathPending && agent.remainingDistance < 0.5f;
-                if (arrived) EnterIdling();
+                // Arrived, or the pathfinder gave up — either way, pause and pick again later.
+                if (!agent.pathPending && (!agent.hasPath || agent.remainingDistance < 0.5f))
+                    EnterIdling();
                 break;
 
             case MovementState.Idling:
@@ -114,92 +115,77 @@ public class CivilianAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_playerTransformRef == null) return;
-
-        // Ask the agent which way it wants to go — but DON'T let it move us.
         Vector3 moveDir = Vector3.zero;
-        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        if (agent.isOnNavMesh)
         {
             Vector3 desiredVel = agent.desiredVelocity;
             desiredVel.y = 0f;
             if (desiredVel.sqrMagnitude > 0.0001f) moveDir = desiredVel.normalized;
         }
 
-        // Face the direction we're travelling.
         if (moveDir.sqrMagnitude > 0.0001f)
         {
-            Quaternion finalRotation = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, Time.fixedDeltaTime * rotationSpeed);
+            Quaternion targetRot = Quaternion.LookRotation(moveDir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.fixedDeltaTime * rotationSpeed);
         }
 
-        // Move via the Rigidbody.
         ApplyVelocity(moveDir * currentSpeed);
 
-        // Keep the agent's internal position in sync with where the body actually is.
-        if (agent != null && agent.enabled && agent.isOnNavMesh) agent.nextPosition = transform.position;
+        if (agent.isOnNavMesh) agent.nextPosition = transform.position;
     }
 
     private void ApplyVelocity(Vector3 desired)
     {
-        if (rb != null)
+        if (desired.sqrMagnitude < 0.0001f)
         {
-            rb.linearVelocity = Vector3.Lerp(
-                rb.linearVelocity,
-                new Vector3(desired.x, rb.linearVelocity.y, desired.z),
-                smoothVelocity);
+            // Not trying to move: hard-stop horizontal drift so physics can't push us around.
+            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+            return;
         }
-        else
-        {
-            transform.position += desired * Time.fixedDeltaTime;
-        }
+
+        rb.linearVelocity = Vector3.Lerp(
+            rb.linearVelocity,
+            new Vector3(desired.x, rb.linearVelocity.y, desired.z),
+            smoothVelocity);
     }
 
     private void UpdateAnim()
     {
-        if (anim == null || string.IsNullOrEmpty(speedParam))
-        {
-            return;
-        }
-
-        float animSpeed = 0f;
-        if (rb != null)
-        {
-            Vector3 v = rb.linearVelocity;
-            animSpeed = new Vector2(v.x, v.z).magnitude;
-        }
-        anim.SetFloat(speedParam, animSpeed);
+        if (anim == null || string.IsNullOrEmpty(speedParam)) return;
+        Vector3 v = rb.linearVelocity;
+        anim.SetFloat(speedParam, new Vector2(v.x, v.z).magnitude);
     }
 
     private void EnterRandomMovement()
     {
-        movementState = MovementState.RandomMovement;
+        state = MovementState.RandomMovement;
         currentSpeed = randomMovement.speed;
-        if (agent != null) agent.speed = currentSpeed;
-        PickNewRandomMovementPoint();
+        agent.speed = currentSpeed;
+        PickNewRandomPoint();
     }
 
     private void EnterIdling()
     {
-        movementState = MovementState.Idling;
+        state = MovementState.Idling;
         currentSpeed = 0f;
-        if (agent != null && agent.isOnNavMesh) agent.ResetPath();
+        if (agent.isOnNavMesh) agent.ResetPath();
         idleEndTime = Time.time + Random.Range(randomMovement.minIdleDuration, randomMovement.maxIdleDuration);
     }
 
     private void EnterRunAway()
     {
-        movementState = MovementState.RunAway;
+        state = MovementState.RunAway;
         currentSpeed = runAway.speed;
-        if (agent != null) agent.speed = currentSpeed;
+        agent.speed = currentSpeed;
         PickNewRunAwayPoint();
     }
 
-    private void PickNewRandomMovementPoint()
+    private void PickNewRandomPoint()
     {
-        if (agent == null || !agent.isOnNavMesh) return;
+        if (!agent.isOnNavMesh) return;
 
-        Vector3 potentialPick = transform.position + Random.insideUnitSphere * randomMovement.radius;
-        if (NavMesh.SamplePosition(potentialPick, out NavMeshHit hit, randomMovement.radius, NavMesh.AllAreas))
+        Vector3 candidate = transform.position + Random.insideUnitSphere * randomMovement.radius;
+        if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, randomMovement.radius, NavMesh.AllAreas))
         {
             agent.SetDestination(hit.position);
         }
@@ -207,58 +193,55 @@ public class CivilianAI : MonoBehaviour
 
     private void PickNewRunAwayPoint()
     {
-        if (agent == null || !agent.isOnNavMesh) return;
-
-        Vector3 awayDirection = (transform.position - _playerTransformRef.position).normalized;
-        Vector3 potentialPick = transform.position + awayDirection * runAway.stopRunningRadius;
-        if (NavMesh.SamplePosition(potentialPick, out NavMeshHit hit, runAway.stopRunningRadius, NavMesh.AllAreas))
-        {
-            agent.SetDestination(hit.position);
-        }
         nextRunAwayRefreshTime = Time.time + runAway.refreshInterval;
-    }
+        if (!agent.isOnNavMesh || playerRef == null) return;
 
-    private void SetupNavMesh()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        if (agent == null)
+        Vector3 awayDir = transform.position - playerRef.position;
+        awayDir.y = 0f;
+        if (awayDir.sqrMagnitude < 0.0001f) return;
+        awayDir.Normalize();
+
+        // Try straight-away first, then widen the angle. Without this, a civilian picks a point behind a
+        // wall, snaps onto the navmesh right up against the wall, and presses into it instead of routing
+        // through a nearby door.
+        float[] angleOffsets = { 0f, 45f, -45f, 90f, -90f, 135f, -135f };
+        NavMeshPath path = new NavMeshPath();
+        float currentDist = HorizontalDistance(transform.position, playerRef.position);
+
+        foreach (float angle in angleOffsets)
         {
-            Debug.Log("No NavMesh agent found for the CivilianAI");
+            Vector3 dir = Quaternion.Euler(0f, angle, 0f) * awayDir;
+            Vector3 candidate = transform.position + dir * runAway.stopRunningRadius;
+
+            if (!NavMesh.SamplePosition(candidate, out NavMeshHit hit, 3f, NavMesh.AllAreas)) continue;
+            if (!agent.CalculatePath(hit.position, path) || path.status != NavMeshPathStatus.PathComplete) continue;
+            if (HorizontalDistance(hit.position, playerRef.position) <= currentDist) continue;
+
+            agent.SetDestination(hit.position);
             return;
         }
-
-        // Critical: NavMeshAgent guides, Rigidbody moves.
-        agent.updatePosition = false;
-        agent.updateRotation = false;
-        agent.angularSpeed = 0f;
-
-        currentSpeed = randomMovement.speed;
-        agent.speed = currentSpeed;
-
-        var capsule = GetComponent<CapsuleCollider>();
-        if (capsule != null)
-        {
-            agent.radius = capsule.radius * 1.5f;
-            agent.height = capsule.height;
-            agent.baseOffset = capsule.center.y - capsule.height * 0.5f;
-        }
     }
 
-    // Safety net: if the civilian spawned slightly off the NavMesh, snap onto it.
     private void EnsureOnNavMesh()
     {
-        if (agent == null || agent.isOnNavMesh) return;
+        if (agent.isOnNavMesh) return;
         if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 5f, NavMesh.AllAreas))
         {
             agent.Warp(hit.position);
         }
     }
 
-    private void ResolvePlayerRefs()
+    private void ResolvePlayerRef()
     {
-        if (_playerTransformRef != null) return;
+        if (playerRef != null) return;
         var player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null) return;
-        _playerTransformRef = player.transform;
+        if (player != null) playerRef = player.transform;
+    }
+
+    private static float HorizontalDistance(Vector3 a, Vector3 b)
+    {
+        Vector3 d = a - b;
+        d.y = 0f;
+        return d.magnitude;
     }
 }
