@@ -103,6 +103,7 @@ public class GameStateManager : MonoBehaviour
 
     private void OnPausePerformed(InputAction.CallbackContext _)
     {
+        Debug.Log("Pause action fired");
         TogglePause();
     }
 
@@ -162,6 +163,7 @@ public class GameStateManager : MonoBehaviour
 
     public void TogglePause()
     {
+        Debug.Log($"TogglePause called, current state: {CurState}");
         if (CurState == GameState.Playing) SetState(GameState.Paused);
         else if (CurState == GameState.Paused) SetState(GameState.Playing);
     }

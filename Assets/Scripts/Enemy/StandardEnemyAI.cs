@@ -82,6 +82,9 @@ public class StandardEnemyAI : MonoBehaviour
     [SerializeField] private string deadTrigger = "Die";
     [SerializeField] private bool useDamageAnimEvent = false;
 
+    [SerializeField] private bool useTutorialKillLock = false;
+    public bool CanBeKilled { get; private set; } = true;
+
     public bool IsKnockedBack { get; private set; }
     public bool IsDying { get; private set; }
     public event Action OnDied;
@@ -108,6 +111,22 @@ public class StandardEnemyAI : MonoBehaviour
         actualSpeed = speed * (1f + UnityEngine.Random.Range(-speedVariance, speedVariance));
 
         SetupNavMesh();
+    }
+
+    public void EnableTutorialKillLockMode()
+    {
+        useTutorialKillLock = true;
+        CanBeKilled = true;
+    }
+
+    public void SetCanBeKilled(bool canBeKilled)
+    {
+        if (!useTutorialKillLock)
+        {
+            return;
+        }
+
+        CanBeKilled = canBeKilled;
     }
 
     void Start() => ResolvePlayerRefs();
