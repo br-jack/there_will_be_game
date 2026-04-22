@@ -44,6 +44,11 @@ public class Projectile : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (owner != null && other.transform.IsChildOf(owner.transform)) return;
+        if (other == null) return;
+
+        // Projectile-on-projectile contacts are ignored so they don't delete each other mid-flight.
+        Projectile otherProjectile = other.GetComponentInParent<Projectile>();
+        if (otherProjectile != null && otherProjectile != this) return;
 
         // This comes before the player health so calls destroy() before harming the player if the projectile hits the hammer.
         VisualHammer hammer = other.GetComponentInParent<VisualHammer>();
@@ -77,8 +82,9 @@ public class Projectile : MonoBehaviour
                 {
                     enemy.KilledBy(collider, null);
                 }
+                DestroyWrapper();
             }
-            DestroyWrapper();
+            // Undeflected projectiles should pass through enemies.
             return;
         }
         

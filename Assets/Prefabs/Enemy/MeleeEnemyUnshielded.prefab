@@ -1810,6 +1810,7 @@ MonoBehaviour:
   holdDistanceVariance: 0.1
   strikeSpeedMultiplier: 1
   retreatSpeedMultiplier: 1.25
+  strikeStopRatio: 0.8
   stopFromPlayerDistance: -1
   sightRange: 25
   randomMovement:
@@ -1821,12 +1822,13 @@ MonoBehaviour:
   anim: {fileID: 8617838431146807415}
   speedParam: Speed
   idleBoolParam: IsIdle
-  idleSpeedThreshold: 0.1
+  idleSpeedThreshold: 0.5
   attackTrigger: Attack
   shieldBreakTrigger: ShieldBreak
   hitTrigger: Hit
   deadTrigger: Die
   useDamageAnimEvent: 1
+  useTutorialKillLock: 0
 --- !u!95 &8617838431146807415
 Animator:
   serializedVersion: 7
