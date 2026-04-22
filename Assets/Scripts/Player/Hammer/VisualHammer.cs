@@ -139,12 +139,5 @@ namespace Hammer
             // MoveToTargetRotation();
         }
 
-        void OnCollisionEnter(Collision collision)
-        {
-            Rigidbody hitRb = collision.rigidbody;
-            if (hitRb == null) return;
-            
-            hitRb.AddForce(pivotTransform.forward * head.forwardSpeed * 20f, ForceMode.Impulse);
-        }
     }
 }
