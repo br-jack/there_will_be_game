@@ -44,9 +44,9 @@ public class StandardEnemyAI : MonoBehaviour
     [SerializeField, Range(0f, 0.5f)] private float holdDistanceVariance = 0.3f;
     [SerializeField] private float strikeSpeedMultiplier = 2.5f;
     [SerializeField] private float retreatSpeedMultiplier = 1.5f;
-    // Fraction of attack.range at which the charge stops and the attack commits. Lower = gets closer before
-    // swinging (more reliable hits, risk of clipping); higher = commits from further (more dodgeable).
-    [SerializeField, Range(0.3f, 1.0f)] private float strikeStopRatio = 0.8f;
+    // Proportion of attack.range where strike enemies stop charging and commit the attack.
+    // Clamped below 1 so stop distance is always strictly less than attack.range.
+    [SerializeField, Range(0f, 1f)] private float strikeStopRatio = 0.7f;
 
     [Header("Ranged Behavior (used when !useStrike)")]
     [SerializeField] private float stopFromPlayerDistance = 1.5f;
@@ -70,6 +70,7 @@ public class StandardEnemyAI : MonoBehaviour
     private CombatState combatState = CombatState.Approaching;
     private float actualHoldDistance;
     private float actualSpeed;
+    private float StrikeStopDistance => attack.range * Mathf.Min(Mathf.Clamp01(strikeStopRatio), 0.999f);
 
     [Header("Animation (optional)")]
     [SerializeField] private Animator anim;
@@ -291,7 +292,7 @@ public class StandardEnemyAI : MonoBehaviour
             case CombatState.Striking:
                 // Commit the attack once we're inside the stop ratio — gives a buffer so a slow-drifting
                 // player doesn't slip outside attack.range during chargeTime.
-                if (HorizontalDistanceToPlayerBody() <= attack.range * strikeStopRatio)
+                if (HorizontalDistanceToPlayerBody() <= StrikeStopDistance)
                 {
                     combatState = CombatState.Attacking;
                     timeOfNextAttack = Time.time + attack.cooldown;
@@ -413,7 +414,7 @@ public class StandardEnemyAI : MonoBehaviour
 
             case CombatState.Striking:
                 // Charge toward player, but stop at the commit distance.
-                if (distToPlayer > attack.range * strikeStopRatio)
+                if (distToPlayer > StrikeStopDistance)
                 {
                     velocity = moveDir * actualSpeed * strikeSpeedMultiplier;
                 }
