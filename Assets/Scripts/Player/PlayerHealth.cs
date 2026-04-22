@@ -87,7 +87,7 @@ public class PlayerHealth : MonoBehaviour
             if (invulnerabilityFlash != null)
             {
                 invulnerabilityFlash.PlayFlash();
-                playerLives.MakeInvincibleFor(invulnerabilityFlash.FlashDuration);
+                //playerLives.MakeInvincibleFor(invulnerabilityFlash.FlashDuration);
             }
             else // ?
             {
