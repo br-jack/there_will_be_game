@@ -1747,6 +1747,7 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
+  _playerBodyCollider: {fileID: 0}
   speed: 24
   speedVariance: 0.15
   smoothVelocity: 0.35
@@ -1758,7 +1759,7 @@ MonoBehaviour:
     chargeTime: 0.2
   useStrike: 0
   holdDistance: 6
-  holdDistanceVariance: 0.5
+  holdDistanceVariance: 0.1
   strikeSpeedMultiplier: 1
   retreatSpeedMultiplier: 1.25
   stopFromPlayerDistance: -1

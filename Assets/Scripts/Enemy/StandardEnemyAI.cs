@@ -21,6 +21,7 @@ public class StandardEnemyAI : MonoBehaviour
     private AudioSource _shieldBreakAudioSource;
     [HideInInspector] public PlayerHealth _playerHealthRef;
     [HideInInspector] public Transform _playerTransformRef;
+    [HideInInspector] public Collider _playerBodyCollider;
     private NavMeshAgent agent;
 
     [Header("Movement")]
@@ -106,6 +107,22 @@ public class StandardEnemyAI : MonoBehaviour
 
         if (_playerTransformRef == null) _playerTransformRef = player.transform;
         if (_playerHealthRef == null) _playerHealthRef = player.GetComponent<PlayerHealth>();
+        // CharacterController is the player body collider (not the hammer).
+        // Range checks use this so a blocked enemy — hemmed in by the horse's collider
+        // or a slope edge — still registers as "in range" once it's touching the body.
+        if (_playerBodyCollider == null) _playerBodyCollider = player.GetComponent<CharacterController>();
+    }
+
+    // Horizontal distance from our pivot to the nearest point on the player's body collider.
+    // Falls back to pivot-to-pivot distance if the collider isn't resolved yet.
+    private float HorizontalDistanceToPlayerBody()
+    {
+        Vector3 target = _playerBodyCollider != null
+            ? _playerBodyCollider.ClosestPoint(transform.position)
+            : _playerTransformRef.position;
+        Vector3 toPlayer = target - transform.position;
+        toPlayer.y = 0f;
+        return toPlayer.magnitude;
     }
 
     private void SetupNavMesh()
@@ -173,10 +190,8 @@ public class StandardEnemyAI : MonoBehaviour
                 break;
 
             case CombatState.Striking:
-                // Check if in attack range.
-                Vector3 toPlayer = _playerTransformRef.position - transform.position;
-                toPlayer.y = 0f;
-                if (toPlayer.sqrMagnitude <= attack.range * attack.range)
+                // Check if in attack range (measured to the player's body collider, not the pivot).
+                if (HorizontalDistanceToPlayerBody() <= attack.range)
                 {
                     combatState = CombatState.Attacking;
                     timeOfNextAttack = Time.time + attack.cooldown;
@@ -196,9 +211,7 @@ public class StandardEnemyAI : MonoBehaviour
         if (_playerHealthRef.IsDead) return;
         if (Time.time < timeOfNextAttack) return;
 
-        Vector3 toPlayer = _playerTransformRef.position - transform.position;
-        toPlayer.y = 0f;
-        if (toPlayer.sqrMagnitude > attack.range * attack.range) return;
+        if (HorizontalDistanceToPlayerBody() > attack.range) return;
 
         PerformAttack();
     }
@@ -206,7 +219,7 @@ public class StandardEnemyAI : MonoBehaviour
     private IEnumerator StrikeDamageThenRetreat()
     {
         if (attack.chargeTime > 0f) yield return new WaitForSeconds(attack.chargeTime);
-        DoDamage();
+        if (!useDamageAnimEvent) DoDamage();
         combatState = CombatState.Retreating;
     }
 
@@ -222,10 +235,13 @@ public class StandardEnemyAI : MonoBehaviour
         if (IsDying || IsKnockedBack) return;
         if (_playerTransformRef == null) return;
 
-        Vector3 toPlayer = _playerTransformRef.position - transform.position;
-        toPlayer.y = 0f;
-        float distToPlayer = toPlayer.magnitude;
-        Vector3 toPlayerDir = distToPlayer > 0.01f ? toPlayer / distToPlayer : Vector3.zero;
+        // Direction is taken to the pivot (stable) — distance is taken to the body collider
+        // (so movement/attack thresholds aren't fooled by the horse's collider extent).
+        Vector3 toPivot = _playerTransformRef.position - transform.position;
+        toPivot.y = 0f;
+        float pivotDist = toPivot.magnitude;
+        Vector3 toPlayerDir = pivotDist > 0.01f ? toPivot / pivotDist : Vector3.zero;
+        float distToPlayer = HorizontalDistanceToPlayerBody();
 
         // NavMesh pathfinding direction.
         Vector3 moveDir = toPlayerDir;
@@ -379,9 +395,7 @@ public class StandardEnemyAI : MonoBehaviour
     {
         if (IsDying || _playerHealthRef == null) return;
 
-        Vector3 toPlayer = _playerTransformRef.position - transform.position;
-        toPlayer.y = 0f;
-        if (toPlayer.sqrMagnitude <= attack.range * attack.range)
+        if (HorizontalDistanceToPlayerBody() <= attack.range)
         {
             _playerHealthRef.TakeDamage(attack.damage);
         }
