@@ -13,7 +13,7 @@ using UnityEngine.AI;
 
 public class StandardEnemyAI : MonoBehaviour
 {
-    private enum CombatState { Approaching, Holding, Striking, Attacking, Retreating }
+    private enum CombatState { Approaching, Holding, Striking, Attacking, Retreating, Wandering, Idling }
 
     // References
     [HideInInspector] public GameObject shield;
@@ -44,9 +44,23 @@ public class StandardEnemyAI : MonoBehaviour
     [SerializeField, Range(0f, 0.5f)] private float holdDistanceVariance = 0.3f;
     [SerializeField] private float strikeSpeedMultiplier = 2.5f;
     [SerializeField] private float retreatSpeedMultiplier = 1.5f;
+    // Fraction of attack.range at which the charge stops and the attack commits. Lower = gets closer before
+    // swinging (more reliable hits, risk of clipping); higher = commits from further (more dodgeable).
+    [SerializeField, Range(0.3f, 1.0f)] private float strikeStopRatio = 0.8f;
 
     [Header("Ranged Behavior (used when !useStrike)")]
     [SerializeField] private float stopFromPlayerDistance = 1.5f;
+
+    [Header("Wandering (when player is out of sight)")]
+    [SerializeField] private float sightRange = 25f;
+    [SerializeField] private RandomMovementSettings randomMovement = new RandomMovementSettings
+    {
+        radius = 12f,
+        minIdleDuration = 1.5f,
+        maxIdleDuration = 4f,
+        speed = 2f
+    };
+    private float wanderIdleEndTime;
 
     [Header("Knockback & Death")]
     [SerializeField] private float maxDeathTime = 4f;
@@ -162,6 +176,32 @@ public class StandardEnemyAI : MonoBehaviour
             return;
         }
 
+        // Awareness gating: when the player is out of sight, fall back to NPC-style wandering.
+        // Hysteresis (+2) prevents flapping if the player hovers right at the boundary.
+        float distToPlayer = HorizontalDistanceToPlayerBody();
+        bool isWandering = combatState == CombatState.Wandering || combatState == CombatState.Idling;
+
+        if (isWandering)
+        {
+            if (distToPlayer <= sightRange)
+            {
+                combatState = CombatState.Approaching;
+            }
+            else
+            {
+                UpdateWander();
+                UpdateAnim();
+                return;
+            }
+        }
+        else if ((combatState == CombatState.Approaching || combatState == CombatState.Holding)
+                 && distToPlayer > sightRange + 2f)
+        {
+            EnterWandering();
+            UpdateAnim();
+            return;
+        }
+
         if (useStrike)
         {
             StrikeUpdate();
@@ -172,6 +212,46 @@ public class StandardEnemyAI : MonoBehaviour
         }
 
         UpdateAnim();
+    }
+
+    private void UpdateWander()
+    {
+        switch (combatState)
+        {
+            case CombatState.Wandering:
+                // Arrived, or the pathfinder gave up — either way, pause and pick again later.
+                if (agent != null && !agent.pathPending && (!agent.hasPath || agent.remainingDistance < 0.5f))
+                {
+                    EnterWanderIdle();
+                }
+                break;
+            case CombatState.Idling:
+                if (Time.time >= wanderIdleEndTime) EnterWandering();
+                break;
+        }
+    }
+
+    private void EnterWandering()
+    {
+        combatState = CombatState.Wandering;
+        PickNewWanderPoint();
+    }
+
+    private void EnterWanderIdle()
+    {
+        combatState = CombatState.Idling;
+        if (agent != null && agent.isOnNavMesh) agent.ResetPath();
+        wanderIdleEndTime = Time.time + UnityEngine.Random.Range(randomMovement.minIdleDuration, randomMovement.maxIdleDuration);
+    }
+
+    private void PickNewWanderPoint()
+    {
+        if (agent == null || !agent.isOnNavMesh) return;
+        Vector3 candidate = transform.position + UnityEngine.Random.insideUnitSphere * randomMovement.radius;
+        if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, randomMovement.radius, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
     }
 
     // Stalk, Strike and Retreat state system
@@ -190,8 +270,9 @@ public class StandardEnemyAI : MonoBehaviour
                 break;
 
             case CombatState.Striking:
-                // Check if in attack range (measured to the player's body collider, not the pivot).
-                if (HorizontalDistanceToPlayerBody() <= attack.range)
+                // Commit the attack once we're inside the stop ratio — gives a buffer so a slow-drifting
+                // player doesn't slip outside attack.range during chargeTime.
+                if (HorizontalDistanceToPlayerBody() <= attack.range * strikeStopRatio)
                 {
                     combatState = CombatState.Attacking;
                     timeOfNextAttack = Time.time + attack.cooldown;
@@ -235,6 +316,8 @@ public class StandardEnemyAI : MonoBehaviour
         if (IsDying || IsKnockedBack) return;
         if (_playerTransformRef == null) return;
 
+        bool isWandering = combatState == CombatState.Wandering || combatState == CombatState.Idling;
+
         // Direction is taken to the pivot (stable) — distance is taken to the body collider
         // (so movement/attack thresholds aren't fooled by the horse's collider extent).
         Vector3 toPivot = _playerTransformRef.position - transform.position;
@@ -243,24 +326,31 @@ public class StandardEnemyAI : MonoBehaviour
         Vector3 toPlayerDir = pivotDist > 0.01f ? toPivot / pivotDist : Vector3.zero;
         float distToPlayer = HorizontalDistanceToPlayerBody();
 
-        // NavMesh pathfinding direction.
-        Vector3 moveDir = toPlayerDir;
+        // NavMesh pathfinding direction. While wandering, the destination was already set when the
+        // state was entered — don't overwrite it with the player's position.
+        Vector3 moveDir = isWandering ? Vector3.zero : toPlayerDir;
         if (agent != null && agent.enabled && agent.isOnNavMesh)
         {
-            agent.SetDestination(_playerTransformRef.position);
+            if (!isWandering) agent.SetDestination(_playerTransformRef.position);
             Vector3 desiredVel = agent.desiredVelocity;
             desiredVel.y = 0f;
             if (desiredVel.sqrMagnitude > 0.0001f) moveDir = desiredVel.normalized;
         }
 
-        // Always face the player.
-        if (toPlayerDir.sqrMagnitude > 0.0001f)
+        // Face the player when engaged; face the move direction while wandering.
+        Vector3 faceDir = isWandering ? moveDir : toPlayerDir;
+        if (faceDir.sqrMagnitude > 0.0001f)
         {
-            Quaternion finalRotation = Quaternion.LookRotation(toPlayerDir);
+            Quaternion finalRotation = Quaternion.LookRotation(faceDir);
             transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, Time.fixedDeltaTime * rotationSpeed);
         }
 
-        if (useStrike)
+        if (isWandering)
+        {
+            Vector3 wanderVel = combatState == CombatState.Idling ? Vector3.zero : moveDir * randomMovement.speed;
+            ApplyVelocity(wanderVel);
+        }
+        else if (useStrike)
         {
             StrikeMovement(distToPlayer, moveDir, toPlayerDir);
         }
@@ -303,8 +393,8 @@ public class StandardEnemyAI : MonoBehaviour
                 break;
 
             case CombatState.Striking:
-                // Charge toward player, but stop at attack range.
-                if (distToPlayer > attack.range * 0.95)
+                // Charge toward player, but stop at the commit distance.
+                if (distToPlayer > attack.range * strikeStopRatio)
                 {
                     velocity = moveDir * actualSpeed * strikeSpeedMultiplier;
                 }
