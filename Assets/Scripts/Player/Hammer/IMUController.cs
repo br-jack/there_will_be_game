@@ -77,10 +77,10 @@ namespace Hammer
                     }
                 }
             }
-            catch// (System.Exception e)
+            catch (System.Exception e)
             {
-                // Debug.LogWarning("Failed to find port: ");
-                // Debug.LogWarning(e);
+                Debug.LogWarning("Failed to find port: ");
+                Debug.LogWarning(e);
             }
 
             return null;
@@ -117,10 +117,10 @@ namespace Hammer
                     }
                 }
             }
-            catch// (System.Exception e)
+            catch (System.Exception e)
             {
-                // Debug.LogWarning("Failed to connect to port: ");
-                // Debug.LogWarning(e);
+                Debug.LogWarning("Failed to connect to port: ");
+                Debug.LogWarning(e);
             }
 
             return false;
@@ -171,14 +171,19 @@ namespace Hammer
 
                             _stream.WriteLine(dataToSend);
                         }
-                        
+
                         string receivedData = _stream.ReadLine();
                         recvQueue.Enqueue(receivedData);
                     }
-                    catch// (Exception ex)
+                    catch (TimeoutException ex)
                     {
                         //Seems to cause a memory leak, so only enable this when debugging Bluetooth
-                        // Debug.LogWarning($"Error reading data: {ex.Message}");
+                        Debug.LogWarning($"Error reading data: {ex.Message}");
+                    }
+                    catch(Exception ex)
+                    {
+                        //Seems to cause a memory leak, so only enable this when debugging Bluetooth
+                        Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
 
                 }
