@@ -63,6 +63,9 @@ public class StandardEnemyAI : MonoBehaviour
     [SerializeField] private string deadTrigger = "Die";
     [SerializeField] private bool useDamageAnimEvent = false;
 
+    [SerializeField] private bool useTutorialKillLock = false;
+    public bool CanBeKilled { get; private set; } = true;
+
     public bool IsKnockedBack { get; private set; }
     public bool IsDying { get; private set; }
     public bool ShieldWasJustHit { get; private set; }
@@ -95,6 +98,22 @@ public class StandardEnemyAI : MonoBehaviour
         actualHoldDistance = Mathf.Max(actualHoldDistance, attack.range + 0.5f);
 
         SetupNavMesh();
+    }
+
+    public void EnableTutorialKillLockMode()
+    {
+        useTutorialKillLock = true;
+        CanBeKilled = true;
+    }
+
+    public void SetCanBeKilled(bool canBeKilled)
+    {
+        if (!useTutorialKillLock)
+        {
+            return;
+        }
+
+        CanBeKilled = canBeKilled;
     }
 
     void Start() => ResolvePlayerRefs();

@@ -3,6 +3,8 @@ using System;
 
 public class PowerUpPickup : MonoBehaviour
 {
+    public static Action<PowerUpPickup> OnPowerUpCollected;
+
     public PowerUpType powerUpType;
     public float effectAmount = 1.5f;
     public float effectDuration = 10f;
@@ -87,7 +89,7 @@ public class PowerUpPickup : MonoBehaviour
             {
                 receiver.ApplyPowerUp(powerUpType, effectAmount, effectDuration);
             }
-
+            OnPowerUpCollected?.Invoke(this);
             Destroy(gameObject);
         }
     }

@@ -34295,14 +34295,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _horseCC: {fileID: 0}
   head: {fileID: 8479068076154358140}
-  pivotTransform: {fileID: 0}
-  _targetHammer: {fileID: 0}
-  useSpring: 0
-  positionSpringStrength: 2000
-  positionDamping: 240
-  rotationSpringStrength: 2000
-  rotationDamping: 240
-  useDynamicHitbox: 0
   smallHitboxSize: {x: 1.5, y: 4.5, z: 1.5}
   smallHitboxCenter: {x: 0, y: 3, z: 0.4}
   mediumHitboxThreshold: 3
@@ -34311,6 +34303,10 @@ MonoBehaviour:
   largeHitboxThreshold: 12
   largeHitboxSize: {x: 2, y: 6, z: 6.5}
   largeHitboxCenter: {x: 0, y: 3, z: -2.5}
+  pivotTransform: {fileID: 0}
+  _targetHammer: {fileID: 0}
+  useSpring: 0
+  useDynamicHitbox: 0
 --- !u!114 &2131890989086541241
 MonoBehaviour:
   m_ObjectHideFlags: 0

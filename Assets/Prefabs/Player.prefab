@@ -312,61 +312,37 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: cd0d7aab-4bd4-46c9-b000-bea597d52201
-    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9a96326d-3d86-498c-a863-7e3a2455f7d1
-    m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f7bbe2b4-f8e9-469f-8823-060ee45a8374
-    m_ActionName: 'Player/Fire[/Mouse/leftButton]'
-  - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 7945e04d-11c0-4981-9f36-6fff31b258f4
-    m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: c79783e9-275f-4d43-84b7-65f52bf37963
-    m_ActionName: 'UI/Submit[/Keyboard/enter]'
+    m_ActionName: UI/Submit[/Keyboard/enter]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 164ac042-6208-4f7b-8b0a-9f53329e62ec
-    m_ActionName: 'UI/Cancel[/Keyboard/escape]'
+    m_ActionName: UI/Cancel[/Keyboard/escape]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 81f0bfde-9964-42cb-bcd2-ca6df4cdd173
-    m_ActionName: 'UI/Point[/Mouse/position,/Pen/position]'
+    m_ActionName: UI/Point[/Mouse/position,/Pen/position]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: f059284c-efc3-43cb-8a30-4297563889a9
-    m_ActionName: 'UI/Click[/Mouse/leftButton,/Pen/tip]'
+    m_ActionName: UI/Click[/Mouse/leftButton,/Pen/tip]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 8a2fab28-0e51-44bc-896d-ac59a126bbc3
-    m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
+    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 202e9be7-7edf-41a9-9e7c-25926e464921
-    m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
+    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: ea3ccf79-60c0-4b91-8d45-e6da43125644
-    m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
+    m_ActionName: UI/RightClick[/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 925873ae-d5c6-45a5-b9cc-42f246ebdbc2
@@ -377,18 +353,6 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: OnJump
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 4768003233324626996}
         m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
         m_MethodName: OnJump
@@ -402,21 +366,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 3f41fc29-43a5-49cf-80e0-a4537fd069c3
-    m_ActionName: 'Player/Jump[/Keyboard/space]'
+    m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: onAccelerate
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 4768003233324626996}
         m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
         m_MethodName: onAccelerate
@@ -433,18 +385,6 @@ MonoBehaviour:
     m_ActionName: Player/Accelerate
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: onBrake
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 4768003233324626996}
         m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
         m_MethodName: onBrake
@@ -461,18 +401,6 @@ MonoBehaviour:
     m_ActionName: Player/Brake
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: onSteer
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 4768003233324626996}
         m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
         m_MethodName: onSteer
@@ -502,12 +430,12 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
     m_ActionId: 32b00ef2-447d-4cc2-b856-dd44a837a54c
-    m_ActionName: 'Player/Pause[/Keyboard/escape]'
+    m_ActionName: Player/Pause[/Keyboard/escape]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: onDrift
+      - m_Target: {fileID: 4768003233324626996}
+        m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
+        m_MethodName: OnDrift
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -520,39 +448,15 @@ MonoBehaviour:
     m_ActionId: ada4e3c8-45d6-44fb-8a82-ee0636f72c2c
     m_ActionName: Player/Drift
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: OnGearUp
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 3a4c6d3d-d443-4809-bddf-52ad4ae0bb97
-    m_ActionName: 'Player/gearUp[/Keyboard/e,/XInputControllerWindows/rightShoulder]'
+    m_ActionName: Player/gearUp[/Keyboard/e,/XInputControllerWindows/rightShoulder]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: OnGearDown
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 49d66869-2414-469f-9248-f9689d2d0b00
-    m_ActionName: 'Player/gearDown[/XInputControllerWindows/leftShoulder,/Keyboard/q]'
+    m_ActionName: Player/gearDown[/XInputControllerWindows/leftShoulder,/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Gamepad
+  m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -589,14 +493,14 @@ MonoBehaviour:
   trotSpeed: 13
   canterSpeed: 19
   gallopSpeed: 25
-  reverseSpeed: 0
+  reverseSpeed: -3
   chargeRequiredToCanter: 1.5
   chargeRequiredToGallop: 3.5
   jumpHeight: 16
-  turnSpeedGroundedWalk: 80
-  turnSpeedGroundedTrot: 60
-  turnSpeedGroundedCanter: 40
-  turnSpeedGroundedGallop: 20
+  turnSpeedGroundedWalk: 160
+  turnSpeedGroundedTrot: 115
+  turnSpeedGroundedCanter: 85
+  turnSpeedGroundedGallop: 60
   turnSpeedMidair: 15
   acceleration: 16
   deceleration: 25
@@ -607,6 +511,11 @@ MonoBehaviour:
   gait: 1
   currentSpeed: 0
   verticalVelocity: {x: 0, y: -1, z: 0}
+  driftLateralSlippage: 0.8
+  driftSteerMultiplier: 1.25
+  driftSpeedThreshold: 17
+  driftFrictionMultiplyer: 0.8
+  horseVisual: {fileID: 654467425185220409}
 --- !u!114 &9012345678901234567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7749,7 +7658,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3283128650886327725}
     - target: {fileID: 798621022363076069, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
+      propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 65586f2fde3974c4e9469dfe6cf89338, type: 2}
     - target: {fileID: 1058116434969186094, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
