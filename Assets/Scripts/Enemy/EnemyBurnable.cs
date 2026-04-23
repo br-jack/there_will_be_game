@@ -67,6 +67,4 @@ public class EnemyBurnable : MonoBehaviour
         isBurning = false;
         burnRoutine = null;
     }
-
-    public bool IsBurning => isBurning;
 }
