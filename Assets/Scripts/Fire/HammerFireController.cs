@@ -17,6 +17,7 @@ public class HammerFireController : MonoBehaviour
     public bool InfiniteFireUnlocked => infiniteFireUnlocked;
     public bool UseInfiniteFire => useInfiniteFire;
 
+    public bool HasEternalFireBoonActive => isOnFire && useInfiniteFire;
     private void Start()
     {
         if (fireVisual != null)
