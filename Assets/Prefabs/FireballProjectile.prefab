@@ -154,11 +154,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a19bc1798a50ba408ec12f2bdceeba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 18
+  speed: 30
   lifetime: 4
   hitLayer:
     serializedVersion: 2
     m_Bits: 512
+  impactKnockbackForce: 8
+  impactUpwardForceRatio: 0.25
 --- !u!54 &8220037208109139024
 Rigidbody:
   m_ObjectHideFlags: 0
