@@ -10,6 +10,10 @@ public class FireballProjectile : MonoBehaviour
     [Header("Collision")]
     [SerializeField] private LayerMask hitLayer;
 
+    [Header("Impact Knockback")]
+    [SerializeField] private float impactKnockbackForce = 8f;
+    [SerializeField] private float impactUpwardForceRatio = 0.25f;
+
     private Vector3 moveDirection;
     private bool initialised;
 
@@ -41,6 +45,8 @@ public class FireballProjectile : MonoBehaviour
         StandardEnemyAI enemyAI = other.GetComponentInParent<StandardEnemyAI>();
         if (enemyAI != null)
         {
+            ApplyImpactKnockback(enemyAI);
+
             EnemyBurnable burnable = enemyAI.GetComponent<EnemyBurnable>();
             if (burnable != null)
             {
@@ -55,5 +61,17 @@ public class FireballProjectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void ApplyImpactKnockback(StandardEnemyAI enemyAI)
+    {
+        if (enemyAI == null) return;
+        if (enemyAI.IsDying) return;
+
+        Vector3 knockbackDirection = enemyAI.transform.position - transform.position;
+        knockbackDirection.y = impactUpwardForceRatio;
+        knockbackDirection.Normalize();
+
+        enemyAI.ApplyKnockback(knockbackDirection * impactKnockbackForce);
     }
 }
