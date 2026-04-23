@@ -73,7 +73,19 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private string enemyIntroPromptMessage = "An enemy approaches. Watch your health.";
     [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
 
-    
+    [Header("Task Panel Intro")]
+    private string taskPanelIntroMessage = "Tasks appear on this panel. Complete them to earn rewards.";
+    private float taskPanelIntroDelay = 4.5f;
+    private float taskPanelPulseDuration = 4f;
+    private float taskPanelPulseScale = 1.03f;
+    private float taskPanelPulseSpeed = 1f;
+
+    [Header("Arrow Intro")]
+    private string arrowIntroMessage = "Sometimes an arrow will guide you to completion";
+    private float arrowIntroDelay = 4.5f;
+    private float arrowPulseDuration = 4f;
+    private float arrowPulseScale = 1.15f;
+    private float arrowPulseSpeed = 1f;
 
     private StandardEnemyAI currentTutorialEnemy;
     private bool enemyPhaseStarted = false;
@@ -94,6 +106,8 @@ public class TutorialManager : MonoBehaviour
 
     private int currentSwings = 0;
     private int currentJumps = 0;
+
+    private bool taskIntroSequenceStarted = false;
 
     private void OnEnable()
     {
@@ -246,9 +260,85 @@ public class TutorialManager : MonoBehaviour
             if (currentJumps >= jumpsRequired)
             {
                 secondPromptCompleted = true;
-                StartTutorialTask();
+                if (!taskIntroSequenceStarted)
+                {
+                    StartCoroutine(ShowTaskPanelIntroSequence());
+                }
             }
         }
+    }
+
+    private IEnumerator ShowTaskPanelIntroSequence()
+    {
+        if (taskIntroSequenceStarted)
+        {
+            yield break;
+        }
+
+        taskIntroSequenceStarted = true;
+        taskPanelUI.SetActive(true);
+        StartCoroutine(PulseTaskPanel());
+        promptText.text = taskPanelIntroMessage;
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+        taskArrow.Show(true);
+        StartCoroutine(PulseArrow());
+        promptText.text = arrowIntroMessage;
+        yield return new WaitForSeconds(arrowIntroDelay);
+        promptText.text = thirdPromptMessage;
+        StartTutorialTask();
+    }
+
+    private IEnumerator PulseArrow()
+    {
+        if (taskArrow == null)
+        {
+            yield break;
+        }
+
+        Transform arrowTransform = taskArrow.transform;
+        Vector3 originalScale = arrowTransform.localScale;
+        float elapsed = 0f;
+
+        while (elapsed < arrowPulseDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float pulse = 1f + Mathf.Sin(elapsed * arrowPulseSpeed * Mathf.PI * 2f) * (arrowPulseScale - 1f);
+            arrowTransform.localScale = originalScale * pulse;
+
+            yield return null;
+        }
+
+        arrowTransform.localScale = originalScale;
+    }
+
+    private IEnumerator PulseTaskPanel()
+    {
+        if (taskPanelUI == null)
+        {
+            yield break;
+        }
+
+        RectTransform rectTransform = taskPanelUI.GetComponent<RectTransform>();
+        if (rectTransform == null)
+        {
+            yield break;
+        }
+
+        Vector3 originalScale = rectTransform.localScale;
+        float elapsed = 0f;
+
+        while (elapsed < taskPanelPulseDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float pulse = 1f + Mathf.Sin(elapsed * taskPanelPulseSpeed * Mathf.PI * 2f) * (taskPanelPulseScale - 1f);
+            rectTransform.localScale = originalScale * pulse;
+
+            yield return null;
+        }
+
+        rectTransform.localScale = originalScale;
     }
 
     private void StartTutorialTask()
@@ -259,15 +349,9 @@ public class TutorialManager : MonoBehaviour
         }
 
         taskStarted = true;
-
-        taskPanelUI.SetActive(true);
-
-        tutorialMarker.SetActive(true);
         tutorialTask.StartTask();
+        tutorialMarker.SetActive(true);
         taskArrow.SetTarget(tutorialMarker.transform);
-        taskArrow.Show(true);
-
-        promptText.text = thirdPromptMessage;
     }
 
     private void HandleTaskCompleted(BaseTask completedTask)
