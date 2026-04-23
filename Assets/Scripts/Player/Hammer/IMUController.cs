@@ -148,8 +148,8 @@ namespace Hammer
 
         private void IOThreadLoop()
         {
-            bool portOpen = false;
             string port = null;
+            bool portOpen = false;
             
             try
             {
@@ -173,15 +173,22 @@ namespace Hammer
                 {
                     try
                     {
-                        if (!sendQueue.IsEmpty)
+                        if (_stream == null)
                         {
-                            sendQueue.TryDequeue(out string dataToSend);
-
-                            _stream.WriteLine(dataToSend);
+                            ConnectToPort(port);
                         }
+                        else
+                        {
+                            if (!sendQueue.IsEmpty)
+                            {
+                                sendQueue.TryDequeue(out string dataToSend);
 
-                        string receivedData = _stream.ReadLine();
-                        recvQueue.Enqueue(receivedData);
+                                _stream.WriteLine(dataToSend);
+                            }
+
+                            string receivedData = _stream.ReadLine();
+                            recvQueue.Enqueue(receivedData);
+                        }
                     }
                     catch (TimeoutException) //ex)
                     {
@@ -208,7 +215,6 @@ namespace Hammer
                             }
                             _stream = null;
                             Debug.Assert(port != null);
-                            ConnectToPort(port);
                         }
                     }
                     catch(Exception) //ex)
