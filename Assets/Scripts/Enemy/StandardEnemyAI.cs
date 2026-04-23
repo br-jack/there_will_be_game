@@ -486,16 +486,6 @@ public class StandardEnemyAI : MonoBehaviour
         Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
         if (r != null) r.material.color = new Color(0.2f, 0.2f, 0.2f);
 
-        Vector3 knockDir = transform.position - sourcePosition;
-        knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.2f);
-        knockDir.Normalize();
-
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.AddForce(knockDir * force, ForceMode.Impulse);
-        }
-
         TryTrigger(deadTrigger);
         OnDied?.Invoke();
     }

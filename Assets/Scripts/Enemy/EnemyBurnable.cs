@@ -22,19 +22,24 @@ public class EnemyBurnable : MonoBehaviour
     {
         if (enemyAI == null)
             enemyAI = GetComponent<StandardEnemyAI>();
+
+        burnVisual.SetActive(false);
+        burnParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     public void ApplyBurn(Vector3 fireballSourcePosition)
     {
         if (enemyAI == null) return;
         if (enemyAI.IsDying) return;
-        if (enemyAI.IsKnockedBack) return;
         if (!enemyAI.CanBeKilled) return;
 
+        burnVisual.SetActive(true);
+
+        if (burnParticles != null && !burnParticles.isPlaying)
+            burnParticles.Play();
+
         if (burnRoutine != null)
-        {
             StopCoroutine(burnRoutine);
-        }
 
         burnRoutine = StartCoroutine(BurnThenKill(fireballSourcePosition));
     }
@@ -42,12 +47,6 @@ public class EnemyBurnable : MonoBehaviour
     private IEnumerator BurnThenKill(Vector3 sourcePosition)
     {
         isBurning = true;
-
-        if (burnVisual != null)
-            burnVisual.SetActive(true);
-
-        if (burnParticles != null && !burnParticles.isPlaying)
-            burnParticles.Play();
 
         yield return new WaitForSeconds(burnDuration);
 
