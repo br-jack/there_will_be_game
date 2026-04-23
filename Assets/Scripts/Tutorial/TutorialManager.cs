@@ -91,6 +91,14 @@ public class TutorialManager : MonoBehaviour
     private float arrowPulseScale = 1.15f;
     private float arrowPulseSpeed = 1f;
 
+    [Header("Fear and Awe Tutorial")]
+    [SerializeField] private string fearIntroPromptMessage = "This is Fear. Violence and chaos increase it.";
+    [SerializeField] private string aweIntroPromptMessage = "This is Awe. Great power and impressive acts increase it.";
+    [SerializeField] private string fearAweCombinedPromptMessage = "Your actions shape both Fear and Awe.";
+    [SerializeField] private string fearAweFinalPromptMessage = "Defeat the enemy and watch the bars change.";
+
+    private bool fearAweExplanationStarted = false;
+
     private StandardEnemyAI currentTutorialEnemy;
     private bool enemyPhaseStarted = false;
     private bool enemyHasHitPlayer = false;
@@ -318,12 +326,17 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator PulseTaskPanel()
     {
-        if (taskPanelUI == null)
+        yield return StartCoroutine(PulseUIObject(taskPanelUI, taskPanelPulseDuration, taskPanelPulseScale, taskPanelPulseSpeed));
+    }
+
+    private IEnumerator PulseUIObject(GameObject uiObject, float duration, float pulseScale, float pulseSpeed)
+    {
+        if (uiObject == null)
         {
             yield break;
         }
 
-        RectTransform rectTransform = taskPanelUI.GetComponent<RectTransform>();
+        RectTransform rectTransform = uiObject.GetComponent<RectTransform>();
         if (rectTransform == null)
         {
             yield break;
@@ -332,11 +345,11 @@ public class TutorialManager : MonoBehaviour
         Vector3 originalScale = rectTransform.localScale;
         float elapsed = 0f;
 
-        while (elapsed < taskPanelPulseDuration)
+        while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
 
-            float pulse = 1f + Mathf.Sin(elapsed * taskPanelPulseSpeed * Mathf.PI * 2f) * (taskPanelPulseScale - 1f);
+            float pulse = 1f + Mathf.Sin(elapsed * pulseSpeed * Mathf.PI * 2f) * (pulseScale - 1f);
             rectTransform.localScale = originalScale * pulse;
 
             yield return null;
@@ -502,19 +515,47 @@ public class TutorialManager : MonoBehaviour
             fearBarUI.SetActive(true);
             aweBarUI.SetActive(true);
 
-            // Point the arrow at the enemy now
-            taskArrow.SetTarget(currentTutorialEnemy.transform);
-            taskArrow.Show(true);
-
-            promptText.text = enemyKillPromptMessage;
-            currentTutorialEnemy.SetCanBeKilled(false);
-            StartCoroutine(EnableEnemyKillAfterDelay(enemyKillUnlockDelay));
+            if (!fearAweExplanationStarted)
+            {
+                StartCoroutine(PlayFearAndAweTutorialSequence());
+            }
         }
     }
 
-    private IEnumerator EnableEnemyKillAfterDelay(float delay)
+    private IEnumerator PlayFearAndAweTutorialSequence()
     {
-        yield return new WaitForSeconds(delay);
+        if (fearAweExplanationStarted)
+        {
+            yield break;
+        }
+
+        fearAweExplanationStarted = true;
+
+        if (currentTutorialEnemy != null)
+        {
+            currentTutorialEnemy.SetCanBeKilled(false);
+        }
+
+        // all the values for the timings are the same so im just gonna reuse the values from the task bar
+
+        fearBarUI.SetActive(true);
+        aweBarUI.SetActive(true);
+
+        promptText.text = fearIntroPromptMessage;
+        StartCoroutine(PulseUIObject(fearBarUI, taskPanelPulseDuration, taskPanelPulseScale, taskPanelPulseSpeed));
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+
+        promptText.text = aweIntroPromptMessage;
+        StartCoroutine(PulseUIObject(aweBarUI, taskPanelPulseDuration, taskPanelPulseScale, taskPanelPulseSpeed));
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+
+        promptText.text = fearAweCombinedPromptMessage;
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+
+        promptText.text = fearAweFinalPromptMessage;
+
+
+        yield return new WaitForSeconds(enemyKillUnlockDelay);
 
         if (currentTutorialEnemy != null)
         {
