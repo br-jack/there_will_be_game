@@ -175,7 +175,8 @@ namespace Hammer
                     {
                         if (_stream == null)
                         {
-                            ConnectToPort(port);
+                            //TODO make more efficient
+                            while (!ConnectToPort(port)) ;
                         }
                         else
                         {
