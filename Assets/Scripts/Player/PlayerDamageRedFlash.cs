@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Hammer;
 
 public class PlayerDamageRedFlash : MonoBehaviour
 {
@@ -63,6 +64,8 @@ public class PlayerDamageRedFlash : MonoBehaviour
         {
             if (renderer == null) continue;
             if (renderer is ParticleSystemRenderer || renderer is TrailRenderer || renderer is LineRenderer) continue;
+            if (renderer.GetComponentInParent<VisualHammer>() != null) continue;
+            if (renderer.GetComponentInParent<TargetHammer>() != null) continue;
 
             Material[] materials = renderer.materials;
             foreach (Material material in materials)
