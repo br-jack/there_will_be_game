@@ -20,6 +20,9 @@ namespace Hammer
         private readonly ConcurrentQueue<string> recvQueue = new ConcurrentQueue<string>();
 
         private const int TimeoutMs = 50;
+        private const int MaxIOExceptionCount = 5;
+
+        private int currentIOExceptionCount = 0;
         
         private string SearchPorts()
         {
@@ -128,6 +131,8 @@ namespace Hammer
 
         public void Connect()
         {
+            currentIOExceptionCount = 0;
+            
             _running = true;
 
             // Start the background I/O thread
@@ -144,12 +149,13 @@ namespace Hammer
         private void IOThreadLoop()
         {
             bool portOpen = false;
+            string port = null;
             
             try
             {
                 while (_running && !portOpen)
                 {
-                    string port = SearchPorts();
+                    port = SearchPorts();
                     if (port != null)
                     {
                         portOpen = ConnectToPort(port);
@@ -160,6 +166,8 @@ namespace Hammer
                         Thread.Sleep(1000);
                     }
                 }
+
+                Debug.Assert(port != null);
                 
                 while (_running)
                 {
@@ -189,6 +197,19 @@ namespace Hammer
                         
                         //The latter occurs when you restart the IMU (e.g. to fix IMU after a short), and is likely not recoverable.
                         //Need to reset the stream
+
+                        currentIOExceptionCount++;
+                        if (currentIOExceptionCount >= MaxIOExceptionCount)
+                        {
+                            currentIOExceptionCount = 0;
+                            if (_stream != null)
+                            {
+                                _stream.Close();
+                            }
+                            _stream = null;
+                            Debug.Assert(port != null);
+                            ConnectToPort(port);
+                        }
                     }
                     catch(Exception) //ex)
                     {
@@ -307,6 +328,8 @@ namespace Hammer
 
             _stream?.Close();
             _stream = null;
+
+            currentIOExceptionCount = 0;
             
             Debug.Log("Port closed");
         }
