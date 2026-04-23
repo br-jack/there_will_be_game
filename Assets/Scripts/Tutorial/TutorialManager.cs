@@ -44,7 +44,11 @@ public class TutorialManager : MonoBehaviour
     [Header("Reward")]
     [SerializeField] private PowerUpSpawner powerUpSpawner;
     [SerializeField] private GameObject tutorialRewardPrefab;
-    [SerializeField] private string rewardMessage = "A boon has been granted";
+    private string rewardMessage = "A boon has been granted";
+    private string boonSpawnPromptMessage = "Task complete. A boon has appeared.";
+    private string boonCollectPromptMessage = "Collect the boon to receive a blessing";
+    private string boonExplanationMessage = "Boons grant powerful blessings that aid your journey.";
+    private float boonPromptDelay = 4f;
 
     [SerializeField] private GameObject tutorialMarker;
 
@@ -372,7 +376,16 @@ public class TutorialManager : MonoBehaviour
 
         spawnedTutorialReward = powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
 
-        promptText.text = "Collect your reward";
+        StartCoroutine(PlayBoonTutorialSequence());
+    }
+
+    private IEnumerator PlayBoonTutorialSequence()
+    {
+        promptText.text = boonSpawnPromptMessage;
+
+        yield return new WaitForSeconds(boonPromptDelay);
+
+        promptText.text = $"{boonCollectPromptMessage}\n\n<size=85%>{boonExplanationMessage}</size>";
     }
 
     private void HideGameplayUIAtStart()
