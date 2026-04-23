@@ -175,15 +175,27 @@ namespace Hammer
                         string receivedData = _stream.ReadLine();
                         recvQueue.Enqueue(receivedData);
                     }
-                    catch (TimeoutException ex)
+                    catch (TimeoutException) //ex)
                     {
-                        //Seems to cause a memory leak, so only enable this when debugging Bluetooth
-                        Debug.LogWarning($"Error reading data: {ex.Message}");
+                        //"The operation has timed out."
+                        
+                        //These are recoverable and can occur due to data not being sent fast enough
+                        // so can just be ignored
                     }
-                    catch(Exception ex)
+                    catch (System.IO.IOException) //ex)
                     {
-                        //Seems to cause a memory leak, so only enable this when debugging Bluetooth
-                        Debug.LogWarning($"Error reading data: {ex.Message}");
+                        //"The I/O operation has been aborted because of either a thread exit or an application request."
+                        //"System.IO.IOException: The device does not recognize the command"
+                        
+                        //The latter occurs when you restart the IMU (e.g. to fix IMU after a short), and is likely not recoverable.
+                        //Need to reset the stream
+                    }
+                    catch(Exception) //ex)
+                    {
+                        //Other exception
+                        
+                        //Outputting in I/O thread Seems to cause a memory leak, so only enable this when debugging Bluetooth
+                        //Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
 
                 }
