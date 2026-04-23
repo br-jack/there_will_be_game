@@ -12,7 +12,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI introText;
 
     [Header("Message")]
-    [SerializeField] private string message = "A god is helping you achieve your task";
+    [SerializeField] private string message = "A divine force guides your first steps. \n Learn to move, fight and shape Fear and Awe.";
     [SerializeField] private float letterDelay = 0.07f;
     [SerializeField] private float holdTime = 2f;
 
@@ -157,6 +157,7 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator TypeText(string fullMessage)
     {
+        fullMessage = fullMessage.Replace("\\n", "\n");
         introText.text = "";
 
         for (int i = 0; i < fullMessage.Length; i++)
