@@ -66,7 +66,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TargetHammer targetHammer;
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private float enemyKillUnlockDelay = 1f;
-    [SerializeField] private float forcedSlowMoveMultiplier = 0.1f;
+    [SerializeField] private float forcedSlowMoveMultiplier = 0.05f;
     [SerializeField] private AttackHitbox hammerHitbox;
 
     [Header("Enemy Facing")]
