@@ -75,7 +75,6 @@ public class StandardEnemyAI : MonoBehaviour
     [Header("Animation (optional)")]
     [SerializeField] private Animator anim;
     [SerializeField] private string speedParam = "Speed";
-    [SerializeField] private string idleBoolParam = "IsIdle";
     [SerializeField] private float idleSpeedThreshold = 0.1f;
     [SerializeField] private string attackTrigger = "Attack";
     [SerializeField] private string shieldBreakTrigger = "ShieldBreak";
@@ -608,9 +607,6 @@ public class StandardEnemyAI : MonoBehaviour
         }
         if (animSpeed < idleSpeedThreshold) animSpeed = 0f;
         anim.SetFloat(speedParam, animSpeed);
-
-        if (!string.IsNullOrEmpty(idleBoolParam))
-            anim.SetBool(idleBoolParam, animSpeed == 0f);
     }
 
     private bool IsGrounded()
