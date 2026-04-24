@@ -34231,7 +34231,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaTensor: {x: 5, y: 0.5, z: 0.5}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
@@ -34261,7 +34261,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -34295,6 +34295,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _horseCC: {fileID: 0}
   head: {fileID: 8479068076154358140}
+  pivotTransform: {fileID: 0}
+  _targetHammer: {fileID: 0}
+  useSpring: 0
+  positionSpringStrength: 2000
+  positionDamping: 240
+  rotationSpringStrength: 2000
+  rotationDamping: 240
+  useDynamicHitbox: 0
   smallHitboxSize: {x: 1.5, y: 4.5, z: 1.5}
   smallHitboxCenter: {x: 0, y: 3, z: 0.4}
   mediumHitboxThreshold: 3
@@ -34303,10 +34311,6 @@ MonoBehaviour:
   largeHitboxThreshold: 12
   largeHitboxSize: {x: 2, y: 6, z: 6.5}
   largeHitboxCenter: {x: 0, y: 3, z: -2.5}
-  pivotTransform: {fileID: 0}
-  _targetHammer: {fileID: 0}
-  useSpring: 0
-  useDynamicHitbox: 0
 --- !u!114 &2131890989086541241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34343,9 +34347,9 @@ ConfigurableJoint:
   m_XMotion: 1
   m_YMotion: 1
   m_ZMotion: 1
-  m_AngularXMotion: 2
-  m_AngularYMotion: 2
-  m_AngularZMotion: 2
+  m_AngularXMotion: 1
+  m_AngularYMotion: 1
+  m_AngularZMotion: 1
   m_LinearLimitSpring:
     spring: 0
     damper: 0
@@ -34357,22 +34361,22 @@ ConfigurableJoint:
     spring: 0
     damper: 0
   m_LowAngularXLimit:
-    limit: 0
+    limit: 1
     bounciness: 0
     contactDistance: 0
   m_HighAngularXLimit:
-    limit: 0
+    limit: 1
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
     spring: 0
     damper: 0
   m_AngularYLimit:
-    limit: 0
+    limit: 3
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 0
+    limit: 3
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -34397,7 +34401,7 @@ ConfigurableJoint:
     useAcceleration: 1
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
-  m_RotationDriveMode: 0
+  m_RotationDriveMode: 1
   m_AngularXDrive:
     serializedVersion: 4
     positionSpring: 1000
@@ -34412,8 +34416,8 @@ ConfigurableJoint:
     useAcceleration: 1
   m_SlerpDrive:
     serializedVersion: 4
-    positionSpring: 500
-    positionDamper: 25
+    positionSpring: 5000
+    positionDamper: 500
     maximumForce: 3.4028233e+38
     useAcceleration: 1
   m_ProjectionMode: 1
