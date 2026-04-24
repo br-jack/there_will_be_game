@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7543433060901621016}
   - component: {fileID: 2531640171077346035}
   - component: {fileID: 2113814437914614775}
-  - component: {fileID: 4185400279331065335}
+  - component: {fileID: 7703837468108700859}
   - component: {fileID: 2681927241461701612}
   m_Layer: 0
   m_Name: SM_insulae
@@ -114,7 +114,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 8197054578433957194, guid: e23748e55f953834da969fcca5aa9dcf, type: 3}
---- !u!114 &4185400279331065335
+--- !u!114 &7703837468108700859
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,7 +131,7 @@ MonoBehaviour:
   explosionForce: 300
   explosionRadius: 3
   soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
+  destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
 --- !u!114 &2681927241461701612
 MonoBehaviour:
   m_ObjectHideFlags: 0
