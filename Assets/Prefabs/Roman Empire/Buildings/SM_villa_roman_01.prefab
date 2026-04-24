@@ -113,7 +113,7 @@ PrefabInstance:
       addedObject: {fileID: 8986256816633268951}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7992193300568502258}
+      addedObject: {fileID: 2859856840704194164}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6378168495168806725}
@@ -145,7 +145,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -7572452796284243316, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
---- !u!114 &7992193300568502258
+--- !u!114 &2859856840704194164
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,11 +158,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fragmentsPrefab: {fileID: 593026225183117321, guid: 49384b8708395aa4db6bd225bd82ca3f, type: 3}
-  breakForceThreshold: 5
+  breakForceThreshold: 15
   explosionForce: 300
   explosionRadius: 3
   soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
+  destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
 --- !u!114 &6378168495168806725
 MonoBehaviour:
   m_ObjectHideFlags: 0
