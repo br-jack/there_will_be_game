@@ -43,8 +43,10 @@ public class DestructibleObject : MonoBehaviour
         float impactSpeed = collision.impulse.magnitude / Time.fixedDeltaTime;
         // Debug.Log(impactSpeed);
         if (impactSpeed < breakForceThreshold) return;
+        
+        // Debug.Log(baseExplosionForce * collision.impulse.magnitude);
 
-        Break(collision.contacts[0].point, baseExplosionForce * impactSpeed);
+        Break(collision.contacts[0].point, baseExplosionForce * collision.impulse.magnitude);
     }
 
     void Break(Vector3 impactPoint, float explosionForce)
