@@ -240,6 +240,7 @@ inline RumbleMode parseRumbleModeByte(byte byte) {
     case (int)'D': {
       return RumbleMode::RampDown;
     }
+    //TODO add option for off mode (e.g. to cut vibration off early)
     default: {
       break;
     }
@@ -302,12 +303,37 @@ inline void checkRumbleInput(void) {
 
     const int incomingByte = Serial1.read();
 
-    //rumble string format: "RMx\n" where M is the mode and x is the duration in ms
+    //rumble string format: "RMa;b;c;d;e\n" where
+    //M is mode
+    //a is duration (not used in off mode)
+    //b is start strength (not used in off mode)
+    //c is end strength (not used in constant or off modes)
+    //d is fade rate (not used in constant or off modes)
+    //e is fade interval (usually 30, not used in constant or off modes)
+    //and the ; characters are separators
+    //\n indicates the end of the message.
+    //
+    //NOTE: regardless of which rumble smode is used, the full message is always expected.
     if (incomingByte == (int)rumbleChar) {
 
       const int modeByte = Serial1.read();
 
       const int duration = Serial1.parseInt();
+      //read separator, should be (';') semicolon character but checking would just waste time
+      Serial1.read();
+      
+      const int startStrength = Serial1.parseInt();
+      Serial1.read();
+      
+      const int endStrength = Serial1.parseInt();
+      Serial1.read();
+      
+      const int fadeRate = Serial1.parseInt();
+      Serial1.read();
+      
+      const int fadeInterval = Serial1.parseInt();
+      
+      //int newline = Serial1.read();
 
       //Serial1.println(duration);  
       startRumble(parseRumbleModeByte(modeByte), duration);
