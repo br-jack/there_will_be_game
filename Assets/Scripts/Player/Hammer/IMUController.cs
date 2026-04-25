@@ -59,6 +59,7 @@ namespace Hammer
                             SerialPort testSerial = new SerialPort(possiblePort, 115200)
                             {
                                 DtrEnable = true,
+                                //TODO may not be safe to even read scriptable object from another thread
                                 ReadTimeout = configSO.readTimeout * 2
                             };
                             testSerial.Open();
@@ -331,6 +332,8 @@ namespace Hammer
             int fadeInterval
         )
         {
+            if (!configSO.enableRumble) return;
+            
             Debug.Assert(msDuration > 0);
             Debug.Assert(startStrength > 0);
             Debug.Assert(endStrength > 0);
