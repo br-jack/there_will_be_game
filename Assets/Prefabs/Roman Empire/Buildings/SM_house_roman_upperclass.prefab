@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7431384525563677448}
   - component: {fileID: 5041760824153253638}
   - component: {fileID: 4453636017672238182}
+  - component: {fileID: 7113302421064023331}
+  - component: {fileID: 503132048483657779}
   m_Layer: 0
   m_Name: SM_house_roman_upperclass
   m_TagString: Untagged
@@ -110,4 +112,42 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 76d06d9b263b7fb4d98786d756717c31, type: 3}
+  m_Mesh: {fileID: 7039355258290517440, guid: 76d06d9b263b7fb4d98786d756717c31, type: 3}
+--- !u!114 &7113302421064023331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5421783786802919678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fragmentsPrefab: {fileID: 6276110399942516395, guid: 1cc852e504252484eba9fefd3a1e827e, type: 3}
+  breakForceThreshold: 15
+  explosionForce: 300
+  explosionRadius: 3
+  soundVolume: 1
+  destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
+--- !u!114 &503132048483657779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5421783786802919678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff

@@ -44,17 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b605ab55a659c41ed934bbcd82dbb8f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawningEnabled: 1
   meleeEnemyPrefab: {fileID: 4937528112206273530, guid: 958da4c8e8c7d48169847e9e756975ce, type: 3}
   rapidEnemyPrefab: {fileID: 4993346534810899319, guid: 0efbe9a0fe2994794be8f454b182b63d, type: 3}
   rangedEnemyPrefab: {fileID: 4937528112206273530, guid: 525c1ca2571d54d5380ac4f07f2d7659, type: 3}
   minDistanceFromPlayer: 50
-  maxDistanceFromPlayer: 150
+  maxDistanceFromPlayer: 250
   waves:
   - duration: 30
     clearRemainingOnEnd: 0
-    spawnInterval: 0.5
+    spawnInterval: 0.1
     meleeShielded: 0
-    meleeUnshielded: 25
+    meleeUnshielded: 100
     ranged: 10
     rapid: 0
   - duration: 120

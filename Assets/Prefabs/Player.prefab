@@ -263,7 +263,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 12181328284975977}
-  - {fileID: 7518415703454089516}
   - {fileID: 117203456978148714}
   - {fileID: 3283128650886327725}
   - {fileID: 654467425185220409}
@@ -312,30 +311,6 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: cd0d7aab-4bd4-46c9-b000-bea597d52201
-    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9a96326d-3d86-498c-a863-7e3a2455f7d1
-    m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f7bbe2b4-f8e9-469f-8823-060ee45a8374
-    m_ActionName: 'Player/Fire[/Mouse/leftButton]'
-  - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 7945e04d-11c0-4981-9f36-6fff31b258f4
     m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
@@ -377,18 +352,6 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: OnJump
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 4768003233324626996}
         m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
         m_MethodName: OnJump
@@ -405,18 +368,6 @@ MonoBehaviour:
     m_ActionName: 'Player/Jump[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: onAccelerate
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 4768003233324626996}
         m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
         m_MethodName: onAccelerate
@@ -433,18 +384,6 @@ MonoBehaviour:
     m_ActionName: Player/Accelerate
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: onBrake
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 4768003233324626996}
         m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
         m_MethodName: onBrake
@@ -461,18 +400,6 @@ MonoBehaviour:
     m_ActionName: Player/Brake
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: onSteer
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 4768003233324626996}
         m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
         m_MethodName: onSteer
@@ -505,9 +432,9 @@ MonoBehaviour:
     m_ActionName: 'Player/Pause[/Keyboard/escape]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: onDrift
+      - m_Target: {fileID: 4768003233324626996}
+        m_TargetAssemblyTypeName: horseMovementGaits, Assembly-CSharp
+        m_MethodName: OnDrift
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -520,39 +447,15 @@ MonoBehaviour:
     m_ActionId: ada4e3c8-45d6-44fb-8a82-ee0636f72c2c
     m_ActionName: Player/Drift
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: OnGearUp
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 3a4c6d3d-d443-4809-bddf-52ad4ae0bb97
     m_ActionName: 'Player/gearUp[/Keyboard/e,/XInputControllerWindows/rightShoulder]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: HorseMovement, Assembly-CSharp
-        m_MethodName: OnGearDown
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 49d66869-2414-469f-9248-f9689d2d0b00
     m_ActionName: 'Player/gearDown[/XInputControllerWindows/leftShoulder,/Keyboard/q]'
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Gamepad
+  m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -589,14 +492,14 @@ MonoBehaviour:
   trotSpeed: 13
   canterSpeed: 19
   gallopSpeed: 25
-  reverseSpeed: 0
+  reverseSpeed: -3
   chargeRequiredToCanter: 1.5
   chargeRequiredToGallop: 3.5
   jumpHeight: 16
-  turnSpeedGroundedWalk: 80
-  turnSpeedGroundedTrot: 60
-  turnSpeedGroundedCanter: 40
-  turnSpeedGroundedGallop: 20
+  turnSpeedGroundedWalk: 160
+  turnSpeedGroundedTrot: 115
+  turnSpeedGroundedCanter: 85
+  turnSpeedGroundedGallop: 60
   turnSpeedMidair: 15
   acceleration: 16
   deceleration: 25
@@ -607,6 +510,11 @@ MonoBehaviour:
   gait: 1
   currentSpeed: 0
   verticalVelocity: {x: 0, y: -1, z: 0}
+  driftLateralSlippage: 0.8
+  driftSteerMultiplier: 1.25
+  driftSpeedThreshold: 17
+  driftFrictionMultiplyer: 0.8
+  horseVisual: {fileID: 654467425185220409}
 --- !u!114 &9012345678901234567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,6 +530,15 @@ MonoBehaviour:
   maxHealth: 100
   damageFlash: {fileID: 0}
   invulnerabilityFlash: {fileID: 7439884306161422662}
+  respawnPoint: {fileID: 0}
+  respawnDelay: 1
+  respawnInvincibilityDuration: 2
+  fearPenaltyOnRespawn: 500
+  playerRenderers: []
+  deathTextUI: {fileID: 0}
+  hammerParticlesRoot: {fileID: 0}
+  hammerFireVisual: {fileID: 0}
+  hammerFireController: {fileID: 0}
 --- !u!114 &7439884306161422662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -715,37 +632,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1.25, z: 0.5}
---- !u!1 &3919838540913894575
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7518415703454089516}
-  m_Layer: 6
-  m_Name: VisualRoot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7518415703454089516
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3919838540913894575}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7672999536482783943}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6900478287992809880
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,7 +691,7 @@ GameObject:
   - component: {fileID: 2897383454451871880}
   - component: {fileID: 5671632729186984867}
   - component: {fileID: 8430471521501304602}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerFootballKickHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -835,7 +721,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6920575253356643932}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.05
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -6988,6 +6874,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7672999536482783943}
     m_Modifications:
+    - target: {fileID: 1058116434969186094, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058116434969186094, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058116434969186094, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2007879889780083079, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_ConnectedBody
+      value: 
+      objectReference: {fileID: 2147540564368440581}
     - target: {fileID: 2131890989086541241, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: fireVisual
       value: 
@@ -7040,6 +6942,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _horseCC
+      value: 
+      objectReference: {fileID: 5198885869196984512}
     - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: _targetHammer
       value: 
@@ -8219,10 +8125,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
-    - target: {fileID: 6135042451489409031, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8231,6 +8133,11 @@ PrefabInstance:
 --- !u!4 &12181328284975977 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5003253198180856680, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+  m_PrefabInstance: {fileID: 4991227111524642817}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &2147540564368440581 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 6379910031664844036, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
   m_PrefabInstance: {fileID: 4991227111524642817}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &4632399603067790969 stripped

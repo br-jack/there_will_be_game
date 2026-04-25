@@ -12,19 +12,28 @@ public class PlayerParticles : MonoBehaviour
     private CharacterController _cc;
     
     private ParticleSystem.Particle[] _particleBuffer;
-    
+    public bool SuppressParticles { get; set; }
+
     void Awake()
     {
         _cc = GetComponent<CharacterController>();
         if (jumpTrail != null)
         {
             jumpTrail.emitting = false;
+            jumpTrail.Clear();
         }
 
         if (runParticles != null)
         {
-            var emission = jumpParticles.emission;
+            var emission = runParticles.emission;
             emission.enabled = false;
+            runParticles.Clear();
+            runParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+        if (jumpParticles != null)
+        {
+            jumpParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            jumpParticles.Clear();
         }
 
     }
@@ -41,6 +50,7 @@ public class PlayerParticles : MonoBehaviour
 
     private IEnumerator PlayJumpParticles()
     {
+        if (SuppressParticles) yield break;
         jumpParticles.Play();
         
         if (jumpTrail != null)
@@ -48,19 +58,19 @@ public class PlayerParticles : MonoBehaviour
             jumpTrail.emitting = true;
         }
 
+        ////NOTE: Currently we don't have an analog jump, so we don't use this
+        /*
         //Reduce particle lifetime and size if jump button is released early
         
-        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
 
-        //just decrease particles always for now, i don't understand how this works because i am foolish!
-        DecreaseParticles(jumpParticles);
-
-        /*
         if (!horseMovement.JumpButtonHeld)
         {
             DecreaseParticles(jumpParticles);
         }
         */
+
+        yield return null;
     }
     
     private void DecreaseParticles(ParticleSystem pSystem)
@@ -85,24 +95,35 @@ public class PlayerParticles : MonoBehaviour
 
     private void TriggerJumpParticles()
     {
+        if (SuppressParticles) return;
         StartCoroutine(PlayJumpParticles());
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (SuppressParticles)
+        {
+            StopAllMovementParticles();
+            return;
+        }
         if (_cc != null) {
             if (_cc.isGrounded)
             {
                 // var sizeOverLifetime = jumpParticles.sizeOverLifetime;
                 // sizeOverLifetime.sizeMultiplier = 1;
 
-                if (runParticles != null && !runParticles.isEmitting)
+                if (runParticles != null)
                 {
                     var emission = runParticles.emission;
                     emission.enabled = true;
+
+                    if (!runParticles.isPlaying)
+                    {
+                        runParticles.Play();
+                    }
                 }
-                
+
                 if (jumpTrail != null)
                 {
                     jumpTrail.emitting = false;
@@ -110,9 +131,36 @@ public class PlayerParticles : MonoBehaviour
             }
             else
             {
-                var emission = runParticles.emission;
-                emission.enabled = false;
+                if (runParticles != null)
+                {
+                    var emission = runParticles.emission;
+                    emission.enabled = false;
+                    runParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+                }
             }
+        }
+    }
+
+    public void StopAllMovementParticles()
+    {
+        if (runParticles != null)
+        {
+            var emission = runParticles.emission;
+            emission.enabled = false;
+            runParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            runParticles.Clear();
+        }
+
+        if (jumpParticles != null)
+        {
+            jumpParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            jumpParticles.Clear();
+        }
+
+        if (jumpTrail != null)
+        {
+            jumpTrail.emitting = false;
+            jumpTrail.Clear();
         }
     }
 }

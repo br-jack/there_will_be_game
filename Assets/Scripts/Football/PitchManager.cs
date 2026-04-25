@@ -7,19 +7,17 @@ public class PitchManager : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     
     {
-        //Debug.Log("Something entered the pitch: " + other.name + " with tag: " + other.tag); //this happens a lot so commented out!
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player detected! Activating defenders...");
-            ActivatePitch(true);
         }
     }
 
-    public void ActivatePitch(bool status)
+    public void Start()
     {
         foreach (var enemy in footballEnemies)
         {
-            enemy.SetPitchActivity(status);
+            enemy.SetPitchActivity(true);
         }
     }
 

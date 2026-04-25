@@ -15,26 +15,24 @@ namespace Hammer
         private SerialPort _stream;
 
         private Thread _ioThread;
-        private bool _running;
-        private readonly ConcurrentQueue<string> _dataQueue = new ConcurrentQueue<string>();
+        private volatile bool _running;
+        private readonly ConcurrentQueue<string> sendQueue = new ConcurrentQueue<string>();
+        private readonly ConcurrentQueue<string> recvQueue = new ConcurrentQueue<string>();
 
-        //private bool _portOpen = false;
         private const int TimeoutMs = 50;
-
-        private string _port = null;
-
-        private void SearchPorts()
+        
+        private string SearchPorts()
         {
             try
             {
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
                 {
-                    _port = "/dev/cu.usbmodem101";
+                    return "/dev/cu.usbmodem101";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.LinuxPlayer) || Application.platform.Equals(RuntimePlatform.LinuxServer))
                 {
-                    _port = "/dev/ttyACM0";
+                    return "/dev/ttyACM0";
                 }
 
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
@@ -42,103 +40,146 @@ namespace Hammer
 
                     try
                     {
-                        var availablePorts = SerialPort.GetPortNames()
-                            .Where(p => !p.Equals("COM1"))
-                            .ToArray();
+                        string[] availablePorts = SerialPort.GetPortNames();
 
                         if (availablePorts.Length == 0)
                         {
                             Console.WriteLine("No usable COM ports found (if the hub is COM1 that's weird and also not my problem sorry).");
-                            return;
+                            return null;
                         }
 
-                        _port = availablePorts[0];
-                        Debug.Log(_port);
-
+                        foreach (string possiblePort in availablePorts)
+                        {
+                            Debug.Log("Trying port " + possiblePort);
+                            
+                            SerialPort testSerial = new SerialPort(possiblePort, 115200);
+                            testSerial.DtrEnable = true;
+                            testSerial.ReadTimeout = TimeoutMs * 3;
+                            testSerial.Open();
+                            
+                            //wait to ensure IMU data gets received
+                            Thread.Sleep(100);
+                            
+                            String output = testSerial.ReadExisting();
+                            testSerial.Close();
+                            
+                            if (output.Contains("q:") || output.Contains("a:") || output.Contains("info:"))
+                            {
+                                //(hub sending) IMU data found
+                                Debug.Log("Hub found on port " + possiblePort);
+                                return possiblePort;
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error scanning COM ports: {ex.Message}");
+                        Debug.LogError($"Error scanning COM ports: {ex.Message}");
                     }
-
                 }
             }
-            catch (System.Exception e)
+            catch// (System.Exception e)
             {
-                Debug.LogWarning("Failed to find port: ");
-                Debug.LogWarning(e);
+                // Debug.LogWarning("Failed to find port: ");
+                // Debug.LogWarning(e);
             }
+
+            return null;
         }
 
-        public void Connect()
-        {   
-            
-            int attempts = 0;
-            while (_port == null)
+        //Returns if connected successfully or not
+        private bool ConnectToPort(string port)
+        {
+            if (port == null)
             {
-                SearchPorts();
-                attempts++;
-                if (attempts == 5)
-                {
-                    Debug.LogWarning("Could not find port.");
-                    _running = false;
-                    return;
-                }
+                return false;
             }
-           
+            
             try
             {
-                _stream = new SerialPort(_port, 115200)
+                _stream = new SerialPort(port, 115200)
                 {
                     ReadTimeout = TimeoutMs
                 };
 
-                _stream.DtrEnable = true;
-                _stream.Open();
-                _stream.ReadTimeout = TimeoutMs;
-                //_portOpen = true;
-                // if youre connected but not getting any data you may have another serial monitor open for this port
-                Debug.Log("Connected (allegedly)");
+                if (_stream != null)
+                {
+                    _stream.NewLine = "\n";
+                    _stream.DtrEnable = true;
+                    _stream.Open();
+                    _stream.ReadTimeout = TimeoutMs;
+                    _stream.WriteTimeout = TimeoutMs * 2;
+                    if (_stream.IsOpen)
+                    {
+                        // if youre connected but not getting any data you may have another serial monitor open for this port
+                        Debug.Log("Connected (allegedly)");
+                        
+                        return true;
+                    }
+                }
             }
-            catch (System.Exception e)
+            catch// (System.Exception e)
             {
-                //_portOpen = false;
-                Debug.LogWarning("Failed to connect to port: ");
-                Debug.LogWarning(e);
+                // Debug.LogWarning("Failed to connect to port: ");
+                // Debug.LogWarning(e);
             }
 
+            return false;
+        }
 
+        public void Connect()
+        {
             _running = true;
 
             // Start the background I/O thread
-            _ioThread = new Thread(IOThreadLoop)
+            if (_ioThread == null)
             {
-                IsBackground = true
-            };
-            _ioThread.Start();
+                _ioThread = new Thread(IOThreadLoop)
+                {
+                    IsBackground = true
+                };
+                _ioThread.Start();
+            }
         }
 
         private void IOThreadLoop()
         {
+            bool portOpen = false;
+            
             try
             {
+                while (_running && !portOpen)
+                {
+                    string port = SearchPorts();
+                    if (port != null)
+                    {
+                        portOpen = ConnectToPort(port);
+                    }
+
+                    if (!portOpen)
+                    {
+                        Thread.Sleep(1000);
+                    }
+                }
+                
                 while (_running)
                 {
-                    string recievedData = null;
-
                     try
                     {
-                        recievedData = _stream.ReadLine();
-                        _dataQueue.Enqueue(recievedData);
-                    }
+                        if (!sendQueue.IsEmpty)
+                        {
+                            sendQueue.TryDequeue(out string dataToSend);
 
-                    //Seems to cause a memory leak, so only enable this when debugging Bluetooth
-                    catch (Exception /*ex*/)
-                    {
-                       Debug.LogWarning("There was an error in reading blutooth data! Apparently printing the error message causes a memory leak, so not doing that."); 
-                        //Debug.LogWarning($"Error reading data: {ex.Message}");
+                            _stream.WriteLine(dataToSend);
+                        }
+                        
+                        string receivedData = _stream.ReadLine();
+                        recvQueue.Enqueue(receivedData);
                     }
-                    
+                    catch// (Exception ex)
+                    {
+                        //Seems to cause a memory leak, so only enable this when debugging Bluetooth
+                        // Debug.LogWarning($"Error reading data: {ex.Message}");
+                    }
 
                 }
             }
@@ -150,7 +191,7 @@ namespace Hammer
 
         private void ParseStream()
         {
-            while (_dataQueue.TryDequeue(out string data))
+            while (recvQueue.TryDequeue(out string data))
             {
                 Debug.Log($"[Main Thread] Received: {data}");
                 string[] parsedData = data.Trim().Split(':');
@@ -180,9 +221,16 @@ namespace Hammer
                 {
                     try
                     {
-                        Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[4]),
+                        //Serial breadboard
+                        /*Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[4]),
                             float.Parse(parsedData[2]),
                             float.Parse(parsedData[3]),
+                            float.Parse(parsedData[1]));*/
+
+                        //Physical hammer w,x,y,z
+                        Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[3]),
+                            float.Parse(parsedData[4]),
+                            float.Parse(parsedData[2]),
                             float.Parse(parsedData[1]));
                         _gameRotationVector = possibleQuaternion;
 
@@ -223,19 +271,33 @@ namespace Hammer
             return _frameAcceleration;
         }
 
+        public void Rumble(int msDuration)
+        {
+            if (msDuration < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(msDuration), "Rumble duration must be non-negative");
+            }
+            
+            Debug.Log("Sending Rumble Request");
+            sendQueue.Enqueue($"RD{msDuration}");
+        }
+
         public void Cleanup()
         {
             _running = false;
             if (_ioThread != null && _ioThread.IsAlive)
             {
+                // _ioThread.Interrupt();
                 _ioThread.Join();
             }
             _ioThread = null;
 
-            _dataQueue.Clear();
+            recvQueue.Clear();
+            sendQueue.Clear();
 
-            //_portOpen = false;
-            _stream.Close();
+            _stream?.Close();
+            _stream = null;
+            
             Debug.Log("Port closed");
         }
     }

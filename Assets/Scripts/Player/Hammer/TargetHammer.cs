@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 namespace Hammer
 {
@@ -13,6 +14,7 @@ namespace Hammer
     */
     public class TargetHammer : MonoBehaviour
     {
+        public static Action OnHammerSwing;
 
         [Header("Spring Settings")]
         [Tooltip("This is the main one you want to change. Just a multiplier")]
@@ -33,16 +35,24 @@ namespace Hammer
         private float extensionVelocity;
         private float momentum = 0;
 
+        public bool canControl { get; set; } = true;
+
         [SerializeField] private Transform pivotTransform;
+
+        [Header("Swing Detection")]
+        [SerializeField] private float swingAccelerationThreshold = 2.5f;
+        [SerializeField] private float swingCooldown = 0.6f;
+
+        private float lastSwingTime = -999f;
+
+        private Rigidbody _rb;
 
         private Quaternion attitude;
         private Vector3 frameAcceleration;
         private Vector3 velocity;
 
-        public Vector3 Velocity
-        {
-            get { return velocity; }
-        }
+        public Vector3 Velocity => velocity;
+        public Vector3 Acceleration => frameAcceleration;
 
         private IController _controllerRef;
 
@@ -85,9 +95,16 @@ namespace Hammer
             transform.position = pivotTransform.position + transform.rotation * Vector3.forward * extension;
         }
 
-        void FixedUpdate()
+        void Update()
         {
-            
+            if (!canControl)
+            {
+                velocity = Vector3.zero;
+                frameAcceleration = Vector3.zero;
+                extensionVelocity = 0;
+                momentum = 0;
+                return;
+            }
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
             frameAcceleration = _controllerRef.GetAcceleration();
@@ -96,8 +113,26 @@ namespace Hammer
 
             UpdateRotation();
             UpdatePosition();
+            CheckForSwing();
         }
 
+        void CheckForSwing()
+        {
+            Vector3 worldForward = transform.rotation * Vector3.forward;
+            float radialAcceleration = Vector3.Dot(frameAcceleration, worldForward);
+
+            if (Mathf.Abs(radialAcceleration) >= swingAccelerationThreshold && Time.time >= lastSwingTime + swingCooldown)
+            {
+                lastSwingTime = Time.time;
+                OnHammerSwing?.Invoke();
+                Debug.Log("Hammer swing detected");
+            }
+        }
+
+        public void Rumble()
+        {
+            _controllerRef.Rumble(5000);
+        }
     }
 
 }
