@@ -34230,7 +34230,7 @@ Rigidbody:
   m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_CenterOfMass: {x: 0, y: 3.8, z: 0.005}
   m_InertiaTensor: {x: 5, y: 0.5, z: 0.5}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
@@ -34239,7 +34239,7 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -34293,15 +34293,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470dec3b8051d194a98d0bcdbfd45145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _horseCC: {fileID: 0}
   head: {fileID: 8479068076154358140}
-  pivotTransform: {fileID: 0}
   _targetHammer: {fileID: 0}
-  useSpring: 0
-  positionSpringStrength: 2000
-  positionDamping: 240
-  rotationSpringStrength: 2000
-  rotationDamping: 240
   useDynamicHitbox: 0
   smallHitboxSize: {x: 1.5, y: 4.5, z: 1.5}
   smallHitboxCenter: {x: 0, y: 3, z: 0.4}

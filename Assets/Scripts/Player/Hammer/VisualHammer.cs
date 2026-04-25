@@ -145,5 +145,17 @@ namespace Hammer
         {
             _targetHammer.Rumble();
         }
+        
+        //visualise center of mass
+        void OnDrawGizmos()
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(transform.TransformPoint(rb.centerOfMass), 0.05f);
+            }
+        }
     }
 }
