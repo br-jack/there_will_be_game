@@ -24,7 +24,6 @@ public class StandardEnemyAI : MonoBehaviour
     private NavMeshAgent agent;
 
     [Header("Movement")]
-    [Range(0f, 300f)][SerializeField] private float maxPlayerDetectionDistance = 70f;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float smoothVelocity = 0.35f;
     [SerializeField] private float rotationSpeed = 8f;
@@ -78,8 +77,6 @@ public class StandardEnemyAI : MonoBehaviour
     private float knockbackTimer;
     private float timeOfNextAttack;
     private float deathTimer;
-
-    private bool _isPlayerDetected;
 
     // Debug throttling
     private float _dbgTimer;
@@ -168,29 +165,16 @@ public class StandardEnemyAI : MonoBehaviour
             return;
         }
 
-        _isPlayerDetected = CheckPlayerInDetectionRange(_playerTransformRef.position, maxPlayerDetectionDistance);
-
-        if (_isPlayerDetected)
+        if (useStrike)
         {
-            if (useStrike)
-            {
-                StrikeUpdate();
-            }
-            else
-            {
-                ClassicAttackUpdate();
-            }
-            
-            UpdateAnim();
+            StrikeUpdate();
         }
-    }
+        else
+        {
+            ClassicAttackUpdate();
+        }
 
-    bool CheckPlayerInDetectionRange(Vector3 playerPosition, float maxDetectionDistance)
-    {
-        float distance = Vector3.Distance(transform.position, playerPosition);
-        
-        return distance <= maxDetectionDistance;
-        // bool playerDetected = Physics.Raycast(transform.position, vectorToPlayer, detectionDistance, layerMask);
+        UpdateAnim();
     }
 
     // Stalk, Strike and Retreat state system
@@ -259,8 +243,6 @@ public class StandardEnemyAI : MonoBehaviour
 
         if (IsDying || IsKnockedBack) return;
         if (_playerTransformRef == null) return;
-
-        if (!_isPlayerDetected) return;
 
         Vector3 toPlayer = _playerTransformRef.position - transform.position;
         toPlayer.y = 0f;
