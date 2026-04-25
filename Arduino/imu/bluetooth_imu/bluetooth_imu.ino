@@ -128,39 +128,9 @@ void setDirection(bool flipDirection) {
   }
 }
 
-void startRumble(RumbleMode mode, int duration) {
-  // fade in from min to max in increments of 5 points:
-  // for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
-    // sets the value (range from 0 to 255):
-    // wait for 30 milliseconds to see the dimming effect
-    // delay(120);
-  // }
-
-  // fade out from max to min in increments of 5 points:
-  // for (int fadeValue = 255; fadeValue >= 0; fadeValue -= 5) {
-    // sets the value (range from 0 to 255):
-    // analogWrite(motor1SPDPin, fadeValue);
-    // wait for 30 milliseconds to see the dimming effect
-    // delay(120);
-  // }
-
-  //NOTE: reusing the same struct instance for performance
-  currentRumble.mode = mode;
+void startRumble(void) {
   currentRumble.startMs = millis();
-  //NOTE: assume duration is unsigned
-  currentRumble.duration = duration;
-
-  if (mode == RumbleMode::RampUp) {
-    currentRumble.startStrength = 0;
-    currentRumble.endStrength = 255;
-  }
-  else {
-    //TODO make these configurable
-    currentRumble.startStrength = 255;
-    currentRumble.endStrength = 255;
-  }
   currentRumble.fadeMs = 0;
-
   currentRumble.currentStrength = currentRumble.startStrength;
 
   setDirection(currentRumble.flipDirection);
@@ -170,29 +140,18 @@ void startRumble(RumbleMode mode, int duration) {
   Serial1.println(F("info:Rumble activated."));
 }
 
-void endRumble(void) {
-  // fade in from min to max in increments of 5 points:
-  // for (int fadeValue = 0; fadeValue <= 255; fadeValue += 5) {
-    // sets the value (range from 0 to 255):
-    // wait for 30 milliseconds to see the dimming effect
-    // delay(120);
-  // }
-
-  // fade out from max to min in increments of 5 points:
-  // for (int fadeValue = 255; fadeValue >= 0; fadeValue -= 5) {
-    // sets the value (range from 0 to 255):
-    // analogWrite(motor1SPDPin, fadeValue);
-    // wait for 30 milliseconds to see the dimming effect
-    // delay(120);
-  // }
-
+void endRumble(void) { 
   //currentRumbleInstance.startMs = 0;
   //currentRumbleInstance.duration = 0;
   currentRumble.mode = RumbleMode::Off;
   //currentRumbleInstance.fadeMs = 0;
-  Serial1.println(F("info:Rumble deactivated."));
+  //currentRumble.currentStrength = 0;
+
+  //setDirection(currentRumble.flipDirection);
 
   analogWrite(motor1_spd_pin, 0);
+
+  Serial1.println(F("info:Rumble deactivated."));
 }
 
 inline void outputSensorValues(void) {
@@ -240,15 +199,15 @@ inline void outputSensorValues(void) {
   }
 }
 
-inline RumbleMode parseRumbleModeByte(byte byte) {
+inline RumbleMode parseRumbleModeByte(char byte) {
   switch(byte) {
-    case (int)'C': {
+    case 'C': {
       return RumbleMode::Constant;
     }
-    case (int)'U': {
+    case 'U': {
       return RumbleMode::RampUp;
     }
-    case (int)'D': {
+    case 'D': {
       return RumbleMode::RampDown;
     }
     //TODO add option for off mode (e.g. to cut vibration off early)
@@ -308,55 +267,54 @@ inline void rumbleStep(void) {
   }
 }
 
-inline void checkRumbleInput(void) {
-  if (Serial1.available() > 3) {
-    constexpr char rumbleChar = 'R';
+inline void parseRumbleInput(void) {
+  constexpr char rumbleChar = 'R';
 
-    const int incomingByte = Serial1.read();
+  const int incomingByte = Serial1.read();
 
-    //rumble string format: "RMa;b;c;d;e\n" where
-    //M is mode
-    //N is direction (must be either 0 or 1, not used in off mode)
-    //a is duration (not used in off mode)
-    //b is start strength (not used in off mode)
-    //c is end strength (not used in constant or off modes)
-    //d is fade rate (not used in constant or off modes)
-    //e is fade interval (usually 30, not used in constant or off modes)
-    //and the ; characters are separators
-    //\n indicates the end of the message.
-    //
-    //NOTE: regardless of which rumble smode is used, the full message is always expected.
-    if (incomingByte == (int)rumbleChar) {
+  //rumble string format: "RMa;b;c;d;e\n" where
+  //M is mode
+  //N is direction (must be either 0 or 1, not used in off mode)
+  //a is duration (not used in off mode)
+  //b is start strength (not used in off mode)
+  //c is end strength (not used in constant or off modes)
+  //d is fade rate (not used in constant or off modes)
+  //e is fade interval (usually 30, not used in constant or off modes)
+  //and the ; characters are separators
+  //\n indicates the end of the message.
+  //
+  //NOTE: regardless of which rumble smode is used, the full message is always expected.
+  if (incomingByte == (int)rumbleChar) {
+    const char modeByte = (char) Serial1.read();
 
-      const int modeByte = Serial1.read();
+    currentRumble.mode = parseRumbleModeByte(modeByte);
 
-      const bool direction = (bool) Serial1.read();
+    currentRumble.flipDirection = (bool) Serial1.read();
 
-      const int duration = Serial1.parseInt();
-      //read separator, should be (';') semicolon character but checking would just waste time
-      Serial1.read();
-      
-      const int startStrength = Serial1.parseInt();
-      Serial1.read();
-      
-      const int endStrength = Serial1.parseInt();
-      Serial1.read();
-      
-      const int fadeRate = Serial1.parseInt();
-      Serial1.read();
-      
-      const int fadeInterval = Serial1.parseInt();
-      
-      //int newline = Serial1.read();
-
-      //Serial1.println(duration);  
-      startRumble(parseRumbleModeByte(modeByte), duration);
-    }
+    currentRumble.duration = Serial1.parseInt();
+    //read separator, should be (';') semicolon character but checking would just waste time
+    Serial1.read();
     
-    while (Serial1.available() > 0) {
-      //discard newline character and any other remaining characters in buffer
-      (void) Serial1.read();
-    }
+    currentRumble.startStrength = Serial1.parseInt();
+    Serial1.read();
+    
+    currentRumble.endStrength = Serial1.parseInt();
+    Serial1.read();
+    
+    currentRumble.fadeRate = Serial1.parseInt();
+    Serial1.read();
+    
+    currentRumble.fadeInterval = Serial1.parseInt();
+    
+    //int newline = Serial1.read();
+
+    //Serial1.println(duration);  
+    startRumble();
+  }
+  
+  while (Serial1.available() > 0) {
+    //discard newline character and any other remaining characters in buffer
+    (void) Serial1.read();
   }
 }
 
@@ -368,7 +326,9 @@ void loop(void) {  // run over and over
 
   outputSensorValues();
 
-  checkRumbleInput();
+  if (Serial1.available() > 10) {
+    parseRumbleInput();
+  }
 
   // if (Serial1.available()) {
   //   Serial.write(Serial1.read());
