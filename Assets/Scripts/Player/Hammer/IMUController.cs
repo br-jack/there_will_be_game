@@ -56,9 +56,11 @@ namespace Hammer
                         {
                             Debug.Log("Trying port " + possiblePort);
                             
-                            SerialPort testSerial = new SerialPort(possiblePort, 115200);
-                            testSerial.DtrEnable = true;
-                            testSerial.ReadTimeout = configSO.timeoutMs * 3;
+                            SerialPort testSerial = new SerialPort(possiblePort, 115200)
+                            {
+                                DtrEnable = true,
+                                ReadTimeout = configSO.readTimeout * 2
+                            };
                             testSerial.Open();
                             
                             //wait to ensure IMU data gets received
@@ -102,16 +104,16 @@ namespace Hammer
             {
                 _stream = new SerialPort(port, 115200)
                 {
-                    ReadTimeout = configSO.timeoutMs
+                    ReadTimeout = configSO.readTimeout,
+                    WriteTimeout = configSO.writeTimeout,
+                    NewLine = "\n",
+                    //needed to connect to arduino
+                    DtrEnable = true,
                 };
 
                 if (_stream != null)
                 {
-                    _stream.NewLine = "\n";
-                    _stream.DtrEnable = true;
                     _stream.Open();
-                    _stream.ReadTimeout = configSO.timeoutMs;
-                    _stream.WriteTimeout = configSO.timeoutMs * 2;
                     if (_stream.IsOpen)
                     {
                         // if youre connected but not getting any data you may have another serial monitor open for this port
@@ -253,7 +255,6 @@ namespace Hammer
 
         public void Update()
         {
-            Debug.Log(configSO.timeoutMs);
             if (!_stream.IsOpen)
             {
                 Debug.LogWarning("Port is not open for reading.");
