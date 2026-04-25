@@ -336,6 +336,27 @@ namespace Hammer
             );
         }
 
+        public void ConstantRumble(int msDuration, int strength)
+        {
+            SendRumbleRequest(RumbleMode.Constant, false, msDuration, strength, strength, 0, 30);
+        }
+
+        public void GradientRumble(int totalDuration, int startStrength, int endStrength, int fadeDuration)
+        {
+            int fadeStepInterval = 30;
+
+            RumbleMode mode = (startStrength <= endStrength) ? RumbleMode.RampUp : RumbleMode.RampDown;
+
+            int strengthDifference = Math.Abs(endStrength - startStrength);
+
+            //TODO integer division here could be better handled, not perfectly accurate
+            int numSteps = fadeDuration / fadeStepInterval;
+            
+            int fadeRate = strengthDifference / numSteps;
+            
+            SendRumbleRequest(RumbleMode.Constant, false, totalDuration, startStrength, endStrength, fadeRate, fadeStepInterval);
+        }
+
         public void Rumble(int msDuration)
         {
             if (msDuration < 0)
