@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7422980362223259771}
   - component: {fileID: 8479068076154358140}
   - component: {fileID: 2927142761733409131}
+  - component: {fileID: 7275895675421595124}
   m_Layer: 12
   m_Name: Head
   m_TagString: Hammer
@@ -68,6 +69,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2.2, z: 2.1}
   m_Center: {x: 0, y: 0.1, z: 0}
+--- !u!114 &7275895675421595124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872883434975298054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2289d23dd62f52479e1042c72e3c1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseKnockbackForce: 12
+  velocityKnockbackMultiplier: 1
 --- !u!1 &1043326702827504670
 GameObject:
   m_ObjectHideFlags: 0
@@ -19571,6 +19586,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2295295791692541697}
   - component: {fileID: 8247058264783374913}
+  - component: {fileID: 2227571812871020001}
   m_Layer: 12
   m_Name: Handle
   m_TagString: Untagged
@@ -19614,6 +19630,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5, y: 3.8, z: 0.5}
   m_Center: {x: 0, y: -0.2, z: 0}
+--- !u!114 &2227571812871020001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5841895958202564331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2289d23dd62f52479e1042c72e3c1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseKnockbackForce: 12
+  velocityKnockbackMultiplier: 0.5
 --- !u!1 &6309594497319092797
 GameObject:
   m_ObjectHideFlags: 0
@@ -34207,9 +34237,6 @@ PrefabInstance:
       addedObject: {fileID: 2513604373345257833}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2114495943177407429}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 6360334775068351510}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf701568beb54346b28a2f4ed0a9fc6, type: 3}
       insertIndex: -1
@@ -34347,20 +34374,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &2114495943177407429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2427141499873356891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2289d23dd62f52479e1042c72e3c1b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseKnockbackForce: 12
-  velocityKnockbackMultiplier: 1
 --- !u!114 &6360334775068351510
 MonoBehaviour:
   m_ObjectHideFlags: 0
