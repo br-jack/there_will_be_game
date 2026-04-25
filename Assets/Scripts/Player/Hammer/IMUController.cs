@@ -359,7 +359,7 @@ namespace Hammer
             
             int fadeRate = strengthDifference / numSteps;
             
-            SendRumbleRequest(RumbleMode.Constant, false, totalDuration, startStrength, endStrength, fadeRate, configSO.rumbleFadeInterval);
+            SendRumbleRequest(mode, false, totalDuration, startStrength, endStrength, fadeRate, configSO.rumbleFadeInterval);
         }
 
         public void Rumble(int msDuration)
