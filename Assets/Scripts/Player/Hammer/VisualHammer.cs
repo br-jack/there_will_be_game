@@ -27,23 +27,6 @@ namespace Hammer
 
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
-        
-        /*
-         [Header("Spring Settings")] 
-        [SerializeField] private bool useSpring = true;
-        [SerializeField] private float positionSpringStrength = 2000f;
-        [SerializeField] private float positionDamping = 240f;
-        [SerializeField] private float rotationSpringStrength = 2000f;
-        [SerializeField] private float rotationDamping = 240f;
-        */
-
-        /*
-        [Header("Collision Distance Settings")]
-        [Tooltip("Beyond this distance, collisions are disabled so the hammer can snap back freely")]
-        [SerializeField] private float collisionDisableDistance = 2.5f;
-        [Tooltip("Must get this close to re-enable collisions")]
-        [SerializeField] private float collisionReenableDistance = 0.3f;
-        */
 
         [Header("Dynamic Hitbox")]
         [SerializeField] private bool useDynamicHitbox = true;
@@ -141,7 +124,7 @@ namespace Hammer
 
         public void OnCollisionEnter(Collision collision)
         {
-            _targetHammer.Rumble();
+            //_targetHammer.Rumble();
         }
     }
 }
