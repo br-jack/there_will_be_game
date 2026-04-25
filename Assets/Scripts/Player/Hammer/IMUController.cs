@@ -50,7 +50,7 @@ namespace Hammer
 
                         foreach (string possiblePort in availablePorts)
                         {
-                            Debug.Log("Trying port " + possiblePort);
+                            // Debug.Log("Trying port " + possiblePort);
                             
                             SerialPort testSerial = new SerialPort(possiblePort, 115200);
                             testSerial.DtrEnable = true;

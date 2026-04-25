@@ -116,7 +116,7 @@ namespace Hammer
         void FixedUpdate()
         {
             
-            Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");
+            // Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");
             if (useDynamicHitbox)
             {
                 if (head.forwardSpeed < mediumHitboxThreshold)
@@ -144,18 +144,6 @@ namespace Hammer
         public void OnCollisionEnter(Collision collision)
         {
             _targetHammer.Rumble();
-        }
-        
-        //visualise center of mass
-        void OnDrawGizmos()
-        {
-            Rigidbody rb = GetComponent<Rigidbody>();
-
-            if (rb != null)
-            {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(transform.TransformPoint(rb.centerOfMass), 0.05f);
-            }
         }
     }
 }
