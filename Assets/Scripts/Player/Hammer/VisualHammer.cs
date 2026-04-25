@@ -59,60 +59,6 @@ namespace Hammer
             Debug.Assert(_hitbox != null);
         }
 
-        /*private void MoveToTargetPosition()
-        {
-            if (!useSpring)
-            {
-                transform.position = _targetHammer.transform.position;
-                return;
-            }
-            Vector3 toTarget = _targetHammer.transform.position - transform.position;
-            float distance = toTarget.magnitude;
-
-            Vector3 springForce = toTarget * positionSpringStrength;
-
-            //// horses are much faster than hammers
-            // Vector3 dampingForce = -(_rb.linearVelocity - _horseCC.velocity) * positionDamping;
-            Vector3 dampingForce = -_rb.linearVelocity * positionDamping;
-
-            //_rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
-
-            //if (_collisionsEnabled && distance > collisionDisableDistance)
-            //{
-            //    _collisionsEnabled = false;
-            //    if (_hitbox != null) _hitbox.enabled = false;
-            //}
-            //else if (!_collisionsEnabled && distance < collisionReenableDistance)
-            //{
-            //    _collisionsEnabled = true;
-            //    if (_hitbox != null) _hitbox.enabled = true;
-            //}
-            
-            _rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
-        }
-
-        private void MoveToTargetRotation()
-        {
-            if (!useSpring)
-            {
-                transform.rotation = _targetHammer.transform.rotation;
-                return;
-            }
-            Quaternion rotationDiff = _targetHammer.transform.rotation * Quaternion.Inverse(transform.rotation);
-            rotationDiff.normalized.ToAngleAxis(out float angle, out Vector3 rotationAxis);
-
-            //map range from [0, 360] to [-180, 180]
-            if (angle > 180f) angle -= 360f;
-
-            //prevent infinity vectors
-            if (rotationAxis.sqrMagnitude > 0.001f)
-            {
-                Vector3 springTorque = rotationAxis.normalized * ((angle * Mathf.Deg2Rad) * rotationSpringStrength);
-                Vector3 dampingTorque = -_rb.angularVelocity * rotationDamping;
-                _rb.AddTorque(springTorque + dampingTorque, ForceMode.Acceleration);
-            }
-        }*/
-
         void FixedUpdate()
         {
             
