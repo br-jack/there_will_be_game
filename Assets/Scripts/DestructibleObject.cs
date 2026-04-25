@@ -5,7 +5,7 @@ public class DestructibleObject : MonoBehaviour
 {
     public GameObject fragmentsPrefab;
     public float breakForceThreshold = 15f;
-    public float explosionForce = 300f;
+    public float baseExplosionForce = 0.01f;
     public float explosionRadius = 3f;
     private bool broken = false;
     private MeshRenderer myRenderer;
@@ -40,13 +40,14 @@ public class DestructibleObject : MonoBehaviour
         if (broken) return;
         if (!collision.gameObject.CompareTag("Hammer")) return;
 
-        float impactSpeed = collision.relativeVelocity.magnitude;
+        float impactSpeed = collision.impulse.magnitude / Time.fixedDeltaTime;
+        // Debug.Log(impactSpeed);
         if (impactSpeed < breakForceThreshold) return;
 
-        Break(collision.contacts[0].point);
+        Break(collision.contacts[0].point, baseExplosionForce * impactSpeed);
     }
 
-    void Break(Vector3 impactPoint)
+    void Break(Vector3 impactPoint, float explosionForce)
     {
         broken = true;
 

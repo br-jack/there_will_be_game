@@ -142,8 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fragmentsPrefab: {fileID: 6065925278350735727, guid: ea205e6035a695c41aae434e97385a41, type: 3}
-  breakForceThreshold: 15
-  explosionForce: 300
+  breakForceThreshold: 100000
+  baseExplosionForce: 0.01
   explosionRadius: 3
   soundVolume: 1
   destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
