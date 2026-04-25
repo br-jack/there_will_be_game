@@ -10,35 +10,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -28.51923
+      value: -44.277103
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.0106583
+      value: -4.8830132
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -243.34229
+      value: -256.16455
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.46268958
+      value: 0.84818095
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.0016938107
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8865204
+      value: 0.5297037
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.00061849976
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 0.127
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 0.163
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -97,7 +97,10 @@ PrefabInstance:
       addedObject: {fileID: 262541804830109088}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6097124353962633183}
+      addedObject: {fileID: 8023206304706416020}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5831655663605976723}
   m_SourcePrefab: {fileID: 100100000, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
 --- !u!1 &2449828112311059827 stripped
 GameObject:
@@ -126,7 +129,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2276514432354002429, guid: d53b8b3c214722f499cca0a01b539718, type: 3}
---- !u!114 &6097124353962633183
+--- !u!114 &8023206304706416020
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,4 +146,24 @@ MonoBehaviour:
   explosionForce: 300
   explosionRadius: 3
   soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
+  destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
+--- !u!114 &5831655663605976723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2449828112311059827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
