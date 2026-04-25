@@ -37,7 +37,6 @@ namespace Hammer
 
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
                 {
-
                     try
                     {
                         string[] availablePorts = SerialPort.GetPortNames();

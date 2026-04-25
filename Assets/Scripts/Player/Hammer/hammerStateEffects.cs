@@ -63,14 +63,12 @@ public class hammerStateEffects : MonoBehaviour
                 + _hammerMaterials[headMaterialIndex].name);
         }
 
-
         _hammerMaterials[headMaterialIndex] = new Material(_hammerMaterials[headMaterialIndex]);
     }
 
     // Update is called once per frame
     void Update()
     {
-
         switch (hammerChargeState)
         {
 

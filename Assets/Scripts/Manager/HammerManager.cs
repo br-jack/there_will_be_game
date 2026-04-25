@@ -3,6 +3,8 @@ using UnityEngine;
 public class HammerManager : MonoBehaviour
 {
     public static HammerManager Instance { get; private set; }
+
+    public static bool awesome {get; set;}
     
     public Hammer.IController hammerController;
     

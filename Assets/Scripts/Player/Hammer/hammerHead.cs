@@ -14,7 +14,7 @@ public class hammerHead : MonoBehaviour
 
     InputAction temporarySlamActivate;
 
-    private Collider _temporaryColliderDebug; //CHANGE THIS!
+    private Collider _temporaryColliderDebug; // TODO CHANGE THIS!
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -42,13 +42,6 @@ public class hammerHead : MonoBehaviour
             slam.Invoke();
             Debug.Log("boom!");
         }
-
-        
-    }
-
-    private void killEnemyOnHit()
-    {
-        
     }
 
     private void killAllInRadius()

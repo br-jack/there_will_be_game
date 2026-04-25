@@ -3,7 +3,6 @@ using System.ComponentModel;
 using UnityEngine;
 
 //this script and hammerStateEffects should likely be one script, they do the same thing. 
-
 public class hammerParticleSystemBehaviour : MonoBehaviour
 {
     public hammerHead head;
@@ -19,25 +18,18 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
     public ParticleSystemRenderer ghostsRenderer;
 
     private uint framesUntilTrailsDisabled;
-
     private uint framesUntilGhostsDisabled;
-
-
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         trailsSystem.Play();
         ghostsSystem.Play();
-
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
         //enable a trail behind the hammer if headSpeedForwards is above the threshold, with a buffer
         var trails = trailsSystem.trails;
         if (head.forwardSpeed > trailSpeedThreshold)
@@ -48,7 +40,7 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
         else if (framesUntilTrailsDisabled == 0) trails.enabled = false;
         else framesUntilTrailsDisabled--;
 
-        //spawn 'ghost' hammers behind the hammer if headSpeedForwards is above the threshold 
+        //spawn 'ghost' hammers behind the hammer if headSpeedForwards is above the threshold TODO and awesome is on
         var ghostEmission = ghostsSystem.emission;
         if (head.forwardSpeed > ghostSpeedThreshold)
         {
