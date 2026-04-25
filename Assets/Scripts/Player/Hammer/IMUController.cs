@@ -17,8 +17,8 @@ namespace Hammer
         private volatile bool _running;
         private readonly ConcurrentQueue<string> sendQueue = new ConcurrentQueue<string>();
         private readonly ConcurrentQueue<string> recvQueue = new ConcurrentQueue<string>();
-
-        private const int TimeoutMs = 50;
+        
+        private IMUConfig configSO;
         
         private string SearchPorts()
         {
@@ -53,7 +53,7 @@ namespace Hammer
                             
                             SerialPort testSerial = new SerialPort(possiblePort, 115200);
                             testSerial.DtrEnable = true;
-                            testSerial.ReadTimeout = TimeoutMs * 3;
+                            testSerial.ReadTimeout = configSO.timeoutMs * 3;
                             testSerial.Open();
                             
                             //wait to ensure IMU data gets received
@@ -97,7 +97,7 @@ namespace Hammer
             {
                 _stream = new SerialPort(port, 115200)
                 {
-                    ReadTimeout = TimeoutMs
+                    ReadTimeout = configSO.timeoutMs
                 };
 
                 if (_stream != null)
@@ -105,8 +105,8 @@ namespace Hammer
                     _stream.NewLine = "\n";
                     _stream.DtrEnable = true;
                     _stream.Open();
-                    _stream.ReadTimeout = TimeoutMs;
-                    _stream.WriteTimeout = TimeoutMs * 2;
+                    _stream.ReadTimeout = configSO.timeoutMs;
+                    _stream.WriteTimeout = configSO.timeoutMs * 2;
                     if (_stream.IsOpen)
                     {
                         // if youre connected but not getting any data you may have another serial monitor open for this port
@@ -343,18 +343,16 @@ namespace Hammer
 
         public void GradientRumble(int totalDuration, int startStrength, int endStrength, int fadeDuration)
         {
-            int fadeStepInterval = 30;
-
             RumbleMode mode = (startStrength <= endStrength) ? RumbleMode.RampUp : RumbleMode.RampDown;
 
             int strengthDifference = Math.Abs(endStrength - startStrength);
 
             //TODO integer division here could be better handled, not perfectly accurate
-            int numSteps = fadeDuration / fadeStepInterval;
+            int numSteps = fadeDuration / configSO.rumbleFadeInterval;
             
             int fadeRate = strengthDifference / numSteps;
             
-            SendRumbleRequest(RumbleMode.Constant, false, totalDuration, startStrength, endStrength, fadeRate, fadeStepInterval);
+            SendRumbleRequest(RumbleMode.Constant, false, totalDuration, startStrength, endStrength, fadeRate, configSO.rumbleFadeInterval);
         }
 
         public void Rumble(int msDuration)
