@@ -263,50 +263,31 @@ inline void rumbleStep(void) {
       endRumble();
     }
     else {
-      switch(currentRumble.mode) {
-        case RumbleMode::RampUp: {
-          //also handle millis wrap around
-          if (currentRumble.fadeMs == 0 || currentMs < currentRumble.fadeMs) {
-            currentRumble.fadeMs = currentMs;
-          }
-          else if ((currentMs - currentRumble.fadeMs) >= rumble_fade_interval) {
-            currentRumble.fadeMs = currentMs;
-            if (currentRumble.currentStrength < currentRumble.endStrength) {
-              currentRumble.currentStrength += rumble_fade_rate;
-
-              //structured this way to prevent repeated writes after reaching endStrength
-              if (currentRumble.currentStrength > currentRumble.endStrength) {
-                currentRumble.currentStrength = currentRumble.endStrength;
-              }
-
-              analogWrite(motor1_spd_pin, currentRumble.currentStrength);
-            }
-          }
-
-          break;
+      if (currentRumble.mode == RumbleMode::RampUp || currentRumble.mode == RampDown) {
+        //also handle millis wrap around
+        if (currentRumble.fadeMs == 0 || currentMs < currentRumble.fadeMs) {
+          currentRumble.fadeMs = currentMs;
         }
+        else if ((currentMs - currentRumble.fadeMs) >= rumble_fade_interval) {
+          currentRumble.fadeMs = currentMs;
 
-        //TODO reuse code that is similar to rampup in function
-        case RumbleMode::RampDown: {
-          //also handle millis wrap around
-          if (currentRumble.fadeMs == 0 || currentMs < currentRumble.fadeMs) {
-            currentRumble.fadeMs = currentMs;
-          }
-          else if ((currentMs - currentRumble.fadeMs) >= rumble_fade_interval) {
-            currentRumble.fadeMs = currentMs;
-            if (currentRumble.currentStrength > currentRumble.endStrength) {
+          if (currentRumble.currentStrength != currentRumble.endStrength) {
+            if (currentRumble.mode == RumbleMode.RampUp) {
               currentRumble.currentStrength += rumble_fade_rate;
-
-              //structured this way to prevent repeated writes after reaching endStrength
-              if (currentRumble.currentStrength < currentRumble.endStrength) {
-                currentRumble.currentStrength = currentRumble.endStrength;
-              }
-
-              analogWrite(motor1_spd_pin, currentRumble.currentStrength);
             }
-          }
+            else {
+              currentRumble.currentStrength -= rumble_fade_rate;
+            }
 
-          break;
+            //structured this way to prevent repeated writes after reaching endStrength
+            if (
+              (currentRumble.mode == RumbleMode::RampUp && currentRumble.currentStrength > currentRumble.endStrength)
+              || (currentRumble.mode == RumbleMode::RampDown && currentRumble.currentStrength < currentRumble.endStrength)) {
+              currentRumble.currentStrength = currentRumble.endStrength;
+            }
+
+            analogWrite(motor1_spd_pin, currentRumble.currentStrength);
+          }
         }
       }
     }
