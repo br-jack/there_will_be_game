@@ -13,10 +13,10 @@
 #define BNO08X_RESET -1
 #define FAST_MODE
 
-constexpr int motor1_spd_pin = A0;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 28
-constexpr int motor1_dir_pin = A1;  // Motor 1 Direction pin of dual motor driver connected to digital pin 29
-constexpr int motor2_spd_pin = A2;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 27
-constexpr int motor2_dir_pin = A3;  // Motor 2 Direction pin of dual motor driver connected to digital pin 26
+constexpr int motor1_spd_pin = A0;  // Motor 1 Speed PWM pin of dual motor driver connected to digital pin 26
+constexpr int motor1_dir_pin = A1;  // Motor 1 Direction pin of dual motor driver connected to digital pin 27
+constexpr int motor2_spd_pin = A2;  // Motor 2 Speed PWM pin of dual motor driver connected to digital pin 28
+constexpr int motor2_dir_pin = A3;  // Motor 2 Direction pin of dual motor driver connected to digital pin 29
 
 enum class RumbleMode {
   Off,
