@@ -27,16 +27,25 @@ enum class RumbleMode {
 
 struct RumbleInstance {
   unsigned long startMs;
-  unsigned long duration;
-  int strength = 255;
   int fadeMs;
+  unsigned long duration;
+  
+  int fadeInterval = 30;
+  int fadeRate = 15;
+  
+  int startStrength = 255;
+  //not used with constant fade mode
+  int endStrength = 255;
+
+  int currentStrength = 255;
+  
   RumbleMode mode { RumbleMode::Off };
 };
 
 constexpr int rumble_fade_interval = 30;
 constexpr int rumble_fade_rate = 15;
 
-RumbleInstance currentRumbleInstance;
+RumbleInstance currentRumble;
 
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
@@ -129,20 +138,27 @@ void startRumble(RumbleMode mode, int duration) {
   // }
 
   //NOTE: reusing the same struct instance for performance
-  currentRumbleInstance.mode = mode;
-  currentRumbleInstance.startMs = millis();
+  currentRumble.mode = mode;
+  currentRumble.startMs = millis();
   //NOTE: assume duration is unsigned
-  currentRumbleInstance.duration = duration;
+  currentRumble.duration = duration;
+
   if (mode == RumbleMode::RampUp) {
-    currentRumbleInstance.strength = 0;
+    currentRumble.startStrength = 0;
+    currentRumble.endStrength = 255;
   }
   else {
-    currentRumbleInstance.strength = 255;
+    //TODO make these configurable
+    currentRumble.startStrength = 255;
+    currentRumble.endStrength = 255;
   }
-  currentRumbleInstance.fadeMs = 0;
-  Serial1.println(F("info:Rumble activated."));
+  currentRumble.fadeMs = 0;
 
-  analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
+  currentRumble.currentStrength = currentRumble.startStrength;
+
+  analogWrite(motor1_spd_pin, currentRumble.currentStrength);
+
+  Serial1.println(F("info:Rumble activated."));
 }
 
 void endRumble(void) {
@@ -163,7 +179,7 @@ void endRumble(void) {
 
   //currentRumbleInstance.startMs = 0;
   //currentRumbleInstance.duration = 0;
-  currentRumbleInstance.mode = RumbleMode::Off;
+  currentRumble.mode = RumbleMode::Off;
   //currentRumbleInstance.fadeMs = 0;
   Serial1.println(F("info:Rumble deactivated."));
 
@@ -235,45 +251,58 @@ inline RumbleMode parseRumbleModeByte(byte byte) {
 }
 
 inline void rumbleStep(void) {
-  if (currentRumbleInstance.mode != RumbleMode::Off) {
+  if (currentRumble.mode != RumbleMode::Off) {
     const unsigned long currentMs = millis();
 
     //handle millis wrap around (unlikely to occur)
-    if (currentMs < currentRumbleInstance.startMs) {
-      currentRumbleInstance.startMs = 0;
+    if (currentMs < currentRumble.startMs) {
+      currentRumble.startMs = 0;
     }
 
-    if ((currentMs - currentRumbleInstance.startMs) >= currentRumbleInstance.duration) {
+    if ((currentMs - currentRumble.startMs) >= currentRumble.duration) {
       endRumble();
     }
     else {
-      switch(currentRumbleInstance.mode) {
+      switch(currentRumble.mode) {
         case RumbleMode::RampUp: {
           //also handle millis wrap around
-          if (currentRumbleInstance.fadeMs == 0 || currentMs < currentRumbleInstance.fadeMs) {
-            currentRumbleInstance.fadeMs = currentMs;
+          if (currentRumble.fadeMs == 0 || currentMs < currentRumble.fadeMs) {
+            currentRumble.fadeMs = currentMs;
           }
-          else if ((currentMs - currentRumbleInstance.fadeMs) >= rumble_fade_interval) {
-            currentRumbleInstance.fadeMs = currentMs;
-            if (currentRumbleInstance.strength < 255) {
-              currentRumbleInstance.strength += rumble_fade_rate;
-              analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
+          else if ((currentMs - currentRumble.fadeMs) >= rumble_fade_interval) {
+            currentRumble.fadeMs = currentMs;
+            if (currentRumble.currentStrength < currentRumble.endStrength) {
+              currentRumble.currentStrength += rumble_fade_rate;
+
+              //structured this way to prevent repeated writes after reaching endStrength
+              if (currentRumble.currentStrength > currentRumble.endStrength) {
+                currentRumble.currentStrength = currentRumble.endStrength;
+              }
+
+              analogWrite(motor1_spd_pin, currentRumble.currentStrength);
             }
           }
 
           break;
         }
 
+        //TODO reuse code that is similar to rampup in function
         case RumbleMode::RampDown: {
           //also handle millis wrap around
-          if (currentRumbleInstance.fadeMs == 0 || currentMs < currentRumbleInstance.fadeMs) {
-            currentRumbleInstance.fadeMs = currentMs;
+          if (currentRumble.fadeMs == 0 || currentMs < currentRumble.fadeMs) {
+            currentRumble.fadeMs = currentMs;
           }
-          else if ((currentMs - currentRumbleInstance.fadeMs) >= rumble_fade_interval) {
-            currentRumbleInstance.fadeMs = currentMs;
-            if (currentRumbleInstance.strength > 0) {
-              currentRumbleInstance.strength -= rumble_fade_rate;
-              analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
+          else if ((currentMs - currentRumble.fadeMs) >= rumble_fade_interval) {
+            currentRumble.fadeMs = currentMs;
+            if (currentRumble.currentStrength > currentRumble.endStrength) {
+              currentRumble.currentStrength += rumble_fade_rate;
+
+              //structured this way to prevent repeated writes after reaching endStrength
+              if (currentRumble.currentStrength < currentRumble.endStrength) {
+                currentRumble.currentStrength = currentRumble.endStrength;
+              }
+
+              analogWrite(motor1_spd_pin, currentRumble.currentStrength);
             }
           }
 
