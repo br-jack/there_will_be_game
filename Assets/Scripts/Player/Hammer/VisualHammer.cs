@@ -11,21 +11,23 @@ namespace Hammer
      */
     public class VisualHammer : MonoBehaviour
     {
-        [SerializeField] private CharacterController _horseCC;
+        // [SerializeField] private CharacterController _horseCC;
         public hammerHead head;
         
-        [SerializeField] private Transform pivotTransform;
+        // [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
         
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
         
-        [Header("Spring Settings")] 
+        /*
+         [Header("Spring Settings")] 
         [SerializeField] private bool useSpring = true;
         [SerializeField] private float positionSpringStrength = 2000f;
         [SerializeField] private float positionDamping = 240f;
         [SerializeField] private float rotationSpringStrength = 2000f;
         [SerializeField] private float rotationDamping = 240f;
+        */
 
         /*
         [Header("Collision Distance Settings")]
@@ -57,7 +59,7 @@ namespace Hammer
             Debug.Assert(_hitbox != null);
         }
 
-        private void MoveToTargetPosition()
+        /*private void MoveToTargetPosition()
         {
             if (!useSpring)
             {
@@ -109,7 +111,7 @@ namespace Hammer
                 Vector3 dampingTorque = -_rb.angularVelocity * rotationDamping;
                 _rb.AddTorque(springTorque + dampingTorque, ForceMode.Acceleration);
             }
-        }
+        }*/
 
         void FixedUpdate()
         {
