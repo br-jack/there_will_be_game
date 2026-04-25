@@ -19,6 +19,11 @@ namespace Hammer
         private readonly ConcurrentQueue<string> recvQueue = new ConcurrentQueue<string>();
         
         private IMUConfig configSO;
+
+        public IMUController(IMUConfig config)
+        {
+            configSO = config;
+        }
         
         private string SearchPorts()
         {
@@ -248,6 +253,7 @@ namespace Hammer
 
         public void Update()
         {
+            Debug.Log(configSO.timeoutMs);
             if (!_stream.IsOpen)
             {
                 Debug.LogWarning("Port is not open for reading.");
