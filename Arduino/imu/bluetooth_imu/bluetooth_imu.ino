@@ -201,6 +201,9 @@ inline void outputSensorValues(void) {
 
 inline RumbleMode parseRumbleModeByte(char byte) {
   switch(byte) {
+    case 'O': {
+      return RumbleMode::Off;
+    }
     case 'C': {
       return RumbleMode::Constant;
     }
@@ -309,7 +312,12 @@ inline void parseRumbleInput(void) {
     //int newline = Serial1.read();
 
     //Serial1.println(duration);  
-    startRumble();
+    if (currentRumble.mode != RumbleMode::Off) {
+      startRumble();
+    }
+    else {
+      endRumble();
+    }
   }
   
   while (Serial1.available() > 0) {
