@@ -34,6 +34,7 @@ struct RumbleInstance {
 };
 
 constexpr int rumble_fade_interval = 30;
+constexpr int rumble_fade_rate = 15;
 
 RumbleInstance currentRumbleInstance;
 
@@ -255,7 +256,7 @@ inline void rumbleStep(void) {
           else if ((currentMs - currentRumbleInstance.fadeMs) >= rumble_fade_interval) {
             currentRumbleInstance.fadeMs = currentMs;
             if (currentRumbleInstance.strength < 255) {
-              currentRumbleInstance.strength++;
+              currentRumbleInstance.strength += rumble_fade_rate;
               analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
             }
           }
@@ -271,7 +272,7 @@ inline void rumbleStep(void) {
           else if ((currentMs - currentRumbleInstance.fadeMs) >= rumble_fade_interval) {
             currentRumbleInstance.fadeMs = currentMs;
             if (currentRumbleInstance.strength > 0) {
-              currentRumbleInstance.strength -= 5;
+              currentRumbleInstance.strength -= rumble_fade_rate;
               analogWrite(motor1_spd_pin, currentRumbleInstance.strength);
             }
           }
