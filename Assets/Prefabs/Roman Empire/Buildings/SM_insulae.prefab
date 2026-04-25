@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7543433060901621016}
   - component: {fileID: 2531640171077346035}
   - component: {fileID: 2113814437914614775}
+  - component: {fileID: 7703837468108700859}
+  - component: {fileID: 2681927241461701612}
   m_Layer: 0
   m_Name: SM_insulae
   m_TagString: Untagged
@@ -111,4 +113,42 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: e23748e55f953834da969fcca5aa9dcf, type: 3}
+  m_Mesh: {fileID: 8197054578433957194, guid: e23748e55f953834da969fcca5aa9dcf, type: 3}
+--- !u!114 &7703837468108700859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8283438856071573507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c44210ef0ee1a994998d34a58965ce86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fragmentsPrefab: {fileID: 3364002680614001222, guid: ef99219eedf106d4eac698610a15b3f4, type: 3}
+  breakForceThreshold: 15
+  explosionForce: 300
+  explosionRadius: 3
+  soundVolume: 1
+  destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
+--- !u!114 &2681927241461701612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8283438856071573507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff

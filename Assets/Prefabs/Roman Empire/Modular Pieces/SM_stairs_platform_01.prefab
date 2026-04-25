@@ -61,6 +61,10 @@ PrefabInstance:
       value: SM_stairs_platform_01
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c47bff2b35a5dcf4e9b1052dd7358ba8, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c47bff2b35a5dcf4e9b1052dd7358ba8, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -71,6 +75,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c47bff2b35a5dcf4e9b1052dd7358ba8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5462339333011526400}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c47bff2b35a5dcf4e9b1052dd7358ba8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5872326235146207208}
   m_SourcePrefab: {fileID: 100100000, guid: c47bff2b35a5dcf4e9b1052dd7358ba8, type: 3}
 --- !u!1 &4389808663692922014 stripped
 GameObject:
@@ -99,3 +106,23 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1367594647982954965, guid: c47bff2b35a5dcf4e9b1052dd7358ba8, type: 3}
+--- !u!114 &5872326235146207208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389808663692922014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 3
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
