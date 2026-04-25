@@ -370,7 +370,7 @@ namespace Hammer
             }
             
             Debug.Log("Sending Rumble Request");
-            sendQueue.Enqueue($"RD{msDuration}");
+            ConstantRumble(msDuration, 255);
         }
     }
 }
