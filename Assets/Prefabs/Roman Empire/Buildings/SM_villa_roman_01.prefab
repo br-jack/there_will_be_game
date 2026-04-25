@@ -61,43 +61,43 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: b03c6e7faa9a9004e858bc1da089d665, type: 2}
     - target: {fileID: -7511558181221131132, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: d1cb9a473c108804daa4379ad54aa1aa, type: 2}
     - target: {fileID: -7511558181221131132, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
-      propertyPath: m_Materials.Array.data[2]
+      propertyPath: 'm_Materials.Array.data[2]'
       value: 
       objectReference: {fileID: 2100000, guid: e420ed67355b37f46aecc278f27e34dc, type: 2}
     - target: {fileID: -7511558181221131132, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
-      propertyPath: m_Materials.Array.data[3]
+      propertyPath: 'm_Materials.Array.data[3]'
       value: 
       objectReference: {fileID: 2100000, guid: f54ef9f0a37974a48be0ce4828230666, type: 2}
     - target: {fileID: -7511558181221131132, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
-      propertyPath: m_Materials.Array.data[4]
+      propertyPath: 'm_Materials.Array.data[4]'
       value: 
       objectReference: {fileID: 2100000, guid: 25352b62f1a286b4086e961daea963c3, type: 2}
     - target: {fileID: -7511558181221131132, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
-      propertyPath: m_Materials.Array.data[5]
+      propertyPath: 'm_Materials.Array.data[5]'
       value: 
       objectReference: {fileID: 2100000, guid: 66db976ec3e70334ca96c2ee9fc811fb, type: 2}
     - target: {fileID: -7511558181221131132, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
-      propertyPath: m_Materials.Array.data[6]
+      propertyPath: 'm_Materials.Array.data[6]'
       value: 
       objectReference: {fileID: 2100000, guid: ceb307f9ad6c8114e9aeb3ec00661b2b, type: 2}
     - target: {fileID: -7511558181221131132, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
-      propertyPath: m_Materials.Array.data[7]
+      propertyPath: 'm_Materials.Array.data[7]'
       value: 
       objectReference: {fileID: 2100000, guid: 66db976ec3e70334ca96c2ee9fc811fb, type: 2}
     - target: {fileID: -7511558181221131132, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
-      propertyPath: m_Materials.Array.data[8]
+      propertyPath: 'm_Materials.Array.data[8]'
       value: 
       objectReference: {fileID: 2100000, guid: ceb307f9ad6c8114e9aeb3ec00661b2b, type: 2}
     - target: {fileID: -7511558181221131132, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
-      propertyPath: m_Materials.Array.data[9]
+      propertyPath: 'm_Materials.Array.data[9]'
       value: 
       objectReference: {fileID: 2100000, guid: a8dfb5a71fbe23c4b9e95e0e3b8bd154, type: 2}
     - target: {fileID: 919132149155446097, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
@@ -113,7 +113,7 @@ PrefabInstance:
       addedObject: {fileID: 8986256816633268951}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7992193300568502258}
+      addedObject: {fileID: 2859856840704194164}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6378168495168806725}
@@ -145,7 +145,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -7572452796284243316, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
---- !u!114 &7992193300568502258
+--- !u!114 &2859856840704194164
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,11 +158,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fragmentsPrefab: {fileID: 593026225183117321, guid: 49384b8708395aa4db6bd225bd82ca3f, type: 3}
-  breakForceThreshold: 10
+  breakForceThreshold: 15
   explosionForce: 300
   explosionRadius: 3
   soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
+  destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
 --- !u!114 &6378168495168806725
 MonoBehaviour:
   m_ObjectHideFlags: 0

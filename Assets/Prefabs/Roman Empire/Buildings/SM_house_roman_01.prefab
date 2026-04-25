@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6721303039992978714}
   - component: {fileID: 5970310691275283340}
   - component: {fileID: 8894449647028214958}
-  - component: {fileID: 6866721436626711489}
+  - component: {fileID: 6509613180008080467}
   - component: {fileID: 1818915871217976422}
   m_Layer: 0
   m_Name: SM_house_roman_01
@@ -113,7 +113,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 6283066391128374908, guid: b0100b23785e4674a844742a59e18ead, type: 3}
---- !u!114 &6866721436626711489
+--- !u!114 &6509613180008080467
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,7 +130,7 @@ MonoBehaviour:
   explosionForce: 300
   explosionRadius: 3
   soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
+  destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
 --- !u!114 &1818915871217976422
 MonoBehaviour:
   m_ObjectHideFlags: 0
