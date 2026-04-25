@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO.Ports;
-using System.Linq;
 using System.Threading;
 using UnityEngine;
 
@@ -270,18 +269,7 @@ namespace Hammer
         {
             return _frameAcceleration;
         }
-
-        public void Rumble(int msDuration)
-        {
-            if (msDuration < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(msDuration), "Rumble duration must be non-negative");
-            }
-            
-            Debug.Log("Sending Rumble Request");
-            sendQueue.Enqueue($"RD{msDuration}");
-        }
-
+        
         public void Cleanup()
         {
             _running = false;
@@ -299,6 +287,64 @@ namespace Hammer
             _stream = null;
             
             Debug.Log("Port closed");
+        }
+
+        private enum RumbleMode
+        {
+            Off,
+            Constant,
+            RampUp,
+            RampDown,
+        }
+
+        private char GetRumbleModeByte(RumbleMode mode)
+        {
+            switch (mode)
+            {
+                case RumbleMode.Off:
+                    return 'O';
+                case RumbleMode.Constant:
+                    return 'C';
+                case RumbleMode.RampUp:
+                    return 'U';
+                case RumbleMode.RampDown:
+                    return 'D';
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), mode, "Rumble mode not handled!");
+            }
+        }
+
+        private void SendRumbleRequest(
+            RumbleMode mode,
+            bool flipMotorDirection,
+            int msDuration,
+            int startStrength,
+            int endStrength,
+            int fadeRate,
+            int fadeInterval
+        )
+        {
+            Debug.Assert(msDuration > 0);
+            Debug.Assert(startStrength > 0);
+            Debug.Assert(endStrength > 0);
+            Debug.Assert(fadeRate > 0);
+            Debug.Assert(fadeInterval > 0);
+            
+            Debug.Log("Sending Rumble Request");
+            sendQueue.Enqueue(
+                $"R{GetRumbleModeByte(mode)}{Convert.ToInt32(flipMotorDirection)}{msDuration};{startStrength};{endStrength};{fadeRate};{fadeInterval}"
+            );
+        }
+
+        public void Rumble(int msDuration)
+        {
+            if (msDuration < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(msDuration), "Rumble duration must be non-negative");
+            }
+            
+            Debug.Log("Sending Rumble Request");
+            sendQueue.Enqueue($"RD{msDuration}");
         }
     }
 }
