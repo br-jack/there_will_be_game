@@ -47,14 +47,6 @@ namespace Hammer
 
         [Header("Dynamic Hitbox")]
         [SerializeField] private bool useDynamicHitbox = true;
-        [SerializeField] private Vector3 smallHitboxSize;
-        [SerializeField] private Vector3 smallHitboxCenter;
-        [SerializeField] private float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
-        [SerializeField] private Vector3 mediumHitboxSize;
-        [SerializeField] private Vector3 mediumHitboxCenter;
-        [SerializeField] private float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
-        [SerializeField] private Vector3 largeHitboxSize;
-        [SerializeField] private Vector3 largeHitboxCenter;
 
         //private bool _collisionsEnabled = true;
 
