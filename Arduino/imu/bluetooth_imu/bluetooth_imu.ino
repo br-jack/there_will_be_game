@@ -30,6 +30,8 @@ struct RumbleInstance {
   int fadeMs;
   unsigned long duration;
   
+  bool flipDirection;
+  
   int fadeRate = 15;
   //this will usually be kept the same
   int fadeInterval = 30;
@@ -100,8 +102,6 @@ void setup(void) {
 
   pinMode(motor1_dir_pin, OUTPUT);
 
-  digitalWrite(motor1_dir_pin, HIGH);
-
   delay(100);
 }
 
@@ -117,6 +117,15 @@ void setReports(void) {
 
   //https://github.com/sparkfun/SparkFun_BNO08x_Arduino_Library/issues/2
   //delay(100); // This delay allows enough time for the BNO085 to accept the new configuration and clear its reset status
+}
+
+void setDirection(bool flipDirection) {
+  if (flipDirection) {
+    digitalWrite(motor1_dir_pin, HIGH);
+  }
+  else {
+    digitalWrite(motor1_dir_pin, LOW);
+  }
 }
 
 void startRumble(RumbleMode mode, int duration) {
@@ -153,6 +162,8 @@ void startRumble(RumbleMode mode, int duration) {
   currentRumble.fadeMs = 0;
 
   currentRumble.currentStrength = currentRumble.startStrength;
+
+  setDirection(currentRumble.flipDirection);
 
   analogWrite(motor1_spd_pin, currentRumble.currentStrength);
 
@@ -305,6 +316,7 @@ inline void checkRumbleInput(void) {
 
     //rumble string format: "RMa;b;c;d;e\n" where
     //M is mode
+    //N is direction (must be either 0 or 1, not used in off mode)
     //a is duration (not used in off mode)
     //b is start strength (not used in off mode)
     //c is end strength (not used in constant or off modes)
@@ -317,6 +329,8 @@ inline void checkRumbleInput(void) {
     if (incomingByte == (int)rumbleChar) {
 
       const int modeByte = Serial1.read();
+
+      const bool direction = (bool) Serial1.read();
 
       const int duration = Serial1.parseInt();
       //read separator, should be (';') semicolon character but checking would just waste time
