@@ -46,14 +46,14 @@ public class hammerHead : MonoBehaviour
 
     private void killAllInRadius()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position,slamRadius);
-        foreach(Collider c in colliders)
+        Collider[] colliders = Physics.OverlapSphere(transform.position, slamRadius);
+        foreach (Collider c in colliders)
         {
-            if(c.GetComponentInParent<StandardEnemyAI>())
+            if (c.GetComponentInParent<StandardEnemyAI>())
             {
                 Vector3 knockbackDirection = c.ClosestPoint(transform.position) - transform.position; //knock away
                 c.GetComponentInParent<StandardEnemyAI>().getKilledBasic(knockbackDirection * slamKnockbackAmount);
             }
-        } 
+        }
     }
 }

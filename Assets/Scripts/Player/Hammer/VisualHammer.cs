@@ -44,7 +44,7 @@ namespace Hammer
 
         void FixedUpdate()
         {
-            
+
             Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");
             if (useDynamicHitbox)
             {
@@ -52,17 +52,19 @@ namespace Hammer
                 {
                     _hitbox.size = smallHitboxSize;
                     _hitbox.center = smallHitboxCenter;
-                } else if (head.forwardSpeed < largeHitboxThreshold)
+                }
+                else if (head.forwardSpeed < largeHitboxThreshold)
                 {
                     _hitbox.size = mediumHitboxSize;
                     _hitbox.center = mediumHitboxCenter;
-                } else
+                }
+                else
                 {
                     _hitbox.size = largeHitboxSize;
                     _hitbox.center = largeHitboxCenter;
                 }
             }
-            
+
             /*
             Thoughts and notes:
             - There should be a separate mode which makes the hammer more powerful and shiny and stuff.

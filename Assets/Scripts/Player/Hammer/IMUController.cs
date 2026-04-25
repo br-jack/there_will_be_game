@@ -20,7 +20,7 @@ namespace Hammer
         private readonly ConcurrentQueue<string> recvQueue = new ConcurrentQueue<string>();
 
         private const int TimeoutMs = 50;
-        
+
         private string SearchPorts()
         {
             try
@@ -50,18 +50,18 @@ namespace Hammer
                         foreach (string possiblePort in availablePorts)
                         {
                             Debug.Log("Trying port " + possiblePort);
-                            
+
                             SerialPort testSerial = new SerialPort(possiblePort, 115200);
                             testSerial.DtrEnable = true;
                             testSerial.ReadTimeout = TimeoutMs * 3;
                             testSerial.Open();
-                            
+
                             //wait to ensure IMU data gets received
                             Thread.Sleep(100);
-                            
+
                             String output = testSerial.ReadExisting();
                             testSerial.Close();
-                            
+
                             if (output.Contains("q:") || output.Contains("a:") || output.Contains("info:"))
                             {
                                 //(hub sending) IMU data found
@@ -92,7 +92,7 @@ namespace Hammer
             {
                 return false;
             }
-            
+
             try
             {
                 _stream = new SerialPort(port, 115200)
@@ -111,7 +111,7 @@ namespace Hammer
                     {
                         // if youre connected but not getting any data you may have another serial monitor open for this port
                         Debug.Log("Connected (allegedly)");
-                        
+
                         return true;
                     }
                 }
@@ -143,7 +143,7 @@ namespace Hammer
         private void IOThreadLoop()
         {
             bool portOpen = false;
-            
+
             try
             {
                 while (_running && !portOpen)
@@ -159,7 +159,7 @@ namespace Hammer
                         Thread.Sleep(1000);
                     }
                 }
-                
+
                 while (_running)
                 {
                     try
@@ -170,7 +170,7 @@ namespace Hammer
 
                             _stream.WriteLine(dataToSend);
                         }
-                        
+
                         string receivedData = _stream.ReadLine();
                         recvQueue.Enqueue(receivedData);
                     }
@@ -276,7 +276,7 @@ namespace Hammer
             {
                 throw new ArgumentOutOfRangeException(nameof(msDuration), "Rumble duration must be non-negative");
             }
-            
+
             Debug.Log("Sending Rumble Request");
             sendQueue.Enqueue($"RD{msDuration}");
         }
@@ -296,7 +296,7 @@ namespace Hammer
 
             _stream?.Close();
             _stream = null;
-            
+
             Debug.Log("Port closed");
         }
     }

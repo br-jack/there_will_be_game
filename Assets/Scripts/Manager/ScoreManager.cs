@@ -46,7 +46,7 @@ namespace Score
         public int AweScore => aweScore;
 
         [SerializeField] private int maxFearScore = 2000;
-        [SerializeField] private int maxAweScore = 2000;
+        [SerializeField] private int maxAweScore = 400;
         public int MaxFearScore => maxFearScore;
         public int MaxAweScore => maxAweScore;
 
@@ -115,13 +115,11 @@ namespace Score
 
             OnFearChanged?.Invoke(fearScore);
         }
-    
-
 
         public ReportCard GetReportCard()
         {
             // Leave the float cast, it's important because otherwise it does integer divison.
-            float fearProportion = (float) fearScore/maxFearScore;
+            float fearProportion = (float)fearScore / maxFearScore;
 
             ReportCard reportCard;
 
