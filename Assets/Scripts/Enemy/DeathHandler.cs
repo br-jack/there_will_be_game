@@ -80,7 +80,7 @@ namespace Enemy
         {
             _deathTimer += Time.deltaTime;
             
-            if (_knockbackState.IsKnockedBack || _deathTimer >= _deathEndTime)
+            if (!_knockbackState.IsKnockedBack || _deathTimer >= _deathEndTime)
             {
                 Destroy(gameObject);
             }

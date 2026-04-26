@@ -2501,6 +2501,7 @@ GameObject:
   - component: {fileID: -8550110256333393937}
   - component: {fileID: 8617838431146807415}
   - component: {fileID: 4514555335005175043}
+  - component: {fileID: -2583705701352573641}
   m_Layer: 0
   m_Name: MeleeEnemyUnshielded
   m_TagString: Enemy
@@ -2838,6 +2839,20 @@ MonoBehaviour:
   - {fileID: 5093937095952947410}
   - {fileID: 5938369779159977750}
   - {fileID: 6914989609023837445}
+--- !u!114 &-2583705701352573641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4937528112206273530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63c4ee31cef043b09bfe9f9c41ec6a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useTutorialKillLock: 0
+  maxDeathTime: 4
 --- !u!1 &4941756523303886922
 GameObject:
   m_ObjectHideFlags: 0
