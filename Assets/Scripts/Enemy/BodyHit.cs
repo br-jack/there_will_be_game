@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Enemy;
 using Score;
 
 public class BodyHit : MonoBehaviour
@@ -33,7 +34,7 @@ public class BodyHit : MonoBehaviour
         hitSounds.PlaySFX();
 
         AwardScore(false);
-        enemy.KilledBy(other, attack);
+        enemy.DeathHandler.KilledBy(other, attack);
     }
 
     private void AwardScore(bool hasShield)

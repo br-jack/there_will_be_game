@@ -33,12 +33,12 @@ public class TutorialEnemySpawner : MonoBehaviour
         mainCamera.gameObject.SetActive(true);
     }
 
-    public DeathHandler SpawnTutorialEnemy()
+    public StandardEnemyAI SpawnTutorialEnemy()
     {
         currentSpawnedEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
         StartCutscene();
 
-        return currentSpawnedEnemy.GetComponent<DeathHandler>();
+        return currentSpawnedEnemy.GetComponent<StandardEnemyAI>();
     }
 
     private void StartCutscene()

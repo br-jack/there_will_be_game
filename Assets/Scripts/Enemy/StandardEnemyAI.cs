@@ -68,7 +68,7 @@ namespace Enemy
         private const float KnockbackTime = 0.5f;
         private const float GroundCheckDistance = 0.4f;
         [SerializeField] private RagdollToggler ragdollToggler;
-        protected IDeathState DeathHandler;
+        public IDeathState DeathHandler;
 
         private CombatState combatState = CombatState.Approaching;
         private float actualHoldDistance;
