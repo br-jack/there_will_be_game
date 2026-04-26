@@ -14,7 +14,8 @@ namespace Enemy
         
         public event Action OnDied;
         
-        private float deathTimer;
+        private float _deathTimer;
+        private float _deathEndTime;
 
         public void EnableTutorialKillLockMode()
         {
@@ -39,7 +40,7 @@ namespace Enemy
             IsDying = true;
             IsKnockedBack = true;
             knockbackTimer = KnockbackTime;
-            deathTimer = maxDeathTime;
+            _deathTimer = maxDeathTime;
 
             if (agent != null)
             {
@@ -68,9 +69,15 @@ namespace Enemy
             OnDied?.Invoke();
         }
 
-        private void KillEnemy()
+        public void StartDeathTimer()
         {
-            deathTimer -= Time.deltaTime;
+            _deathTimer = Time.time;
+            _deathEndTime = _deathTimer + maxDeathTime;
+        }
+
+        private void TickDeathTimer()
+        {
+            _deathTimer += Time.deltaTime;
 
             if (IsKnockedBack)
             {
@@ -81,18 +88,18 @@ namespace Enemy
                 }
             }
 
-            if (!IsKnockedBack || deathTimer <= 0f)
+            if (!IsKnockedBack || _deathTimer >= _deathEndTime)
             {
                 Destroy(gameObject);
             }
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (IsDying)
             {
-                KillEnemy(); 
+                TickDeathTimer(); 
                 return;
             }
         }
