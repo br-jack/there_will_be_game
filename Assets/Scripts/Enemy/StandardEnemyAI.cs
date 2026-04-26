@@ -61,6 +61,10 @@ public class StandardEnemyAI : MonoBehaviour
         speed = 2f
     };
     private float wanderIdleEndTime;
+    private Vector3 _wanderProgressPos;
+    private float _wanderProgressTime;
+    private const float WanderStallTime = 1.5f;
+    private const float WanderProgressDist = 0.5f;
 
     [Header("Knockback & Death")]
     [SerializeField] private float maxDeathTime = 4f;
@@ -267,6 +271,19 @@ public class StandardEnemyAI : MonoBehaviour
                 if (agent != null && !agent.pathPending && (!agent.hasPath || agent.remainingDistance < 0.5f))
                 {
                     EnterWanderIdle();
+                    break;
+                }
+                // Stalled (e.g. walking into an unbaked obstacle): give up the current target,
+                // briefly idle, then pick a new one in EnterWandering. Otherwise the agent thinks
+                // its path is still valid and the script keeps pushing into the wall forever.
+                if ((transform.position - _wanderProgressPos).sqrMagnitude > WanderProgressDist * WanderProgressDist)
+                {
+                    _wanderProgressPos = transform.position;
+                    _wanderProgressTime = Time.time;
+                }
+                else if (Time.time - _wanderProgressTime > WanderStallTime)
+                {
+                    EnterWanderIdle();
                 }
                 break;
             case CombatState.Idling:
@@ -278,6 +295,8 @@ public class StandardEnemyAI : MonoBehaviour
     private void EnterWandering()
     {
         combatState = CombatState.Wandering;
+        _wanderProgressPos = transform.position;
+        _wanderProgressTime = Time.time;
         PickNewWanderPoint();
     }
 
