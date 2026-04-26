@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class hammerParticleSystemBehaviour : MonoBehaviour
 {
-    public hammerHead head;
+    public Hammer.hammerHead head;
     private Transform _tf;
     private Vector3 posPrevFrame;
 

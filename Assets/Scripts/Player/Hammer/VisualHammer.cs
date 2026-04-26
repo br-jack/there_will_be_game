@@ -50,13 +50,10 @@ namespace Hammer
 
         //private bool _collisionsEnabled = true;
         
-        private BoxCollider _hitbox;
-
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
-            _hitbox = GetComponent<BoxCollider>();
-            Debug.Assert(_hitbox != null);
+            Debug.Assert(head.Hitbox != null);
         }
 
         /*private void MoveToTargetPosition()
@@ -121,16 +118,16 @@ namespace Hammer
             {
                 if (head.forwardSpeed < mediumHitboxThreshold)
                 {
-                    _hitbox.size = smallHitboxSize;
-                    _hitbox.center = smallHitboxCenter;
+                    head.Hitbox.size = smallHitboxSize;
+                    head.Hitbox.center = smallHitboxCenter;
                 } else if (head.forwardSpeed < largeHitboxThreshold)
                 {
-                    _hitbox.size = mediumHitboxSize;
-                    _hitbox.center = mediumHitboxCenter;
+                    head.Hitbox.size = mediumHitboxSize;
+                    head.Hitbox.center = mediumHitboxCenter;
                 } else
                 {
-                    _hitbox.size = largeHitboxSize;
-                    _hitbox.center = largeHitboxCenter;
+                    head.Hitbox.size = largeHitboxSize;
+                    head.Hitbox.center = largeHitboxCenter;
                 }
             }
             
