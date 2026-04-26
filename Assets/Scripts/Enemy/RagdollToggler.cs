@@ -21,8 +21,8 @@ namespace Enemy
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Awake()
         {
-            normalRigidbodies = ragdollRoot.GetComponentsInChildren<Rigidbody>().Where(rb => ragdollRigidbodies.Contains(rb)).ToArray();
-            normalColliders = ragdollRoot.GetComponentsInChildren<Collider>().Where(col => ragdollColliders.Contains(col)).ToArray();
+            normalRigidbodies = ragdollRoot.GetComponentsInChildren<Rigidbody>().Where(rb => !ragdollRigidbodies.Contains(rb)).ToArray();
+            normalColliders = ragdollRoot.GetComponentsInChildren<Collider>().Where(col => !ragdollColliders.Contains(col)).ToArray();
             
             if (startAsRagdoll)
             {
