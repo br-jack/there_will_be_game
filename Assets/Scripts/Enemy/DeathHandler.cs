@@ -16,6 +16,8 @@ namespace Enemy
         
         private float _deathTimer;
         private float _deathEndTime;
+        
+        private RagdollToggler _ragdollToggler;
 
         public void EnableTutorialKillLockMode()
         {

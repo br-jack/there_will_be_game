@@ -65,7 +65,6 @@ namespace Enemy
         private float wanderIdleEndTime;
 
         [Header("Knockback & Death")]
-        [SerializeField] private float maxDeathTime = 4f;
         private const float KnockbackTime = 0.5f;
         private const float GroundCheckDistance = 0.4f;
 
@@ -88,15 +87,12 @@ namespace Enemy
         public bool CanBeKilled { get; private set; } = true;
 
         public bool IsKnockedBack { get; private set; }
-        public bool IsDying { get; private set; }
-        public event Action OnDied;
-
+        
         public bool HasShield() => shield != null;
 
         // Timers
         private float knockbackTimer;
         private float timeOfNextAttack;
-        private float deathTimer;
 
         void Awake()
         {
@@ -113,22 +109,6 @@ namespace Enemy
             actualSpeed = speed * (1f + UnityEngine.Random.Range(-speedVariance, speedVariance));
 
             SetupNavMesh();
-        }
-
-        public void EnableTutorialKillLockMode()
-        {
-            useTutorialKillLock = true;
-            CanBeKilled = true;
-        }
-
-        public void SetCanBeKilled(bool canBeKilled)
-        {
-            if (!useTutorialKillLock)
-            {
-                return;
-            }
-
-            CanBeKilled = canBeKilled;
         }
 
         void Start() => ResolvePlayerRefs();
@@ -188,7 +168,6 @@ namespace Enemy
 
         void Update()
         {
-            if (IsDying) { KillEnemy(); return; }
             if (IsKnockedBack) { HandleKnockback(); return; }
 
             if (_playerHealthRef == null || _playerTransformRef == null)
@@ -334,7 +313,7 @@ namespace Enemy
 
         void FixedUpdate()
         {
-            if (IsDying || IsKnockedBack) return;
+            if (IsKnockedBack) return;
             if (_playerTransformRef == null) return;
 
             bool isWandering = combatState == CombatState.Wandering || combatState == CombatState.Idling;
@@ -553,48 +532,6 @@ namespace Enemy
 
             // After knockback, re-approach from wherever we ended up.
             if (useStrike) combatState = CombatState.Approaching;
-        }
-
-        public void KilledBy(Collider other, AttackHitbox hitBox)
-        {
-            if (IsDying) return;
-
-            IsDying = true;
-            IsKnockedBack = true;
-            knockbackTimer = KnockbackTime;
-            deathTimer = maxDeathTime;
-
-            if (agent != null) agent.enabled = false;
-
-            Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
-            if (r != null) r.material.color = Color.gray;
-
-            float force = hitBox != null ? hitBox.GetKnockbackForce() : 30f;
-            Vector3 knockDir = transform.position - other.transform.position;
-            knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
-            knockDir.Normalize();
-
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector3.zero;
-                rb.AddForce(knockDir * force, ForceMode.Impulse);
-            }
-
-            TryTrigger(deadTrigger);
-            OnDied?.Invoke();
-        }
-
-        private void KillEnemy()
-        {
-            deathTimer -= Time.deltaTime;
-
-            if (IsKnockedBack)
-            {
-                knockbackTimer -= Time.deltaTime;
-                if (knockbackTimer <= 0f && IsGrounded()) IsKnockedBack = false;
-            }
-
-            if (!IsKnockedBack || deathTimer <= 0f) Destroy(gameObject);
         }
 
         private void UpdateAnim()
