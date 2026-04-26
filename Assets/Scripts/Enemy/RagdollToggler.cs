@@ -10,6 +10,10 @@ namespace Enemy
         
         [SerializeField] private bool startAsRagdoll;
 
+        //Rigidbodies and colliders that shouldn't be disabled by enabling ragdoll
+        [SerializeField] private Rigidbody[] normalRigidbodies;
+        [SerializeField] private Collider[] normalColliders;
+
         private Rigidbody[] _rigidbodies;
         private CharacterJoint[] _characterJoints;
         private Collider[] _colliders;
@@ -42,6 +46,7 @@ namespace Enemy
 
             foreach (Collider col in _colliders)
             {
+                Debug.Assert(!col.isTrigger);
                 col.enabled = true;
             }
             foreach (Rigidbody rb in _rigidbodies)
@@ -61,6 +66,7 @@ namespace Enemy
 
             foreach (Collider col in _colliders)
             {
+                Debug.Assert(!col.isTrigger);
                 col.enabled = false;
             }
             foreach (Rigidbody rb in _rigidbodies)
