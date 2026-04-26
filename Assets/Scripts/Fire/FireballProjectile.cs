@@ -9,6 +9,8 @@ public class FireballProjectile : MonoBehaviour
 
     [Header("Collision")]
     [SerializeField] private LayerMask hitLayer;
+    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private LayerMask buildingLayer;
 
     [Header("Impact Knockback")]
     [SerializeField] private float impactKnockbackForce = 8f;
@@ -28,8 +30,6 @@ public class FireballProjectile : MonoBehaviour
         moveDirection = direction.normalized;
         initialised = true;
 
-        Debug.Log("FireballProjectile initialised with direction: " + moveDirection);
-
         Destroy(gameObject, lifetime);
     }
 
@@ -43,29 +43,44 @@ public class FireballProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (((1 << other.gameObject.layer) & hitLayer) == 0)
+        int otherLayerBit = 1 << other.gameObject.layer;
+
+        // Ignore anything not in the allowed hit layers
+        if ((otherLayerBit & hitLayer.value) == 0)
             return;
 
-        Debug.Log("FireballProjectile hit: " + other.name);
+        Debug.Log("Fireball hit: " + other.name + " on layer " + LayerMask.LayerToName(other.gameObject.layer));
 
-        StandardEnemyAI enemyAI = other.GetComponentInParent<StandardEnemyAI>();
-        if (enemyAI != null)
+        // ENEMY HIT
+        if ((otherLayerBit & enemyLayer.value) != 0)
         {
-            ApplyImpactKnockback(enemyAI);
-
-            EnemyBurnable burnable = enemyAI.GetComponent<EnemyBurnable>();
-            if (burnable != null)
+            StandardEnemyAI enemyAI = other.GetComponentInParent<StandardEnemyAI>();
+            if (enemyAI != null)
             {
-                burnable.ApplyBurn(transform.position);
+                ApplyImpactKnockback(enemyAI);
+
+                EnemyBurnable burnable = enemyAI.GetComponent<EnemyBurnable>();
+                if (burnable != null)
+                {
+                    burnable.ApplyBurn(transform.position);
+                }
+
+                SpawnFlamePillarAtGround(enemyAI.transform.position);
+                Destroy(gameObject);
+                return;
             }
-            SpawnFlamePillarAtGround(enemyAI.transform.position);
+        }
+
+        // BUILDING HIT
+        if ((otherLayerBit & buildingLayer.value) != 0)
+        {
             Destroy(gameObject);
             return;
         }
 
+        // any other solid thing in hitLayer
         if (!other.isTrigger)
         {
-            SpawnFlamePillarAtGround(transform.position);
             Destroy(gameObject);
         }
     }
@@ -91,14 +106,11 @@ public class FireballProjectile : MonoBehaviour
 
         if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayerMask))
         {
-            Vector3 spawnPosition = hit.point;
-            Instantiate(flamePillarPrefab, spawnPosition, Quaternion.identity);
+            Instantiate(flamePillarPrefab, hit.point, Quaternion.identity);
         }
         else
         {
-            // fallback if no ground hit was found
-            Vector3 fallbackPosition = new Vector3(targetPosition.x, targetPosition.y, targetPosition.z);
-            Instantiate(flamePillarPrefab, fallbackPosition, Quaternion.identity);
+            Instantiate(flamePillarPrefab, targetPosition, Quaternion.identity);
         }
     }
 }

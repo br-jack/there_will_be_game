@@ -9720,7 +9720,13 @@ MonoBehaviour:
   lifetime: 4
   hitLayer:
     serializedVersion: 2
+    m_Bits: 66048
+  enemyLayer:
+    serializedVersion: 2
     m_Bits: 512
+  buildingLayer:
+    serializedVersion: 2
+    m_Bits: 65536
   impactKnockbackForce: 8
   impactUpwardForceRatio: 0.25
   flamePillarPrefab: {fileID: 7607841488155974854, guid: ba3421ba5a7c1654cbf175aa232f24b8, type: 3}
@@ -9729,7 +9735,6 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 8192
-  flamePillarVerticalOffset: 0
 --- !u!54 &4486629378843034112
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9756,7 +9761,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!1 &2972392977518692226
 GameObject:
   m_ObjectHideFlags: 0

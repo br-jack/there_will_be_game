@@ -71,14 +71,9 @@ public class FireballShooter : MonoBehaviour
 
         Vector3 spawnPosition = fireballSpawnPoint.position + direction * spawnForwardOffset;
 
-        GameObject spawnedFireball = Instantiate(
-            fireballPrefab,
-            spawnPosition,
-            Quaternion.LookRotation(direction)
-        );
+        GameObject spawnedFireball = Instantiate(fireballPrefab, spawnPosition, Quaternion.LookRotation(direction));
 
         FireballProjectile projectile = spawnedFireball.GetComponent<FireballProjectile>();
-
         projectile.Initialise(direction);
         lastFireTime = Time.time;
     }
