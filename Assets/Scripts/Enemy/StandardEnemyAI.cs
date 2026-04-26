@@ -90,6 +90,7 @@ public class StandardEnemyAI : MonoBehaviour
     public event Action OnDied;
 
     public bool HasShield() => shield != null;
+    public bool WasShielded { get; private set; }
 
     // Timers
     private float knockbackTimer;
@@ -103,6 +104,7 @@ public class StandardEnemyAI : MonoBehaviour
         if (anim == null) anim = GetComponentInChildren<Animator>();
         ShieldHit shieldHit = GetComponentInChildren<ShieldHit>();
         if (shieldHit != null) shield = shieldHit.gameObject;
+        WasShielded = shield != null;
 
         // Each enemy gets a slightly different hold distance (Stalk distance should ALWAYS be further than attack range).
         actualHoldDistance = holdDistance * (1f + UnityEngine.Random.Range(-holdDistanceVariance, holdDistanceVariance));
