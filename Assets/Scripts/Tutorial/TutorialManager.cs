@@ -9,7 +9,12 @@ public class TutorialManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject introOverlay;
     [SerializeField] private Image dimBackground;
-    [SerializeField] private TextMeshProUGUI introText;
+    [SerializeField] private CanvasGroup CardCanvasGroup;
+
+    [Header("Lore Card Intro")]
+    [SerializeField] private float CardFadeInTime = 0.6f;
+    [SerializeField] private float CardHoldTime = 5f;
+    [SerializeField] private float CardFadeOutTime = 0.6f;
 
     [Header("Message")]
     [SerializeField] private string message = "A divine force guides your first steps. \n Learn to move, fight and shape Fear and Awe.";
@@ -146,33 +151,40 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator PlayIntroSequence()
     {
-        // At the start of the intro hide the gameplay UI and tutorial prompts
         HideGameplayUIAtStart();
         tutorialPromptUI.SetActive(false);
 
         introOverlay.SetActive(true);
 
-        // Start with invisible background and empty text
         Color background = dimBackground.color;
         background.a = 0f;
         dimBackground.color = background;
 
-        introText.text = "";
-        Color textColour = introText.color;
-        textColour.a = 1f;
-        introText.color = textColour;
+        if (CardCanvasGroup != null)
+        {
+            CardCanvasGroup.alpha = 0f;
+            CardCanvasGroup.gameObject.SetActive(true);
+        }
 
-        // Fade in dark background
+        // Fade in background first
         yield return StartCoroutine(FadeBackground(0f, maxBackgroundAlpha, fadeInTime));
 
-        // Type text letter by letter
-        yield return StartCoroutine(TypeText(message));
+        // Fade in the lore card
+        yield return StartCoroutine(FadeCanvasGroup(CardCanvasGroup, 0f, 1f, CardFadeInTime));
 
-        // Hold for a moment
-        yield return new WaitForSeconds(holdTime);
+        // Keep it on screen
+        yield return new WaitForSeconds(CardHoldTime);
 
-        // Fade everything back out
-        yield return StartCoroutine(FadeOutOverlay());
+        // Fade card out
+        yield return StartCoroutine(FadeCanvasGroup(CardCanvasGroup, 1f, 0f, CardFadeOutTime));
+
+        // Fade background out
+        yield return StartCoroutine(FadeBackground(maxBackgroundAlpha, 0f, fadeOutTime));
+
+        if (CardCanvasGroup != null)
+        {
+            CardCanvasGroup.gameObject.SetActive(false);
+        }
 
         introOverlay.SetActive(false);
 
@@ -181,16 +193,25 @@ public class TutorialManager : MonoBehaviour
         promptText.text = $"{firstPromptMessage} ({currentSwings}/{swingsRequired})";
     }
 
-    private IEnumerator TypeText(string fullMessage)
+    private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
     {
-        fullMessage = fullMessage.Replace("\\n", "\n");
-        introText.text = "";
-
-        for (int i = 0; i < fullMessage.Length; i++)
+        if (canvasGroup == null)
         {
-            introText.text += fullMessage[i];
-            yield return new WaitForSeconds(letterDelay);
+            yield break;
         }
+
+        float elapsed = 0f;
+        canvasGroup.alpha = startAlpha;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
+            yield return null;
+        }
+
+        canvasGroup.alpha = endAlpha;
     }
 
     private IEnumerator FadeBackground(float startAlpha, float endAlpha, float duration)
@@ -212,38 +233,6 @@ public class TutorialManager : MonoBehaviour
 
         background.a = endAlpha;
         dimBackground.color = background;
-    }
-
-    private IEnumerator FadeOutOverlay()
-    {
-        float elapsed = 0f;
-
-        Color startBackground = dimBackground.color;
-        Color startText = introText.color;
-
-        while (elapsed < fadeOutTime)
-        {
-            elapsed += Time.deltaTime;
-            float percent = Mathf.Clamp01(elapsed / fadeOutTime);
-
-            Color background = startBackground;
-            background.a = Mathf.Lerp(startBackground.a, 0f, percent);
-            dimBackground.color = background;
-
-            Color textColour = startText;
-            textColour.a = Mathf.Lerp(startText.a, 0f, percent);
-            introText.color = textColour;
-
-            yield return null;
-        }
-
-        Color finalBackground = dimBackground.color;
-        finalBackground.a = 0f;
-        dimBackground.color = finalBackground;
-
-        Color finalTextColour = introText.color;
-        finalTextColour.a = 0f;
-        introText.color = finalTextColour;
     }
 
     private void HandleHammerSwing()

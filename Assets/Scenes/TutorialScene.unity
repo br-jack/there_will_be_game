@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 62476895}
   - component: {fileID: 62476897}
   - component: {fileID: 62476896}
+  - component: {fileID: 62476898}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -369,6 +370,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62476894}
   m_CullTransparentMesh: 1
+--- !u!225 &62476898
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62476894}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &120522942
 GameObject:
   m_ObjectHideFlags: 0
@@ -910,6 +923,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &431728379 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7967166630155670746, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &474253706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,6 +1112,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ffe2e949866e7a449854bfd2a6bdb45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &634612024 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7549535118096911905, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &634612026 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8398739667222277767, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634612024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &641054405 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 654467425185220409, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
@@ -1140,7 +1174,7 @@ MonoBehaviour:
   - {fileID: 6749940139257082442, guid: ef9175d09d8d5f74bb7259263c779e7f, type: 3}
   spawnPoint: {fileID: 1466229040}
   spawnHeightOffset: 10
-  boonText: {fileID: 0}
+  boonText: {fileID: 634612026}
   messageDuration: 3
   boonFanfare: {fileID: 0}
   audioSource: {fileID: 0}
@@ -1861,6 +1895,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 641054405}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1275990519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8686296449933936549, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+  m_PrefabInstance: {fileID: 1486947145}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1321140115
 GameObject:
   m_ObjectHideFlags: 0
@@ -2550,7 +2589,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1604236701}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1604236704
 Camera:
   m_ObjectHideFlags: 0
@@ -2879,7 +2918,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   introOverlay: {fileID: 1927686302}
   dimBackground: {fileID: 776700385}
-  introText: {fileID: 829590286}
+  CardCanvasGroup: {fileID: 62476898}
+  CardFadeInTime: 0.6
+  CardHoldTime: 5
+  CardFadeOutTime: 0.6
   message: A divine force guides your first steps. \n Learn to move, fight and shape
     Fear and Awe.
   letterDelay: 0.07
@@ -2888,10 +2930,10 @@ MonoBehaviour:
   fadeOutTime: 1.5
   maxBackgroundAlpha: 0.75
   fearBarUI: {fileID: 345720575}
-  aweBarUI: {fileID: 0}
+  aweBarUI: {fileID: 1275990519}
   healthBarUI: {fileID: 1962638922}
-  boonTextUI: {fileID: 0}
-  taskPanelUI: {fileID: 0}
+  boonTextUI: {fileID: 634612024}
+  taskPanelUI: {fileID: 431728379}
   waveAnnouncerUI: {fileID: 1691248329}
   tutorialPromptUI: {fileID: 45193402}
   promptText: {fileID: 910374579}
@@ -3278,7 +3320,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519686003}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a25aa62c4bf5ea40829a9645587253d, type: 3}
   m_Name: 
