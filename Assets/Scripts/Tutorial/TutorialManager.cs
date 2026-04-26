@@ -75,8 +75,8 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
 
     
-
-    private StandardEnemyAI currentTutorialEnemy;
+    //TODO should ideally use IDeathState abstraction instead
+    private DeathHandler currentTutorialEnemy;
     private bool enemyPhaseStarted = false;
     private bool enemyHasHitPlayer = false;
     private bool enemyDefeated = false;
