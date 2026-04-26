@@ -97,6 +97,23 @@ public class StandardEnemyAI : MonoBehaviour
     private float timeOfNextAttack;
     private float deathTimer;
 
+    private const float AnimSampleInterval = 0.15f;
+    private Vector3 _animPrevSamplePos;
+    private float _animPrevSampleTime;
+    private Vector3 _animCurSamplePos;
+    private float _animCurSampleTime;
+
+    // Stuck-escape: if we've been commanding movement for StuckTimeThreshold but
+    // haven't actually translated, sidestep for UnstuckDuration to break free.
+    private const float StuckTimeThreshold = 0.4f;
+    private const float StuckMovedSqr = 0.04f;
+    private const float StuckCommandedSqr = 1f;
+    private const float UnstuckDuration = 0.3f;
+    private Vector3 _stuckCheckPos;
+    private float _stuckCheckTime;
+    private float _unstuckUntil;
+    private Vector3 _unstuckDir;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -111,6 +128,12 @@ public class StandardEnemyAI : MonoBehaviour
         actualHoldDistance = Mathf.Max(actualHoldDistance, attack.range + 0.5f);
 
         actualSpeed = speed * (1f + UnityEngine.Random.Range(-speedVariance, speedVariance));
+
+        _animPrevSamplePos = _animCurSamplePos = transform.position;
+        _animPrevSampleTime = _animCurSampleTime = Time.time;
+
+        _stuckCheckPos = transform.position;
+        _stuckCheckTime = Time.time;
 
         SetupNavMesh();
     }
@@ -381,6 +404,37 @@ public class StandardEnemyAI : MonoBehaviour
         }
 
         if (agent != null && agent.enabled && agent.isOnNavMesh) agent.nextPosition = transform.position;
+
+        UpdateStuckEscape(toPlayerDir);
+    }
+
+    private void UpdateStuckEscape(Vector3 toPlayerDir)
+    {
+        if (rb == null) return;
+        if (Time.time < _unstuckUntil) return; // already escaping; don't update detection
+
+        Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        bool commandingMovement = horizontalVel.sqrMagnitude > StuckCommandedSqr;
+        bool moved = (transform.position - _stuckCheckPos).sqrMagnitude > StuckMovedSqr;
+
+        if (!commandingMovement || moved)
+        {
+            _stuckCheckPos = transform.position;
+            _stuckCheckTime = Time.time;
+            return;
+        }
+
+        if (Time.time - _stuckCheckTime <= StuckTimeThreshold) return;
+
+        // Stuck — pick a perpendicular direction and sidestep briefly. Random side
+        // so two enemies wedged against each other don't both pick the same way.
+        Vector3 right = Vector3.Cross(Vector3.up, toPlayerDir);
+        if (right.sqrMagnitude < 0.0001f) right = Vector3.right;
+        right.Normalize();
+        _unstuckDir = UnityEngine.Random.value < 0.5f ? right : -right;
+        _unstuckUntil = Time.time + UnstuckDuration;
+        _stuckCheckPos = transform.position;
+        _stuckCheckTime = Time.time;
     }
 
     private void StrikeMovement(float distToPlayer, Vector3 moveDir, Vector3 toPlayerDir)
@@ -465,6 +519,13 @@ public class StandardEnemyAI : MonoBehaviour
 
     private void ApplyVelocity(Vector3 desired)
     {
+        // While escaping a stuck position, override whatever the AI wanted with a
+        // sideways push at normal speed.
+        if (Time.time < _unstuckUntil)
+        {
+            desired = _unstuckDir * actualSpeed;
+        }
+
         if (rb != null)
         {
             rb.linearVelocity = Vector3.Lerp(
@@ -601,12 +662,28 @@ public class StandardEnemyAI : MonoBehaviour
     {
         if (anim == null || string.IsNullOrEmpty(speedParam)) return;
 
-        float animSpeed = 0f;
-        if (rb != null)
+        // Drive the animator from net translation over a ~0.15-0.3s window, not
+        // per-frame delta. When the rigidbody is jammed against geometry, physics
+        // depenetration jitters it each frame — per-frame |delta| is non-zero but
+        // net displacement over the window cancels out, so the legs correctly idle.
+        Vector3 currentPos = transform.position;
+
+        if (Time.time - _animCurSampleTime >= AnimSampleInterval)
         {
-            Vector3 v = rb.linearVelocity;
-            animSpeed = new Vector2(v.x, v.z).magnitude;
+            _animPrevSamplePos = _animCurSamplePos;
+            _animPrevSampleTime = _animCurSampleTime;
+            _animCurSamplePos = currentPos;
+            _animCurSampleTime = Time.time;
         }
+
+        float dt = Time.time - _animPrevSampleTime;
+        float animSpeed = 0f;
+        if (dt > 0.05f)
+        {
+            Vector3 delta = currentPos - _animPrevSamplePos;
+            animSpeed = new Vector2(delta.x, delta.z).magnitude / dt;
+        }
+
         if (animSpeed < idleSpeedThreshold) animSpeed = 0f;
         anim.SetFloat(speedParam, animSpeed);
     }
