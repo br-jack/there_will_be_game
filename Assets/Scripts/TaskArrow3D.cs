@@ -8,7 +8,7 @@ public class TaskArrow3D : MonoBehaviour
 
     [Header("Position Settings")]
     [SerializeField] private float heightAbovePlayer = 4f;
-    [SerializeField] private float followSmooth = 100000f;
+    [SerializeField] private Vector3 modelRotationOffset = new Vector3(90f, 0f, 0f);
 
     private void Update()
     {
@@ -18,26 +18,21 @@ public class TaskArrow3D : MonoBehaviour
 
     private void UpdatePosition()
     {
-        Vector3 desiredPosition = player.position + Vector3.up * heightAbovePlayer;
-
-        transform.position = Vector3.Lerp(
-            transform.position,
-            desiredPosition,
-            Time.deltaTime * followSmooth
-        );
+        transform.position = player.position + Vector3.up * heightAbovePlayer;
     }
 
     private void UpdateRotation()
     {
         Vector3 direction = target.position - player.position;
-        direction.y = 0f;
 
         if (direction.sqrMagnitude < 0.001f)
         {
             return;
         }
 
-        transform.rotation = Quaternion.LookRotation(direction) * Quaternion.Euler(90f, 0f, 0f);
+        Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
+
+        transform.rotation = targetRotation * Quaternion.Euler(modelRotationOffset);
     }
 
     // gonna need these eventually
