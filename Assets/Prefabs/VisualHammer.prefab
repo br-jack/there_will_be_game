@@ -34359,7 +34359,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 3.8, z: 0.005}
-  m_InertiaTensor: {x: 5, y: 5, z: 5}
+  m_InertiaTensor: {x: 5, y: 0.5, z: 0.5}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
@@ -34433,9 +34433,9 @@ ConfigurableJoint:
   m_XMotion: 1
   m_YMotion: 1
   m_ZMotion: 1
-  m_AngularXMotion: 1
-  m_AngularYMotion: 1
-  m_AngularZMotion: 1
+  m_AngularXMotion: 2
+  m_AngularYMotion: 2
+  m_AngularZMotion: 2
   m_LinearLimitSpring:
     spring: 0
     damper: 0
@@ -34503,7 +34503,7 @@ ConfigurableJoint:
   m_SlerpDrive:
     serializedVersion: 4
     positionSpring: 50000
-    positionDamper: 10000
+    positionDamper: 5000
     maximumForce: 3.4028233e+38
     useAcceleration: 1
   m_ProjectionMode: 1
