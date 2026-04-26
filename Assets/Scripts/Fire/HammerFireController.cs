@@ -63,11 +63,6 @@ public class HammerFireController : MonoBehaviour
         if (!useInfiniteFire)
         {
             fireTimer = fireDuration;
-            Debug.Log($"Hammer fire refreshed to {fireDuration} seconds.");
-        }
-        else
-        {
-            Debug.Log("Hammer is now on fire infinitely.");
         }
     }
 
@@ -80,16 +75,12 @@ public class HammerFireController : MonoBehaviour
         fireTimer = 0f;
 
         StopFireVisuals();
-
-        Debug.Log("Hammer fire extinguished.");
     }
 
     public void UnlockInfiniteFire()
     {
         infiniteFireUnlocked = true;
         useInfiniteFire = true;
-
-        Debug.Log("Infinite fire unlocked.");
     }
 
     public void SetInfiniteFireActive(bool active)
@@ -98,8 +89,6 @@ public class HammerFireController : MonoBehaviour
             return;
 
         useInfiniteFire = active;
-
-        Debug.Log("Infinite fire active: " + useInfiniteFire);
     }
 
     public float GetRemainingFireTime()

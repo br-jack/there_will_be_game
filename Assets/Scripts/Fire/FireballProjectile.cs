@@ -49,8 +49,6 @@ public class FireballProjectile : MonoBehaviour
         if ((otherLayerBit & hitLayer.value) == 0)
             return;
 
-        Debug.Log("Fireball hit: " + other.name + " on layer " + LayerMask.LayerToName(other.gameObject.layer));
-
         // ENEMY HIT
         if ((otherLayerBit & enemyLayer.value) != 0)
         {
