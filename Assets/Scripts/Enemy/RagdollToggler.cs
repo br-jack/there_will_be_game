@@ -14,10 +14,16 @@ namespace Enemy
         [SerializeField] private Rigidbody[] ragdollRigidbodies;
         [SerializeField] private Collider[] ragdollColliders;
         [SerializeField] private CharacterJoint[] ragdollCharacterJoints;
+
+        private Rigidbody[] normalRigidbodies;
+        private Collider[] normalColliders;
         
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Awake()
         {
+            normalRigidbodies = ragdollRoot.GetComponentsInChildren<Rigidbody>().Where(rb => ragdollRigidbodies.Contains(rb)).ToArray();
+            normalColliders = ragdollRoot.GetComponentsInChildren<Collider>().Where(col => ragdollColliders.Contains(col)).ToArray();
+            
             if (startAsRagdoll)
             {
                 UseRagdoll();
@@ -28,45 +34,53 @@ namespace Enemy
             }
         }
 
+        private void SetColliderStates(Collider[] colliders, bool state)
+        {
+            foreach (Collider col in colliders)
+            {
+                col.enabled = state;
+            }
+        }
+        private void SetRigidbodyStates(Rigidbody[] rigidbodies, bool state)
+        {
+            foreach (Rigidbody rb in ragdollRigidbodies)
+            {
+                rb.isKinematic = !state;
+                rb.detectCollisions = state;
+            }
+        }
+        private void SetCharacterJointState(CharacterJoint[] characterJoints, bool state)
+        {
+            foreach (CharacterJoint joint in ragdollCharacterJoints)
+            {
+                joint.enableCollision = state;
+            }
+        }
+
         public void UseRagdoll()
         {
             animator.enabled = false;
-            foreach (CharacterJoint joint in ragdollCharacterJoints)
-            {
-                joint.enableCollision = true;
-            }
 
-            foreach (Collider col in ragdollColliders)
-            {
-                Debug.Assert(!col.isTrigger);
-                col.enabled = true;
-            }
-            foreach (Rigidbody rb in ragdollRigidbodies)
-            {
-                rb.isKinematic = false;
-                rb.detectCollisions = true;
-            }
+            SetColliderStates(normalColliders, false);
+            SetColliderStates(ragdollColliders, true);
+            
+            SetRigidbodyStates(normalRigidbodies, false);
+            SetRigidbodyStates(ragdollRigidbodies, true);
+            
+            SetCharacterJointState(ragdollCharacterJoints, true);
         }
         
         public void UseAnimator()
         {
             animator.enabled = true;
-            foreach (CharacterJoint joint in ragdollCharacterJoints)
-            {
-                joint.enableCollision = false;
-            }
-
-            foreach (Collider col in ragdollColliders)
-            {
-                Debug.Assert(!col.isTrigger);
-                col.enabled = false;
-            }
-            foreach (Rigidbody rb in ragdollRigidbodies)
-            {
-                rb.isKinematic = true;
-                //NOTE: this may prevent raycast from working on the ragdoll colliders.
-                rb.detectCollisions = false;
-            }
+            
+            SetColliderStates(ragdollColliders, false);
+            SetColliderStates(normalColliders, true);
+            
+            SetRigidbodyStates(ragdollRigidbodies, false);
+            SetRigidbodyStates(normalRigidbodies, true);
+            
+            SetCharacterJointState(ragdollCharacterJoints, false);
         }
     }
 }
