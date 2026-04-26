@@ -90,6 +90,8 @@ namespace Enemy
         
         public bool HasShield() => shield != null;
 
+        private DeathHandler _deathHandler;
+
         // Timers
         private float knockbackTimer;
         private float timeOfNextAttack;

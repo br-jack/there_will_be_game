@@ -18,6 +18,13 @@ namespace Enemy
         private float _deathEndTime;
         
         private RagdollToggler _ragdollToggler;
+        private IKnockbackState _knockbackState;
+
+        public DeathHandler(RagdollToggler ragdollToggler, IKnockbackState knockbackState)
+        {
+            _ragdollToggler = ragdollToggler;
+            _knockbackState = knockbackState;
+        }
 
         public void EnableTutorialKillLockMode()
         {
@@ -40,14 +47,7 @@ namespace Enemy
             if (IsDying) return;
 
             IsDying = true;
-            IsKnockedBack = true;
-            knockbackTimer = KnockbackTime;
             _deathTimer = maxDeathTime;
-
-            if (agent != null)
-            {
-                agent.enabled = false;
-            }
 
             Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
             if (r != null)
@@ -61,11 +61,7 @@ namespace Enemy
             knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
             knockDir.Normalize();
 
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector3.zero;
-                rb.AddForce(knockDir * force, ForceMode.Impulse);
-            }
+            _knockbackState.ApplyKnockback(knockDir * force, false);
 
             TryTrigger(deadTrigger);
             OnDied?.Invoke();
@@ -81,16 +77,15 @@ namespace Enemy
         {
             _deathTimer += Time.deltaTime;
 
-            if (IsKnockedBack)
+            if (_knockbackState.IsKnockedBack)
             {
                 knockbackTimer -= Time.deltaTime;
                 if (knockbackTimer <= 0f && IsGrounded())
                 {
                     IsKnockedBack = false;
                 }
-            }
-
-            if (!IsKnockedBack || _deathTimer >= _deathEndTime)
+            } 
+            else if (_deathTimer >= _deathEndTime)
             {
                 Destroy(gameObject);
             }
