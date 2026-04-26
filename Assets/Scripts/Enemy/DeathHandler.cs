@@ -41,10 +41,17 @@ namespace Enemy
             knockbackTimer = KnockbackTime;
             deathTimer = maxDeathTime;
 
-            if (agent != null) agent.enabled = false;
+            if (agent != null)
+            {
+                agent.enabled = false;
+            }
 
             Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
-            if (r != null) r.material.color = Color.gray;
+            if (r != null)
+            {
+                //FIXME this may not properly tint the whole enemy grey
+                r.material.color = Color.gray;
+            }
 
             float force = hitBox != null ? hitBox.GetKnockbackForce() : 30f;
             Vector3 knockDir = transform.position - other.transform.position;
@@ -68,17 +75,26 @@ namespace Enemy
             if (IsKnockedBack)
             {
                 knockbackTimer -= Time.deltaTime;
-                if (knockbackTimer <= 0f && IsGrounded()) IsKnockedBack = false;
+                if (knockbackTimer <= 0f && IsGrounded())
+                {
+                    IsKnockedBack = false;
+                }
             }
 
-            if (!IsKnockedBack || deathTimer <= 0f) Destroy(gameObject);
+            if (!IsKnockedBack || deathTimer <= 0f)
+            {
+                Destroy(gameObject);
+            }
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (IsDying) { KillEnemy(); return; }
-            if (IsKnockedBack) { HandleKnockback(); return; }
+            if (IsDying)
+            {
+                KillEnemy(); 
+                return;
+            }
         }
     }
 }
