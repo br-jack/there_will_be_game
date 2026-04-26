@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public class DeathHandler : MonoBehaviour
+    public class DeathHandler : MonoBehaviour, IDeathState
     {
         [SerializeField] private bool useTutorialKillLock = false;
         public bool CanBeKilled { get; private set; } = true;
@@ -44,10 +44,12 @@ namespace Enemy
         
         public void KilledBy(Collider other, AttackHitbox hitBox)
         {
-            if (IsDying) return;
+            if (IsDying)
+            {
+                return;
+            }
 
-            IsDying = true;
-            _deathTimer = maxDeathTime;
+            StartDeathTimer();
 
             Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
             if (r != null)
@@ -63,12 +65,13 @@ namespace Enemy
 
             _knockbackState.ApplyKnockback(knockDir * force, false);
 
-            TryTrigger(deadTrigger);
+            //TryTrigger(deadTrigger);
             OnDied?.Invoke();
         }
 
-        public void StartDeathTimer()
+        private void StartDeathTimer()
         {
+            IsDying = true;
             _deathTimer = Time.time;
             _deathEndTime = _deathTimer + maxDeathTime;
         }
@@ -76,16 +79,8 @@ namespace Enemy
         private void TickDeathTimer()
         {
             _deathTimer += Time.deltaTime;
-
-            if (_knockbackState.IsKnockedBack)
-            {
-                knockbackTimer -= Time.deltaTime;
-                if (knockbackTimer <= 0f && IsGrounded())
-                {
-                    IsKnockedBack = false;
-                }
-            } 
-            else if (_deathTimer >= _deathEndTime)
+            
+            if (_knockbackState.IsKnockedBack || _deathTimer >= _deathEndTime)
             {
                 Destroy(gameObject);
             }

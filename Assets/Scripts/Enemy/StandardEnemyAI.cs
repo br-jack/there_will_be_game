@@ -67,6 +67,8 @@ namespace Enemy
         [Header("Knockback & Death")]
         private const float KnockbackTime = 0.5f;
         private const float GroundCheckDistance = 0.4f;
+        [SerializeField] private RagdollToggler ragdollToggler;
+        private IDeathState _deathHandler;
 
         private CombatState combatState = CombatState.Approaching;
         private float actualHoldDistance;
@@ -89,9 +91,7 @@ namespace Enemy
         public bool IsKnockedBack { get; private set; }
         
         public bool HasShield() => shield != null;
-
-        private DeathHandler _deathHandler;
-
+        
         // Timers
         private float knockbackTimer;
         private float timeOfNextAttack;
