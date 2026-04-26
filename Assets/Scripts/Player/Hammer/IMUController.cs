@@ -221,9 +221,16 @@ namespace Hammer
                 {
                     try
                     {
-                        Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[4]),
+                        //Serial breadboard
+                        /*Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[4]),
                             float.Parse(parsedData[2]),
                             float.Parse(parsedData[3]),
+                            float.Parse(parsedData[1]));*/
+
+                        //Physical hammer w,x,y,z
+                        Quaternion possibleQuaternion = new Quaternion(float.Parse(parsedData[3]),
+                            float.Parse(parsedData[4]),
+                            float.Parse(parsedData[2]),
                             float.Parse(parsedData[1]));
                         _gameRotationVector = possibleQuaternion;
 

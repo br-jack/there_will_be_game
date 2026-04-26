@@ -10,43 +10,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 64.8808
+      value: -47.629215
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.981379
+      value: -4.8756967
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -331.0423
+      value: -249.2323
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.84818095
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.0016938107
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0.5297037
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.00061849976
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 0.127
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 63.971
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 0.163
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -81,7 +81,10 @@ PrefabInstance:
       addedObject: {fileID: 8694614846667634036}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3511324179620311952}
+      addedObject: {fileID: 4969734089007240465}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 829380772644035248}
   m_SourcePrefab: {fileID: 100100000, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
 --- !u!1 &4879232136503269483 stripped
 GameObject:
@@ -110,7 +113,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4058765833667833749, guid: 340343269efd3d14ea78dae7fa94ce9e, type: 3}
---- !u!114 &3511324179620311952
+--- !u!114 &4969734089007240465
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,4 +130,24 @@ MonoBehaviour:
   explosionForce: 300
   explosionRadius: 3
   soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
+  destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
+--- !u!114 &829380772644035248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4879232136503269483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff

@@ -1215,6 +1215,7 @@ GameObject:
   - component: {fileID: 8400582436032926241}
   - component: {fileID: -2375476118679158137}
   - component: {fileID: 7946049107334299951}
+  - component: {fileID: 4097936045014594537}
   m_Layer: 0
   m_Name: marketStallBF
   m_TagString: Untagged
@@ -1310,6 +1311,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.4, y: 3.5, z: 4.4}
   m_Center: {x: 7.25, y: 1.2, z: 6.5}
+--- !u!114 &4097936045014594537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741758151293211216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &4280079560169031800
 GameObject:
   m_ObjectHideFlags: 0
