@@ -20,7 +20,7 @@ namespace Enemy
         private RagdollToggler _ragdollToggler;
         private IKnockbackState _knockbackState;
 
-        public DeathHandler(RagdollToggler ragdollToggler, IKnockbackState knockbackState)
+        public void Init(RagdollToggler ragdollToggler, IKnockbackState knockbackState)
         {
             _ragdollToggler = ragdollToggler;
             _knockbackState = knockbackState;
@@ -91,6 +91,9 @@ namespace Enemy
         {
             if (IsDying)
             {
+                Debug.Assert(_ragdollToggler != null);
+                Debug.Assert(_knockbackState != null);
+                
                 TickDeathTimer(); 
                 return;
             }

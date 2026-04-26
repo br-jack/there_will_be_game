@@ -1,4 +1,5 @@
 using System.Collections;
+using Enemy;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;

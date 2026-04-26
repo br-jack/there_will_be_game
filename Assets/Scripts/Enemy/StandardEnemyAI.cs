@@ -28,7 +28,7 @@ namespace Enemy
 
         [Header("Movement")]
         [SerializeField] private float speed = 5f;
-        [SerializeField, Range(0f, 0.3f)] private float speedVariance = 0.15f;
+        [SerializeField, UnityEngine.Range(0f, 0.3f)] private float speedVariance = 0.15f;
         [SerializeField] private float smoothVelocity = 0.35f;
         [SerializeField] private float rotationSpeed = 8f;
 
@@ -43,12 +43,12 @@ namespace Enemy
         [Header("Strike Behavior")]
         [SerializeField] protected bool useStrike = true;
         [SerializeField] private float holdDistance = 6f;
-        [SerializeField, Range(0f, 0.5f)] private float holdDistanceVariance = 0.3f;
+        [SerializeField, UnityEngine.Range(0f, 0.5f)] private float holdDistanceVariance = 0.3f;
         [SerializeField] private float strikeSpeedMultiplier = 2.5f;
         [SerializeField] private float retreatSpeedMultiplier = 1.5f;
         // Proportion of attack.range where strike enemies stop charging and commit the attack.
         // Clamped below 1 so stop distance is always strictly less than attack.range.
-        [SerializeField, Range(0f, 1f)] private float strikeStopRatio = 0.7f;
+        [SerializeField, UnityEngine.Range(0f, 1f)] private float strikeStopRatio = 0.7f;
 
         [Header("Ranged Behavior (used when !useStrike)")]
         [SerializeField] private float stopFromPlayerDistance = 1.5f;
@@ -68,7 +68,7 @@ namespace Enemy
         private const float KnockbackTime = 0.5f;
         private const float GroundCheckDistance = 0.4f;
         [SerializeField] private RagdollToggler ragdollToggler;
-        private IDeathState _deathHandler;
+        protected IDeathState DeathHandler;
 
         private CombatState combatState = CombatState.Approaching;
         private float actualHoldDistance;
@@ -111,6 +111,15 @@ namespace Enemy
             actualSpeed = speed * (1f + UnityEngine.Random.Range(-speedVariance, speedVariance));
 
             SetupNavMesh();
+
+            DeathHandler deathHandler = gameObject.GetComponent<DeathHandler>();
+            if (deathHandler != null)
+            {
+                deathHandler.Init(ragdollToggler, this);
+                DeathHandler = deathHandler;
+            }
+
+            Debug.Assert(DeathHandler != null);
         }
 
         void Start() => ResolvePlayerRefs();
@@ -485,7 +494,7 @@ namespace Enemy
 
         protected virtual void DoDamage()
         {
-            if (IsDying || _playerHealthRef == null) return;
+            if (DeathHandler.IsDying || _playerHealthRef == null) return;
 
             if (HorizontalDistanceToPlayerBody() <= attack.range)
             {
