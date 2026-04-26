@@ -91,7 +91,7 @@ public class FireballProjectile : MonoBehaviour
 
         if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayerMask))
         {
-            Vector3 spawnPosition = hit.point + Vector3.up;
+            Vector3 spawnPosition = hit.point;
             Instantiate(flamePillarPrefab, spawnPosition, Quaternion.identity);
         }
         else
