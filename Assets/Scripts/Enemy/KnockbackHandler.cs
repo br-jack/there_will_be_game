@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Enemy
@@ -6,6 +7,8 @@ namespace Enemy
     public class KnockbackHandler : MonoBehaviour,  IKnockbackState
     {
         public bool IsKnockedBack { get; private set; }
+
+        public Action KnockbackEnded;
         
         private const float KnockbackTime = 0.5f;
         
@@ -49,18 +52,21 @@ namespace Enemy
         private void HandleKnockback()
         {
             knockbackTimer -= Time.deltaTime;
-            if (knockbackTimer > 0f) return;
-            if (!IsGrounded()) return;
 
-            IsKnockedBack = false;
-            knockbackTimer = KnockbackTime;
-
-            if (agent != null)
+            if (knockbackTimer <= 0.0f && IsGrounded())
             {
-                agent.enabled = true;
-                if (!agent.isOnNavMesh && NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 3f, NavMesh.AllAreas))
+                IsKnockedBack = false;
+                knockbackTimer = KnockbackTime;
+                
+                KnockbackEnded?.Invoke();
+
+                if (agent != null)
                 {
-                    agent.Warp(hit.position);
+                    agent.enabled = true;
+                    if (!agent.isOnNavMesh && NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 3f, NavMesh.AllAreas))
+                    {
+                        agent.Warp(hit.position);
+                    }
                 }
             }
 

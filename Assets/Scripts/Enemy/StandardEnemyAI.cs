@@ -13,7 +13,7 @@ namespace Enemy
         public float chargeTime;
     }
 
-    public class StandardEnemyAI : MonoBehaviour, IKnockbackState
+    public class StandardEnemyAI : MonoBehaviour
     {
         private enum CombatState { Approaching, Holding, Striking, Attacking, Retreating, Wandering, Idling }
 
@@ -67,6 +67,7 @@ namespace Enemy
         [Header("Knockback & Death")]
         private const float GroundCheckDistance = 0.4f;
         [SerializeField] private RagdollToggler ragdollToggler;
+        public IKnockbackState knockbackHandler;
         public IDeathState DeathHandler;
 
         private CombatState combatState = CombatState.Approaching;
@@ -106,11 +107,17 @@ namespace Enemy
             actualSpeed = speed * (1f + UnityEngine.Random.Range(-speedVariance, speedVariance));
 
             SetupNavMesh();
-
-            RagdollDeathHandler deathHandler = gameObject.GetComponent<RagdollDeathHandler>();
+            
+            KnockbackHandler knockbackHandler = GetComponent<KnockbackHandler>();
+            if (knockbackHandler != null)
+            {
+                knockbackHandler.KnockbackEnded += SetApproachState;
+            }
+            
+            RagdollDeathHandler deathHandler = GetComponent<RagdollDeathHandler>();
             if (deathHandler != null)
             {
-                deathHandler.Init(ragdollToggler, this);
+                deathHandler.Init(ragdollToggler, knockbackHandler);
                 DeathHandler = deathHandler;
             }
 
@@ -175,7 +182,7 @@ namespace Enemy
         void Update()
         {
             if (DeathHandler.IsDying) return;
-            if (IsKnockedBack)
+            if (knockbackHandler.IsKnockedBack)
             {
                 return;
             }
@@ -324,7 +331,7 @@ namespace Enemy
         void FixedUpdate()
         {
             if (DeathHandler.IsDying) return;
-            if (IsKnockedBack) return;
+            if (knockbackHandler.IsKnockedBack) return;
             if (_playerTransformRef == null) return;
 
             bool isWandering = combatState == CombatState.Wandering || combatState == CombatState.Idling;
@@ -482,7 +489,7 @@ namespace Enemy
             Vector3 dir = transform.position - attacker.transform.position;
             dir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
             dir.Normalize();
-            ApplyKnockback(dir * force, playHitAnim: false);
+            knockbackHandler.ApplyKnockback(dir * force, playHitAnim: false);
             BreakShield();
         }
 
@@ -526,9 +533,26 @@ namespace Enemy
             return Physics.Raycast(transform.position + Vector3.up * 0.2f, Vector3.down, GroundCheckDistance + 0.2f);
         }
 
+        private void SetApproachState()
+        {
+            // After knockback, re-approach from wherever we ended up.
+            if (useStrike)
+            {
+                combatState = CombatState.Approaching;
+            }
+        }
+
         private void TryTrigger(string triggerName)
         {
             if (anim != null && !string.IsNullOrEmpty(triggerName)) anim.SetTrigger(triggerName);
+        }
+
+        private void OnDisable()
+        {
+            if (knockbackHandler is KnockbackHandler handler)
+            {
+                handler.KnockbackEnded -= SetApproachState;
+            }
         }
     }
 }
