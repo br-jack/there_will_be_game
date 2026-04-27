@@ -358,6 +358,12 @@ namespace Hammer
 
         public void GradientRumble(int totalDuration, int startStrength, int endStrength, int fadeDuration)
         {
+            if (fadeDuration <= 0)
+            {
+                ConstantRumble(totalDuration, endStrength);
+                return;
+            }
+            
             RumbleMode mode = (startStrength <= endStrength) ? RumbleMode.RampUp : RumbleMode.RampDown;
 
             int strengthDifference = Math.Abs(endStrength - startStrength);
