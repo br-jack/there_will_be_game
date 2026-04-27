@@ -27,7 +27,7 @@ namespace Hammer
         
         private string SearchPorts()
         {
-            if (configSO.portOverride != null)
+            if (!String.IsNullOrEmpty(configSO.portOverride))
             {
                 return configSO.portOverride;
             }
@@ -101,7 +101,7 @@ namespace Hammer
         //Returns if connected successfully or not
         private bool ConnectToPort(string port)
         {
-            if (port == null)
+            if (String.IsNullOrEmpty(port))
             {
                 return false;
             }
