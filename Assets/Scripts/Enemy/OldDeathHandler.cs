@@ -19,6 +19,9 @@ namespace Enemy
         
         private IKnockbackState _knockbackState;
 
+        [SerializeField] private Animator animator;
+        [SerializeField] private string deadTrigger = "Die";
+
         public void Init(IKnockbackState knockbackState)
         {
             _knockbackState = knockbackState;
@@ -62,6 +65,7 @@ namespace Enemy
             knockDir.Normalize();
 
             _knockbackState.ApplyKnockback(knockDir * force, false);
+            animator.SetTrigger(deadTrigger);
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();

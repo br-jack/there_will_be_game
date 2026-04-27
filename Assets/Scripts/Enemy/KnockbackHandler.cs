@@ -35,7 +35,10 @@ namespace Enemy
             IsKnockedBack = true;
             knockbackTimer = KnockbackTime;
 
-            if (agent != null) agent.enabled = false;
+            if (agent != null)
+            {
+                agent.enabled = false;
+            }
 
             if (_rb != null)
             {
@@ -43,10 +46,10 @@ namespace Enemy
                 _rb.AddForce(force, ForceMode.Impulse);
             }
 
-            if (playHitAnim)
-            {
-                TryTrigger(hitTrigger);
-            }
+            // if (playHitAnim)
+            // {
+            //     TryTrigger(hitTrigger);
+            // }
         }
         
         private void HandleKnockback()
@@ -68,12 +71,6 @@ namespace Enemy
                         agent.Warp(hit.position);
                     }
                 }
-            }
-
-            // After knockback, re-approach from wherever we ended up.
-            if (useStrike)
-            {
-                combatState = CombatState.Approaching;
             }
         }
 

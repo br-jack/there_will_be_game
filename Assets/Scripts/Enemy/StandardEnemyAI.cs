@@ -490,6 +490,9 @@ namespace Enemy
             dir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
             dir.Normalize();
             knockbackHandler.ApplyKnockback(dir * force, playHitAnim: false);
+            
+            //TryTrigger(hitTrigger);
+            
             BreakShield();
         }
 

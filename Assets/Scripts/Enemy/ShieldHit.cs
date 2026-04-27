@@ -10,7 +10,7 @@ public class ShieldHit : MonoBehaviour
 
         StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
         if (enemy == null) return;
-        if (enemy.IsKnockedBack) return;
+        if (enemy.knockbackHandler.IsKnockedBack) return;
         if (!enemy.HasShield()) return;
 
         enemy.BreakShieldFromAttack(other, attack);
