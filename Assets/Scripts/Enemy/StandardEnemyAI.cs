@@ -65,7 +65,6 @@ namespace Enemy
         private float wanderIdleEndTime;
 
         [Header("Knockback & Death")]
-        private const float KnockbackTime = 0.5f;
         private const float GroundCheckDistance = 0.4f;
         [SerializeField] private RagdollToggler ragdollToggler;
         public IDeathState DeathHandler;
@@ -85,15 +84,11 @@ namespace Enemy
         [SerializeField] private string deadTrigger = "Die";
         [SerializeField] private bool useDamageAnimEvent = false;
 
+        //TODO use death handler versions of these
         [SerializeField] private bool useTutorialKillLock = false;
         public bool CanBeKilled { get; private set; } = true;
-
-        public bool IsKnockedBack { get; private set; }
-        
         public bool HasShield() => shield != null;
         
-        // Timers
-        private float knockbackTimer;
         private float timeOfNextAttack;
 
         void Awake()
@@ -180,7 +175,10 @@ namespace Enemy
         void Update()
         {
             if (DeathHandler.IsDying) return;
-            if (IsKnockedBack) { HandleKnockback(); return; }
+            if (IsKnockedBack)
+            {
+                return;
+            }
 
             if (_playerHealthRef == null || _playerTransformRef == null)
             {
@@ -507,44 +505,6 @@ namespace Enemy
         public void AnimDealDamage()
         {
             if (useDamageAnimEvent) DoDamage();
-        }
-
-        public void ApplyKnockback(Vector3 force, bool playHitAnim = true)
-        {
-            IsKnockedBack = true;
-            knockbackTimer = KnockbackTime;
-
-            if (agent != null) agent.enabled = false;
-
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector3.zero;
-                rb.AddForce(force, ForceMode.Impulse);
-            }
-
-            if (playHitAnim) TryTrigger(hitTrigger);
-        }
-
-        private void HandleKnockback()
-        {
-            knockbackTimer -= Time.deltaTime;
-            if (knockbackTimer > 0f) return;
-            if (!IsGrounded()) return;
-
-            IsKnockedBack = false;
-            knockbackTimer = KnockbackTime;
-
-            if (agent != null)
-            {
-                agent.enabled = true;
-                if (!agent.isOnNavMesh && NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 3f, NavMesh.AllAreas))
-                {
-                    agent.Warp(hit.position);
-                }
-            }
-
-            // After knockback, re-approach from wherever we ended up.
-            if (useStrike) combatState = CombatState.Approaching;
         }
 
         private void UpdateAnim()
