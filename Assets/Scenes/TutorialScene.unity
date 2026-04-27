@@ -1434,17 +1434,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 832686439150977982, guid: 710e32625f078504ca98c7d3e3b4a510, type: 3}
   m_PrefabInstance: {fileID: 2237668133860025892}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &609954429 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6899548887213444036, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
-  m_PrefabInstance: {fileID: 1486947145}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1962638922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ffe2e949866e7a449854bfd2a6bdb45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &634612024 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7549535118096911905, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
@@ -1475,6 +1464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 710652377}
+  - component: {fileID: 710652378}
   m_Layer: 5
   m_Name: FearBar
   m_TagString: Untagged
@@ -1504,6 +1494,33 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 36, y: 260}
   m_Pivot: {x: 1, y: 1}
+--- !u!114 &710652378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710652376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec5f4cdbe14e9794ebc74563034be3c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  barFillImage: {fileID: 385379625}
+  scoreText: {fileID: 0}
+  titleText: {fileID: 0}
+  statusIcon: {fileID: 0}
+  panelTransform: {fileID: 710652377}
+  max: 2000
+  tintFillByScore: 0
+  tintTitleByScore: 1
+  tintStatusIconByScore: 1
+  lowScoreColor: {r: 1, g: 0.72, b: 0.15, a: 1}
+  midScoreColor: {r: 1, g: 0.45, b: 0.1, a: 1}
+  highScoreColor: {r: 0.9, g: 0.15, b: 0.15, a: 1}
+  pulseScale: 1.06
+  pulseUpTime: 0.08
+  pulseDownTime: 0.12
 --- !u!4 &743921864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
@@ -1769,7 +1786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &776700383
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2113,6 +2130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 928822615}
+  - component: {fileID: 928822616}
   m_Layer: 5
   m_Name: AweBar
   m_TagString: Untagged
@@ -2142,6 +2160,33 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 360, y: 32}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &928822616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928822614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e0a1e4b0d305094897e6523640bbf2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  barFillImage: {fileID: 1532132843}
+  scoreText: {fileID: 0}
+  titleText: {fileID: 0}
+  statusIcon: {fileID: 0}
+  panelTransform: {fileID: 928822615}
+  max: 2000
+  tintFillByScore: 0
+  tintTitleByScore: 1
+  tintStatusIconByScore: 1
+  lowScoreColor: {r: 1, g: 0.72, b: 0.15, a: 1}
+  midScoreColor: {r: 1, g: 0.45, b: 0.1, a: 1}
+  highScoreColor: {r: 0.9, g: 0.15, b: 0.15, a: 1}
+  pulseScale: 1.06
+  pulseUpTime: 0.08
+  pulseDownTime: 0.12
 --- !u!1 &946544758
 GameObject:
   m_ObjectHideFlags: 0
@@ -2877,11 +2922,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 382923848903971571, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 382923848903971571, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 671921226444201435, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       propertyPath: m_Type
@@ -3017,6 +3062,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5449231423264434721, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5571188267721605200, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6143913131952380314, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
@@ -3876,9 +3925,9 @@ MonoBehaviour:
   fadeInTime: 1.5
   fadeOutTime: 1.5
   maxBackgroundAlpha: 0.75
-  fearBarUI: {fileID: 0}
-  aweBarUI: {fileID: 0}
-  healthBarUI: {fileID: 1962638922}
+  fearBarUI: {fileID: 1289420215}
+  aweBarUI: {fileID: 928822614}
+  healthBarUI: {fileID: 1940374464}
   boonTextUI: {fileID: 634612024}
   taskPanelUI: {fileID: 431728379}
   waveAnnouncerUI: {fileID: 1691248329}
@@ -4253,6 +4302,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1940374465}
+  - component: {fileID: 1940374466}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -4282,11 +4332,27 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 20}
   m_SizeDelta: {x: 360, y: 32}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1962638922 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5571188267721605200, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
-  m_PrefabInstance: {fileID: 1486947145}
+--- !u!114 &1940374466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940374464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ffe2e949866e7a449854bfd2a6bdb45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthFillImage: {fileID: 2141815891}
+  panelTransform: {fileID: 1940374465}
+  tintFillByHealth: 0
+  lowHealthColor: {r: 1, g: 0, b: 0, a: 1}
+  highHealthColor: {r: 0, g: 1, b: 0, a: 1}
+  pulseOnChange: 1
+  pulseScale: 1.06
+  pulseUpTime: 0.08
+  pulseDownTime: 0.12
 --- !u!114 &1988149511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5366,7 +5432,7 @@ PrefabInstance:
     - target: {fileID: 3243528490933531595, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: healthBar
       value: 
-      objectReference: {fileID: 609954429}
+      objectReference: {fileID: 1940374466}
     - target: {fileID: 3261977628211663459, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.75
