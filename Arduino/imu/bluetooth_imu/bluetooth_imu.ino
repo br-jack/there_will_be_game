@@ -311,17 +311,6 @@ inline void parseRumbleInput(void) {
     
     //int newline = Serial1.read();
 
-    String testOutput;
-    testOutput.concat("Mode Byte: ");
-    testOutput.concat(modeByte);
-    testOutput.concat(", Duration: ");
-    testOutput.concat(currentRumble.duration);
-    testOutput.concat(", Start Strength: ");
-    testOutput.concat(currentRumble.startStrength);
-
-    Serial1.println(testOutput);
-
-
     //Serial1.println(duration);  
     if (currentRumble.mode != RumbleMode::Off) {
       startRumble();
@@ -347,10 +336,7 @@ void loop(void) {  // run over and over
 
   if (Serial1.available() > 10) {
     parseRumbleInput();
-  } 
-  // else{
-    // Serial1.write(Serial.read());
-  // }
+  }
 
   // if (Serial1.available()) {
   //   Serial.write(Serial1.read());

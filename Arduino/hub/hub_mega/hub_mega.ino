@@ -23,7 +23,7 @@ void loop() { // run over and over
 
   if (Serial.available() > 0) {
     String s = Serial.readStringUntil('\n');
-    Serial.println(s);
+    // Serial.println(s);
     Serial1.println(s);
   }
 }
