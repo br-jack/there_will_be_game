@@ -18,6 +18,7 @@ public class GameStateManager : MonoBehaviour
     private PlayerLives _playerLives;
     private horseMovementGaits _horseMovement;
     private EnemySpawner[] _enemySpawners;
+    [SerializeField] private PauseMenuSelection _pauseMenuSelection;
 
     private const string CalibrationSceneName = "hammerTest";
     private bool _calibrationOverlayActive;
@@ -25,6 +26,8 @@ public class GameStateManager : MonoBehaviour
     private System.Collections.Generic.List<GameObject> _overlayCachedAudioObjects = new System.Collections.Generic.List<GameObject>();
     private EventSystem _overlayCachedEventSystem;
     private Canvas _overlayCachedHud;
+
+    public static float ignoreGameplayInputUntil { get; private set; }
 
     private void Awake()
     {
@@ -126,8 +129,10 @@ public class GameStateManager : MonoBehaviour
         {
             case GameState.Playing:
                 Time.timeScale = 1f;
+                ignoreGameplayInputUntil = Time.unscaledTime + 0.2f;
                 SetSpawning(true);
                 if (_horseMovement != null) _horseMovement.enabled = true;
+                if (_pauseMenuSelection != null) _pauseMenuSelection.ClearSelection();
                 if (_pausePanel != null) _pausePanel.SetActive(false);
                 break;
             case GameState.Paused:
@@ -135,6 +140,7 @@ public class GameStateManager : MonoBehaviour
                 SetSpawning(false);
                 if (_horseMovement != null) _horseMovement.enabled = false;
                 if (_pausePanel != null) _pausePanel.SetActive(true);
+                if (_pauseMenuSelection != null) _pauseMenuSelection.SelectFirstButton();
                 break;
             case GameState.Calibration:
                 // Keep timeScale at 1 so TargetHammer's FixedUpdate simulation
