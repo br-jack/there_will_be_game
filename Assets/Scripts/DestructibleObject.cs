@@ -66,10 +66,14 @@ public class DestructibleObject : MonoBehaviour
                                            transform.rotation);
         fragments.SetActive(true);
 
+        fragments.layer = LayerMask.NameToLayer("Debris");
+
         foreach (Transform child in fragments.transform)
         {
             Rigidbody rb = child.GetComponent<Rigidbody>();
             if (rb == null) continue;
+
+            child.gameObject.layer = LayerMask.NameToLayer("Debris");
 
             while (activeFragments.Count >= maxFragments)
             {

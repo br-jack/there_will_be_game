@@ -10,6 +10,8 @@ public class HammerFireController : MonoBehaviour
 
     [SerializeField] private GameObject fireVisual;
     [SerializeField] private ParticleSystem fireParticles;
+    [SerializeField] private AudioSource loopSource;
+    [SerializeField] private AudioClip fireClip;
 
     private float fireTimer = 0f;
 
@@ -24,6 +26,13 @@ public class HammerFireController : MonoBehaviour
 
         if (fireParticles != null)
             fireParticles.Stop();
+
+        if (loopSource != null)
+        {
+            loopSource.clip = fireClip;
+            loopSource.loop = true;
+            loopSource.playOnAwake = false;
+        }
     }
 
     private void Update()
@@ -53,6 +62,11 @@ public class HammerFireController : MonoBehaviour
 
             if (fireParticles != null)
                 fireParticles.Play();
+
+            if (loopSource != null && fireClip != null)
+            {
+                loopSource.Play();
+            }
         }
 
         if (!useInfiniteFire)
@@ -78,6 +92,11 @@ public class HammerFireController : MonoBehaviour
 
         if (fireParticles != null)
             fireParticles.Stop();
+
+        if (loopSource != null)
+        {
+            loopSource.Stop();
+        }
 
         Debug.Log("Hammer fire extinguished.");
     }
