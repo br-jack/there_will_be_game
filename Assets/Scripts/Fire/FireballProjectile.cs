@@ -72,6 +72,7 @@ public class FireballProjectile : MonoBehaviour
         // BUILDING HIT
         if ((otherLayerBit & buildingLayer.value) != 0)
         {
+            SpawnFlamePillarAtGround(gameObject.transform.position);
             Destroy(gameObject);
             return;
         }
