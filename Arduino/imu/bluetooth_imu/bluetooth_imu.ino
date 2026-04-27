@@ -343,11 +343,14 @@ void loop(void) {  // run over and over
 
   rumbleStep();
 
-  // outputSensorValues();
+  outputSensorValues();
 
   if (Serial1.available() > 10) {
     parseRumbleInput();
-  }
+  } 
+  // else{
+    // Serial1.write(Serial.read());
+  // }
 
   // if (Serial1.available()) {
   //   Serial.write(Serial1.read());
