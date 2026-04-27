@@ -112,7 +112,7 @@ namespace Enemy
 
             SetupNavMesh();
 
-            DeathHandler deathHandler = gameObject.GetComponent<DeathHandler>();
+            RagdollDeathHandler deathHandler = gameObject.GetComponent<RagdollDeathHandler>();
             if (deathHandler != null)
             {
                 deathHandler.Init(ragdollToggler, this);

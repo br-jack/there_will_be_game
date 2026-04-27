@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public class DeathHandler : MonoBehaviour, IDeathState
+    public class RagdollDeathHandler : MonoBehaviour, IDeathState
     {
         [SerializeField] private bool useTutorialKillLock = false;
         public bool CanBeKilled { get; private set; } = true;
