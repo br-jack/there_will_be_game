@@ -1533,19 +1533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56e0f9c281748342bf1f7467b43504c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldMask:
-    serializedVersion: 2
-    m_Bits: 8
   hitSounds: {fileID: 0}
-  baseScore: 10
-  lowHealthBonusScore: 20
-  lowHealthThreshold: 30
-  airBonusScore: 25
-  shieldBypassBonusScore: 40
-  atATrotBonusScore: 5
-  atACanterBonusScore: 20
-  atAGallopBonusScore: 50
-  fireBonusScore: 50
 --- !u!82 &464961176925626355
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1682,7 +1670,6 @@ Transform:
   m_Children:
   - {fileID: 4064436159771390502}
   - {fileID: 1413903398318427053}
-  - {fileID: 5042618520615642754}
   - {fileID: 1512696604540405361}
   - {fileID: 6990613623581087897}
   m_Father: {fileID: 0}
@@ -1695,7 +1682,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4937528112206273530}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1894,30 +1881,41 @@ MonoBehaviour:
   shield: {fileID: 0}
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
-  speed: 4
+  _playerBodyCollider: {fileID: 0}
+  speed: 8
+  speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
-    damage: 5
-    range: 20
+    damage: 6
+    range: 10
     cooldown: 4
     chargeTime: 1.5
   useStrike: 0
   holdDistance: 6
-  holdDistanceVariance: 1.5
+  holdDistanceVariance: 0.1
   strikeSpeedMultiplier: 2.5
   retreatSpeedMultiplier: 1.5
+  strikeStopRatio: 0.7
   stopFromPlayerDistance: 15
-  maxDeathTime: 4
+  sightRange: 25
+  randomMovement:
+    radius: 20
+    minIdleDuration: 2
+    maxIdleDuration: 4
+    speed: 6
+  maxDeathTime: 1
   anim: {fileID: 3937732561661069261}
   speedParam: Speed
+  idleSpeedThreshold: 0.5
   attackTrigger: Attack
+  shieldBreakTrigger: ShieldBreak
   hitTrigger: Hit
   deadTrigger: Die
   useDamageAnimEvent: 0
   useTutorialKillLock: 0
   projectile: {fileID: -3951855776858207511, guid: a29a84e2afeaffc4fa32f6b98dd5ff4b, type: 3}
-  spawnOffset: {x: 0, y: 1.5, z: 1.5}
+  spawnOffset: {x: 0, y: 1.5, z: 1.2}
 --- !u!95 &3937732561661069261
 Animator:
   serializedVersion: 7

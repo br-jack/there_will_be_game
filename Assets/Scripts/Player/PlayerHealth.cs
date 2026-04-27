@@ -15,6 +15,7 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private DamageVignetteFlash damageFlash;
+    [SerializeField] private PlayerDamageRedFlash damageRedFlash;
 
     [SerializeField] private PlayerInvulnerabilityFlash invulnerabilityFlash;
 
@@ -25,6 +26,11 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Score Penalty")]
     [SerializeField] private int fearPenaltyOnRespawn = 500;
+
+    [Header("Damage Reduction After Hit")]
+    [SerializeField] private float damageReductionDuration = 1f;
+    [SerializeField, Range(0f, 1f)] private float reducedDamageMultiplier = 0.25f;
+    private float damageReductionEndTime;
 
     [SerializeField] private Renderer[] playerRenderers;
     [SerializeField] private DeathTextUI deathTextUI;
@@ -52,6 +58,18 @@ public class PlayerHealth : MonoBehaviour
     public event Action OnDeath;
     private PlayerLives playerLives;
 
+    private void Awake()
+    {
+        if (damageRedFlash == null)
+        {
+            damageRedFlash = GetComponent<PlayerDamageRedFlash>();
+            if (damageRedFlash == null)
+            {
+                damageRedFlash = gameObject.AddComponent<PlayerDamageRedFlash>();
+            }
+        }
+    }
+
     private void Start()
     {
         if (horseMovement == null) horseMovement = GetComponent<horseMovementGaits>();
@@ -73,6 +91,11 @@ public class PlayerHealth : MonoBehaviour
         }
         if (IsDead) return;
 
+        if (Time.time < damageReductionEndTime)
+        {
+            damage = Mathf.RoundToInt(damage * reducedDamageMultiplier);
+        }
+
         Current -= damage;
         if (Current < 0) Current = 0;
 
@@ -84,12 +107,16 @@ public class PlayerHealth : MonoBehaviour
         }
         if (!IsDead)
         {
-            if (invulnerabilityFlash != null)
+            damageReductionEndTime = Time.time + damageReductionDuration;
+            if (damageRedFlash != null)
+            {
+                damageRedFlash.PlayFlash();
+            }
+            else if (invulnerabilityFlash != null)
             {
                 invulnerabilityFlash.PlayFlash();
-                playerLives.MakeInvincibleFor(invulnerabilityFlash.FlashDuration);
             }
-            else // ?
+            else
             {
                 playerLives.MakeInvincibleFor(1f);
             }
@@ -175,7 +202,10 @@ public class PlayerHealth : MonoBehaviour
         RestoreHammerEffectsAfterRespawn();
         playerLives.MakeInvincibleFor(respawnInvincibilityDuration);
 
-        invulnerabilityFlash.PlayFlash();
+        if (invulnerabilityFlash != null)
+        {
+            invulnerabilityFlash.PlayFlash();
+        }
     }
 
     private void SetPlayerVisible(bool visible)
