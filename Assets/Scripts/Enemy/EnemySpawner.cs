@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
-    private enum EnemyType { MeleeShielded, MeleeUnshielded, Ranged, Rapid }
+    private enum EnemyType { MeleeShielded, MeleeUnshielded, Ranged, Rapid, Civilian }
 
     [System.Serializable]
     public struct Wave
@@ -16,6 +16,7 @@ public class EnemySpawner : MonoBehaviour
         public int meleeUnshielded;
         public int ranged;
         public int rapid;
+        public int civilians;
     }
 
     private const float BreakDuration = 5f;
@@ -24,9 +25,11 @@ public class EnemySpawner : MonoBehaviour
     [HideInInspector] public bool spawningEnabled = true;
 
     [Header("Enemy Prefabs")]
-    [SerializeField] private GameObject meleeEnemyPrefab;
+    [SerializeField] private GameObject meleeUnshieldedEnemyPrefab;
+    [SerializeField] private GameObject meleeShieldedEnemyPrefab;
     [SerializeField] private GameObject rapidEnemyPrefab;
     [SerializeField] private GameObject rangedEnemyPrefab;
+    [SerializeField] private GameObject civilianPrefab;
 
     [SerializeField] private float minDistanceFromPlayer = 15f;
     [SerializeField] private float maxDistanceFromPlayer = 100f;
@@ -41,11 +44,12 @@ public class EnemySpawner : MonoBehaviour
 
     private Transform player;
 
-    // Keep track of enemies of each enemy type.
+    // Keep track of alive instances of each type.
     private readonly List<StandardEnemyAI> aliveMeleeShielded = new List<StandardEnemyAI>();
     private readonly List<StandardEnemyAI> aliveMeleeUnshielded = new List<StandardEnemyAI>();
     private readonly List<StandardEnemyAI> aliveRanged = new List<StandardEnemyAI>();
     private readonly List<StandardEnemyAI> aliveRapid = new List<StandardEnemyAI>();
+    private readonly List<CivilianAI> aliveCivilians = new List<CivilianAI>();
 
     private int currentWaveIndex = 0;
     private float waveTimer = 0f;
@@ -65,11 +69,12 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
-        // Prune dead enemies.
+        // Prune dead entries.
         aliveMeleeShielded.RemoveAll(e => e == null);
         aliveMeleeUnshielded.RemoveAll(e => e == null);
         aliveRanged.RemoveAll(e => e == null);
         aliveRapid.RemoveAll(e => e == null);
+        aliveCivilians.RemoveAll(c => c == null);
 
         // Halt wave/break/spawn timers while disabled (paused or game over).
         if (!spawningEnabled) return;
@@ -102,7 +107,7 @@ public class EnemySpawner : MonoBehaviour
         {
             if (currentWave.clearRemainingOnEnd)
             {
-                ClearAllEnemies();
+                ClearAllSpawned();
             }
             onBreak = true;
             breakTimer = 0f;
@@ -127,54 +132,58 @@ public class EnemySpawner : MonoBehaviour
         int remainMeleeUnshielded = Mathf.Max(0, wave.meleeUnshielded - aliveMeleeUnshielded.Count);
         int remainRanged = Mathf.Max(0, wave.ranged - aliveRanged.Count);
         int remainRapid = Mathf.Max(0, wave.rapid - aliveRapid.Count);
+        int remainCivilians = Mathf.Max(0, wave.civilians - aliveCivilians.Count);
 
-        int total = remainMeleeShielded + remainMeleeUnshielded + remainRanged + remainRapid;
+        int total = remainMeleeShielded + remainMeleeUnshielded + remainRanged + remainRapid + remainCivilians;
         if (total <= 0) return;
 
         // Weighted random pick.
         int roll = Random.Range(0, total);
-        
-        // [0, remainMeleeShielded], [remainMeleeShielded, remainMeleeShielded + remainMeleeUnshielded], [remainMeleeShielded + remainMeleeUnshielded, remainMeleeShielded + remainMeleeUnshielded + remainRanged], [remainMeleeShielded + remainMeleeUnshielded + remainRanged, total]
+
         if (roll < remainMeleeShielded)
         {
-            SpawnEnemy(EnemyType.MeleeShielded);
+            SpawnOne(EnemyType.MeleeShielded);
         }
         else if (roll < remainMeleeShielded + remainMeleeUnshielded)
         {
-            SpawnEnemy(EnemyType.MeleeUnshielded);
+            SpawnOne(EnemyType.MeleeUnshielded);
         }
         else if (roll < remainMeleeShielded + remainMeleeUnshielded + remainRanged)
         {
-            SpawnEnemy(EnemyType.Ranged);
+            SpawnOne(EnemyType.Ranged);
+        }
+        else if (roll < remainMeleeShielded + remainMeleeUnshielded + remainRanged + remainRapid)
+        {
+            SpawnOne(EnemyType.Rapid);
         }
         else
         {
-            SpawnEnemy(EnemyType.Rapid);
+            SpawnOne(EnemyType.Civilian);
         }
     }
 
-    private void SpawnEnemy(EnemyType type)
+    private void SpawnOne(EnemyType type)
     {
         GameObject prefab;
-        bool keepShield;
+        bool keepShield = false;
 
         switch (type)
         {
             case EnemyType.MeleeShielded:
-                prefab = meleeEnemyPrefab;
+                prefab = meleeShieldedEnemyPrefab;
                 keepShield = true;
                 break;
             case EnemyType.MeleeUnshielded:
-                prefab = meleeEnemyPrefab;
-                keepShield = false;
+                prefab = meleeUnshieldedEnemyPrefab;
                 break;
             case EnemyType.Ranged:
                 prefab = rangedEnemyPrefab;
-                keepShield = false;
                 break;
             case EnemyType.Rapid:
                 prefab = rapidEnemyPrefab;
-                keepShield = false;
+                break;
+            case EnemyType.Civilian:
+                prefab = civilianPrefab;
                 break;
             default:
                 return;
@@ -193,23 +202,31 @@ public class EnemySpawner : MonoBehaviour
             if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
             {
                 GameObject spawned = Instantiate(prefab, hit.position, Quaternion.identity);
-                StandardEnemyAI ai = spawned.GetComponent<StandardEnemyAI>();
-                if (ai != null)
-                {
-                    // Strip shield if this type shouldn't have one.
-                    if (!keepShield && ai.shield != null)
-                    {
-                        Destroy(ai.shield);
-                        ai.shield = null;
-                    }
 
-                    // Track in the correct list.
-                    switch (type)
+                if (type == EnemyType.Civilian)
+                {
+                    CivilianAI civ = spawned.GetComponent<CivilianAI>();
+                    if (civ != null) aliveCivilians.Add(civ);
+                }
+                else
+                {
+                    StandardEnemyAI ai = spawned.GetComponent<StandardEnemyAI>();
+                    if (ai != null)
                     {
-                        case EnemyType.MeleeShielded:   aliveMeleeShielded.Add(ai); break;
-                        case EnemyType.MeleeUnshielded: aliveMeleeUnshielded.Add(ai); break;
-                        case EnemyType.Ranged:          aliveRanged.Add(ai); break;
-                        case EnemyType.Rapid:           aliveRapid.Add(ai); break;
+                        // Strip shield if this type shouldn't have one.
+                        if (!keepShield && ai.shield != null)
+                        {
+                            ai.shield = null;
+                        }
+
+                        // Track in the correct list.
+                        switch (type)
+                        {
+                            case EnemyType.MeleeShielded:   aliveMeleeShielded.Add(ai); break;
+                            case EnemyType.MeleeUnshielded: aliveMeleeUnshielded.Add(ai); break;
+                            case EnemyType.Ranged:          aliveRanged.Add(ai); break;
+                            case EnemyType.Rapid:           aliveRapid.Add(ai); break;
+                        }
                     }
                 }
                 return;
@@ -217,15 +234,16 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private void ClearAllEnemies()
+    private void ClearAllSpawned()
     {
         ClearList(aliveMeleeShielded);
         ClearList(aliveMeleeUnshielded);
         ClearList(aliveRanged);
         ClearList(aliveRapid);
+        ClearList(aliveCivilians);
     }
 
-    private void ClearList(List<StandardEnemyAI> list)
+    private void ClearList<T>(List<T> list) where T : Component
     {
         for (int i = 0; i < list.Count; i++)
         {

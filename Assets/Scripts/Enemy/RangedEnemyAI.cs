@@ -22,7 +22,11 @@ public class RangedEnemyAI : StandardEnemyAI
         float spread = Random.Range(-3.0f, 3.0f);
         direction = Quaternion.AngleAxis(spread, Vector3.up) * direction;
 
-        Projectile newProjectile = Instantiate(this.projectile, spawnPosition, Quaternion.identity);
+        Quaternion spawnRotation = direction.sqrMagnitude > 0.0001f
+            ? Quaternion.LookRotation(direction)
+            : Quaternion.identity;
+
+        Projectile newProjectile = Instantiate(this.projectile, spawnPosition, spawnRotation);
         newProjectile.Initialize(attack.damage, direction, gameObject);
     }
 }
