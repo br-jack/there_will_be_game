@@ -299,7 +299,9 @@ inline void parseRumbleInput(void) {
 
     currentRumble.mode = parseRumbleModeByte(modeByte);
 
-    currentRumble.flipDirection = (bool) Serial1.read();
+    int test = Serial1.read();
+    Serial.println(test);
+    currentRumble.flipDirection = (bool) test;
 
     currentRumble.duration = Serial1.parseInt();
     //read separator, should be (';') semicolon character but checking would just waste time
