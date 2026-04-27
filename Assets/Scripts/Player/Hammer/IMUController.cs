@@ -375,5 +375,10 @@ namespace Hammer
             Debug.Log("Sending Rumble Request");
             ConstantRumble(msDuration, 255);
         }
+        
+        public void Rumble()
+        {
+            Rumble(configSO.defaultDuration);
+        }
     }
 }

@@ -10,4 +10,6 @@ public class IMUConfig : ScriptableObject
     public int writeTimeout = 100;
 
     public int rumbleFadeInterval = 30;
+
+    public int defaultDuration = 5000;
 }
