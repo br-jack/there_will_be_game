@@ -47,7 +47,7 @@ namespace Enemy
         }
         private void SetRigidbodyStates(Rigidbody[] rigidbodies, bool state)
         {
-            foreach (Rigidbody rb in ragdollRigidbodies)
+            foreach (Rigidbody rb in rigidbodies)
             {
                 Debug.Assert(rb != null);
                 rb.isKinematic = !state;
@@ -56,7 +56,7 @@ namespace Enemy
         }
         private void SetCharacterJointState(CharacterJoint[] characterJoints, bool state)
         {
-            foreach (CharacterJoint joint in ragdollCharacterJoints)
+            foreach (CharacterJoint joint in characterJoints)
             {
                 Debug.Assert(joint != null);
                 joint.enableCollision = state;
