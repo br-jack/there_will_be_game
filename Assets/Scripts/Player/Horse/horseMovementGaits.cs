@@ -321,13 +321,21 @@ public class horseMovementGaits : MonoBehaviour
 
     private bool ShouldIgnoreGameplayInput()
     {
+        if (GameStateManager.Instance == null)
+        {
+            Debug.LogWarning("No GameStateManager found");
+            return true;
+        }
+
         if (GameStateManager.Instance.CurState != GameState.Playing)
         {
+            Debug.LogWarning("Ignoring input because game state is: " + GameStateManager.Instance.CurState);
             return true;
         }
 
         if (Time.unscaledTime < GameStateManager.ignoreGameplayInputUntil)
         {
+            Debug.LogWarning("Ignoring input because ignoreGameplayInputUntil is active");
             return true;
         }
 
