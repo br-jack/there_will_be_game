@@ -30,7 +30,7 @@ namespace Enemy
             return Physics.Raycast(transform.position + Vector3.up * 0.2f, Vector3.down, GroundCheckDistance + 0.2f);
         }
 
-        public void ApplyKnockback(Vector3 force, bool playHitAnim = true)
+        public void ApplyKnockback(Vector3 force)
         {
             IsKnockedBack = true;
             knockbackTimer = KnockbackTime;

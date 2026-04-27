@@ -64,7 +64,7 @@ namespace Enemy
             knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
             knockDir.Normalize();
 
-            _knockbackState.ApplyKnockback(knockDir * force, false);
+            _knockbackState.ApplyKnockback(knockDir * force);
             animator.SetTrigger(deadTrigger);
 
             //TryTrigger(deadTrigger);

@@ -489,7 +489,7 @@ namespace Enemy
             Vector3 dir = transform.position - attacker.transform.position;
             dir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
             dir.Normalize();
-            knockbackHandler.ApplyKnockback(dir * force, playHitAnim: false);
+            knockbackHandler.ApplyKnockback(dir * force);
             
             //TryTrigger(hitTrigger);
             

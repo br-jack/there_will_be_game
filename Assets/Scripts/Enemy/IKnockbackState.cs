@@ -7,6 +7,6 @@ namespace Enemy
     {
         public bool IsKnockedBack { get; }
         public bool IsGrounded();
-        public void ApplyKnockback(Vector3 force, bool playHitAnim = true);
+        public void ApplyKnockback(Vector3 force);
     }
 }
