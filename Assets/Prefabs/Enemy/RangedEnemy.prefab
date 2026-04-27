@@ -2048,6 +2048,7 @@ GameObject:
   - component: {fileID: 3937732561661069261}
   - component: {fileID: 2673126496678726868}
   - component: {fileID: 21835665983040387}
+  - component: {fileID: 285281332656124644}
   m_Layer: 9
   m_Name: RangedEnemy
   m_TagString: Enemy
@@ -2312,7 +2313,6 @@ MonoBehaviour:
   hitTrigger: Hit
   deadTrigger: Die
   useDamageAnimEvent: 0
-  useTutorialKillLock: 0
   projectile: {fileID: -3951855776858207511, guid: a29a84e2afeaffc4fa32f6b98dd5ff4b, type: 3}
   spawnOffset: {x: 0, y: 1.5, z: 1.2}
 --- !u!95 &3937732561661069261
@@ -2402,6 +2402,19 @@ MonoBehaviour:
   useTutorialKillLock: 0
   maxAbsoluteDeathTime: 20
   maxGroundedDeathTime: 10
+--- !u!114 &285281332656124644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4937528112206273530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eae1815b98046dd8e3de0b56a357941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 5660115021953431527}
 --- !u!1 &5018057465785643956
 GameObject:
   m_ObjectHideFlags: 0

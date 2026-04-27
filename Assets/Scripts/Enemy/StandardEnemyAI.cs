@@ -65,10 +65,9 @@ namespace Enemy
         private float wanderIdleEndTime;
 
         [Header("Knockback & Death")]
-        private const float GroundCheckDistance = 0.4f;
         [SerializeField] private RagdollToggler ragdollToggler;
-        public IKnockbackState knockbackHandler;
-        public IDeathState DeathHandler;
+        public IKnockbackState KnockbackHandler { get; private set; }
+        public IDeathState DeathHandler { get; private set; }
 
         private CombatState combatState = CombatState.Approaching;
         private float actualHoldDistance;
@@ -85,9 +84,6 @@ namespace Enemy
         [SerializeField] private string deadTrigger = "Die";
         [SerializeField] private bool useDamageAnimEvent = false;
 
-        //TODO use death handler versions of these
-        [SerializeField] private bool useTutorialKillLock = false;
-        public bool CanBeKilled { get; private set; } = true;
         public bool HasShield() => shield != null;
         
         private float timeOfNextAttack;
@@ -108,16 +104,17 @@ namespace Enemy
 
             SetupNavMesh();
             
-            KnockbackHandler knockbackHandler = GetComponent<KnockbackHandler>();
-            if (knockbackHandler != null)
+            KnockbackHandler kbHandler = GetComponent<KnockbackHandler>();
+            if (kbHandler != null)
             {
-                knockbackHandler.KnockbackEnded += SetApproachState;
+                kbHandler.KnockbackEnded += SetApproachState;
+                KnockbackHandler = kbHandler;
             }
             
             RagdollDeathHandler deathHandler = GetComponent<RagdollDeathHandler>();
             if (deathHandler != null)
             {
-                deathHandler.Init(ragdollToggler, knockbackHandler);
+                deathHandler.Init(ragdollToggler, KnockbackHandler);
                 DeathHandler = deathHandler;
             }
 
@@ -182,7 +179,7 @@ namespace Enemy
         void Update()
         {
             if (DeathHandler.IsDying) return;
-            if (knockbackHandler.IsKnockedBack)
+            if (KnockbackHandler.IsKnockedBack)
             {
                 return;
             }
@@ -331,7 +328,7 @@ namespace Enemy
         void FixedUpdate()
         {
             if (DeathHandler.IsDying) return;
-            if (knockbackHandler.IsKnockedBack) return;
+            if (KnockbackHandler.IsKnockedBack) return;
             if (_playerTransformRef == null) return;
 
             bool isWandering = combatState == CombatState.Wandering || combatState == CombatState.Idling;
@@ -489,7 +486,7 @@ namespace Enemy
             Vector3 dir = transform.position - attacker.transform.position;
             dir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
             dir.Normalize();
-            knockbackHandler.ApplyKnockback(dir * force);
+            KnockbackHandler.ApplyKnockback(dir * force);
             
             //TryTrigger(hitTrigger);
             
@@ -531,11 +528,6 @@ namespace Enemy
             anim.SetFloat(speedParam, animSpeed);
         }
 
-        public bool IsGrounded()
-        {
-            return Physics.Raycast(transform.position + Vector3.up * 0.2f, Vector3.down, GroundCheckDistance + 0.2f);
-        }
-
         private void SetApproachState()
         {
             // After knockback, re-approach from wherever we ended up.
@@ -552,7 +544,7 @@ namespace Enemy
 
         private void OnDisable()
         {
-            if (knockbackHandler is KnockbackHandler handler)
+            if (KnockbackHandler is KnockbackHandler handler)
             {
                 handler.KnockbackEnded -= SetApproachState;
             }

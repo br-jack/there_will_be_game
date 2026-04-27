@@ -21,8 +21,8 @@ public class BodyHit : MonoBehaviour
 
         StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
         if (enemy == null) return;
-        if (enemy.knockbackHandler.IsKnockedBack) return;
-        if (!enemy.CanBeKilled) return;
+        if (enemy.KnockbackHandler.IsKnockedBack) return;
+        if (!enemy.DeathHandler.CanBeKilled) return;
 
         if (enemy.HasShield())
         {

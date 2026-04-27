@@ -1979,6 +1979,7 @@ GameObject:
   - component: {fileID: 8527222825716324602}
   - component: {fileID: 4106764252395310813}
   - component: {fileID: 3718799091249380625}
+  - component: {fileID: 7259089070667302091}
   m_Layer: 9
   m_Name: RapidEnemy
   m_TagString: Enemy
@@ -2245,7 +2246,6 @@ MonoBehaviour:
   hitTrigger: Hit
   deadTrigger: Die
   useDamageAnimEvent: 0
-  useTutorialKillLock: 0
 --- !u!95 &8527222825716324602
 Animator:
   serializedVersion: 7
@@ -2333,6 +2333,19 @@ MonoBehaviour:
   useTutorialKillLock: 0
   maxAbsoluteDeathTime: 20
   maxGroundedDeathTime: 10
+--- !u!114 &7259089070667302091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4993346534810899319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eae1815b98046dd8e3de0b56a357941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 5711326291013762922}
 --- !u!1 &5035013635050001343
 GameObject:
   m_ObjectHideFlags: 0
