@@ -2331,7 +2331,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useTutorialKillLock: 0
-  maxDeathTime: 15
+  maxAbsoluteDeathTime: 20
+  maxGroundedDeathTime: 10
 --- !u!1 &5035013635050001343
 GameObject:
   m_ObjectHideFlags: 0
@@ -3202,8 +3203,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.08757428
-  m_Center: {x: 0, y: 0.08757428, z: 0}
+  m_Radius: 0.0025
+  m_Center: {x: 0, y: 0.001, z: -0.0005}
 --- !u!54 &7773478704691553409
 Rigidbody:
   m_ObjectHideFlags: 0

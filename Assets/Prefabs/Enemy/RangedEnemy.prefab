@@ -2303,7 +2303,7 @@ MonoBehaviour:
     minIdleDuration: 2
     maxIdleDuration: 4
     speed: 6
-  ragdollToggler: {fileID: 0}
+  ragdollToggler: {fileID: 2673126496678726868}
   anim: {fileID: 3937732561661069261}
   speedParam: Speed
   idleSpeedThreshold: 0.5
@@ -2400,7 +2400,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useTutorialKillLock: 0
-  maxDeathTime: 15
+  maxAbsoluteDeathTime: 20
+  maxGroundedDeathTime: 10
 --- !u!1 &5018057465785643956
 GameObject:
   m_ObjectHideFlags: 0
