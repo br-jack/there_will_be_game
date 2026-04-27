@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee5bb8b29a5a85d43af6477071eef330, type: 3}
   m_Name: IMUConfig
   m_EditorClassIdentifier: 
+  portOverride: 
   enableRumble: 1
   readTimeout: 50
   writeTimeout: 100
   rumbleFadeInterval: 30
+  flipDefaultRumbleDirection: 0
   defaultRumbleDuration: 413
-  defaultRumbleStartStrength: 120
-  defaultRumbleEndStrength: 245
+  defaultRumbleStartStrength: 30
+  defaultRumbleEndStrength: 51
   defaultRumbleFadeDuration: 52

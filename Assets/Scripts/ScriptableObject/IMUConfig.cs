@@ -13,6 +13,8 @@ public class IMUConfig : ScriptableObject
 
     public int rumbleFadeInterval = 30;
 
+    public bool flipDefaultRumbleDirection = false;
+
     public int defaultRumbleDuration = 5000;
 
     [Range(0, 255)] public int defaultRumbleStartStrength = 255;

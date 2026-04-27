@@ -353,7 +353,7 @@ namespace Hammer
 
         public void ConstantRumble(int msDuration, int strength)
         {
-            SendRumbleRequest(RumbleMode.Constant, false, msDuration, strength, strength, 0, 30);
+            SendRumbleRequest(RumbleMode.Constant, configSO.flipDefaultRumbleDirection, msDuration, strength, strength, 0, 30);
         }
 
         public void GradientRumble(int totalDuration, int startStrength, int endStrength, int fadeDuration)
@@ -367,7 +367,7 @@ namespace Hammer
             
             int fadeRate = strengthDifference / numSteps;
             
-            SendRumbleRequest(mode, false, totalDuration, startStrength, endStrength, fadeRate, configSO.rumbleFadeInterval);
+            SendRumbleRequest(mode, configSO.flipDefaultRumbleDirection, totalDuration, startStrength, endStrength, fadeRate, configSO.rumbleFadeInterval);
         }
 
         public void Rumble(int msDuration)
