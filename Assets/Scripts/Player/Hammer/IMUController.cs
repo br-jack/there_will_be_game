@@ -53,7 +53,7 @@ namespace Hammer
 
                         foreach (string possiblePort in availablePorts)
                         {
-                            Debug.Log("Trying port " + possiblePort);
+                            // Debug.Log("Trying port " + possiblePort);
                             
                             SerialPort testSerial = new SerialPort(possiblePort, 115200);
                             testSerial.DtrEnable = true;
@@ -69,7 +69,7 @@ namespace Hammer
                             if (output.Contains("q:") || output.Contains("a:") || output.Contains("info:"))
                             {
                                 //(hub sending) IMU data found
-                                Debug.Log("Hub found on port " + possiblePort);
+                                // Debug.Log("Hub found on port " + possiblePort);
                                 return possiblePort;
                             }
                         }
@@ -80,10 +80,10 @@ namespace Hammer
                     }
                 }
             }
-            catch (System.Exception e)
+            catch (Exception) //e)
             {
-                Debug.LogWarning("Failed to find port: ");
-                Debug.LogWarning(e);
+                // Debug.LogWarning("Failed to find port: ");
+                // Debug.LogWarning(e);
             }
 
             return null;
@@ -114,16 +114,16 @@ namespace Hammer
                     if (_stream.IsOpen)
                     {
                         // if youre connected but not getting any data you may have another serial monitor open for this port
-                        Debug.Log("Connected (allegedly)");
+                        // Debug.Log("Connected (allegedly)");
                         
                         return true;
                     }
                 }
             }
-            catch (System.Exception e)
+            catch (Exception) // e)
             {
-                Debug.LogWarning("Failed to connect to port: ");
-                Debug.LogWarning(e);
+                // Debug.LogWarning("Failed to connect to port: ");
+                // Debug.LogWarning(e);
             }
 
             return false;
