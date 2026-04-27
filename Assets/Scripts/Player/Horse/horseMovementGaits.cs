@@ -44,6 +44,8 @@ public class horseMovementGaits : MonoBehaviour
 
     [SerializeField] private Vector3 verticalVelocity = Vector3.zero; //serialised as bugged i think
     public Action jumpStarted;
+
+    [SerializeField] private AnimationCurve steeringCurve;
     
     private float _throttleInput;
     private float _turnInput;
@@ -79,7 +81,7 @@ public class horseMovementGaits : MonoBehaviour
     public void onSteer(InputAction.CallbackContext context)
     {
         //Debug.Log("hi! steering");
-        _turnInput = context.ReadValue<float>();
+        _turnInput = steeringCurve.Evaluate(context.ReadValue<float>());
 
     }
 
@@ -215,7 +217,10 @@ public class horseMovementGaits : MonoBehaviour
         }
         else if (currentRunCharge > 0) {currentRunCharge -= Time.deltaTime * chargeDecay;}
 
-        setGait(currentRunCharge); 
+        if (_throttleInput >= 0.95f)
+        {
+            setGait(currentRunCharge); 
+        }
         
         float turnSpeed = getTurnSpeed();
 
