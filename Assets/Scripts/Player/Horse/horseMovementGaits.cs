@@ -68,6 +68,22 @@ public class horseMovementGaits : MonoBehaviour
 
     private CharacterController _cc;
     private Transform _tf;
+
+    [Header("Audio Settings")]
+    [SerializeField] private AudioSource loopSource;
+    [SerializeField] private AudioSource sfxSource; 
+    
+    [SerializeField] private AudioClip walkClip;
+    [SerializeField] private AudioClip trotClip;
+    [SerializeField] private AudioClip gallopClip;
+    [SerializeField] private AudioClip driftClip;
+    [SerializeField] private AudioClip brakeClip;
+    [SerializeField] private AudioClip landingClip;
+
+    private bool _wasGrounded; // Used to detect the moment of landing
+    public float groundGraceTime = 0.15f;
+    private float _airTimeCounter; 
+    private bool _hasJumped;
     
     //These input functions (I believe) occur before Update(), 
     //so we can update the _xInput variables in them, and then use those variables in Update()
@@ -255,6 +271,71 @@ public class horseMovementGaits : MonoBehaviour
         HandleDriftLogic();
         ApplyMovement();
 
+        HandleAudio();
+        
+        _wasGrounded = _cc.isGrounded;
+
+    }
+
+    private void HandleAudio()
+    {
+        if (_jumpInput && _cc.isGrounded && tutorialAllowJump && jumpLockedTime <= 0.0f)
+        {
+            _hasJumped = true;
+        }
+
+        if (_cc.isGrounded && _wasGrounded == false && _hasJumped)
+        {
+            if (landingClip != null) sfxSource.PlayOneShot(landingClip);
+            _hasJumped = false;
+        }
+
+        if (_cc.isGrounded)
+        {
+            _airTimeCounter = 0;
+        }
+        else
+        {
+            _airTimeCounter += Time.deltaTime;
+        }
+
+        bool treatAsGrounded = _airTimeCounter < groundGraceTime;
+
+        if (treatAsGrounded)
+        {
+            AudioClip targetClip = null;
+
+            if (_isDrifting) targetClip = driftClip;
+            else if (_brakeInput > 0.1f && currentSpeed > 0.1f) targetClip = brakeClip;
+            else if (currentSpeed > 0.1f || currentSpeed < -0.1f)
+            {
+                if (gait == gait.galloping) targetClip = gallopClip;
+                else if (gait == gait.cantering) targetClip = gallopClip;
+                else if (gait == gait.trotting) targetClip = trotClip;
+                else if (gait == gait.walking || gait == gait.reverse) targetClip = walkClip;
+            }
+
+            if (targetClip != null)
+            {
+                if (loopSource.clip != targetClip)
+                {
+                    loopSource.clip = targetClip;
+                    loopSource.Play();
+                }
+                else if (!loopSource.isPlaying)
+                {
+                    loopSource.Play();
+                }
+            }
+            else
+            {
+                if (loopSource.isPlaying) loopSource.Stop();
+            }
+        }
+        else
+        {
+            if (loopSource.isPlaying) loopSource.Stop();
+        }
     }
 
     private void HandleDriftLogic()

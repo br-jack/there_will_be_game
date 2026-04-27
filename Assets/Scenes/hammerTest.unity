@@ -128,7 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 196213214}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 332402041}
   - component: {fileID: 332402043}
   - component: {fileID: 332402042}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Roll Speed Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 422017820}
   - component: {fileID: 422017819}
   - component: {fileID: 422017818}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 506696884}
   - component: {fileID: 506696883}
   - component: {fileID: 506696882}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Play Game Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -540,7 +540,7 @@ GameObject:
   - component: {fileID: 574027609}
   - component: {fileID: 574027611}
   - component: {fileID: 574027610}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Star Game TXT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -677,7 +677,7 @@ GameObject:
   - component: {fileID: 600872241}
   - component: {fileID: 600872240}
   - component: {fileID: 600872239}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Directional Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -799,7 +799,7 @@ GameObject:
   - component: {fileID: 854620209}
   - component: {fileID: 854620208}
   - component: {fileID: 854620207}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -982,7 +982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5630890325763975634, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 7676368825266902001, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
       propertyPath: pivotTransform
@@ -1004,6 +1004,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6d0a1dd8956af4385d7151cfe70551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &860336805 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 6379910031664844036, guid: 2aa10f070b3a2d8448429dd25c384ac9, type: 3}
+  m_PrefabInstance: {fileID: 860336803}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &896106722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1015,7 +1020,7 @@ GameObject:
   - component: {fileID: 896106723}
   - component: {fileID: 896106725}
   - component: {fileID: 896106724}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Accel Btn TXT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1152,7 +1157,7 @@ GameObject:
   - component: {fileID: 994837372}
   - component: {fileID: 994837374}
   - component: {fileID: 994837373}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Yaw Speed Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1291,7 +1296,7 @@ GameObject:
   - component: {fileID: 1119556389}
   - component: {fileID: 1119556388}
   - component: {fileID: 1119556391}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Calibrate IMU Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1443,7 +1448,7 @@ GameObject:
   - component: {fileID: 1129509658}
   - component: {fileID: 1129509660}
   - component: {fileID: 1129509659}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Pitch Speed Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1569,6 +1574,139 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1129509657}
   m_CullTransparentMesh: 1
+--- !u!1001 &1178230073
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 872883434975298054, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043326702827504670, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2007879889780083079, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_ConnectedBody
+      value: 
+      objectReference: {fileID: 860336805}
+    - target: {fileID: 2427141499873356891, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Name
+      value: VisualHammer
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427141499873356891, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537313579718414273, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090912974106212065, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090912974106212065, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090912974106212065, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090912974106212065, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090912974106212065, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090912974106212065, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090912974106212065, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090912974106212065, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090912974106212065, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3090912974106212065, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3103023444793888204, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4964576340167020576, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5473451620664876475, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5555687402779521408, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5555687402779521408, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6309594497319092797, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338722567194937841, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _targetHammer
+      value: 
+      objectReference: {fileID: 860336804}
+    - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: pivotTransform
+      value: 
+      objectReference: {fileID: 196213214}
+    - target: {fileID: 6680247476183967303, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7381639999069247415, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8319489232388847471, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8479068076154358140, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: getSpeedRelativeTo
+      value: 
+      objectReference: {fileID: 196213214}
+    m_RemovedComponents: []
+    m_RemovedGameObjects:
+    - {fileID: 6680247476183967303, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+    - {fileID: 5473451620664876475, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+    - {fileID: 8319489232388847471, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+    - {fileID: 2537313579718414273, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
 --- !u!1 &1530288996
 GameObject:
   m_ObjectHideFlags: 0
@@ -1580,7 +1718,7 @@ GameObject:
   - component: {fileID: 1530288999}
   - component: {fileID: 1530288998}
   - component: {fileID: 1530288997}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1659,7 +1797,7 @@ GameObject:
   - component: {fileID: 1727837315}
   - component: {fileID: 1727837317}
   - component: {fileID: 1727837316}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: X Accel Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1796,7 +1934,7 @@ GameObject:
   - component: {fileID: 1890693762}
   - component: {fileID: 1890693764}
   - component: {fileID: 1890693763}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Y Accel Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1933,7 +2071,7 @@ GameObject:
   - component: {fileID: 1985192913}
   - component: {fileID: 1985192915}
   - component: {fileID: 1985192914}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Z Accel Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2069,7 +2207,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 382918228374735486, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 889244070202556962, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
       propertyPath: flipXInAttitudeQuaternion
@@ -2125,7 +2263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6729019708239801087, guid: 16acd0a4056a11b4da3e5330f300e83c, type: 3}
       propertyPath: m_Layer
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2143,3 +2281,4 @@ SceneRoots:
   - {fileID: 4887283710053077435}
   - {fileID: 196213214}
   - {fileID: 860336803}
+  - {fileID: 1178230073}

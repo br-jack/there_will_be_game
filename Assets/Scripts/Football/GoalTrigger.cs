@@ -4,13 +4,9 @@ public class GoalTrigger : MonoBehaviour
 {
     public ParticleSystem confetti;
     public ParticleSystem fireworks;
-    public AudioClip fireworksSFX;
+    [SerializeField] private AudioSource source; 
+    [SerializeField] private AudioClip fireworksSFX;
     [Range(0, 1)] public float volume = 1.0f;
-
-    void Awake()
-    {
-       fireworksSFX = Resources.Load<AudioClip>("fireworksSFX"); 
-    }
     private void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.CompareTag("Football")) return;
@@ -25,8 +21,7 @@ public class GoalTrigger : MonoBehaviour
 
             if (fireworks != null && fireworksSFX != null)
             {
-                AudioSource.PlayClipAtPoint(fireworksSFX, transform.position, volume);
-                fireworks.Play();
+                source.PlayOneShot(fireworksSFX);
             }
 
             FootballTask task = FindFirstObjectByType<FootballTask>();
