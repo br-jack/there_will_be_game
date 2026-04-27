@@ -11,5 +11,10 @@ public class IMUConfig : ScriptableObject
 
     public int rumbleFadeInterval = 30;
 
-    public int defaultDuration = 5000;
+    public int defaultRumbleDuration = 5000;
+
+    [Range(0, 255)] public int defaultRumbleStartStrength = 255;
+    [Range(0, 255)] public int defaultRumbleEndStrength = 255;
+
+    public int defaultRumbleFadeDuration = 150;
 }

@@ -373,12 +373,12 @@ namespace Hammer
             }
             
             Debug.Log("Sending Rumble Request");
-            ConstantRumble(msDuration, 255);
+            GradientRumble(msDuration, configSO.defaultRumbleStartStrength, configSO.defaultRumbleEndStrength, configSO.defaultRumbleFadeDuration);
         }
         
         public void Rumble()
         {
-            Rumble(configSO.defaultDuration);
+            Rumble(configSO.defaultRumbleDuration);
         }
     }
 }
