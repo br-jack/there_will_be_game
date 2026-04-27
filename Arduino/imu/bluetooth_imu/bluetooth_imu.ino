@@ -55,10 +55,10 @@ void setup(void) {
   delay(100);
 
   // Open serial communications and wait for port to open:
-  Serial.begin(115200);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
+  // Serial.begin(115200);
+  // while (!Serial) {
+  //   ; // wait for serial port to connect. Needed for native USB port only
+  // }
 
   // Serial1.begin(9600);
   // Serial1.print("AT+ROLE0");
@@ -134,13 +134,6 @@ void startRumble(void) {
   currentRumble.currentStrength = currentRumble.startStrength;
 
   setDirection(currentRumble.flipDirection);
-
-  if (currentRumble.flipDirection) {
-    Serial.println(F("info: Flip direction = true"));
-  }
-  else {
-    Serial.println(F("info: Flip direction = false"));
-  }
 
   analogWrite(motor1_spd_pin, currentRumble.currentStrength);
 
@@ -299,9 +292,8 @@ inline void parseRumbleInput(void) {
 
     currentRumble.mode = parseRumbleModeByte(modeByte);
 
-    int test = Serial1.read();
-    Serial.println(test);
-    currentRumble.flipDirection = (bool) test;
+    char flipDirectionByte = (char) Serial1.read();
+    currentRumble.flipDirection = flipDirectionByte == '1';
 
     currentRumble.duration = Serial1.parseInt();
     //read separator, should be (';') semicolon character but checking would just waste time
