@@ -64,6 +64,8 @@ namespace Enemy
             knockDir.Normalize();
 
             _knockbackState.ApplyKnockback(knockDir * force, false);
+            
+            _ragdollToggler.UseRagdoll();
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();
