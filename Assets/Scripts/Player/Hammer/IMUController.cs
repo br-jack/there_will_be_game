@@ -92,7 +92,7 @@ namespace Hammer
         //Returns if connected successfully or not
         private bool ConnectToPort(string port)
         {
-            if (port == null)
+            if (String.IsNullOrEmpty(port))
             {
                 return false;
             }
@@ -156,7 +156,7 @@ namespace Hammer
                 while (_running && !portOpen)
                 {
                     port = SearchPorts();
-                    if (port != null)
+                    if (!String.IsNullOrEmpty(port))
                     {
                         portOpen = ConnectToPort(port);
                     }
@@ -167,7 +167,7 @@ namespace Hammer
                     }
                 }
 
-                Debug.Assert(port != null);
+                Debug.Assert(!String.IsNullOrEmpty(port));
                 
                 while (_running)
                 {
@@ -218,7 +218,7 @@ namespace Hammer
                                 _stream.Close();
                             }
                             _stream = null;
-                            Debug.Assert(port != null);
+                            Debug.Assert(!String.IsNullOrEmpty(port));
                         }
                     }
                     catch(Exception) //ex)
