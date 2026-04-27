@@ -84,6 +84,7 @@ public class horseMovementGaits : MonoBehaviour
     public float groundGraceTime = 0.15f;
     private float _airTimeCounter; 
     private bool _hasJumped;
+    private bool _isAirborne;
     
     //These input functions (I believe) occur before Update(), 
     //so we can update the _xInput variables in them, and then use those variables in Update()
@@ -279,27 +280,7 @@ public class horseMovementGaits : MonoBehaviour
 
     private void HandleAudio()
     {
-        if (_jumpInput && _cc.isGrounded && tutorialAllowJump && jumpLockedTime <= 0.0f)
-        {
-            _hasJumped = true;
-        }
-
-        if (_cc.isGrounded && _wasGrounded == false && _hasJumped)
-        {
-            if (landingClip != null) sfxSource.PlayOneShot(landingClip);
-            _hasJumped = false;
-        }
-
-        if (_cc.isGrounded)
-        {
-            _airTimeCounter = 0;
-        }
-        else
-        {
-            _airTimeCounter += Time.deltaTime;
-        }
-
-        bool treatAsGrounded = _airTimeCounter < groundGraceTime;
+        bool treatAsGrounded = _cc.isGrounded || _airTimeCounter < groundGraceTime;
 
         if (treatAsGrounded)
         {
@@ -307,12 +288,12 @@ public class horseMovementGaits : MonoBehaviour
 
             if (_isDrifting) targetClip = driftClip;
             else if (_brakeInput > 0.1f && currentSpeed > 0.1f) targetClip = brakeClip;
-            else if (currentSpeed > 0.1f || currentSpeed < -0.1f)
+            else if (Mathf.Abs(currentSpeed) > 0.1f)
             {
-                if (gait == gait.galloping) targetClip = gallopClip;
-                else if (gait == gait.cantering) targetClip = gallopClip;
-                else if (gait == gait.trotting) targetClip = trotClip;
-                else if (gait == gait.walking || gait == gait.reverse) targetClip = walkClip;
+                if (gait == gait.galloping || gait == gait.cantering) 
+                    targetClip = gallopClip;
+                else 
+                    targetClip = walkClip;
             }
 
             if (targetClip != null)
@@ -322,19 +303,28 @@ public class horseMovementGaits : MonoBehaviour
                     loopSource.clip = targetClip;
                     loopSource.Play();
                 }
-                else if (!loopSource.isPlaying)
-                {
-                    loopSource.Play();
-                }
+                else if (!loopSource.isPlaying) loopSource.Play();
             }
-            else
-            {
-                if (loopSource.isPlaying) loopSource.Stop();
-            }
+            else if (loopSource.isPlaying) loopSource.Stop();
         }
         else
         {
             if (loopSource.isPlaying) loopSource.Stop();
+        }
+
+        if (!_cc.isGrounded)
+        {
+            _airTimeCounter += Time.deltaTime;
+            if (_airTimeCounter > 0.1f) _isAirborne = true;
+        }
+        else
+        {
+            _airTimeCounter = 0;
+            if (_isAirborne)
+            {
+                if (landingClip != null) sfxSource.PlayOneShot(landingClip);
+                _isAirborne = false; 
+            }
         }
     }
 
