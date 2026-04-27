@@ -27,6 +27,11 @@ namespace Hammer
         
         private string SearchPorts()
         {
+            if (configSO.portOverride != null)
+            {
+                return configSO.portOverride;
+            }
+            
             try
             {
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
