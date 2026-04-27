@@ -334,7 +334,7 @@ void loop(void) {  // run over and over
 
   outputSensorValues();
 
-  if (Serial1.available() > 10) {
+  if (Serial1.available() > 0) {
     parseRumbleInput();
   }
 
