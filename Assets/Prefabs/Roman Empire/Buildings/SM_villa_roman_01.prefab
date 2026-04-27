@@ -113,7 +113,10 @@ PrefabInstance:
       addedObject: {fileID: 8986256816633268951}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7373897749973263054}
+      addedObject: {fileID: 2859856840704194164}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6378168495168806725}
   m_SourcePrefab: {fileID: 100100000, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
 --- !u!1 &5101081793428669751 stripped
 GameObject:
@@ -142,7 +145,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -7572452796284243316, guid: d5d92bfca9ead0848a96556d16153119, type: 3}
---- !u!114 &7373897749973263054
+--- !u!114 &2859856840704194164
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,8 +158,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fragmentsPrefab: {fileID: 593026225183117321, guid: 49384b8708395aa4db6bd225bd82ca3f, type: 3}
-  breakForceThreshold: 5
+  breakForceThreshold: 15
   explosionForce: 300
   explosionRadius: 3
   soundVolume: 1
-  destructionParticlesPrefab: {fileID: 0}
+  destructionParticlesPrefab: {fileID: 1262293921189225512, guid: 1eec3be73a3aec3429b737fec1fb9445, type: 3}
+--- !u!114 &6378168495168806725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5101081793428669751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff

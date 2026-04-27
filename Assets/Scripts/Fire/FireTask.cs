@@ -9,13 +9,16 @@ public class FireTask : BaseTask
     [SerializeField] private GameObject infiniteFirePowerUpPrefab;
     [SerializeField] private HammerFireController hammerFireController;
     [SerializeField] private string rewardMessage = "The eternal flame boon has been granted";
-    [SerializeField] private GameObject statueArrowUI;
-    [SerializeField] private int buildingsRequired = 8;
+    [SerializeField] private int buildingsRequired = 7;
+    [SerializeField] private Transform villageTarget;
     private int buildingsBurned = 0;
+
+    [Header("Arrow Targeting")]
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private BurnableBuilding[] burnableBuildings;
 
     void Start()
     {
-        statueArrowUI.SetActive(false);
         taskName = "Burn down the village";
         taskDescription = "Ignite the hammer";
         StartTask();
@@ -36,8 +39,8 @@ public class FireTask : BaseTask
         if (hammerIgnited || isComplete) return;
 
         hammerIgnited = true;
-        statueArrowUI.SetActive(true);
-
+        Transform nearestBuilding = GetNearestUnburnedBuilding();
+        TaskArrowManager.Instance.PointTo(nearestBuilding);
         taskDescription = $"Burn the village ({buildingsBurned}/{buildingsRequired} buildings burned)";
         TaskHUD.Instance.RefreshUI();
 
@@ -49,7 +52,6 @@ public class FireTask : BaseTask
         if (isComplete) return;
 
         buildingsBurned++;
-        statueArrowUI.SetActive(false);
 
         if (buildingsBurned > buildingsRequired)
         {
@@ -63,6 +65,8 @@ public class FireTask : BaseTask
         else
         {
             taskDescription = $"Burn the village ({buildingsBurned}/{buildingsRequired} buildings burned)";
+            Transform nearestBuilding = GetNearestUnburnedBuilding();
+            TaskArrowManager.Instance.PointTo(nearestBuilding);
         }
         TaskHUD.Instance.RefreshUI();
 
@@ -77,8 +81,45 @@ public class FireTask : BaseTask
             {
                 powerUpSpawner.SpawnSpecificPowerUp(infiniteFirePowerUpPrefab, rewardMessage);
                 rewardSpawned = true;
+                TaskArrowManager.Instance.HideArrow();
             }
             CompleteTask();
         }
+    }
+
+    private Transform GetNearestUnburnedBuilding()
+    {
+        if (playerTransform == null || burnableBuildings == null || burnableBuildings.Length == 0)
+        {
+            return null;
+        }
+
+        BurnableBuilding nearestBuilding = null;
+        float nearestDistanceSqr = float.MaxValue;
+
+        for (int i = 0; i < burnableBuildings.Length; i++)
+        {
+            BurnableBuilding building = burnableBuildings[i];
+
+            if (building == null)
+            {
+                continue;
+            }
+
+            if (building.IsBurning)
+            {
+                continue;
+            }
+
+            float distanceSqr = (building.transform.position - playerTransform.position).sqrMagnitude;
+
+            if (distanceSqr < nearestDistanceSqr)
+            {
+                nearestDistanceSqr = distanceSqr;
+                nearestBuilding = building;
+            }
+        }
+
+        return nearestBuilding != null ? nearestBuilding.transform : null;
     }
 }

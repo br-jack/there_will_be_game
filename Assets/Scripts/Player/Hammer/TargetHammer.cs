@@ -52,6 +52,7 @@ namespace Hammer
         private Vector3 velocity;
 
         public Vector3 Velocity => velocity;
+        public Vector3 Acceleration => frameAcceleration;
 
         private IController _controllerRef;
 
@@ -94,7 +95,7 @@ namespace Hammer
             transform.position = pivotTransform.position + transform.rotation * Vector3.forward * extension;
         }
 
-        void FixedUpdate()
+        void Update()
         {
             if (!canControl)
             {
