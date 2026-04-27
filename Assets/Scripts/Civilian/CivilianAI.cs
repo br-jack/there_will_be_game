@@ -15,7 +15,6 @@ using UnityEngine.Serialization;
     public float startRunningRadius;
     public float stopRunningRadius;
     public float speed;
-    public float refreshInterval;
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -36,13 +35,12 @@ public class CivilianAI : MonoBehaviour
     {
         startRunningRadius = 10f,
         stopRunningRadius = 18f,
-        speed = 6f,
-        refreshInterval = 0.2f
+        speed = 6f
     };
 
     [Header("Movement")]
-    [SerializeField, Range(0f, 1f)] private float smoothVelocity = 0.35f;
-    [SerializeField] private float rotationSpeed = 8f;
+    [SerializeField, Range(0f, 1f)] private float smoothVelocity = 0.7f;
+    [SerializeField] private float rotationSpeed = 16f;
 
     [Header("Animation (optional)")]
     [SerializeField] private Animator anim;
@@ -54,7 +52,18 @@ public class CivilianAI : MonoBehaviour
     private Transform playerRef;
     private float currentSpeed;
     private float idleEndTime;
-    private float nextRunAwayRefreshTime;
+
+    // Stuck-escape: if commanded velocity is non-trivial but the civilian hasn't
+    // actually translated for StuckTimeThreshold, sidestep for UnstuckDuration
+    // perpendicular to the intended move direction to break free.
+    private const float StuckTimeThreshold = 0.4f;
+    private const float StuckMovedSqr = 0.04f;
+    private const float StuckCommandedSqr = 1f;
+    private const float UnstuckDuration = 0.3f;
+    private Vector3 _stuckCheckPos;
+    private float _stuckCheckTime;
+    private float _unstuckUntil;
+    private Vector3 _unstuckDir;
 
     void Awake()
     {
@@ -67,6 +76,9 @@ public class CivilianAI : MonoBehaviour
         agent.updatePosition = false;
         agent.updateRotation = false;
         agent.angularSpeed = 0f;
+
+        _stuckCheckPos = transform.position;
+        _stuckCheckTime = Time.time;
 
         EnsureOnNavMesh();
     }
@@ -106,7 +118,11 @@ public class CivilianAI : MonoBehaviour
                 break;
 
             case MovementState.RunAway:
-                if (Time.time >= nextRunAwayRefreshTime) PickNewRunAwayPoint();
+                // Re-pick a flee target only when we arrive (or the path failed). Re-picking
+                // on a timer caused visible direction churn — the civilian commits to a
+                // direction now and only re-evaluates once they've used the current one.
+                if (!agent.pathPending && (!agent.hasPath || agent.remainingDistance < 0.5f))
+                    PickNewRunAwayPoint();
                 break;
         }
 
@@ -132,10 +148,47 @@ public class CivilianAI : MonoBehaviour
         ApplyVelocity(moveDir * currentSpeed);
 
         if (agent.isOnNavMesh) agent.nextPosition = transform.position;
+
+        UpdateStuckEscape(moveDir);
+    }
+
+    private void UpdateStuckEscape(Vector3 moveDir)
+    {
+        if (Time.time < _unstuckUntil) return; // already escaping; don't update detection
+
+        Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        bool commandingMovement = horizontalVel.sqrMagnitude > StuckCommandedSqr;
+        bool moved = (transform.position - _stuckCheckPos).sqrMagnitude > StuckMovedSqr;
+
+        if (!commandingMovement || moved)
+        {
+            _stuckCheckPos = transform.position;
+            _stuckCheckTime = Time.time;
+            return;
+        }
+
+        if (Time.time - _stuckCheckTime <= StuckTimeThreshold) return;
+
+        // Stuck — sidestep perpendicular to the intended move direction. Random
+        // side so two civilians wedged against each other don't pick the same way.
+        Vector3 right = Vector3.Cross(Vector3.up, moveDir);
+        if (right.sqrMagnitude < 0.0001f) right = Vector3.right;
+        right.Normalize();
+        _unstuckDir = Random.value < 0.5f ? right : -right;
+        _unstuckUntil = Time.time + UnstuckDuration;
+        _stuckCheckPos = transform.position;
+        _stuckCheckTime = Time.time;
     }
 
     private void ApplyVelocity(Vector3 desired)
     {
+        // While escaping a stuck position, override whatever the AI wanted with a
+        // sideways push at the current state's speed.
+        if (Time.time < _unstuckUntil)
+        {
+            desired = _unstuckDir * currentSpeed;
+        }
+
         if (desired.sqrMagnitude < 0.0001f)
         {
             // Not trying to move: hard-stop horizontal drift so physics can't push us around.
@@ -193,7 +246,6 @@ public class CivilianAI : MonoBehaviour
 
     private void PickNewRunAwayPoint()
     {
-        nextRunAwayRefreshTime = Time.time + runAway.refreshInterval;
         if (!agent.isOnNavMesh || playerRef == null) return;
 
         Vector3 awayDir = transform.position - playerRef.position;
