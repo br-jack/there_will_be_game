@@ -179,6 +179,7 @@ namespace Enemy
 
         void Update()
         {
+            if (DeathHandler.IsDying) return;
             if (IsKnockedBack) { HandleKnockback(); return; }
 
             if (_playerHealthRef == null || _playerTransformRef == null)
@@ -324,6 +325,7 @@ namespace Enemy
 
         void FixedUpdate()
         {
+            if (DeathHandler.IsDying) return;
             if (IsKnockedBack) return;
             if (_playerTransformRef == null) return;
 

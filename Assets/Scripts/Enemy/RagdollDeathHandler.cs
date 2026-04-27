@@ -8,14 +8,19 @@ namespace Enemy
         [SerializeField] private bool useTutorialKillLock = false;
         public bool CanBeKilled { get; private set; } = true;
         
-        [SerializeField] private float maxDeathTime = 4f;
+        [SerializeField] private float maxAbsoluteDeathTime = 20f;
+        [SerializeField] private float maxGroundedDeathTime = 10f;
         
         public bool IsDying { get; private set; }
         
         public event Action OnDied;
         
-        private float _deathTimer;
-        private float _deathEndTime;
+        private float _deathAbsoluteTimer;
+        private float _deathAbsoluteEndTime;
+
+        private bool _knockbackOver = false;
+        private float _deathTimerOnGround;
+        private float _deathEndTimeOnGround;
         
         private RagdollToggler _ragdollToggler;
         private IKnockbackState _knockbackState;
@@ -74,17 +79,34 @@ namespace Enemy
         private void StartDeathTimer()
         {
             IsDying = true;
-            _deathTimer = Time.time;
-            _deathEndTime = _deathTimer + maxDeathTime;
+            _deathAbsoluteTimer = Time.time;
+            _deathAbsoluteEndTime = _deathAbsoluteTimer + maxAbsoluteDeathTime;
         }
 
         private void TickDeathTimer()
         {
-            _deathTimer += Time.deltaTime;
-            
-            if (!_knockbackState.IsKnockedBack || _deathTimer >= _deathEndTime)
+            _deathAbsoluteTimer += Time.deltaTime;
+            if (_deathAbsoluteTimer >= _deathAbsoluteEndTime)
             {
                 Destroy(gameObject);
+            }
+
+            if (!_knockbackState.IsKnockedBack && !_knockbackOver)
+            {
+                _deathTimerOnGround = Time.time;
+
+                if (_knockbackOver)
+                {
+                    if (_deathTimerOnGround >= _deathEndTimeOnGround)
+                    {
+                        Destroy(gameObject);
+                    }
+                }
+                else
+                {
+                    _knockbackOver = true;
+                    _deathEndTimeOnGround = _deathAbsoluteTimer + maxGroundedDeathTime;
+                }
             }
         }
 
@@ -97,7 +119,6 @@ namespace Enemy
                 Debug.Assert(_knockbackState != null);
                 
                 TickDeathTimer(); 
-                return;
             }
         }
     }
