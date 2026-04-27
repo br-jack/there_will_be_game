@@ -27,6 +27,8 @@ public class GameStateManager : MonoBehaviour
     private EventSystem _overlayCachedEventSystem;
     private Canvas _overlayCachedHud;
 
+    public static float ignoreGameplayInputUntil { get; private set; }
+
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -127,6 +129,7 @@ public class GameStateManager : MonoBehaviour
         {
             case GameState.Playing:
                 Time.timeScale = 1f;
+                ignoreGameplayInputUntil = Time.unscaledTime + 0.2f;
                 SetSpawning(true);
                 if (_horseMovement != null) _horseMovement.enabled = true;
                 if (_pauseMenuSelection != null) _pauseMenuSelection.ClearSelection();
