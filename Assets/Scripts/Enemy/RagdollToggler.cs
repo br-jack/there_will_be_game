@@ -38,13 +38,18 @@ namespace Enemy
         {
             foreach (Collider col in colliders)
             {
-                col.enabled = state;
+                //check needed for broken shields
+                if (col != null)
+                {
+                    col.enabled = state;
+                }
             }
         }
         private void SetRigidbodyStates(Rigidbody[] rigidbodies, bool state)
         {
             foreach (Rigidbody rb in ragdollRigidbodies)
             {
+                Debug.Assert(rb != null);
                 rb.isKinematic = !state;
                 rb.detectCollisions = state;
             }
@@ -53,6 +58,7 @@ namespace Enemy
         {
             foreach (CharacterJoint joint in ragdollCharacterJoints)
             {
+                Debug.Assert(joint != null);
                 joint.enableCollision = state;
             }
         }
