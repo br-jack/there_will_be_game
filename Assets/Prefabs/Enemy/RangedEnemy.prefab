@@ -2046,6 +2046,8 @@ GameObject:
   - component: {fileID: 5660115021953431527}
   - component: {fileID: 7777645992290478274}
   - component: {fileID: 3937732561661069261}
+  - component: {fileID: 2673126496678726868}
+  - component: {fileID: 21835665983040387}
   m_Layer: 0
   m_Name: RangedEnemy
   m_TagString: Enemy
@@ -2335,6 +2337,70 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2673126496678726868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4937528112206273530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd5387b1bdafc044aed8d01a92429e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3937732561661069261}
+  ragdollRoot: {fileID: 109247678050848990}
+  startAsRagdoll: 0
+  ragdollRigidbodies:
+  - {fileID: 6694594174180072561}
+  - {fileID: 4037740718836069623}
+  - {fileID: 2938082659952260846}
+  - {fileID: 6237361306436910858}
+  - {fileID: 7902660606416452594}
+  - {fileID: 5613806556968807645}
+  - {fileID: 5115325865466069128}
+  - {fileID: 6145867442528710448}
+  - {fileID: 1694644906018009861}
+  - {fileID: 8755921462601365895}
+  - {fileID: 6694594174180072561}
+  ragdollColliders:
+  - {fileID: 8529105618712746845}
+  - {fileID: 2803516570810555125}
+  - {fileID: 7036169144642077505}
+  - {fileID: 7654667482992813899}
+  - {fileID: 7272904852773953525}
+  - {fileID: 6895969202225652080}
+  - {fileID: 4184659773445509496}
+  - {fileID: 6406633162814256402}
+  - {fileID: 1245900394334880211}
+  - {fileID: 7577028904103223144}
+  - {fileID: 6570361378004782880}
+  ragdollCharacterJoints:
+  - {fileID: 1073292446867343609}
+  - {fileID: 2301136019768779838}
+  - {fileID: 1813599388437333479}
+  - {fileID: 104031795517345393}
+  - {fileID: 4984951993331189913}
+  - {fileID: 7812021898451268002}
+  - {fileID: 7714596848021587939}
+  - {fileID: 8698425176138830400}
+  - {fileID: 4213607223828377226}
+  - {fileID: 2612692351375867070}
+--- !u!114 &21835665983040387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4937528112206273530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfd4dc138ee84948aaf73dde74d230bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useTutorialKillLock: 0
+  maxDeathTime: 4
 --- !u!1 &5018057465785643956
 GameObject:
   m_ObjectHideFlags: 0
