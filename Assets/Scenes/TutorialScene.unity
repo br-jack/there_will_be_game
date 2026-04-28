@@ -485,7 +485,7 @@ RectTransform:
   m_GameObject: {fileID: 84467924}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 710652377}
@@ -1512,9 +1512,6 @@ MonoBehaviour:
   statusIcon: {fileID: 0}
   panelTransform: {fileID: 710652377}
   max: 2000
-  tintFillByScore: 0
-  tintTitleByScore: 1
-  tintStatusIconByScore: 1
   lowScoreColor: {r: 1, g: 0.72, b: 0.15, a: 1}
   midScoreColor: {r: 1, g: 0.45, b: 0.1, a: 1}
   highScoreColor: {r: 0.9, g: 0.15, b: 0.15, a: 1}
@@ -2178,9 +2175,6 @@ MonoBehaviour:
   statusIcon: {fileID: 0}
   panelTransform: {fileID: 928822615}
   max: 2000
-  tintFillByScore: 0
-  tintTitleByScore: 1
-  tintStatusIconByScore: 1
   lowScoreColor: {r: 1, g: 0.72, b: 0.15, a: 1}
   midScoreColor: {r: 1, g: 0.45, b: 0.1, a: 1}
   highScoreColor: {r: 0.9, g: 0.15, b: 0.15, a: 1}
@@ -3338,7 +3332,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -2.7000122}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1570209292
@@ -4346,9 +4340,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthFillImage: {fileID: 2141815891}
   panelTransform: {fileID: 1940374465}
-  tintFillByHealth: 0
-  lowHealthColor: {r: 1, g: 0, b: 0, a: 1}
-  highHealthColor: {r: 0, g: 1, b: 0, a: 1}
   pulseOnChange: 1
   pulseScale: 1.06
   pulseUpTime: 0.08
