@@ -78,18 +78,18 @@ public class hammerStateEffects : MonoBehaviour
         {
 
             case hammerChargeState.uncharged:
-                embers.Play();
+                embers.Stop();
                 chargeLines.Stop();
                 glow.Stop();
                 break;
             case hammerChargeState.charging:
-                embers.Stop();
+                embers.Play();
                 chargeLines.Play();
                 glow.Stop();
                 break;
             case hammerChargeState.charged:
                 embers.Play();
-                chargeLines.Play();
+                chargeLines.Stop();
                 glow.Play();
                 break;
         }
