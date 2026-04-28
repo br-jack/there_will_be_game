@@ -81,7 +81,7 @@ public class PowerUpPickup : MonoBehaviour
 
         if (receiver != null)
         {
-            if (powerUpType == PowerUpType.InfiniteFire)
+            if (powerUpType == PowerUpType.InfiniteFire || powerUpType == PowerUpType.HorseRam)
             {
                 receiver.ApplyPowerUp(powerUpType, 0f, 0f);
             }
