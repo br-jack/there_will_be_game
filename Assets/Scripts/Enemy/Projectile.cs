@@ -1,6 +1,7 @@
 using UnityEngine;
 using Hammer;
 using System.Collections.Generic;
+using Enemy;
 
 public class Projectile : MonoBehaviour
 {
@@ -99,7 +100,7 @@ public class Projectile : MonoBehaviour
                 }
                 else
                 {
-                    enemy.KilledBy(collider, null);
+                    enemy.DeathHandler.KilledBy(collider, null);
                 }
                 DestroyWrapper();
             }

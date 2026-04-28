@@ -26,7 +26,7 @@ public class CivilianHit : MonoBehaviour
         hitSounds.PlaySFX();
 
         AwardScore();
-        Destroy(civilian.gameObject);
+        civilian.DeathHandler.KilledBy(other, attack);
     }
 
     private int Scaled(int value) => Mathf.RoundToInt(value * scoreMultiplier);
