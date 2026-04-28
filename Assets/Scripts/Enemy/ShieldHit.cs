@@ -1,3 +1,4 @@
+using Enemy;
 using UnityEngine;
 
 public class ShieldHit : MonoBehaviour
@@ -9,7 +10,7 @@ public class ShieldHit : MonoBehaviour
 
         StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
         if (enemy == null) return;
-        if (enemy.IsKnockedBack) return;
+        if (enemy.KnockbackHandler.IsKnockedBack) return;
         if (!enemy.HasShield()) return;
 
         enemy.BreakShieldFromAttack(other, attack);
