@@ -6,15 +6,14 @@ public class AttackHitbox : MonoBehaviour
     public float baseKnockbackForce = 12f;
     public float velocityKnockbackMultiplier = 1f;
     
-    //private Rigidbody _rb;
+    // private Rigidbody _rb;
     //private HorseMovement _horseMovement;
     private CharacterController _cc;
     private horseMovementGaits _horseMovementGaits;
 
-
     private void Awake()
     {
-        //_rb = GetComponentInParent<Rigidbody>();
+        // _rb = GetComponent<Rigidbody>();
         //_horseMovement = GetComponentInParent<HorseMovement>();
         _cc = GetComponentInParent<CharacterController>();
         _horseMovementGaits = GetComponentInParent<horseMovementGaits>();

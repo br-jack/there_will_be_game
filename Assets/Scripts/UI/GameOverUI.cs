@@ -6,6 +6,7 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private GameObject gameOverLow;
     [SerializeField] private GameObject gameOverMid;
     [SerializeField] private GameObject gameOverHigh;
+    musicManager musicManager;
 
     public void Show(ReportCard tier)
     {
@@ -14,7 +15,8 @@ public class GameOverUI : MonoBehaviour
         gameOverLow.SetActive(false);
         gameOverMid.SetActive(false);
         gameOverHigh.SetActive(false);
-
+        musicManager = GameObject.Find("MusicManager").GetComponent<musicManager>();
+        musicManager.PauseMusic();
         switch (tier)
         {
             case ReportCard.OneStar:

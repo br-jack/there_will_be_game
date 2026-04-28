@@ -1,8 +1,13 @@
 using UnityEngine;
 using Hammer;
+using System.Collections.Generic;
+using Enemy;
 
 public class Projectile : MonoBehaviour
 {
+    private const float DirectionEpsilonSqr = 0.0001f;
+    private static readonly List<Collider> ActiveProjectileColliders = new List<Collider>();
+
     [SerializeField] private float speed = 20.0f;
     public float Speed => speed;
     [SerializeField] private float lifetime = 5f;
@@ -19,23 +24,33 @@ public class Projectile : MonoBehaviour
     {
         this.owner = owner;
         damage = damageAmount;
-        if (direction.sqrMagnitude > 0.0001f)
+        if (direction.sqrMagnitude > DirectionEpsilonSqr)
         {
-            rb.linearVelocity = direction.normalized * speed;
+            Vector3 normalizedDirection = direction.normalized;
+            AlignToDirection(normalizedDirection);
+            rb.linearVelocity = normalizedDirection * speed;
         }
     }
     void FixedUpdate()
     {
         rb.linearVelocity += Physics.gravity * gravityScale * Time.fixedDeltaTime;
-        if (rb.linearVelocity.sqrMagnitude > 0.0001f)
+        if (rb.linearVelocity.sqrMagnitude > DirectionEpsilonSqr)
         {
-            transform.forward = rb.linearVelocity.normalized;
+            AlignToDirection(rb.linearVelocity);
         }
     }
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+    }
+    void OnEnable()
+    {
+        RegisterProjectileCollisionIgnores();
+    }
+    void OnDisable()
+    {
+        UnregisterProjectileCollider();
     }
     void Start()
     {
@@ -44,6 +59,16 @@ public class Projectile : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (owner != null && other.transform.IsChildOf(owner.transform)) return;
+        if (other == null) return;
+
+        // Projectile-on-projectile contacts are ignored so they don't delete each other mid-flight.
+        Projectile otherProjectile = other.GetComponentInParent<Projectile>();
+        if (otherProjectile != null && otherProjectile != this)
+        {
+            // Force the pair to ignore each other so no physical bounce can occur.
+            Physics.IgnoreCollision(collider, other, true);
+            return;
+        }
 
         // This comes before the player health so calls destroy() before harming the player if the projectile hits the hammer.
         VisualHammer hammer = other.GetComponentInParent<VisualHammer>();
@@ -75,10 +100,11 @@ public class Projectile : MonoBehaviour
                 }
                 else
                 {
-                    enemy.KilledBy(collider, null);
+                    enemy.DeathHandler.KilledBy(collider, null);
                 }
+                DestroyWrapper();
             }
-            DestroyWrapper();
+            // Undeflected projectiles should pass through enemies.
             return;
         }
         
@@ -108,6 +134,10 @@ public class Projectile : MonoBehaviour
         normal.Normalize();
 
         rb.linearVelocity = Vector3.Reflect(rb.linearVelocity, normal);
+        if (rb.linearVelocity.sqrMagnitude > DirectionEpsilonSqr)
+        {
+            AlignToDirection(rb.linearVelocity);
+        }
 
         // Reset the lifetime of the projectile upon deflection.
         CancelInvoke(nameof(DestroyWrapper));
@@ -117,5 +147,48 @@ public class Projectile : MonoBehaviour
     {
         // When we add particle effects upon destruction, we can add it here!
         Destroy(gameObject);
+    }
+
+    // Keep both Transform and Rigidbody rotations in sync to avoid a one-frame visual snap on spawn.
+    private void AlignToDirection(Vector3 direction)
+    {
+        if (direction.sqrMagnitude <= DirectionEpsilonSqr) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction.normalized);
+        transform.rotation = targetRotation;
+
+        if (rb != null)
+        {
+            rb.rotation = targetRotation;
+        }
+    }
+
+    private void RegisterProjectileCollisionIgnores()
+    {
+        if (collider == null) return;
+
+        for (int i = ActiveProjectileColliders.Count - 1; i >= 0; i--)
+        {
+            Collider otherCollider = ActiveProjectileColliders[i];
+            if (otherCollider == null)
+            {
+                ActiveProjectileColliders.RemoveAt(i);
+                continue;
+            }
+
+            if (otherCollider == collider) continue;
+            Physics.IgnoreCollision(collider, otherCollider, true);
+        }
+
+        if (!ActiveProjectileColliders.Contains(collider))
+        {
+            ActiveProjectileColliders.Add(collider);
+        }
+    }
+
+    private void UnregisterProjectileCollider()
+    {
+        if (collider == null) return;
+        ActiveProjectileColliders.Remove(collider);
     }
 }

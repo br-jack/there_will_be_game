@@ -34,6 +34,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     private Coroutine speedBoostCoroutine;
     private Coroutine jumpBoostCoroutine;
 
+    public bool canRamBuildings = false;
     private void Start()
     {
         
@@ -81,6 +82,10 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         else if (powerUpType == PowerUpType.InfiniteFire)
         {
             ApplyInfiniteFire();
+        }
+        else if (powerUpType == PowerUpType.HorseRam)
+        {
+            canRamBuildings = true;
         }
     }
 
