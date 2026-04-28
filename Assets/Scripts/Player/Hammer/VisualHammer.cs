@@ -16,14 +16,6 @@ namespace Hammer
     public class VisualHammer : MonoBehaviour
     {
         // [SerializeField] private CharacterController _horseCC;
-        [SerializeField] private Vector3 smallHitboxSize;
-        [SerializeField] private Vector3 smallHitboxCenter;
-        [SerializeField] private float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
-        [SerializeField] private Vector3 mediumHitboxSize;
-        [SerializeField] private Vector3 mediumHitboxCenter;
-        [SerializeField] private float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
-        [SerializeField] private Vector3 largeHitboxSize;
-        [SerializeField] private Vector3 largeHitboxCenter;
         [Tooltip("Seconds")]
         [SerializeField] private float timeToChargeSlam = 3;
         [SerializeField] private float chargingZoneSize = 20;
@@ -42,6 +34,14 @@ namespace Hammer
 
         [Header("Dynamic Hitbox")]
         [SerializeField] private bool useDynamicHitbox = true;
+        [SerializeField] private Vector3 smallHitboxSize;
+        [SerializeField] private Vector3 smallHitboxCenter;
+        [SerializeField] private float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
+        [SerializeField] private Vector3 mediumHitboxSize;
+        [SerializeField] private Vector3 mediumHitboxCenter;
+        [SerializeField] private float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
+        [SerializeField] private Vector3 largeHitboxSize;
+        [SerializeField] private Vector3 largeHitboxCenter;
 
         //private bool _collisionsEnabled = true;
 
@@ -145,7 +145,8 @@ namespace Hammer
 
         public void doSlam()
         {
-            Debug.Log("boom");
+            //Debug.Log("boom");
+            slam.Invoke();
             Collider[] colliders = Physics.OverlapSphere(transform.position, slamRadius);
             foreach (Collider c in colliders)
             {
@@ -156,13 +157,13 @@ namespace Hammer
 
                 if (c.GetComponentInParent<StandardEnemyAI>())
                 {
-                    Vector3 knockbackDirection = c.ClosestPoint(transform.position) - transform.position; //knock away
-                    c.GetComponentInParent<StandardEnemyAI>().getKilledBasic(knockbackDirection * slamKnockbackAmount);
+                   
+
                 }
+
                 // TODO fling Player
-                // destroy buildings
-                // particles
-                // use aarons ragdolls
+                // TODO particles
+                // TODO use aarons ragdolls
             }
             changeHammerChargeState(hammerChargeState.uncharged);
             timeHeldUp = 0;
