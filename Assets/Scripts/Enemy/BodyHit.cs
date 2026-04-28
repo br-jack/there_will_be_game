@@ -4,21 +4,14 @@ using Score;
 
 public class BodyHit : MonoBehaviour
 {
-    public LayerMask shieldMask;
     public hitSound hitSounds;
 
-    //[SerializeField] private float speedThreshold = 5f;
-    [SerializeField] private int baseScore = 10;
-    //[SerializeField] private int speedBonusScore = 30;
-    [SerializeField] private int lowHealthBonusScore = 20;
-    [SerializeField] private int lowHealthThreshold = 30;
-    [SerializeField] private int airBonusScore = 25;
-    [SerializeField] private int shieldBypassBonusScore = 40;
-    [SerializeField] private int atATrotBonusScore = 5;
-    [SerializeField] private int atACanterBonusScore = 20;
-    [SerializeField] private int atAGallopBonusScore = 50;
+    private ScoreSettings scoreSettings;
 
-    [SerializeField] private int fireBonusScore = 50;
+    void Awake()
+    {
+        scoreSettings = Resources.Load<ScoreSettings>("ScoreSettings");
+    }
 
     public void hitBySlamAttack()
     {
@@ -33,27 +26,26 @@ public class BodyHit : MonoBehaviour
         StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
         if (enemy == null) return;
         if (enemy.IsKnockedBack) return;
-        if (enemy.ShieldWasJustHit) return;
         if (!enemy.CanBeKilled) return;
-        Vector3 attackPosition = other.transform.position;
-        Vector3 enemyPosition = enemy.transform.position;
-        Vector3 direction = (enemyPosition - attackPosition).normalized;
-        float distance = Vector3.Distance(attackPosition, enemyPosition);
 
-        if (Physics.Raycast(attackPosition, direction, distance, shieldMask)) return;
+        if (enemy.HasShield())
+        {
+            enemy.BreakShieldFromAttack(other, attack);
+            return;
+        }
 
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
         hitSounds.PlaySFX();
 
-        AwardScore(enemy.HasShield());
+        AwardScore(enemy.WasShielded);
         enemy.KilledBy(other, attack);
     }
 
     private void AwardScore(bool hasShield)
     {
-        //could perhaps be done with events, with enemies broadcasting when they're hit, 
+        //could perhaps be done with events, with enemies broadcasting when they're hit,
         //and a script on the player awarding the score.
-        
+
         GameObject player = GameObject.FindWithTag("Player");
         if (player == null) return;
 
@@ -61,23 +53,23 @@ public class BodyHit : MonoBehaviour
         HorseMovement horseMovement = player.GetComponent<HorseMovement>();
         if (horseMovement == null) return;
         */
-        
+
         HammerFireController hammerFireController = FindFirstObjectByType<HammerFireController>();
-        
+
         //hopefully the player has these! should probs do null checks
-            
+
         CharacterController characterController = player.GetComponent<CharacterController>();
-        
+
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
-        
+
         horseMovementGaits horseMovementGaits = player.GetComponent<horseMovementGaits>();
-        
+
         if (characterController == null) return;
 
         List<ScoreComponent> scoreComponents = new List<ScoreComponent>
         {
             // Base score
-            new ScoreComponent(baseScore, ScoreType.Base)
+            new ScoreComponent(scoreSettings.baseScore, ScoreType.Base)
         };
 
         // Speed bonus. Commented out for now as I think gait bonus is more intuitive.
@@ -87,7 +79,7 @@ public class BodyHit : MonoBehaviour
             scoreComponents.Add(new ScoreComponent(speedBonusScore, ScoreType.Speed));
         }
         */
-        
+
         //gait bonus
         if (horseMovementGaits != null)
         {
@@ -97,13 +89,13 @@ public class BodyHit : MonoBehaviour
                     // no bonus
                     break;
                 case gait.trotting:
-                    scoreComponents.Add(new ScoreComponent(atATrotBonusScore, ScoreType.atATrot));
+                    scoreComponents.Add(new ScoreComponent(scoreSettings.atATrotBonusScore, ScoreType.atATrot));
                     break;
                 case gait.cantering:
-                    scoreComponents.Add(new ScoreComponent(atACanterBonusScore, ScoreType.atACanter));
+                    scoreComponents.Add(new ScoreComponent(scoreSettings.atACanterBonusScore, ScoreType.atACanter));
                     break;
                 case gait.galloping:
-                    scoreComponents.Add(new ScoreComponent(atAGallopBonusScore, ScoreType.atAGallop));
+                    scoreComponents.Add(new ScoreComponent(scoreSettings.atAGallopBonusScore, ScoreType.atAGallop));
                     break;
             }
         }
@@ -112,30 +104,30 @@ public class BodyHit : MonoBehaviour
         if (playerHealth != null)
         {
             float healthPercent = (float)playerHealth.Current / playerHealth.Max * 100f;
-            if (healthPercent <= lowHealthThreshold)
+            if (healthPercent <= scoreSettings.lowHealthThreshold)
             {
-                scoreComponents.Add(new ScoreComponent(lowHealthBonusScore, ScoreType.LowHealth));
+                scoreComponents.Add(new ScoreComponent(scoreSettings.lowHealthBonusScore, ScoreType.LowHealth));
             }
         }
 
         // Air bonus
         if (!characterController.isGrounded)
         {
-            scoreComponents.Add(new ScoreComponent(airBonusScore, ScoreType.Air));
+            scoreComponents.Add(new ScoreComponent(scoreSettings.airBonusScore, ScoreType.Air));
         }
 
         // Shield bypass bonus
         if (hasShield)
         {
-            scoreComponents.Add(new ScoreComponent(shieldBypassBonusScore, ScoreType.ShieldBypass));
+            scoreComponents.Add(new ScoreComponent(scoreSettings.shieldBypassBonusScore, ScoreType.ShieldBypass));
         }
-        
+
         // On fire bonus
         if (hammerFireController != null && hammerFireController.IsOnFire)
         {
-            scoreComponents.Add(new ScoreComponent(fireBonusScore, ScoreType.OnFire));
+            scoreComponents.Add(new ScoreComponent(scoreSettings.fireBonusScore, ScoreType.OnFire));
         }
-        
+
         ScoreManager.Instance.AddScore(scoreComponents);
     }
 }

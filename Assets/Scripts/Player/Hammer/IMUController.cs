@@ -20,7 +20,10 @@ namespace Hammer
         private readonly ConcurrentQueue<string> recvQueue = new ConcurrentQueue<string>();
 
         private const int TimeoutMs = 50;
+        private const int MaxIOExceptionCount = 5;
 
+        private int currentIOExceptionCount = 0;
+        
         private string SearchPorts()
         {
             try
@@ -49,8 +52,8 @@ namespace Hammer
 
                         foreach (string possiblePort in availablePorts)
                         {
-                            Debug.Log("Trying port " + possiblePort);
-
+                            // Debug.Log("Trying port " + possiblePort);
+                            
                             SerialPort testSerial = new SerialPort(possiblePort, 115200);
                             testSerial.DtrEnable = true;
                             testSerial.ReadTimeout = TimeoutMs * 3;
@@ -65,7 +68,7 @@ namespace Hammer
                             if (output.Contains("q:") || output.Contains("a:") || output.Contains("info:"))
                             {
                                 //(hub sending) IMU data found
-                                Debug.Log("Hub found on port " + possiblePort);
+                                // Debug.Log("Hub found on port " + possiblePort);
                                 return possiblePort;
                             }
                         }
@@ -76,7 +79,7 @@ namespace Hammer
                     }
                 }
             }
-            catch// (System.Exception e)
+            catch (Exception) //e)
             {
                 // Debug.LogWarning("Failed to find port: ");
                 // Debug.LogWarning(e);
@@ -88,7 +91,7 @@ namespace Hammer
         //Returns if connected successfully or not
         private bool ConnectToPort(string port)
         {
-            if (port == null)
+            if (String.IsNullOrEmpty(port))
             {
                 return false;
             }
@@ -110,13 +113,13 @@ namespace Hammer
                     if (_stream.IsOpen)
                     {
                         // if youre connected but not getting any data you may have another serial monitor open for this port
-                        Debug.Log("Connected (allegedly)");
-
+                        // Debug.Log("Connected (allegedly)");
+                        
                         return true;
                     }
                 }
             }
-            catch// (System.Exception e)
+            catch (Exception) // e)
             {
                 // Debug.LogWarning("Failed to connect to port: ");
                 // Debug.LogWarning(e);
@@ -127,6 +130,8 @@ namespace Hammer
 
         public void Connect()
         {
+            currentIOExceptionCount = 0;
+            
             _running = true;
 
             // Start the background I/O thread
@@ -142,14 +147,15 @@ namespace Hammer
 
         private void IOThreadLoop()
         {
+            string port = null;
             bool portOpen = false;
 
             try
             {
                 while (_running && !portOpen)
                 {
-                    string port = SearchPorts();
-                    if (port != null)
+                    port = SearchPorts();
+                    if (!String.IsNullOrEmpty(port))
                     {
                         portOpen = ConnectToPort(port);
                     }
@@ -160,24 +166,66 @@ namespace Hammer
                     }
                 }
 
+                Debug.Assert(!String.IsNullOrEmpty(port));
+                
                 while (_running)
                 {
                     try
                     {
-                        if (!sendQueue.IsEmpty)
+                        if (_stream == null)
                         {
-                            sendQueue.TryDequeue(out string dataToSend);
-
-                            _stream.WriteLine(dataToSend);
+                            //TODO make more efficient
+                            while (!ConnectToPort(port))
+                            {
+                                Thread.Sleep(50);
+                            }
                         }
+                        else
+                        {
+                            if (!sendQueue.IsEmpty)
+                            {
+                                sendQueue.TryDequeue(out string dataToSend);
 
-                        string receivedData = _stream.ReadLine();
-                        recvQueue.Enqueue(receivedData);
+                                _stream.WriteLine(dataToSend);
+                            }
+
+                            string receivedData = _stream.ReadLine();
+                            recvQueue.Enqueue(receivedData);
+                        }
                     }
-                    catch// (Exception ex)
+                    catch (TimeoutException) //ex)
                     {
-                        //Seems to cause a memory leak, so only enable this when debugging Bluetooth
-                        // Debug.LogWarning($"Error reading data: {ex.Message}");
+                        //"The operation has timed out."
+                        
+                        //These are recoverable and can occur due to data not being sent fast enough
+                        // so can just be ignored
+                    }
+                    catch (System.IO.IOException) //ex)
+                    {
+                        //"The I/O operation has been aborted because of either a thread exit or an application request."
+                        //"System.IO.IOException: The device does not recognize the command"
+                        
+                        //The latter occurs when you restart the IMU (e.g. to fix IMU after a short), and is likely not recoverable.
+                        //Need to reset the stream
+
+                        currentIOExceptionCount++;
+                        if (currentIOExceptionCount >= MaxIOExceptionCount)
+                        {
+                            currentIOExceptionCount = 0;
+                            if (_stream != null)
+                            {
+                                _stream.Close();
+                            }
+                            _stream = null;
+                            Debug.Assert(!String.IsNullOrEmpty(port));
+                        }
+                    }
+                    catch(Exception) //ex)
+                    {
+                        //Other exception
+                        
+                        //Outputting in I/O thread Seems to cause a memory leak, so only enable this when debugging Bluetooth
+                        //Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
 
                 }
@@ -297,6 +345,8 @@ namespace Hammer
             _stream?.Close();
             _stream = null;
 
+            currentIOExceptionCount = 0;
+            
             Debug.Log("Port closed");
         }
     }

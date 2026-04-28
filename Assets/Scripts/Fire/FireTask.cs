@@ -17,6 +17,8 @@ public class FireTask : BaseTask
     [SerializeField] private Transform playerTransform;
     [SerializeField] private BurnableBuilding[] burnableBuildings;
 
+    [SerializeField] private Transform fireBoonSpawnPoint;
+
     void Start()
     {
         taskName = "Burn down the village";
@@ -79,7 +81,7 @@ public class FireTask : BaseTask
         { 
             if (!rewardSpawned && powerUpSpawner != null && infiniteFirePowerUpPrefab != null)
             {
-                powerUpSpawner.SpawnSpecificPowerUp(infiniteFirePowerUpPrefab, rewardMessage);
+                powerUpSpawner.SpawnSpecificPowerUp(infiniteFirePowerUpPrefab, rewardMessage, fireBoonSpawnPoint);
                 rewardSpawned = true;
                 TaskArrowManager.Instance.HideArrow();
             }
