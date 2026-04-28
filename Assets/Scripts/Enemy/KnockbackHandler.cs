@@ -62,8 +62,9 @@ namespace Enemy
                 agent.enabled = false;
             }
 
-            foreach (Rigidbody rb in GetComponents<Rigidbody>()) 
+            foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>()) 
             {
+                Debug.Log(rb.mass);
                 rb.AddForce(force, ForceMode.Impulse);
             }
 
