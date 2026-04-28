@@ -41,7 +41,8 @@ namespace Hammer
 
         private BoxCollider _hitbox;    
         public UnityEvent slam;
-        public UnityEvent<hammerChargeState> chargeStateChange;
+        public hammerChargeState hammerChargeState;
+        //public UnityEvent<hammerChargeState> chargeStateChange;
 
         InputAction temporarySlamActivate;
 
@@ -60,15 +61,19 @@ namespace Hammer
             //check if the player is holding the hammer above their head
             float angleToUp = Vector3.Angle(Vector3.up,transform.up);
             if (angleToUp < chargingZoneSize) {
-                    timeHeldUp += Time.deltaTime;
-                } 
-            else timeHeldUp = 0;
-
-
-            if (timeHeldUp > timeToChargeSlam)
-            {
-                chargeStateChange.Invoke(hammerChargeState.charged);
+                
+                if (timeHeldUp > timeToChargeSlam) hammerChargeState = hammerChargeState.charged;
+                else if (timeHeldUp > 0.05) hammerChargeState = hammerChargeState.charging;
+                timeHeldUp += Time.deltaTime; 
+            } 
+            else if (timeHeldUp < timeToChargeSlam)
+            {   
+                hammerChargeState = hammerChargeState.uncharged;
+                timeHeldUp = 0;
             }
+            
+            
+            
 
             
             //Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");

@@ -40,6 +40,11 @@ public class hammerStateEffects : MonoBehaviour
         gait = newGait;
     }
 
+    public void updateChargeState(hammerChargeState newHCS)
+    {
+        hammerChargeState = newHCS;
+    }
+
     public void doSlamEffects()
     {
         explosion.Play();
