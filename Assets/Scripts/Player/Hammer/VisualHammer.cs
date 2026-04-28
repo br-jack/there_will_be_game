@@ -22,9 +22,12 @@ namespace Hammer
         public float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
         public Vector3 largeHitboxSize;
         public Vector3 largeHitboxCenter;
-        public float timeToChargeSlam;
-        public float chargingZoneSize;
-        private float timeHeldUp;
+        [Tooltip("Seconds")]
+        public float timeToChargeSlam = 3;
+        public float chargingZoneSize = 20;
+
+
+        public float timeHeldUp;
 
 
         [SerializeField] private Transform pivotTransform;
@@ -78,13 +81,7 @@ namespace Hammer
                 changeHammerChargeState(hammerChargeState.uncharged);
                 timeHeldUp = 0;
             }
-            
-
-            
-            
-            
-
-
+        
             //Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");
             if (useDynamicHitbox)
             {
