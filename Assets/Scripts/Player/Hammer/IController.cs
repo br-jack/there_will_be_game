@@ -25,7 +25,8 @@ namespace Hammer
             
         }
 
-        public void Rumble();
+        public void Rumble()
+        {} //optional, UR doesn't have
 
         public void Cleanup();
     }
