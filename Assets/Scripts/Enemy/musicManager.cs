@@ -25,7 +25,10 @@ public class musicManager : MonoBehaviour
     }
     public void PlayMusic()
     {
+         if (audioSource == null)
+        {
         audioSource.Play();
+        }
     }
     public void PlaySFX()
     {
