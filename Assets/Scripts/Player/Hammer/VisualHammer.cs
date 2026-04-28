@@ -14,7 +14,6 @@ namespace Hammer
     public class VisualHammer : MonoBehaviour
     {
         // [SerializeField] private CharacterController _horseCC;
-        public hammerHead head;
         public Vector3 smallHitboxSize;
         public Vector3 smallHitboxCenter;
         public float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
@@ -39,13 +38,11 @@ namespace Hammer
 
         //private bool _collisionsEnabled = true;
 
-        private BoxCollider _hitbox;    
+        private BoxCollider _hitbox;
         public UnityEvent slam;
         public UnityEvent<hammerChargeState> chargeStateChange;
-
-        InputAction temporarySlamActivate;
-
-
+        public float slamRadius;
+        public float slamKnockbackAmount;
 
         void Awake()
         {
@@ -58,10 +55,11 @@ namespace Hammer
         void FixedUpdate()
         {
             //check if the player is holding the hammer above their head
-            float angleToUp = Vector3.Angle(Vector3.up,transform.up);
-            if (angleToUp < chargingZoneSize) {
-                    timeHeldUp += Time.deltaTime;
-                } 
+            float angleToUp = Vector3.Angle(Vector3.up, transform.up);
+            if (angleToUp < chargingZoneSize)
+            {
+                timeHeldUp += Time.deltaTime;
+            }
             else timeHeldUp = 0;
 
 
@@ -70,16 +68,16 @@ namespace Hammer
                 chargeStateChange.Invoke(hammerChargeState.charged);
             }
 
-            
+
             //Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");
             if (useDynamicHitbox)
             {
-                if (head.forwardSpeed < mediumHitboxThreshold)
+                if (_targetHammer.radialAcceleration < mediumHitboxThreshold)
                 {
                     _hitbox.size = smallHitboxSize;
                     _hitbox.center = smallHitboxCenter;
                 }
-                else if (head.forwardSpeed < largeHitboxThreshold)
+                else if (_targetHammer.radialAcceleration < largeHitboxThreshold)
                 {
                     _hitbox.size = mediumHitboxSize;
                     _hitbox.center = mediumHitboxCenter;
@@ -92,12 +90,12 @@ namespace Hammer
             }
 
             // TODO this should probably be continuous
-            if (head.forwardSpeed < mediumHitboxThreshold)
+            if (_targetHammer.radialAcceleration < mediumHitboxThreshold)
             {
                 _hitbox.size = smallHitboxSize;
                 _hitbox.center = smallHitboxCenter;
             }
-            else if (head.forwardSpeed < largeHitboxThreshold)
+            else if (_targetHammer.radialAcceleration < largeHitboxThreshold)
             {
                 _hitbox.size = mediumHitboxSize;
                 _hitbox.center = mediumHitboxCenter;
@@ -120,17 +118,17 @@ namespace Hammer
             //_targetHammer.Rumble();
         }
 
-            public void doSlam()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, slamRadius);
-        foreach (Collider c in colliders)
+        public void doSlam()
         {
-            if (c.GetComponentInParent<StandardEnemyAI>())
+            Collider[] colliders = Physics.OverlapSphere(transform.position, slamRadius);
+            foreach (Collider c in colliders)
             {
-                Vector3 knockbackDirection = c.ClosestPoint(transform.position) - transform.position; //knock away
-                c.GetComponentInParent<StandardEnemyAI>().getKilledBasic(knockbackDirection * slamKnockbackAmount);
+                if (c.GetComponentInParent<StandardEnemyAI>())
+                {
+                    Vector3 knockbackDirection = c.ClosestPoint(transform.position) - transform.position; //knock away
+                    c.GetComponentInParent<StandardEnemyAI>().getKilledBasic(knockbackDirection * slamKnockbackAmount);
+                }
             }
         }
-    }
     }
 }
