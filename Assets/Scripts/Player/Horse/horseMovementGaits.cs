@@ -296,6 +296,7 @@ public class horseMovementGaits : MonoBehaviour
 
     private void HandleAudio()
     {
+
         bool treatAsGrounded = _cc.isGrounded || _airTimeCounter < groundGraceTime;
 
         if (treatAsGrounded)
@@ -303,9 +304,14 @@ public class horseMovementGaits : MonoBehaviour
             AudioClip targetClip = null;
 
             if (_isDrifting) targetClip = driftClip;
-            else if (_brakeInput > 0.1f && currentSpeed > 0.1f) targetClip = brakeClip;
+            else if (_brakeInput > 0.1f && currentSpeed > 0.1f) 
+            {
+                targetClip = brakeClip;
+                loopSource.volume = 1f;
+            }
             else if (Mathf.Abs(currentSpeed) > 0.1f)
             {
+                loopSource.volume = 0.5f;
                 if (gait == gait.galloping || gait == gait.cantering) 
                     targetClip = gallopClip;
                 else 
@@ -341,6 +347,11 @@ public class horseMovementGaits : MonoBehaviour
                 if (landingClip != null) sfxSource.PlayOneShot(landingClip);
                 _isAirborne = false; 
             }
+        }
+
+        if (GameStateManager.Instance.CurState == GameState.GameOver && loopSource.isPlaying)
+        {
+            loopSource.Stop();
         }
     }
 

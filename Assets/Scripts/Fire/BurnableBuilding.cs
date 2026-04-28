@@ -29,6 +29,14 @@ public class BurnableBuilding : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (GameStateManager.Instance.CurState == GameState.GameOver && loopSource.isPlaying)
+        {
+            loopSource.Stop();
+        }
+    }
+
     public void IgniteBuilding()
     {
         if (isBurning) return;
@@ -62,7 +70,5 @@ public class BurnableBuilding : MonoBehaviour
         {
             loopSource.Stop();
         }
-        
-        //Destroy(gameObject);
     }
 }

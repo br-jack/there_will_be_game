@@ -59,6 +59,11 @@ public class HammerFireController : MonoBehaviour
         {
             ExtinguishHammer();
         }
+
+        if (GameStateManager.Instance.CurState == GameState.GameOver && loopSource.isPlaying)
+        {
+            loopSource.Stop();
+        }
     }
 
     public void IgniteHammer()
