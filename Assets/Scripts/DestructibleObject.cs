@@ -19,7 +19,6 @@ public class DestructibleObject : MonoBehaviour
     private static Queue<GameObject> activeFragments = new Queue<GameObject>();
     private static int maxFragments = 5000;
     private AudioSource audioSource;
-
     private ScoreSettings scoreSettings;
 
 
@@ -41,7 +40,7 @@ public class DestructibleObject : MonoBehaviour
 
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.spatialBlend = 0f;
-        audioSource.volume = 1f;
+        audioSource.volume = 0.75f;
         audioSource.playOnAwake = false;
     }
 
@@ -78,11 +77,11 @@ public class DestructibleObject : MonoBehaviour
         AudioClip clip = destructionSounds[Random.Range(0, destructionSounds.Length)];
         if (destructionHitSound != null)
         {
-            audioSource.PlayOneShot(destructionHitSound, 1f);
+            audioSource.PlayOneShot(destructionHitSound, 0.75f);
         }
         if (clip != null)
         {
-            audioSource.PlayOneShot(clip, 1f);
+            audioSource.PlayOneShot(clip, 0.75f);
         }
 
         if (destructionParticlesPrefab != null)

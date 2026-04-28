@@ -57,6 +57,11 @@ public class PlayerHealth : MonoBehaviour
     public event Action<int, int> OnHealthChanged;
     public event Action OnDeath;
     private PlayerLives playerLives;
+    private AudioSource audioSource;
+    public AudioClip fleshClip;
+    public AudioClip fleshClip1;
+    private AudioClip[] fleshSounds;
+
 
     private void Awake()
     {
@@ -68,6 +73,17 @@ public class PlayerHealth : MonoBehaviour
                 damageRedFlash = gameObject.AddComponent<PlayerDamageRedFlash>();
             }
         }
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.spatialBlend = 0f;
+        audioSource.volume = 1f;
+        audioSource.playOnAwake = false;
+
+        fleshSounds = new AudioClip[]
+        {
+            fleshClip,
+            fleshClip1
+        };
     }
 
     private void Start()
@@ -105,6 +121,13 @@ public class PlayerHealth : MonoBehaviour
         {
             damageFlash.Flash();
         }
+
+        AudioClip clip = fleshSounds[UnityEngine.Random.Range(0, fleshSounds.Length)];
+        if (clip != null)
+        {
+            audioSource.PlayOneShot(clip, 1f);
+        }
+
         if (!IsDead)
         {
             damageReductionEndTime = Time.time + damageReductionDuration;
