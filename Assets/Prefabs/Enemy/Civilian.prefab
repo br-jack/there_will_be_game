@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3206163197733229372}
   - component: {fileID: 81054223607901799}
   - component: {fileID: 7138950313506670420}
+  - component: {fileID: 2961624785437695898}
   m_Layer: 9
   m_Name: Civilian
   m_TagString: Untagged
@@ -245,6 +246,19 @@ MonoBehaviour:
   useTutorialKillLock: 0
   maxAbsoluteDeathTime: 10
   maxGroundedDeathTime: 5
+--- !u!114 &2961624785437695898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517552264688272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eae1815b98046dd8e3de0b56a357941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: -266577907326631511}
 --- !u!1 &95803449179525522
 GameObject:
   m_ObjectHideFlags: 0
