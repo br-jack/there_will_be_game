@@ -11,23 +11,21 @@ public class GameOverUI : MonoBehaviour
     public void Show(ReportCard tier)
     {
         gameObject.SetActive(true);
-
-        gameOverLow.SetActive(false);
-        gameOverMid.SetActive(false);
-        gameOverHigh.SetActive(false);
-        musicManager = GameObject.Find("MusicManager").GetComponent<musicManager>();
-        musicManager.PauseMusic();
+        // gameOverLow.SetActive(false);
+        // gameOverMid.SetActive(false);
+        // gameOverHigh.SetActive(false);
         switch (tier)
         {
             case ReportCard.OneStar:
-                gameOverLow.SetActive(true);
+                SceneController.LoadEnd1();
                 break;
             case ReportCard.TwoStars:
-                gameOverMid.SetActive(true);
+                SceneController.LoadEnd2();
                 break;
             case ReportCard.ThreeStars:
-                gameOverHigh.SetActive(true);
+                SceneController.LoadEnd3();
                 break;
         }
+
     }
 }
