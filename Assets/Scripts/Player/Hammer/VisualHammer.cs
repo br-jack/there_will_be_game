@@ -40,14 +40,20 @@ namespace Hammer
 
         private BoxCollider _hitbox;
         public UnityEvent slam;
-        public hammerChargeState hammerChargeState;
-        //public UnityEvent<hammerChargeState> chargeStateChange;
+        public hammerChargeState hammerChargeState {get; private set;}
+        public UnityEvent<hammerChargeState> chargeStateChange;
         //InputAction temporarySlamActivate;
 
 
         public float slamRadius;
         public float slamKnockbackAmount;
 
+        
+        private void changeHammerChargeState(hammerChargeState newState)
+        {
+            hammerChargeState = newState;
+            chargeStateChange.Invoke(hammerChargeState);
+        }
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
@@ -56,21 +62,24 @@ namespace Hammer
             timeHeldUp = 0;
         }
 
+
         void FixedUpdate()
         {
             //check if the player is holding the hammer above their head
             float angleToUp = Vector3.Angle(Vector3.up,transform.up);
             if (angleToUp < chargingZoneSize) {
                 
-                if (timeHeldUp > timeToChargeSlam) hammerChargeState = hammerChargeState.charged;
-                else if (timeHeldUp > 0.05) hammerChargeState = hammerChargeState.charging;
+                if (timeHeldUp > timeToChargeSlam) changeHammerChargeState(hammerChargeState.charged);
+                else if (timeHeldUp > 0.05) changeHammerChargeState(hammerChargeState.charging);
                 timeHeldUp += Time.deltaTime; 
             } 
             else if (timeHeldUp < timeToChargeSlam)
             {   
-                hammerChargeState = hammerChargeState.uncharged;
+                changeHammerChargeState(hammerChargeState.uncharged);
                 timeHeldUp = 0;
             }
+            
+
             
             
             
