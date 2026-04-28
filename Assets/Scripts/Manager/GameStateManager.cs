@@ -12,7 +12,7 @@ public class GameStateManager : MonoBehaviour
     public GameState CurState { get; private set; }
 
     [SerializeField] private InputActionReference _pauseAction;
-
+    public musicManager musicManager;
     private GameObject _pausePanel;
     private GameOverUI _gameOverUI;
     private PlayerLives _playerLives;
@@ -94,6 +94,7 @@ public class GameStateManager : MonoBehaviour
                 ScoreManager.Instance?.ResetFear();
                 ScoreManager.Instance?.ResetAwe();
                 ApplyState(GameState.Playing);
+                
                 break;
             case "MainMenu":
                 CurState = GameState.Menu;
@@ -106,6 +107,7 @@ public class GameStateManager : MonoBehaviour
 
     private void OnPausePerformed(InputAction.CallbackContext _)
     {
+
         Debug.Log("Pause action fired");
         TogglePause();
     }
@@ -124,6 +126,7 @@ public class GameStateManager : MonoBehaviour
     // Applies the state's effects unconditionally. Used by SetState and by scene-load to re-configure freshly-loaded references.
     private void ApplyState(GameState next)
     {
+        musicManager = GameObject.Find("MusicManager").GetComponent<musicManager>();
         CurState = next;
         switch (next)
         {
@@ -131,12 +134,14 @@ public class GameStateManager : MonoBehaviour
                 Time.timeScale = 1f;
                 ignoreGameplayInputUntil = Time.unscaledTime + 0.2f;
                 SetSpawning(true);
+                musicManager.PlayMusic();
                 if (_horseMovement != null) _horseMovement.enabled = true;
                 if (_pauseMenuSelection != null) _pauseMenuSelection.ClearSelection();
                 if (_pausePanel != null) _pausePanel.SetActive(false);
                 break;
             case GameState.Paused:
                 Time.timeScale = 0f;
+                musicManager.PauseMusic();
                 SetSpawning(false);
                 if (_horseMovement != null) _horseMovement.enabled = false;
                 if (_pausePanel != null) _pausePanel.SetActive(true);
@@ -170,15 +175,26 @@ public class GameStateManager : MonoBehaviour
     public void TogglePause()
     {
         Debug.Log($"TogglePause called, current state: {CurState}");
-        if (CurState == GameState.Playing) SetState(GameState.Paused);
-        else if (CurState == GameState.Paused) SetState(GameState.Playing);
+       
+        if (CurState == GameState.Playing)
+        {
+            SetState(GameState.Paused);
+        } 
+        else if (CurState == GameState.Paused)
+        {
+            SetState(GameState.Playing);
+        } 
+            
     }
 
     // Static entry points: prefab UnityEvents can't reference scene-only objects.
     public static void Button_Pause()
     {
         if (Instance != null && Instance.CurState == GameState.Playing)
+        {
             Instance.SetState(GameState.Paused);
+        }
+            
     }
 
     public static void Button_Resume()
