@@ -1,3 +1,4 @@
+using Enemy;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
@@ -65,6 +66,12 @@ public class CivilianAI : MonoBehaviour
     private float _unstuckUntil;
     private Vector3 _unstuckDir;
 
+    public IDeathState DeathHandler { get; private set; }
+    public IKnockbackState KnockbackHandler { get; private set; }
+    
+    [Header("Ragdoll")]
+    [SerializeField] private RagdollToggler ragdollToggler;
+
     void Awake()
     {
         if (anim == null) anim = GetComponentInChildren<Animator>();
@@ -79,6 +86,16 @@ public class CivilianAI : MonoBehaviour
 
         _stuckCheckPos = transform.position;
         _stuckCheckTime = Time.time;
+
+        KnockbackHandler = GetComponent<KnockbackHandler>();
+        Debug.Assert(KnockbackHandler != null);
+        RagdollDeathHandler deathHandler = GetComponent<RagdollDeathHandler>();
+        if (deathHandler != null) 
+        {
+            deathHandler.Init(ragdollToggler, KnockbackHandler);
+            DeathHandler = deathHandler;
+        }
+        Debug.Assert(DeathHandler != null);
 
         EnsureOnNavMesh();
     }
