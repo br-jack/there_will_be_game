@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+
 
 public class horseMovementGaits : MonoBehaviour
 {   
@@ -29,7 +31,11 @@ public class horseMovementGaits : MonoBehaviour
     public float minTimeBetweenJumps; //for how long are you unable to jump after jumping
     public float chargeDecay;
     public float gravity;
+    public Vector3 slamKnockback;
+    public float slamKnockbackDecay; 
+    [Tooltip("")]
     public static Action OnTutorialJump;
+    public GameObject slamParticles; 
 
     [Header("Read-only in editor")]
     public float currentRunCharge; //should be private, but i want to see it! 
@@ -43,6 +49,7 @@ public class horseMovementGaits : MonoBehaviour
     private float jumpLockedTime;
 
     [SerializeField] private Vector3 verticalVelocity = Vector3.zero; //serialised as bugged i think
+    private Vector3 extraKnockbackVelocity = Vector3.zero;
     public Action jumpStarted;
     
     private float _throttleInput;
@@ -169,6 +176,11 @@ public class horseMovementGaits : MonoBehaviour
         {
             return turnSpeedGroundedGallop;
         }
+    }
+
+    public void getKnockedBack()
+    {
+        extraKnockbackVelocity = transform.InverseTransformDirection(slamKnockback);
     }
 
     // Update is called once per frame
@@ -314,9 +326,27 @@ public class horseMovementGaits : MonoBehaviour
             _driftVelocity = Vector3.Lerp(_driftVelocity, Vector3.zero, Time.deltaTime * 5f);
         }
 
-        Vector3 finalMove = forwardMove + _driftVelocity + (Vector3.up * verticalVelocity.y);
+        Vector3 finalMove = forwardMove + _driftVelocity + (Vector3.up * verticalVelocity.y) + extraKnockbackVelocity;
         
         _cc.Move(finalMove * Time.deltaTime);
+
+        extraKnockbackVelocity = applyLinearDecay(extraKnockbackVelocity,slamKnockbackDecay);
+    }
+
+    //decay towards 0 in each dimension
+    private Vector3 applyLinearDecay(Vector3 current, float decay)
+    {
+        Vector3 output;
+        output.x = (current.x > 0) ? 
+            MathF.Max(0,current.x - (decay*Time.deltaTime))
+            : MathF.Min(0,current.x + (decay*Time.deltaTime));
+        output.y = (current.y > 0) ? 
+            MathF.Max(0,current.y - (decay*Time.deltaTime))
+            : MathF.Min(0,current.y + (decay*Time.deltaTime));
+        output.z = (current.z > 0) ? 
+            MathF.Max(0,current.z - (decay*Time.deltaTime))
+            : MathF.Min(0,current.z + (decay*Time.deltaTime));
+        return output;
     }
 
     private bool ShouldIgnoreGameplayInput()

@@ -44,7 +44,8 @@ namespace Hammer
         [SerializeField] private Vector3 largeHitboxCenter;
 
         //private bool _collisionsEnabled = true;
-
+        [SerializeField] private BoxCollider _slamDetectionHitbox; //this is on the slamHitbox, Jack I know you didn't want me to have it as a seperate object 
+        // but the internet thinks it's definitely a better idea to have box colliders on children objects than two on the same
         [SerializeField] private BoxCollider _hitbox;
         public UnityEvent slam;
         public hammerChargeState hammerChargeState { get; private set; }
@@ -147,6 +148,7 @@ namespace Hammer
         {
             //Debug.Log("boom");
             slam.Invoke();
+
             Collider[] colliders = Physics.OverlapSphere(transform.position, slamRadius);
             foreach (Collider c in colliders)
             {
@@ -155,18 +157,16 @@ namespace Hammer
                     c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 3000);
                 }
 
-                if (c.GetComponentInParent<StandardEnemyAI>())
-                {
-                   
-
-                }
 
                 // TODO fling Player
+                
+
                 // TODO particles
                 // TODO use aarons ragdolls
             }
             changeHammerChargeState(hammerChargeState.uncharged);
             timeHeldUp = 0;
+            ScoreManager.Instance.ResetAwe();
 
         }
     }
