@@ -53,18 +53,23 @@ public class FireballProjectile : MonoBehaviour
         // ENEMY HIT
         if ((otherLayerBit & enemyLayer.value) != 0)
         {
-            StandardEnemyAI enemyAI = other.GetComponentInParent<StandardEnemyAI>();
-            if (enemyAI != null)
+            IDeathState deathState = other.GetComponent<IDeathState>();
+            IKnockbackState knockbackState = other.GetComponentInParent<IKnockbackState>();
+            
+            if (knockbackState != null)
             {
-                ApplyImpactKnockback(enemyAI);
+                if (deathState != null && deathState.IsDying)
+                {
+                    ApplyImpactKnockback(knockbackState, other.transform.position);
+                }
 
-                EnemyBurnable burnable = enemyAI.GetComponent<EnemyBurnable>();
+                EnemyBurnable burnable = other.GetComponent<EnemyBurnable>();
                 if (burnable != null)
                 {
                     burnable.ApplyBurn(transform.position);
                 }
 
-                SpawnFlamePillarAtGround(enemyAI.transform.position);
+                SpawnFlamePillarAtGround(other.transform.position);
                 Destroy(gameObject);
                 return;
             }
@@ -85,16 +90,15 @@ public class FireballProjectile : MonoBehaviour
         }
     }
 
-    private void ApplyImpactKnockback(StandardEnemyAI enemyAI)
+    private void ApplyImpactKnockback(IKnockbackState enemyKB, Vector3 enemyPosition)
     {
-        if (enemyAI == null) return;
-        if (enemyAI.DeathHandler.IsDying) return;
+        if (enemyKB == null) return;
 
-        Vector3 knockbackDirection = enemyAI.transform.position - transform.position;
+        Vector3 knockbackDirection = enemyPosition - transform.position;
         knockbackDirection.y = impactUpwardForceRatio;
         knockbackDirection.Normalize();
 
-        enemyAI.KnockbackHandler.ApplyKnockback(knockbackDirection * impactKnockbackForce);
+        enemyKB.ApplyKnockback(knockbackDirection * impactKnockbackForce);
     }
 
     private void SpawnFlamePillarAtGround(Vector3 targetPosition)
