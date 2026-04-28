@@ -29,7 +29,10 @@ namespace Hammer
             
         }
 
-        public void Rumble();
+        public void Rumble()
+        {
+            
+        }
 
         public void Cleanup();
     }
