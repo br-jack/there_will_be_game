@@ -1,4 +1,5 @@
 using System.Collections;
+using Enemy;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -74,7 +75,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
 
     
-
+    //TODO should ideally use IDeathState abstraction instead
     private StandardEnemyAI currentTutorialEnemy;
     private bool enemyPhaseStarted = false;
     private bool enemyHasHitPlayer = false;
@@ -351,8 +352,8 @@ public class TutorialManager : MonoBehaviour
         taskArrow.Show(false);
 
         currentTutorialEnemy = tutorialEnemySpawner.SpawnTutorialEnemy();
-        currentTutorialEnemy.EnableTutorialKillLockMode();
-        currentTutorialEnemy.OnDied += HandleTutorialEnemyDied;
+        currentTutorialEnemy.DeathHandler.EnableTutorialKillLockMode();
+        currentTutorialEnemy.DeathHandler.OnDied += HandleTutorialEnemyDied;
         SnapFaceTarget(currentTutorialEnemy.transform);
         SnapCameraToTarget(currentTutorialEnemy.transform);
 
@@ -409,7 +410,7 @@ public class TutorialManager : MonoBehaviour
             taskArrow.Show(true);
 
             promptText.text = enemyKillPromptMessage;
-            currentTutorialEnemy.SetCanBeKilled(false);
+            currentTutorialEnemy.DeathHandler.SetCanBeKilled(false);
             StartCoroutine(EnableEnemyKillAfterDelay(enemyKillUnlockDelay));
         }
     }
@@ -420,7 +421,7 @@ public class TutorialManager : MonoBehaviour
 
         if (currentTutorialEnemy != null)
         {
-            currentTutorialEnemy.SetCanBeKilled(true);
+            currentTutorialEnemy.DeathHandler.SetCanBeKilled(true);
         }
     }
 
@@ -433,7 +434,7 @@ public class TutorialManager : MonoBehaviour
 
         enemyDefeated = true;
 
-        currentTutorialEnemy.OnDied -= HandleTutorialEnemyDied;
+        currentTutorialEnemy.DeathHandler.OnDied -= HandleTutorialEnemyDied;
         tutorialDoor.EnableDoor();
         taskArrow.SetTarget(tutorialDoorTarget);
         taskArrow.Show(true);

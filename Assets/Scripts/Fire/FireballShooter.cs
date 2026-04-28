@@ -1,3 +1,4 @@
+using Enemy;
 using UnityEngine;
 using Hammer;
 
@@ -53,13 +54,13 @@ public class FireballShooter : MonoBehaviour
             return;
         }
 
-        StandardEnemyAI nearestEnemy = FindNearestEnemyInCone();
+        IDeathState nearestEnemy = FindNearestEnemyInCone();
         if (nearestEnemy == null)
         {
             return;
         }
 
-        Vector3 targetPoint = nearestEnemy.transform.position + Vector3.up * 1.0f;
+        Vector3 targetPoint = nearestEnemy.Transform.position + Vector3.up * 1.0f;
         Vector3 direction = targetPoint - fireballSpawnPoint.position;
 
         if (direction.sqrMagnitude < 0.0001f)
@@ -78,11 +79,11 @@ public class FireballShooter : MonoBehaviour
         lastFireTime = Time.time;
     }
 
-    private StandardEnemyAI FindNearestEnemyInCone()
+    private IDeathState FindNearestEnemyInCone()
     {
         Collider[] hits = Physics.OverlapSphere(fireballSpawnPoint.position, targetSearchRadius, enemyLayerMask);
 
-        StandardEnemyAI nearestEnemy = null;
+        IDeathState nearestEnemy = null;
         float nearestDistance = Mathf.Infinity;
 
         Vector3 forward = aimForwardSource.forward;
@@ -94,13 +95,13 @@ public class FireballShooter : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            StandardEnemyAI enemy = hit.GetComponentInParent<StandardEnemyAI>();
+            IDeathState enemy = hit.GetComponentInParent<IDeathState>();
             if (enemy == null) continue;
             if (enemy.IsDying) continue;
-            if (enemy.IsKnockedBack) continue;
+            if (enemy.KnockbackState.IsKnockedBack) continue;
             if (!enemy.CanBeKilled) continue;
 
-            Vector3 toEnemy = enemy.transform.position - aimForwardSource.position;
+            Vector3 toEnemy = enemy.Transform.position - aimForwardSource.position;
             toEnemy.y = 0f;
 
             if (toEnemy.sqrMagnitude < 0.0001f)
@@ -113,7 +114,7 @@ public class FireballShooter : MonoBehaviour
             if (dot < minDot)
                 continue;
 
-            float dist = (enemy.transform.position - fireballSpawnPoint.position).sqrMagnitude;
+            float dist = (enemy.Transform.position - fireballSpawnPoint.position).sqrMagnitude;
             if (dist < nearestDistance)
             {
                 nearestDistance = dist;
