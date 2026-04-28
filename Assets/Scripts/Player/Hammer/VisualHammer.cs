@@ -130,7 +130,7 @@ namespace Hammer
             // MoveToTargetRotation();
         }
 
-        public void OnCollisionEnter(Collision collision)
+        public void OnTriggerEnter()
         {
             if (hammerChargeState == hammerChargeState.charged)
             {
@@ -147,13 +147,20 @@ namespace Hammer
             Collider[] colliders = Physics.OverlapSphere(transform.position, slamRadius);
             foreach (Collider c in colliders)
             {
+                if (c.GetComponentInParent<DestructibleObject>())
+                {
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 3000);
+                }
+
                 if (c.GetComponentInParent<StandardEnemyAI>())
                 {
                     Vector3 knockbackDirection = c.ClosestPoint(transform.position) - transform.position; //knock away
                     c.GetComponentInParent<StandardEnemyAI>().getKilledBasic(knockbackDirection * slamKnockbackAmount);
                 }
                 // TODO fling Player
-
+                // destroy buildings
+                // particles
+                // use aarons ragdolls
             }
             changeHammerChargeState(hammerChargeState.uncharged);
             timeHeldUp = 0;
