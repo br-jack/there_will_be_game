@@ -33,7 +33,7 @@ public class BodyHit : MonoBehaviour
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
         hitSounds.PlaySFX();
 
-        AwardScore(false);
+        AwardScore(enemy.WasShielded);
         enemy.DeathHandler.KilledBy(other, attack);
     }
 

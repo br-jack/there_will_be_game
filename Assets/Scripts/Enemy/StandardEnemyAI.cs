@@ -63,6 +63,10 @@ namespace Enemy
             speed = 2f
         };
         private float wanderIdleEndTime;
+        private Vector3 _wanderProgressPos;
+        private float _wanderProgressTime;
+        private const float WanderStallTime = 1.5f;
+        private const float WanderProgressDist = 0.5f;
 
         [Header("Knockback & Death")]
         [SerializeField] private RagdollToggler ragdollToggler;
@@ -85,8 +89,26 @@ namespace Enemy
         [SerializeField] private bool useDamageAnimEvent = false;
 
         public bool HasShield() => shield != null;
-        
+        public bool WasShielded { get; private set; }
+
         private float timeOfNextAttack;
+
+        private const float AnimSampleInterval = 0.15f;
+        private Vector3 _animPrevSamplePos;
+        private float _animPrevSampleTime;
+        private Vector3 _animCurSamplePos;
+        private float _animCurSampleTime;
+
+        // Stuck-escape: if we've been commanding movement for StuckTimeThreshold but
+        // haven't actually translated, sidestep for UnstuckDuration to break free.
+        private const float StuckTimeThreshold = 0.4f;
+        private const float StuckMovedSqr = 0.04f;
+        private const float StuckCommandedSqr = 1f;
+        private const float UnstuckDuration = 0.3f;
+        private Vector3 _stuckCheckPos;
+        private float _stuckCheckTime;
+        private float _unstuckUntil;
+        private Vector3 _unstuckDir;
 
         void Awake()
         {
@@ -95,6 +117,7 @@ namespace Enemy
             if (anim == null) anim = GetComponentInChildren<Animator>();
             ShieldHit shieldHit = GetComponentInChildren<ShieldHit>();
             if (shieldHit != null) shield = shieldHit.gameObject;
+            WasShielded = shield != null;
 
             // Each enemy gets a slightly different hold distance (Stalk distance should ALWAYS be further than attack range).
             actualHoldDistance = holdDistance * (1f + UnityEngine.Random.Range(-holdDistanceVariance, holdDistanceVariance));
@@ -102,7 +125,11 @@ namespace Enemy
 
             actualSpeed = speed * (1f + UnityEngine.Random.Range(-speedVariance, speedVariance));
 
-            SetupNavMesh();
+            _animPrevSamplePos = _animCurSamplePos = transform.position;
+            _animPrevSampleTime = _animCurSampleTime = Time.time;
+
+            _stuckCheckPos = transform.position;
+            _stuckCheckTime = Time.time;SetupNavMesh();
             
             KnockbackHandler kbHandler = GetComponent<KnockbackHandler>();
             if (kbHandler != null)
@@ -237,8 +264,21 @@ namespace Enemy
                     if (agent != null && !agent.pathPending && (!agent.hasPath || agent.remainingDistance < 0.5f))
                     {
                         EnterWanderIdle();
+                        break;
                     }
-                    break;
+                // Stalled (e.g. walking into an unbaked obstacle): give up the current target,
+                // briefly idle, then pick a new one in EnterWandering. Otherwise the agent thinks
+                // its path is still valid and the script keeps pushing into the wall forever.
+                if ((transform.position - _wanderProgressPos).sqrMagnitude > WanderProgressDist * WanderProgressDist)
+                {
+                    _wanderProgressPos = transform.position;
+                    _wanderProgressTime = Time.time;
+                }
+                else if (Time.time - _wanderProgressTime > WanderStallTime)
+                {
+                    EnterWanderIdle();
+                }
+                break;
                 case CombatState.Idling:
                     if (Time.time >= wanderIdleEndTime) EnterWandering();
                     break;
@@ -248,7 +288,8 @@ namespace Enemy
         private void EnterWandering()
         {
             combatState = CombatState.Wandering;
-            PickNewWanderPoint();
+            _wanderProgressPos = transform.position;
+            _wanderProgressTime = Time.time;PickNewWanderPoint();
         }
 
         private void EnterWanderIdle()
@@ -375,6 +416,36 @@ namespace Enemy
             }
 
             if (agent != null && agent.enabled && agent.isOnNavMesh) agent.nextPosition = transform.position;
+            UpdateStuckEscape(toPlayerDir);
+        }
+
+        private void UpdateStuckEscape(Vector3 toPlayerDir)
+        {
+            if (rb == null) return;
+            if (Time.time < _unstuckUntil) return; // already escaping; don't update detection
+
+            Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            bool commandingMovement = horizontalVel.sqrMagnitude > StuckCommandedSqr;
+            bool moved = (transform.position - _stuckCheckPos).sqrMagnitude > StuckMovedSqr;
+
+            if (!commandingMovement || moved)
+            {
+                _stuckCheckPos = transform.position;
+                _stuckCheckTime = Time.time;
+                return;
+            }
+
+            if (Time.time - _stuckCheckTime <= StuckTimeThreshold) return;
+
+            // Stuck — pick a perpendicular direction and sidestep briefly. Random side
+            // so two enemies wedged against each other don't both pick the same way.
+            Vector3 right = Vector3.Cross(Vector3.up, toPlayerDir);
+            if (right.sqrMagnitude < 0.0001f) right = Vector3.right;
+            right.Normalize();
+            _unstuckDir = UnityEngine.Random.value < 0.5f ? right : -right;
+            _unstuckUntil = Time.time + UnstuckDuration;
+            _stuckCheckPos = transform.position;
+            _stuckCheckTime = Time.time;
         }
 
         private void StrikeMovement(float distToPlayer, Vector3 moveDir, Vector3 toPlayerDir)
@@ -459,6 +530,13 @@ namespace Enemy
 
         private void ApplyVelocity(Vector3 desired)
         {
+            // While escaping a stuck position, override whatever the AI wanted with a
+            // sideways push at normal speed.
+            if (Time.time < _unstuckUntil)
+            {
+                desired = _unstuckDir * actualSpeed;
+            }
+            
             if (rb != null)
             {
                 rb.linearVelocity = Vector3.Lerp(
@@ -518,12 +596,27 @@ namespace Enemy
         {
             if (anim == null || string.IsNullOrEmpty(speedParam)) return;
 
-            float animSpeed = 0f;
-            if (rb != null)
+            // Drive the animator from net translation over a ~0.15-0.3s window, not
+            // per-frame delta. When the rigidbody is jammed against geometry, physics
+            // depenetration jitters it each frame — per-frame |delta| is non-zero but
+            // net displacement over the window cancels out, so the legs correctly idle.
+            Vector3 currentPos = transform.position;
+
+            if (Time.time - _animCurSampleTime >= AnimSampleInterval)
             {
-                Vector3 v = rb.linearVelocity;
-                animSpeed = new Vector2(v.x, v.z).magnitude;
+                _animPrevSamplePos = _animCurSamplePos;
+                _animPrevSampleTime = _animCurSampleTime;
+                _animCurSamplePos = currentPos;
+                _animCurSampleTime = Time.time;
             }
+
+            float dt = Time.time - _animPrevSampleTime;float animSpeed = 0f;
+                if (dt > 0.05f)
+                {
+                    Vector3 delta = currentPos - _animPrevSamplePos;
+                    animSpeed = new Vector2(delta.x, delta.z).magnitude / dt;
+            }
+            
             if (animSpeed < idleSpeedThreshold) animSpeed = 0f;
             anim.SetFloat(speedParam, animSpeed);
         }

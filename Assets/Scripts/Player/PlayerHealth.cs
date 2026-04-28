@@ -27,6 +27,11 @@ public class PlayerHealth : MonoBehaviour
     [Header("Score Penalty")]
     [SerializeField] private int fearPenaltyOnRespawn = 500;
 
+    [Header("Damage Reduction After Hit")]
+    [SerializeField] private float damageReductionDuration = 1f;
+    [SerializeField, Range(0f, 1f)] private float reducedDamageMultiplier = 0.25f;
+    private float damageReductionEndTime;
+
     [SerializeField] private Renderer[] playerRenderers;
     [SerializeField] private DeathTextUI deathTextUI;
     private PlayerParticles playerParticles;
@@ -86,6 +91,11 @@ public class PlayerHealth : MonoBehaviour
         }
         if (IsDead) return;
 
+        if (Time.time < damageReductionEndTime)
+        {
+            damage = Mathf.RoundToInt(damage * reducedDamageMultiplier);
+        }
+
         Current -= damage;
         if (Current < 0) Current = 0;
 
@@ -97,6 +107,7 @@ public class PlayerHealth : MonoBehaviour
         }
         if (!IsDead)
         {
+            damageReductionEndTime = Time.time + damageReductionDuration;
             if (damageRedFlash != null)
             {
                 damageRedFlash.PlayFlash();
