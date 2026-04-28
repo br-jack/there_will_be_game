@@ -44,6 +44,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private GameObject hammerFireVisual;
     [SerializeField] private HammerFireController hammerFireController;
 
+    [SerializeField] private AudioClip playerDeathSFX;
+
     private int current;
     private bool isRespawning = false;
 
@@ -145,6 +147,13 @@ public class PlayerHealth : MonoBehaviour
             }
 
             return;
+        }
+
+        // Code that runs if the player actually dies (basically just does the respawn logic in our game).
+
+        if (playerDeathSFX != null)
+        {
+            audioSource.PlayOneShot(playerDeathSFX, 1f);
         }
         SetPlayerVisible(false);
         SetControlEnabled(false);
