@@ -129,7 +129,9 @@ namespace Enemy
             _animPrevSampleTime = _animCurSampleTime = Time.time;
 
             _stuckCheckPos = transform.position;
-            _stuckCheckTime = Time.time;SetupNavMesh();
+            _stuckCheckTime = Time.time;
+            
+            SetupNavMesh();
             
             KnockbackHandler kbHandler = GetComponent<KnockbackHandler>();
             if (kbHandler != null)
@@ -289,7 +291,8 @@ namespace Enemy
         {
             combatState = CombatState.Wandering;
             _wanderProgressPos = transform.position;
-            _wanderProgressTime = Time.time;PickNewWanderPoint();
+            _wanderProgressTime = Time.time;
+            PickNewWanderPoint();
         }
 
         private void EnterWanderIdle()

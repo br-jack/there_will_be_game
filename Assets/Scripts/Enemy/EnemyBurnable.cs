@@ -21,10 +21,8 @@ public class EnemyBurnable : MonoBehaviour
 
     private void Awake()
     {
-        if (enemyAI == null)
-        {
-            enemyAI = GetComponent<RagdollDeathHandler>();
-        }
+        enemyAI = GetComponent<RagdollDeathHandler>();
+        Debug.Assert(enemyAI != null);
 
         burnVisual.SetActive(false);
         burnParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
