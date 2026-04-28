@@ -16,7 +16,9 @@ public class DestructibleObject : MonoBehaviour
     private AudioClip[] destructionSounds;
     public float soundVolume = 1f;
     public GameObject destructionParticlesPrefab;
-
+    private static Queue<GameObject> activeFragments = new Queue<GameObject>();
+    private static int maxFragments = 5000;
+    private AudioSource audioSource;
     private ScoreSettings scoreSettings;
 
 
@@ -35,6 +37,11 @@ public class DestructibleObject : MonoBehaviour
         };
 
         //destructionParticlesPrefab = Resources.Load<GameObject>("BuildingDestructionParticles");
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.spatialBlend = 0f;
+        audioSource.volume = 0.75f;
+        audioSource.playOnAwake = false;
     }
 
     public void BreakFromHorseRam(Vector3 impactPoint)
@@ -68,9 +75,14 @@ public class DestructibleObject : MonoBehaviour
         broken = true;
 
         AudioClip clip = destructionSounds[Random.Range(0, destructionSounds.Length)];
+        if (destructionHitSound != null)
+        {
+            audioSource.PlayOneShot(destructionHitSound, 0.75f);
+        }
         if (clip != null)
-            AudioSource.PlayClipAtPoint(destructionHitSound, transform.position, soundVolume);
-            AudioSource.PlayClipAtPoint(clip, transform.position, soundVolume);
+        {
+            audioSource.PlayOneShot(clip, 0.75f);
+        }
 
         if (destructionParticlesPrefab != null)
             Instantiate(destructionParticlesPrefab, myCollider.bounds.center, Quaternion.identity);
@@ -80,11 +92,26 @@ public class DestructibleObject : MonoBehaviour
                                            transform.rotation);
         fragments.SetActive(true);
 
-        foreach (Rigidbody rb in fragments.GetComponentsInChildren<Rigidbody>())
+        fragments.layer = LayerMask.NameToLayer("Debris");
+
+        foreach (Transform child in fragments.transform)
         {
+            Rigidbody rb = child.GetComponent<Rigidbody>();
+            if (rb == null) continue;
+
+            child.gameObject.layer = LayerMask.NameToLayer("Debris");
+
+            while (activeFragments.Count >= maxFragments)
+            {
+                GameObject oldest = activeFragments.Dequeue();
+                if (oldest != null)
+                    Destroy(oldest);
+            }
+
             rb.isKinematic = false;
-            rb.AddExplosionForce(explosionForce, impactPoint, explosionRadius, 1f);
-            Destroy(rb.gameObject, 10f);
+            rb.AddExplosionForce(explosionForce, impactPoint, explosionRadius, 10f);
+            activeFragments.Enqueue(child.gameObject);
+            Destroy(child.gameObject, 6f);
         }
 
         AwardScore();
@@ -95,7 +122,7 @@ public class DestructibleObject : MonoBehaviour
 
     IEnumerator HandleRespawn()
     {
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(60f);
         SetState(true);
         broken = false;
     }

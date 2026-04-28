@@ -228,9 +228,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8550110256333393937, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+      propertyPath: swordClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5daa93fd627858e43855e02bf33eb1a4, type: 3}
+    - target: {fileID: -8550110256333393937, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
       propertyPath: sightRange
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: -8550110256333393937, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+      propertyPath: swordClip1
+      value: 
+      objectReference: {fileID: 8300000, guid: f47acd77c99ee594c8265a41994481d5, type: 3}
+    - target: {fileID: -8550110256333393937, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+      propertyPath: swordClip2
+      value: 
+      objectReference: {fileID: 8300000, guid: 653ea6fbd1cba5c488a9dcf3fcdcc43c, type: 3}
     - target: {fileID: -8550110256333393937, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
       propertyPath: attack.damage
       value: 7
@@ -314,17 +326,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6767948238336100521}
   m_SourcePrefab: {fileID: 100100000, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
---- !u!114 &3078170086628116410 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -8550110256333393937, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
-  m_PrefabInstance: {fileID: 2585122704648644693}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7450551165020697519}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!198 &4622351217784643776 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 7189381722902153365, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
@@ -352,7 +353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fca2399daa769c46ae4b445de19fd4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAI: {fileID: 3078170086628116410}
   burnDuration: 2.5
   fireballKillAwardsScore: 1
   fireballKillScore: 60
