@@ -3,6 +3,7 @@ using UnityEngine;
 public class musicManager : MonoBehaviour
 {
     private AudioSource audioSource;
+    [SerializeField] private int startTime;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -11,6 +12,10 @@ public class musicManager : MonoBehaviour
         if (audioSource == null)
         {
             Debug.LogError("man there's no audio source: MUSIC MANAGER");
+        }
+        else
+        {
+            audioSource.time = startTime;
         }
         
     }
