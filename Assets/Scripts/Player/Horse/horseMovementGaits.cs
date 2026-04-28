@@ -90,6 +90,11 @@ public class horseMovementGaits : MonoBehaviour
     //so we can update the _xInput variables in them, and then use those variables in Update()
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (ShouldIgnoreGameplayInput())
+        {
+            _jumpInput = false;
+            return;
+        }
         _jumpInput = context.ReadValueAsButton();
     }
 
@@ -186,6 +191,17 @@ public class horseMovementGaits : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ShouldIgnoreGameplayInput())
+        {
+            currentSpeed = 0f;
+            _throttleInput = 0f;
+            _brakeInput = 0f;
+            _turnInput = 0f;
+            _jumpInput = false;
+            _driftInput = false;
+            verticalVelocity = Vector3.zero;
+            return;
+        }
         if (!canControl)
         {
             currentSpeed = 0f;
@@ -372,5 +388,20 @@ public class horseMovementGaits : MonoBehaviour
         Vector3 finalMove = forwardMove + _driftVelocity + (Vector3.up * verticalVelocity.y);
         
         _cc.Move(finalMove * Time.deltaTime);
+    }
+
+    private bool ShouldIgnoreGameplayInput()
+    {
+        if (GameStateManager.Instance.CurState != GameState.Playing)
+        {
+            return true;
+        }
+
+        if (Time.unscaledTime < GameStateManager.ignoreGameplayInputUntil)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

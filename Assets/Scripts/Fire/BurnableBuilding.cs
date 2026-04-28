@@ -51,8 +51,6 @@ public class BurnableBuilding : MonoBehaviour
             fireTask.BuildingBurned();
         }
 
-        Debug.Log("Building has been set on fire");
-
         StartCoroutine(BurnDown());
     }
 
