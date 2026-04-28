@@ -110,7 +110,7 @@ public class DestructibleObject : MonoBehaviour
             }
 
             rb.isKinematic = false;
-            rb.AddExplosionForce(explosionForce, impactPoint, explosionRadius, 1f);
+            rb.AddExplosionForce(explosionForce, impactPoint, explosionRadius, 10f);
             activeFragments.Enqueue(child.gameObject);
             Destroy(child.gameObject, 6f);
         }
