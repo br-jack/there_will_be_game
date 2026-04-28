@@ -84,7 +84,7 @@ namespace Enemy
             OnDied?.Invoke();
         }
 
-        public void KilledBy(Collider other, float force)
+        public void KilledBy(Vector3 other, float force)
         {
             if (IsDying)
             {
@@ -107,7 +107,7 @@ namespace Enemy
             
             _ragdollToggler.UseRagdoll();
             
-            _knockbackState.ApplyKnockbackToAll(_knockbackState.CalcKnockbackForce(other.transform, force));
+            _knockbackState.ApplyKnockbackToAll(_knockbackState.CalcKnockbackForce(other, force));
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();

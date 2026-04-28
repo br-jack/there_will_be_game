@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem; //temp
 using Score;
+using Enemy;
+using UnityEngine.UIElements;
 
 namespace Hammer
 {
@@ -53,7 +55,7 @@ namespace Hammer
 
 
         public float slamRadius;
-        public float slamKnockbackAmount;
+        public float slamForce;
 
 
         private void changeHammerChargeState(hammerChargeState newState)
@@ -75,19 +77,21 @@ namespace Hammer
 
         void FixedUpdate()
         {
-            //check if the player is holding the hammer above their head
-            float angleToUp = Vector3.Angle(Vector3.up, transform.up);            
-            if (angleToUp < chargingZoneSize && ScoreManager.Instance.AweScore >= ScoreManager.Instance.MaxAweScore)
-            {
+            //if not already charged, check if the player is holding the hammer above their head
+            if (hammerChargeState != hammerChargeState.charged) {
+                float angleToUp = Vector3.Angle(Vector3.up, transform.up); //gives signed angle          
+                if (angleToUp < chargingZoneSize && angleToUp > 0.0f && ScoreManager.Instance.AweScore >= ScoreManager.Instance.MaxAweScore)
+                {
 
-                if (timeHeldUp > timeToChargeSlam) changeHammerChargeState(hammerChargeState.charged);
-                else if (timeHeldUp > 0.05) changeHammerChargeState(hammerChargeState.charging);
-                timeHeldUp += Time.deltaTime;
-            }
-            else if (hammerChargeState != hammerChargeState.charged)
-            {
-                changeHammerChargeState(hammerChargeState.uncharged);
-                timeHeldUp = 0;
+                    if (timeHeldUp > timeToChargeSlam) changeHammerChargeState(hammerChargeState.charged);
+                    else if (timeHeldUp > 0.05) changeHammerChargeState(hammerChargeState.charging);
+                    timeHeldUp += Time.deltaTime;
+                }
+                else
+                {
+                    changeHammerChargeState(hammerChargeState.uncharged);
+                    timeHeldUp = 0;
+                }
             }
 
             //Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");
@@ -163,6 +167,11 @@ namespace Hammer
                 }
                 // TODO particles
                 // TODO use aarons ragdolls
+                if (c.GetComponentInParent<RagdollDeathHandler>())
+                {
+                    c.GetComponentInParent<RagdollDeathHandler>().KilledBy(slamCenter,slamForce);
+                }
+
             }
             changeHammerChargeState(hammerChargeState.uncharged);
             timeHeldUp = 0;

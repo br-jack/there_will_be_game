@@ -78,7 +78,7 @@ namespace Enemy
             OnDied?.Invoke();
         }
 
-        public void KilledBy(Collider other, float force)
+        public void KilledBy(Vector3 position, float force)
         {
             if (IsDying)
             {
@@ -101,7 +101,7 @@ namespace Enemy
             
             animator.SetTrigger(deadTrigger);
             
-            _knockbackState.ApplyKnockbackToAll(_knockbackState.CalcKnockbackForce(other.transform, force));
+            _knockbackState.ApplyKnockbackToAll(_knockbackState.CalcKnockbackForce(position, force));
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();

@@ -10,5 +10,6 @@ namespace Enemy
         public void ApplyKnockback(Vector3 force);
         public void ApplyKnockbackToAll(Vector3 force);
         public Vector3 CalcKnockbackForce(Transform other, float force);
+        public Vector3 CalcKnockbackForce(Vector3 from, float force);
     }
 }

@@ -38,6 +38,13 @@ namespace Enemy
 
             return knockDir * force;
         }
+        public Vector3 CalcKnockbackForce(Vector3 from, float force = 30f)
+        {
+            Vector3 knockDir = transform.position - from;
+            knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
+            knockDir.Normalize();
+            return knockDir * force;
+        }
 
         public void ApplyKnockback(Vector3 force)
         {
