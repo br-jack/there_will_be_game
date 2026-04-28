@@ -32,7 +32,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject healthBarUI;
     [SerializeField] private GameObject boonTextUI;
     [SerializeField] private GameObject taskPanelUI;
-    [SerializeField] private GameObject waveAnnouncerUI;
 
     [Header("Tutorial Prompt UI")]
     [SerializeField] private GameObject tutorialPromptUI;
@@ -399,7 +398,6 @@ public class TutorialManager : MonoBehaviour
         healthBarUI.SetActive(false);
         boonTextUI.SetActive(false);
         taskPanelUI.SetActive(false);
-        waveAnnouncerUI.SetActive(false);
     }
 
     private void HandlePowerUpCollected(PowerUpPickup collectedPowerUp)
