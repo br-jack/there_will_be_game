@@ -1,6 +1,8 @@
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem; //temp
+using Score;
 
 namespace Hammer
 {
@@ -26,7 +28,7 @@ namespace Hammer
         public float timeToChargeSlam = 3;
         public float chargingZoneSize = 20;
 
-
+        private ScoreSettings scoreSettings;
         public float timeHeldUp;
 
 
@@ -43,7 +45,7 @@ namespace Hammer
 
         private BoxCollider _hitbox;
         public UnityEvent slam;
-        public hammerChargeState hammerChargeState {get; private set;}
+        public hammerChargeState hammerChargeState { get; private set; }
         public UnityEvent<hammerChargeState> chargeStateChange;
         //InputAction temporarySlamActivate;
 
@@ -51,7 +53,7 @@ namespace Hammer
         public float slamRadius;
         public float slamKnockbackAmount;
 
-        
+
         private void changeHammerChargeState(hammerChargeState newState)
         {
             hammerChargeState = newState;
@@ -62,6 +64,7 @@ namespace Hammer
             _rb = GetComponent<Rigidbody>();
             _hitbox = GetComponent<BoxCollider>();
             Debug.Assert(_hitbox != null);
+            scoreSettings = Resources.Load<ScoreSettings>("ScoreSettings");
             timeHeldUp = 0;
         }
 
@@ -69,19 +72,20 @@ namespace Hammer
         void FixedUpdate()
         {
             //check if the player is holding the hammer above their head
-            float angleToUp = Vector3.Angle(Vector3.up,transform.up);
-            if (angleToUp < chargingZoneSize) {
-                
+            float angleToUp = Vector3.Angle(Vector3.up, transform.up);            
+            if (angleToUp < chargingZoneSize && ScoreManager.Instance.AweScore >= ScoreManager.Instance.MaxAweScore)
+            {
+
                 if (timeHeldUp > timeToChargeSlam) changeHammerChargeState(hammerChargeState.charged);
                 else if (timeHeldUp > 0.05) changeHammerChargeState(hammerChargeState.charging);
-                timeHeldUp += Time.deltaTime; 
-            } 
-            else if (timeHeldUp < timeToChargeSlam)
-            {   
+                timeHeldUp += Time.deltaTime;
+            }
+            else if (hammerChargeState != hammerChargeState.charged)
+            {
                 changeHammerChargeState(hammerChargeState.uncharged);
                 timeHeldUp = 0;
             }
-        
+
             //Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");
             if (useDynamicHitbox)
             {
@@ -128,6 +132,10 @@ namespace Hammer
 
         public void OnCollisionEnter(Collision collision)
         {
+            if (hammerChargeState == hammerChargeState.charged)
+            {
+                doSlam();
+            }
             //_targetHammer.Rumble();
         }
 
@@ -141,7 +149,11 @@ namespace Hammer
                     Vector3 knockbackDirection = c.ClosestPoint(transform.position) - transform.position; //knock away
                     c.GetComponentInParent<StandardEnemyAI>().getKilledBasic(knockbackDirection * slamKnockbackAmount);
                 }
+                // TODO fling player
             }
+            changeHammerChargeState(hammerChargeState.uncharged);
+            timeHeldUp = 0;
+
         }
     }
 }
