@@ -1,3 +1,4 @@
+using Enemy;
 using UnityEngine;
 using Hammer;
 
@@ -96,9 +97,9 @@ public class FireballShooter : MonoBehaviour
         {
             StandardEnemyAI enemy = hit.GetComponentInParent<StandardEnemyAI>();
             if (enemy == null) continue;
-            if (enemy.IsDying) continue;
-            if (enemy.IsKnockedBack) continue;
-            if (!enemy.CanBeKilled) continue;
+            if (enemy.DeathHandler.IsDying) continue;
+            if (enemy.KnockbackHandler.IsKnockedBack) continue;
+            if (!enemy.DeathHandler.CanBeKilled) continue;
 
             Vector3 toEnemy = enemy.transform.position - aimForwardSource.position;
             toEnemy.y = 0f;

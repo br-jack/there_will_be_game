@@ -1,3 +1,4 @@
+using Enemy;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
@@ -87,13 +88,13 @@ public class FireballProjectile : MonoBehaviour
     private void ApplyImpactKnockback(StandardEnemyAI enemyAI)
     {
         if (enemyAI == null) return;
-        if (enemyAI.IsDying) return;
+        if (enemyAI.DeathHandler.IsDying) return;
 
         Vector3 knockbackDirection = enemyAI.transform.position - transform.position;
         knockbackDirection.y = impactUpwardForceRatio;
         knockbackDirection.Normalize();
 
-        enemyAI.ApplyKnockback(knockbackDirection * impactKnockbackForce);
+        enemyAI.KnockbackHandler.ApplyKnockback(knockbackDirection * impactKnockbackForce);
     }
 
     private void SpawnFlamePillarAtGround(Vector3 targetPosition)

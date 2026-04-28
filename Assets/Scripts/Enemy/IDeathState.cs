@@ -12,5 +12,6 @@ namespace Enemy
         public void EnableTutorialKillLockMode();
         public void SetCanBeKilled(bool canBeKilled);
         public void KilledBy(Collider other, AttackHitbox hitBox);
+        public void KilledByFire(Vector3 sourcePosition, float force = 18f);
     }
 }

@@ -50,6 +50,11 @@ namespace Enemy
                 return;
             }
 
+            if (!CanBeKilled)
+            {
+                return;
+            }
+
             StartDeathTimer();
 
             Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
@@ -62,6 +67,20 @@ namespace Enemy
             _knockbackState.ApplyKnockback(_knockbackState.CalcKnockbackForce(other.transform, hitBox));
             
             animator.SetTrigger(deadTrigger);
+
+            //TryTrigger(deadTrigger);
+            OnDied?.Invoke();
+        }
+        
+        public void KilledByFire(Vector3 sourcePosition, float force = 18f)
+        {
+            if (IsDying) return;
+            if (!CanBeKilled) return;
+
+            StartDeathTimer();
+            
+            Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
+            if (r != null) r.material.color = new Color(0.2f, 0.2f, 0.2f);
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();
