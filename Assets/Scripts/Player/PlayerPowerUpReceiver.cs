@@ -35,6 +35,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     private Coroutine jumpBoostCoroutine;
 
     public bool canRamBuildings = false;
+    [SerializeField] AudioClip powerUpPickUpSFX;
     private void Start()
     {
         
@@ -67,6 +68,10 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     public void ApplyPowerUp(PowerUpType powerUpType, float amount, float duration)
     {
+        if (deathClip != null)
+        {
+            audioSource.PlayOneShot(powerUpPickUpSFX, 1f);
+        }
         if (powerUpType == PowerUpType.SpeedBoost)
         {
             ApplySpeedBoost(amount, duration);
