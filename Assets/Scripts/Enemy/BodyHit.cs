@@ -20,7 +20,7 @@ public class BodyHit : MonoBehaviour
         if (attack == null) return;
 
         StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
-        if (enemy == null) return;
+        if (enemy == null || !enemy.enabled) return;
         if (enemy.KnockbackHandler.IsKnockedBack) return;
         if (!enemy.DeathHandler.CanBeKilled) return;
 
