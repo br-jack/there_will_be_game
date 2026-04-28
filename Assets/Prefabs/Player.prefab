@@ -496,10 +496,10 @@ MonoBehaviour:
   chargeRequiredToCanter: 1.5
   chargeRequiredToGallop: 3.5
   jumpHeight: 16
-  turnSpeedGroundedWalk: 160
-  turnSpeedGroundedTrot: 115
-  turnSpeedGroundedCanter: 85
-  turnSpeedGroundedGallop: 60
+  turnSpeedGroundedWalk: 200
+  turnSpeedGroundedTrot: 150
+  turnSpeedGroundedCanter: 100
+  turnSpeedGroundedGallop: 85
   turnSpeedMidair: 15
   acceleration: 16
   deceleration: 25
@@ -510,6 +510,75 @@ MonoBehaviour:
   gait: 1
   currentSpeed: 0
   verticalVelocity: {x: 0, y: -1, z: 0}
+  steeringCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -1
+      value: -1
+      inSlope: 2.666667
+      outSlope: 2.666667
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -0.85
+      value: -0.6
+      inSlope: 1.6904763
+      outSlope: 1.6904763
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -0.15
+      value: -0.1
+      inSlope: 0.6904762
+      outSlope: 0.6904762
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.6666666
+      outSlope: 0.6666666
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.15
+      value: 0.1
+      inSlope: 0.6904762
+      outSlope: 0.6904762
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.85
+      value: 0.6
+      inSlope: 1.6904763
+      outSlope: 1.6904763
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.666667
+      outSlope: 2.666667
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   driftLateralSlippage: 0.8
   driftSteerMultiplier: 1.25
   driftSpeedThreshold: 17
@@ -529,11 +598,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   damageFlash: {fileID: 0}
+  damageRedFlash: {fileID: 0}
   invulnerabilityFlash: {fileID: 7439884306161422662}
   respawnPoint: {fileID: 0}
   respawnDelay: 1
   respawnInvincibilityDuration: 2
   fearPenaltyOnRespawn: 500
+  damageReductionDuration: 1
+  reducedDamageMultiplier: 0.25
   playerRenderers: []
   deathTextUI: {fileID: 0}
   hammerParticlesRoot: {fileID: 0}
@@ -591,6 +663,7 @@ MonoBehaviour:
   jumpBoostParticles: {fileID: 626240191960291259}
   jumpBoostTrail: {fileID: 4307735588763940856}
   speedBoostParticles: {fileID: 1760775016109340485}
+  canRamBuildings: 0
 --- !u!114 &8421909672179317857
 MonoBehaviour:
   m_ObjectHideFlags: 0
