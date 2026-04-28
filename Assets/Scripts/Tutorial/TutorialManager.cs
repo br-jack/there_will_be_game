@@ -246,7 +246,7 @@ public class TutorialManager : MonoBehaviour
             {
                 firstPromptCompleted = true;
                 currentJumps = 0;
-                promptText.text = $"{secondPromptMessage} ({currentJumps}/{jumpsRequired})";
+                promptText.text = $"Jump using A <sprite=0> ({currentJumps}/{jumpsRequired})";
             }
         }
     }
@@ -257,7 +257,7 @@ public class TutorialManager : MonoBehaviour
         {
             currentJumps++;
             currentJumps = Mathf.Min(currentJumps, jumpsRequired);
-            promptText.text = $"{secondPromptMessage} ({currentJumps}/{jumpsRequired})";
+            promptText.text = $"Jump using A <sprite=0> ({currentJumps}/{jumpsRequired})";
             if (currentJumps >= jumpsRequired)
             {
                 secondPromptCompleted = true;
