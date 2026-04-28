@@ -32,6 +32,8 @@ public class hammerStateEffects : MonoBehaviour
     [SerializeField] private Renderer hammerMesh;
     [SerializeField] private int headMaterialIndex = 2;
     private Material[] _hammerMaterials;
+    public AudioSource chargeAudioSource;
+    public AudioClip chargeClip;
 
     public void updateGait(gait newGait)
     {
@@ -42,6 +44,10 @@ public class hammerStateEffects : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        chargeAudioSource.clip = chargeClip;
+        chargeAudioSource.loop = true;
+        chargeAudioSource.playOnAwake = false;
+
         _embersMain = embers.main;
         _chargeLinesMain = chargeLines.main;
         _glowMain = glow.main;
@@ -64,21 +70,25 @@ public class hammerStateEffects : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-
         switch (hammerChargeState)
         {
-            
             case hammerChargeState.uncharged:
+                chargeAudioSource.Stop();
                 embers.Play();
                 chargeLines.Stop();
                 glow.Stop();
                 break;
             case hammerChargeState.charging: 
+                if (!chargeAudioSource.isPlaying)
+                {
+                    chargeAudioSource.Play();
+                }
                 embers.Stop();
                 chargeLines.Play();
                 glow.Stop();
                 break;
-            case hammerChargeState.charged: 
+            case hammerChargeState.charged:
+                chargeAudioSource.Stop();
                 embers.Play();
                 chargeLines.Play();
                 glow.Play();

@@ -68,9 +68,9 @@ public class PlayerPowerUpReceiver : MonoBehaviour
 
     public void ApplyPowerUp(PowerUpType powerUpType, float amount, float duration)
     {
-        if (deathClip != null)
+        if (powerUpPickUpSFX != null)
         {
-            audioSource.PlayOneShot(powerUpPickUpSFX, 1f);
+            AudioSource.PlayClipAtPoint(powerUpPickUpSFX, transform.position);
         }
         if (powerUpType == PowerUpType.SpeedBoost)
         {
