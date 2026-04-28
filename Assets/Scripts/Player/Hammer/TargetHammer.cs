@@ -31,7 +31,6 @@ namespace Hammer
         [SerializeField] private float restLength = 1;
         [Tooltip("Max spring length: this can be whatever as long as its bigger than rest length obvs")]
         [SerializeField] private float maxLength = 20;
-
         private float extensionVelocity;
         private float momentum = 0;
 
@@ -55,6 +54,17 @@ namespace Hammer
         public Vector3 Acceleration => frameAcceleration;
 
         private IController _controllerRef;
+        private AudioSource audioSource;
+
+        public AudioClip whooshClip;
+
+        void Awake()
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.spatialBlend = 0f;
+            audioSource.volume = 1f;
+            audioSource.playOnAwake = false;
+        } 
 
         void Start()
         {
@@ -126,6 +136,10 @@ namespace Hammer
                 lastSwingTime = Time.time;
                 OnHammerSwing?.Invoke();
                 Debug.Log("Hammer swing detected");
+                if (whooshClip != null)
+                {
+                    audioSource.PlayOneShot(whooshClip, 1f);
+                }
             }
         }
 

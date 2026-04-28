@@ -17,6 +17,7 @@ public class DestructibleObject : MonoBehaviour
     public GameObject destructionParticlesPrefab;
     private static Queue<GameObject> activeFragments = new Queue<GameObject>();
     private static int maxFragments = 5000;
+    private AudioSource audioSource;
 
     void Awake()
     {
@@ -31,6 +32,11 @@ public class DestructibleObject : MonoBehaviour
         };
 
         //destructionParticlesPrefab = Resources.Load<GameObject>("BuildingDestructionParticles");
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.spatialBlend = 0f;
+        audioSource.volume = 1f;
+        audioSource.playOnAwake = false;
     }
 
     void Start() {
@@ -54,9 +60,14 @@ public class DestructibleObject : MonoBehaviour
         broken = true;
 
         AudioClip clip = destructionSounds[Random.Range(0, destructionSounds.Length)];
+        if (destructionHitSound != null)
+        {
+            audioSource.PlayOneShot(destructionHitSound, 1f);
+        }
         if (clip != null)
-            AudioSource.PlayClipAtPoint(destructionHitSound, transform.position, soundVolume);
-            AudioSource.PlayClipAtPoint(clip, transform.position, soundVolume);
+        {
+            audioSource.PlayOneShot(clip, 1f);
+        }
 
         if (destructionParticlesPrefab != null)
             Instantiate(destructionParticlesPrefab, myCollider.bounds.center, Quaternion.identity);
