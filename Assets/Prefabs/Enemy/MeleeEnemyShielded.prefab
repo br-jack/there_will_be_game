@@ -287,9 +287,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 305943217641808177, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 2.4650453e+20
+      objectReference: {fileID: 0}
+    - target: {fileID: 305943217641808177, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 8.04e-43
+      objectReference: {fileID: 0}
     - target: {fileID: 4937528112206273530, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
       propertyPath: m_Name
       value: MeleeEnemyShielded
+      objectReference: {fileID: 0}
+    - target: {fileID: 6460538208008972825, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -297,10 +309,57 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7612064267882673560, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
       insertIndex: 0
       addedObject: {fileID: 757716982497356059}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4937528112206273530, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6767948238336100521}
   m_SourcePrefab: {fileID: 100100000, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+--- !u!114 &3078170086628116410 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -8550110256333393937, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+  m_PrefabInstance: {fileID: 2585122704648644693}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7450551165020697519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44af7f6a0555e481c85df2d238f77d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!198 &4622351217784643776 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7189381722902153365, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+  m_PrefabInstance: {fileID: 2585122704648644693}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5351208160033381837 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7612064267882673560, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+  m_PrefabInstance: {fileID: 2585122704648644693}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7450551165020697519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4937528112206273530, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
+  m_PrefabInstance: {fileID: 2585122704648644693}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6767948238336100521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7450551165020697519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fca2399daa769c46ae4b445de19fd4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyAI: {fileID: 3078170086628116410}
+  burnDuration: 2.5
+  fireballKillAwardsScore: 1
+  fireballKillScore: 60
+  burnVisual: {fileID: 8811365386581148236}
+  burnParticles: {fileID: 4622351217784643776}
+--- !u!1 &8811365386581148236 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6460538208008972825, guid: f860011bcd868427c95e8a8bd980c659, type: 3}
   m_PrefabInstance: {fileID: 2585122704648644693}
   m_PrefabAsset: {fileID: 0}
