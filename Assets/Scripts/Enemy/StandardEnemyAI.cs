@@ -146,6 +146,15 @@ namespace Enemy
                 deathHandler.Init(ragdollToggler, KnockbackHandler);
                 DeathHandler = deathHandler;
             }
+            else
+            {
+                OldDeathHandler legacyDeathHandler = GetComponent<OldDeathHandler>();
+                if (legacyDeathHandler != null)
+                {
+                    legacyDeathHandler.Init(KnockbackHandler);
+                    DeathHandler = legacyDeathHandler;
+                }
+            }
 
             Debug.Assert(DeathHandler != null);
         }

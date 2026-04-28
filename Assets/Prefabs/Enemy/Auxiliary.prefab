@@ -945,6 +945,8 @@ GameObject:
   - component: {fileID: 95683071118391380}
   - component: {fileID: -3674928665403327532}
   - component: {fileID: 7610704253365664017}
+  - component: {fileID: 7014347776863563435}
+  - component: {fileID: 801256114342306217}
   m_Layer: 9
   m_Name: Auxiliary
   m_TagString: Untagged
@@ -1042,6 +1044,35 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &7014347776863563435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517552264688272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63c4ee31cef043b09bfe9f9c41ec6a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useTutorialKillLock: 0
+  maxDeathTime: 4
+  animator: {fileID: 95683071118391380}
+  deadTrigger: Die
+--- !u!114 &801256114342306217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517552264688272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eae1815b98046dd8e3de0b56a357941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 0}
 --- !u!1 &1523732884002426
 GameObject:
   m_ObjectHideFlags: 0
@@ -2187,9 +2218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56e0f9c281748342bf1f7467b43504c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldMask:
-    serializedVersion: 2
-    m_Bits: 8
   hitSounds: {fileID: 0}
 --- !u!82 &6516565187501322820
 AudioSource:
