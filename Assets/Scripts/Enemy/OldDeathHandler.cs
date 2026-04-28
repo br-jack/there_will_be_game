@@ -58,13 +58,9 @@ namespace Enemy
                 //FIXME this may not properly tint the whole enemy grey
                 r.material.color = Color.gray;
             }
-
-            float force = hitBox != null ? hitBox.GetKnockbackForce() : 30f;
-            Vector3 knockDir = transform.position - other.transform.position;
-            knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
-            knockDir.Normalize();
-
-            _knockbackState.ApplyKnockback(knockDir * force);
+            
+            _knockbackState.ApplyKnockback(_knockbackState.CalcKnockbackForce(other.transform, hitBox));
+            
             animator.SetTrigger(deadTrigger);
 
             //TryTrigger(deadTrigger);

@@ -9,5 +9,6 @@ namespace Enemy
         public bool IsGrounded();
         public void ApplyKnockback(Vector3 force);
         public void ApplyKnockbackToAll(Vector3 force);
+        public Vector3 CalcKnockbackForce(Transform other, AttackHitbox hitbox);
     }
 }

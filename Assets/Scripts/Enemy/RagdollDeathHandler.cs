@@ -64,13 +64,8 @@ namespace Enemy
             }
             
             _ragdollToggler.UseRagdoll();
-
-            float force = hitBox != null ? hitBox.GetKnockbackForce() : 30f;
-            Vector3 knockDir = transform.position - other.transform.position;
-            knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
-            knockDir.Normalize();
-
-            _knockbackState.ApplyKnockbackToAll(knockDir * force);
+            
+            _knockbackState.ApplyKnockbackToAll(_knockbackState.CalcKnockbackForce(other.transform, hitBox));
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();
