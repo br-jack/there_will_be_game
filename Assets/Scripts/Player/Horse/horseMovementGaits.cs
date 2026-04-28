@@ -35,8 +35,7 @@ public class horseMovementGaits : MonoBehaviour
     public float slamKnockbackDecay; 
     [Tooltip("")]
     public static Action OnTutorialJump;
-    public GameObject slamParticles; 
-
+    
     [Header("Read-only in editor")]
     public float currentRunCharge; //should be private, but i want to see it! 
     public gait gait; //currently pointless, just to see gait in editor
