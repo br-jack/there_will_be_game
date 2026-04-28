@@ -25,6 +25,7 @@ namespace Hammer
         private ScoreSettings scoreSettings;
         [SerializeField] private float timeHeldUp;
 
+        [SerializeField] private GameObject slamEffectsPrefab; 
 
         [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
@@ -44,12 +45,10 @@ namespace Hammer
         [SerializeField] private Vector3 largeHitboxCenter;
 
         //private bool _collisionsEnabled = true;
-        [SerializeField] private BoxCollider _slamDetectionHitbox; //this is on the slamHitbox, Jack I know you didn't want me to have it as a seperate object 
-        // but the internet thinks it's definitely a better idea to have box colliders on children objects than two on the same
         [SerializeField] private BoxCollider _hitbox;
-        public UnityEvent slam;
         public hammerChargeState hammerChargeState { get; private set; }
         public UnityEvent<hammerChargeState> chargeStateChange;
+        public UnityEvent slam;
         //InputAction temporarySlamActivate;
 
 
@@ -59,8 +58,10 @@ namespace Hammer
 
         private void changeHammerChargeState(hammerChargeState newState)
         {
-            hammerChargeState = newState;
-            chargeStateChange.Invoke(hammerChargeState);
+            if (hammerChargeState != newState) {
+                hammerChargeState = newState;
+                chargeStateChange.Invoke(hammerChargeState);
+            } else Debug.Log("hammer state change event despite state remaining the same");
         }
         void Awake()
         {
@@ -133,34 +134,33 @@ namespace Hammer
             // MoveToTargetRotation();
         }
 
-        public void OnTriggerEnter()
+        public void onSlamHitboxTrigger(Vector3 slamCenter)
         {
-            if (hammerChargeState == hammerChargeState.charged && _targetHammer.radialAcceleration <= slamAccelThreshold)
+            if (_targetHammer.radialAcceleration <= slamAccelThreshold)
             {
-                doSlam();
+                doSlam(slamCenter);
             }
             //_targetHammer.Rumble();
         }
         
 
 
-        public void doSlam()
+        void doSlam(Vector3 slamCenter)
         {
-            //Debug.Log("boom");
-            slam.Invoke();
+            //Debug.Log("boom")
 
-            Collider[] colliders = Physics.OverlapSphere(transform.position, slamRadius);
+             
+            slam.Invoke(); //fling player + other effects
+
+            Instantiate(slamEffectsPrefab,slamCenter,Quaternion.identity);
+
+            Collider[] colliders = Physics.OverlapSphere(slamCenter, slamRadius);
             foreach (Collider c in colliders)
             {
                 if (c.GetComponentInParent<DestructibleObject>())
                 {
                     c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 3000);
                 }
-
-
-                // TODO fling Player
-                
-
                 // TODO particles
                 // TODO use aarons ragdolls
             }
