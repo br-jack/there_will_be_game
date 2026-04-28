@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using Score;
 
 public class DestructibleObject : MonoBehaviour
 {
@@ -15,9 +17,14 @@ public class DestructibleObject : MonoBehaviour
     public float soundVolume = 1f;
     public GameObject destructionParticlesPrefab;
 
+    private ScoreSettings scoreSettings;
+
+
     void Awake()
     {
         destructionHitSound = Resources.Load<AudioClip>("DestructionSFX4");
+        scoreSettings = Resources.Load<ScoreSettings>("ScoreSettings");
+
 
         destructionSounds = new AudioClip[]
         {
@@ -80,6 +87,7 @@ public class DestructibleObject : MonoBehaviour
             Destroy(rb.gameObject, 10f);
         }
 
+        AwardScore();
         SetState(false);
 
         StartCoroutine(HandleRespawn());
@@ -100,4 +108,71 @@ public class DestructibleObject : MonoBehaviour
         foreach (Collider col in GetComponentsInChildren<Collider>(true))
             col.enabled = active;
     }
+
+    private void AwardScore()
+    {
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player == null) return;
+
+        HammerFireController hammerFireController = FindFirstObjectByType<HammerFireController>();
+
+        CharacterController characterController = player.GetComponent<CharacterController>();
+
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+
+        horseMovementGaits horseMovementGaits = player.GetComponent<horseMovementGaits>();
+
+        if (characterController == null) return;
+
+        List<ScoreComponent> scoreComponents = new List<ScoreComponent>
+        {
+            // Base score
+            new ScoreComponent(scoreSettings.buildingDestructionScore, ScoreType.Building)
+        };
+
+        //gait bonus
+        if (horseMovementGaits != null)
+        {
+            switch (horseMovementGaits.getCurrentGait())
+            {
+                case gait.walking:
+                    // no bonus
+                    break;
+                case gait.trotting:
+                    scoreComponents.Add(new ScoreComponent(scoreSettings.atATrotBonusScore, ScoreType.atATrot));
+                    break;
+                case gait.cantering:
+                    scoreComponents.Add(new ScoreComponent(scoreSettings.atACanterBonusScore, ScoreType.atACanter));
+                    break;
+                case gait.galloping:
+                    scoreComponents.Add(new ScoreComponent(scoreSettings.atAGallopBonusScore, ScoreType.atAGallop));
+                    break;
+            }
+        }
+
+        // Low health bonus
+        if (playerHealth != null)
+        {
+            float healthPercent = (float)playerHealth.Current / playerHealth.Max * 100f;
+            if (healthPercent <= scoreSettings.lowHealthThreshold)
+            {
+                scoreComponents.Add(new ScoreComponent(scoreSettings.lowHealthBonusScore, ScoreType.LowHealth));
+            }
+        }
+
+        // Air bonus
+        if (!characterController.isGrounded)
+        {
+            scoreComponents.Add(new ScoreComponent(scoreSettings.airBonusScore, ScoreType.Air));
+        }
+
+        // On fire bonus
+        if (hammerFireController != null && hammerFireController.IsOnFire)
+        {
+            scoreComponents.Add(new ScoreComponent(scoreSettings.fireBonusScore, ScoreType.OnFire));
+        }
+
+        ScoreManager.Instance.AddScore(scoreComponents);
+    }
+
 }
