@@ -21,11 +21,14 @@ public class musicManager : MonoBehaviour
     }
     public void PauseMusic()
     {
-        audioSource.Pause();
+        if (audioSource != null)
+        {
+            audioSource.Pause();
+        }
     }
     public void PlayMusic()
     {
-         if (audioSource == null)
+        if (audioSource != null)
         {
         audioSource.Play();
         }
