@@ -3,6 +3,8 @@ using UnityEngine;
 public class HammerManager : MonoBehaviour
 {
     public static HammerManager Instance { get; private set; }
+
+    [SerializeField] private IMUConfig imuConfigSO;
     
     public Hammer.IController hammerController;
     
@@ -77,7 +79,7 @@ public class HammerManager : MonoBehaviour
         #if (UNITY_IOS || UNITY_ANDROID)
             hammerController = new Hammer.UnityRemoteController();
         #else
-            hammerController = new Hammer.IMUController();
+            hammerController = new Hammer.IMUController(imuConfigSO);
         #endif
         
         hammerController.Connect();
