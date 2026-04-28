@@ -30,6 +30,16 @@ public class DestructibleObject : MonoBehaviour
         //destructionParticlesPrefab = Resources.Load<GameObject>("BuildingDestructionParticles");
     }
 
+    public void BreakFromHorseRam(Vector3 impactPoint)
+    {
+        if (broken)
+        {
+            return;
+        }
+
+        Break(impactPoint);
+    }
+
     void Start() {
         myRenderer = GetComponent<MeshRenderer>();
         myCollider = GetComponent<Collider>();
