@@ -254,7 +254,7 @@ namespace Hammer
         {
             while (recvQueue.TryDequeue(out string data))
             {
-                Debug.Log($"[Main Thread] Received: {data}");
+                //Debug.Log($"[Main Thread] Received: {data}");
                 string[] parsedData = data.Trim().Split(':');
 
 

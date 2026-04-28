@@ -138,9 +138,12 @@ namespace Hammer
             }
             //_targetHammer.Rumble();
         }
+        
+
 
         public void doSlam()
         {
+            Debug.Log("boom");
             Collider[] colliders = Physics.OverlapSphere(transform.position, slamRadius);
             foreach (Collider c in colliders)
             {
@@ -149,11 +152,12 @@ namespace Hammer
                     Vector3 knockbackDirection = c.ClosestPoint(transform.position) - transform.position; //knock away
                     c.GetComponentInParent<StandardEnemyAI>().getKilledBasic(knockbackDirection * slamKnockbackAmount);
                 }
-                // TODO fling player
+                // TODO fling Player
+
             }
             changeHammerChargeState(hammerChargeState.uncharged);
             timeHeldUp = 0;
 
         }
     }
-}
+}// TODO make big swing also push horse
