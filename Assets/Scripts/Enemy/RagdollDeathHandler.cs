@@ -73,7 +73,41 @@ namespace Enemy
             
             _ragdollToggler.UseRagdoll();
             
-            _knockbackState.ApplyKnockbackToAll(_knockbackState.CalcKnockbackForce(other.transform, hitBox));
+            if (hitBox != null)
+            {
+                _knockbackState.ApplyKnockbackToAll(_knockbackState.CalcKnockbackForce(other.transform, hitBox.GetKnockbackForce()));
+            }
+            else _knockbackState.ApplyKnockbackToAll(_knockbackState.CalcKnockbackForce(other.transform, 30f));
+            
+
+            //TryTrigger(deadTrigger);
+            OnDied?.Invoke();
+        }
+
+        public void KilledBy(Collider other, float force)
+        {
+            if (IsDying)
+            {
+                return;
+            }
+
+            if (!CanBeKilled)
+            {
+                return;
+            }
+
+            StartDeathTimer();
+
+            Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
+            if (r != null)
+            {
+                //FIXME this may not properly tint the whole enemy grey
+                r.material.color = Color.gray;
+            }
+            
+            _ragdollToggler.UseRagdoll();
+            
+            _knockbackState.ApplyKnockbackToAll(_knockbackState.CalcKnockbackForce(other.transform, force));
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();

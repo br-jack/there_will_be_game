@@ -30,9 +30,8 @@ namespace Enemy
             return Physics.Raycast(transform.position + Vector3.up * 0.2f, Vector3.down, GroundCheckDistance + 0.2f);
         }
 
-        public Vector3 CalcKnockbackForce(Transform other, AttackHitbox hitbox)
+        public Vector3 CalcKnockbackForce(Transform other, float force = 30f)
         {
-            float force = hitbox != null ? hitbox.GetKnockbackForce() : 30f;
             Vector3 knockDir = transform.position - other.position;
             knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
             knockDir.Normalize();
