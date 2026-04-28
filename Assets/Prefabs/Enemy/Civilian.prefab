@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 9006935523512060209}
   - component: {fileID: 3206163197733229372}
   - component: {fileID: 81054223607901799}
+  - component: {fileID: 7138950313506670420}
   m_Layer: 9
   m_Name: Civilian
   m_TagString: Untagged
@@ -229,6 +230,21 @@ MonoBehaviour:
   - {fileID: 3484036773395172080}
   - {fileID: 5282013034223145591}
   - {fileID: 2030098886396059889}
+--- !u!114 &7138950313506670420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517552264688272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfd4dc138ee84948aaf73dde74d230bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useTutorialKillLock: 0
+  maxAbsoluteDeathTime: 10
+  maxGroundedDeathTime: 5
 --- !u!1 &95803449179525522
 GameObject:
   m_ObjectHideFlags: 0
@@ -7097,8 +7113,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.103028566
-  m_Center: {x: 0, y: 0.103028566, z: 0}
+  m_Radius: 0.0017
+  m_Center: {x: 0, y: 0.001, z: 0}
 --- !u!54 &5651402852806239606
 Rigidbody:
   m_ObjectHideFlags: 0
