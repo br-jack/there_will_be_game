@@ -24,6 +24,9 @@ namespace Enemy
         
         private RagdollToggler _ragdollToggler;
         private IKnockbackState _knockbackState;
+        
+        public IKnockbackState KnockbackState => _knockbackState;
+        public Transform Transform => transform;
 
         public void Init(RagdollToggler ragdollToggler, IKnockbackState knockbackState)
         {

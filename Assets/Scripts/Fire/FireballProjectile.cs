@@ -54,13 +54,13 @@ public class FireballProjectile : MonoBehaviour
         if ((otherLayerBit & enemyLayer.value) != 0)
         {
             IDeathState deathState = other.GetComponent<IDeathState>();
-            IKnockbackState knockbackState = other.GetComponentInParent<IKnockbackState>();
             
-            if (knockbackState != null)
+            if (deathState != null)
             {
-                if (deathState != null && deathState.IsDying)
+                Debug.Assert(deathState.KnockbackState != null);
+                if (deathState.KnockbackState != null && deathState.IsDying)
                 {
-                    ApplyImpactKnockback(knockbackState, other.transform.position);
+                    ApplyImpactKnockback(deathState.KnockbackState, other.transform.position);
                 }
 
                 EnemyBurnable burnable = other.GetComponent<EnemyBurnable>();

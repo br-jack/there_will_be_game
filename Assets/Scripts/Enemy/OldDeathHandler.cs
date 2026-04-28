@@ -18,7 +18,9 @@ namespace Enemy
         private float _deathEndTime;
         
         private IKnockbackState _knockbackState;
-
+        public IKnockbackState KnockbackState => _knockbackState;
+        public Transform Transform => transform;
+        
         [SerializeField] private Animator animator;
         [SerializeField] private string deadTrigger = "Die";
 
