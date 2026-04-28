@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem; //temp
 
 namespace Hammer
 {
@@ -21,6 +23,10 @@ namespace Hammer
         public float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
         public Vector3 largeHitboxSize;
         public Vector3 largeHitboxCenter;
+        public float timeToChargeSlam;
+        public float chargingZoneSize;
+        private float timeHeldUp;
+
 
         [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
@@ -33,17 +39,37 @@ namespace Hammer
 
         //private bool _collisionsEnabled = true;
 
-        private BoxCollider _hitbox;
+        private BoxCollider _hitbox;    
+        public UnityEvent slam;
+        public UnityEvent<hammerChargeState> chargeStateChange;
+
+        InputAction temporarySlamActivate;
+
+
 
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
             _hitbox = GetComponent<BoxCollider>();
             Debug.Assert(_hitbox != null);
+            timeHeldUp = 0;
         }
 
         void FixedUpdate()
         {
+            //check if the player is holding the hammer above their head
+            float angleToUp = Vector3.Angle(Vector3.up,transform.up);
+            if (angleToUp < chargingZoneSize) {
+                    timeHeldUp += Time.deltaTime;
+                } 
+            else timeHeldUp = 0;
+
+
+            if (timeHeldUp > timeToChargeSlam)
+            {
+                chargeStateChange.Invoke(hammerChargeState.charged);
+            }
+
             
             //Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");
             if (useDynamicHitbox)

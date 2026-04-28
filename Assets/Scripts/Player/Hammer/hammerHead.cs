@@ -10,9 +10,7 @@ public class hammerHead : MonoBehaviour
     private Vector3 posPrevFrame;
     public float slamRadius;
     public float slamKnockbackAmount;
-    public UnityEvent slam;
 
-    InputAction temporarySlamActivate;
 
     private Collider _temporaryColliderDebug; // TODO CHANGE THIS!
 
@@ -36,15 +34,9 @@ public class hammerHead : MonoBehaviour
 
         posPrevFrame = _tf.position;
 
-        if (temporarySlamActivate.WasPerformedThisFrame()) //temporary
-        {
-            killAllInRadius();
-            slam.Invoke();
-            Debug.Log("boom!");
-        }
     }
 
-    private void killAllInRadius()
+    public void doSlam()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, slamRadius);
         foreach (Collider c in colliders)
