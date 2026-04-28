@@ -664,6 +664,25 @@ public class StandardEnemyAI : MonoBehaviour
         OnDied?.Invoke();
     }
 
+    public void KilledByFire(Vector3 sourcePosition, float force = 18f)
+    {
+        if (IsDying) return;
+        if (!CanBeKilled) return;
+
+        IsDying = true;
+        IsKnockedBack = true;
+        knockbackTimer = KnockbackTime;
+        deathTimer = maxDeathTime;
+
+        if (agent != null) agent.enabled = false;
+
+        Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
+        if (r != null) r.material.color = new Color(0.2f, 0.2f, 0.2f);
+
+        TryTrigger(deadTrigger);
+        OnDied?.Invoke();
+    }
+
     private void KillEnemy()
     {
         deathTimer -= Time.deltaTime;

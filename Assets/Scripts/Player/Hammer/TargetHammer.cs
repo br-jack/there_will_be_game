@@ -145,7 +145,7 @@ namespace Hammer
 
         public void Rumble()
         {
-            _controllerRef.Rumble(5000);
+            _controllerRef.Rumble();
         }
     }
 
