@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Enemy;
 using Score;
 
 public class BodyHit : MonoBehaviour
@@ -24,9 +25,9 @@ public class BodyHit : MonoBehaviour
         if (attack == null) return;
 
         StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
-        if (enemy == null) return;
-        if (enemy.IsKnockedBack) return;
-        if (!enemy.CanBeKilled) return;
+        if (enemy == null || !enemy.enabled) return;
+        if (enemy.KnockbackHandler.IsKnockedBack) return;
+        if (!enemy.DeathHandler.CanBeKilled) return;
 
         if (enemy.HasShield())
         {
@@ -38,7 +39,7 @@ public class BodyHit : MonoBehaviour
         hitSounds.PlaySFX();
 
         AwardScore(enemy.WasShielded);
-        enemy.KilledBy(other, attack);
+        enemy.DeathHandler.KilledBy(other, attack);
     }
 
     private void AwardScore(bool hasShield)
