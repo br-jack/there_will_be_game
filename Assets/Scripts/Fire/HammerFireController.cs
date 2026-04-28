@@ -8,8 +8,9 @@ public class HammerFireController : MonoBehaviour
     [SerializeField] private bool infiniteFireUnlocked = false;
     [SerializeField] private bool useInfiniteFire = false;
 
-    [SerializeField] private GameObject fireVisual;
-    [SerializeField] private ParticleSystem fireParticles;
+    [Header("Fire VFX")]
+    [SerializeField] private GameObject fireVisualParent;
+    [SerializeField] private ParticleSystem[] fireParticleSystems;
 
     private float fireTimer = 0f;
 
@@ -17,13 +18,22 @@ public class HammerFireController : MonoBehaviour
     public bool InfiniteFireUnlocked => infiniteFireUnlocked;
     public bool UseInfiniteFire => useInfiniteFire;
 
+    public bool HasEternalFireBoonActive => isOnFire && useInfiniteFire;
+
+    private void Awake()
+    {
+        if (fireParticleSystems == null || fireParticleSystems.Length == 0)
+        {
+            if (fireVisualParent != null)
+            {
+                fireParticleSystems = fireVisualParent.GetComponentsInChildren<ParticleSystem>(true);
+            }
+        }
+    }
+
     private void Start()
     {
-        if (fireVisual != null)
-            fireVisual.SetActive(false);
-
-        if (fireParticles != null)
-            fireParticles.Stop();
+        StopFireVisuals();
     }
 
     private void Update()
@@ -47,47 +57,30 @@ public class HammerFireController : MonoBehaviour
         if (!isOnFire)
         {
             isOnFire = true;
-
-            if (fireVisual != null)
-                fireVisual.SetActive(true);
-
-            if (fireParticles != null)
-                fireParticles.Play();
+            PlayFireVisuals();
         }
 
         if (!useInfiniteFire)
         {
             fireTimer = fireDuration;
-            Debug.Log($"Hammer fire refreshed to {fireDuration} seconds.");
-        }
-        else
-        {
-            Debug.Log("Hammer is now on fire infinitely.");
         }
     }
 
     public void ExtinguishHammer()
     {
-        if (!isOnFire) return;
+        if (!isOnFire)
+            return;
 
         isOnFire = false;
         fireTimer = 0f;
 
-        if (fireVisual != null)
-            fireVisual.SetActive(false);
-
-        if (fireParticles != null)
-            fireParticles.Stop();
-
-        Debug.Log("Hammer fire extinguished.");
+        StopFireVisuals();
     }
 
     public void UnlockInfiniteFire()
     {
         infiniteFireUnlocked = true;
         useInfiniteFire = true;
-
-        Debug.Log("Infinite fire unlocked.");
     }
 
     public void SetInfiniteFireActive(bool active)
@@ -96,11 +89,42 @@ public class HammerFireController : MonoBehaviour
             return;
 
         useInfiniteFire = active;
-        Debug.Log("Infinite fire active: " + useInfiniteFire);
     }
 
     public float GetRemainingFireTime()
     {
         return fireTimer;
+    }
+
+    private void PlayFireVisuals()
+    {
+        if (fireVisualParent != null)
+        {
+            fireVisualParent.SetActive(true);
+        }
+
+        foreach (ParticleSystem particleSystem in fireParticleSystems)
+        {
+            if (particleSystem != null)
+            {
+                particleSystem.Play(true);
+            }
+        }
+    }
+
+    private void StopFireVisuals()
+    {
+        if (fireVisualParent != null)
+        {
+            fireVisualParent.SetActive(false);
+        }
+
+        foreach (ParticleSystem particleSystem in fireParticleSystems)
+        {
+            if (particleSystem != null)
+            {
+                particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
+        }
     }
 }

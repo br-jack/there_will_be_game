@@ -43,11 +43,17 @@ public class PowerUpSpawner : MonoBehaviour
 
     public GameObject SpawnSpecificPowerUp(GameObject powerUpPrefab, string customMessage)
     {
-        Vector3 spawnPosition = spawnPoint.position + Vector3.up * spawnHeightOffset;
+        return SpawnSpecificPowerUp(powerUpPrefab, customMessage, spawnPoint);
+    }
+
+    public GameObject SpawnSpecificPowerUp(GameObject powerUpPrefab, string customMessage, Transform chosenSpawnPoint)
+    {
+        Vector3 spawnPosition = chosenSpawnPoint.position + Vector3.up * spawnHeightOffset;
 
         currentSpawnedPowerUp = Instantiate(powerUpPrefab, spawnPosition, Quaternion.identity);
 
         PowerUpPickup pickup = currentSpawnedPowerUp.GetComponent<PowerUpPickup>();
+
         if (pickup != null)
         {
             pickup.OnLanded += HandlePowerUpLanded;
@@ -59,18 +65,26 @@ public class PowerUpSpawner : MonoBehaviour
         }
 
         StartCoroutine(ShowBoonMessage(customMessage));
-        StartCutscene();
+        StartCutscene(chosenSpawnPoint);
+
         return currentSpawnedPowerUp;
     }
 
-    private void StartCutscene()
+    private void StartCutscene(Transform chosenSpawnPoint)
     {
-        mainCamera.gameObject.SetActive(false);
-        Vector3 directionFromPlayer = (spawnPoint.position - player.position).normalized;
-        fixedCutscenePosition = spawnPoint.position + directionFromPlayer * 12f + Vector3.up * 6f; // pull back and raise camera
+        if (mainCamera != null)
+        {
+            mainCamera.gameObject.SetActive(false);
+        }
+
+        Vector3 directionFromPlayer = (chosenSpawnPoint.position - player.position).normalized;
+
+        fixedCutscenePosition = chosenSpawnPoint.position + directionFromPlayer * 12f + Vector3.up * 6f; // pull back and raise camera
+
         cutsceneCamera.fieldOfView = 75f;
         cutsceneCamera.transform.position = fixedCutscenePosition;
         cutsceneCamera.gameObject.SetActive(true);
+
         watchingFall = true;
     }
 
@@ -103,8 +117,16 @@ public class PowerUpSpawner : MonoBehaviour
     private IEnumerator ReturnToMainCameraAfterDelay()
     {
         yield return new WaitForSeconds(returnDelay);
-        PowerUpPickup pickup = currentSpawnedPowerUp.GetComponent<PowerUpPickup>();
-        pickup.OnLanded -= HandlePowerUpLanded;
+
+        if (currentSpawnedPowerUp != null)
+        {
+            PowerUpPickup pickup = currentSpawnedPowerUp.GetComponent<PowerUpPickup>();
+
+            if (pickup != null)
+            {
+                pickup.OnLanded -= HandlePowerUpLanded;
+            }
+        }
 
         EndCutscene();
     }
