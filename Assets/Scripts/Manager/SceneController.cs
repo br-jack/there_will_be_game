@@ -36,7 +36,7 @@ public class SceneController : MonoBehaviour
     }
         public static void LoadIntro()
     {
-        SceneManager.LoadScene("IntroScene");
+        SceneManager.LoadScene("TutorialScene");
     }
     
     public static void LoadCalibration()
