@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -266577907326631511}
   - component: {fileID: 9006935523512060209}
   - component: {fileID: 3206163197733229372}
+  - component: {fileID: 81054223607901799}
   m_Layer: 9
   m_Name: Civilian
   m_TagString: Untagged
@@ -177,6 +178,56 @@ MonoBehaviour:
   fireballKillScore: 60
   burnVisual: {fileID: 1401716295167777379}
   burnParticles: {fileID: 2545422921953949602}
+--- !u!114 &81054223607901799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517552264688272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd5387b1bdafc044aed8d01a92429e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  ragdollRoot: {fileID: 0}
+  startAsRagdoll: 0
+  ragdollRigidbodies:
+  - {fileID: 3274880293247829476}
+  - {fileID: 301287255775524572}
+  - {fileID: 5651402852806239606}
+  - {fileID: 554220886160420549}
+  - {fileID: 7779593065074840719}
+  - {fileID: 2715711002459083435}
+  - {fileID: 4714521617737323321}
+  - {fileID: 4384909403146729484}
+  - {fileID: 4393351553890916138}
+  - {fileID: 4379809338992665998}
+  - {fileID: 2990249605728399257}
+  ragdollColliders:
+  - {fileID: 866597635906778263}
+  - {fileID: 261807076267912326}
+  - {fileID: 5869762831635129878}
+  - {fileID: 288958488651864920}
+  - {fileID: 8522162081620796113}
+  - {fileID: 3721718134936428198}
+  - {fileID: 583095429861566811}
+  - {fileID: 2079843761661294971}
+  - {fileID: 3932257117736486354}
+  - {fileID: 1087511787163882548}
+  - {fileID: 1048843437890655358}
+  ragdollCharacterJoints:
+  - {fileID: 3055009971971642549}
+  - {fileID: 4425789464307408614}
+  - {fileID: 4115445386173036901}
+  - {fileID: 7250286928827997924}
+  - {fileID: 3171348684276361499}
+  - {fileID: 8327366661137192771}
+  - {fileID: 5101129949172517610}
+  - {fileID: 3484036773395172080}
+  - {fileID: 5282013034223145591}
+  - {fileID: 2030098886396059889}
 --- !u!1 &95803449179525522
 GameObject:
   m_ObjectHideFlags: 0
