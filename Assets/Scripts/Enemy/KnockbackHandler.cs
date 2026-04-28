@@ -52,6 +52,27 @@ namespace Enemy
             // }
         }
         
+        public void ApplyKnockbackToAll(Vector3 force)
+        {
+            IsKnockedBack = true;
+            knockbackTimer = KnockbackTime;
+
+            if (agent != null)
+            {
+                agent.enabled = false;
+            }
+
+            foreach (Rigidbody rb in GetComponents<Rigidbody>()) 
+            {
+                rb.AddForce(force, ForceMode.Impulse);
+            }
+
+            // if (playHitAnim)
+            // {
+            //     TryTrigger(hitTrigger);
+            // }
+        }
+        
         private void HandleKnockback()
         {
             knockbackTimer -= Time.deltaTime;

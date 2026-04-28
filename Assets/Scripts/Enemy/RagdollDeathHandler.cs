@@ -62,15 +62,15 @@ namespace Enemy
                 //FIXME this may not properly tint the whole enemy grey
                 r.material.color = Color.gray;
             }
+            
+            _ragdollToggler.UseRagdoll();
 
             float force = hitBox != null ? hitBox.GetKnockbackForce() : 30f;
             Vector3 knockDir = transform.position - other.transform.position;
             knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
             knockDir.Normalize();
 
-            _knockbackState.ApplyKnockback(knockDir * force);
-            
-            _ragdollToggler.UseRagdoll();
+            _knockbackState.ApplyKnockbackToAll(knockDir * force * 100f);
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();
