@@ -37,14 +37,11 @@ public class BurnableBuilding : MonoBehaviour
             fireTask.BuildingBurned();
         }
 
-        Debug.Log("Building has been set on fire");
-
         StartCoroutine(BurnDown());
     }
 
     private IEnumerator BurnDown()
     {
         yield return new WaitForSeconds(burnDuration);
-        //Destroy(gameObject);
     }
 }
