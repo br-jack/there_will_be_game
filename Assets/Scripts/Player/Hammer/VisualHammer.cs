@@ -16,20 +16,22 @@ namespace Hammer
     public class VisualHammer : MonoBehaviour
     {
         // [SerializeField] private CharacterController _horseCC;
-        public Vector3 smallHitboxSize;
-        public Vector3 smallHitboxCenter;
-        public float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
-        public Vector3 mediumHitboxSize;
-        public Vector3 mediumHitboxCenter;
-        public float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
-        public Vector3 largeHitboxSize;
-        public Vector3 largeHitboxCenter;
+        [SerializeField] private Vector3 smallHitboxSize;
+        [SerializeField] private Vector3 smallHitboxCenter;
+        [SerializeField] private float mediumHitboxThreshold; //currently set to trail threshold, which may be sensible to maintain?
+        [SerializeField] private Vector3 mediumHitboxSize;
+        [SerializeField] private Vector3 mediumHitboxCenter;
+        [SerializeField] private float largeHitboxThreshold; //currently set to ghost effect threshold, which may be sensible to maintain?
+        [SerializeField] private Vector3 largeHitboxSize;
+        [SerializeField] private Vector3 largeHitboxCenter;
         [Tooltip("Seconds")]
-        public float timeToChargeSlam = 3;
-        public float chargingZoneSize = 20;
+        [SerializeField] private float timeToChargeSlam = 3;
+        [SerializeField] private float chargingZoneSize = 20;
+
+        [SerializeField] private float slamAccelThreshold;
 
         private ScoreSettings scoreSettings;
-        public float timeHeldUp;
+        [SerializeField] private float timeHeldUp;
 
 
         [SerializeField] private Transform pivotTransform;
@@ -43,7 +45,7 @@ namespace Hammer
 
         //private bool _collisionsEnabled = true;
 
-        private BoxCollider _hitbox;
+        [SerializeField] private BoxCollider _hitbox;
         public UnityEvent slam;
         public hammerChargeState hammerChargeState { get; private set; }
         public UnityEvent<hammerChargeState> chargeStateChange;
@@ -132,7 +134,7 @@ namespace Hammer
 
         public void OnTriggerEnter()
         {
-            if (hammerChargeState == hammerChargeState.charged)
+            if (hammerChargeState == hammerChargeState.charged && _targetHammer.radialAcceleration <= slamAccelThreshold)
             {
                 doSlam();
             }
