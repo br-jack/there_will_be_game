@@ -70,7 +70,7 @@ namespace Enemy
             knockDir.y = Mathf.Clamp(force / 75f, 0.2f, 1.5f);
             knockDir.Normalize();
 
-            _knockbackState.ApplyKnockbackToAll(knockDir * force * 100f);
+            _knockbackState.ApplyKnockbackToAll(knockDir * force);
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();
