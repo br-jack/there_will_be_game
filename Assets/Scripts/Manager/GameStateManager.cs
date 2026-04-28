@@ -35,6 +35,7 @@ public class GameStateManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         FindSceneReferences();
+        InitStateForScene(SceneManager.GetActiveScene().name);
     }
 
     private void OnEnable()
@@ -69,6 +70,8 @@ public class GameStateManager : MonoBehaviour
         _playerLives = FindFirstObjectByType<PlayerLives>();
         if (_playerLives != null) _playerLives.OnGameOver += HandleGameOver;
 
+        _pauseMenuSelection = FindFirstObjectByType<PauseMenuSelection>();
+
         _pausePanel = null;
         _gameOverUI = null;
         Scene activeScene = SceneManager.GetActiveScene();
@@ -88,11 +91,19 @@ public class GameStateManager : MonoBehaviour
         if (mode == LoadSceneMode.Additive) return;
         Time.timeScale = 1f;
         FindSceneReferences();
-        switch (scene.name)
+        InitStateForScene(scene.name);
+    }
+
+    private void InitStateForScene(string sceneName)
+    {
+        switch (sceneName)
         {
             case "MainScene":
                 ScoreManager.Instance?.ResetFear();
                 ScoreManager.Instance?.ResetAwe();
+                ApplyState(GameState.Playing);
+                break;
+            case "TutorialScene":
                 ApplyState(GameState.Playing);
                 break;
             case "MainMenu":
