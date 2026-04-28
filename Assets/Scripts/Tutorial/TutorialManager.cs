@@ -50,8 +50,8 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject tutorialRewardPrefab;
     private string rewardMessage = "A boon has been granted";
     private string boonSpawnPromptMessage = "Task complete. A boon has appeared.";
-    private string boonCollectPromptMessage = "Collect the boon to receive a blessing";
-    private string boonExplanationMessage = "Boons grant powerful blessings that aid your journey.";
+    private string boonCollectPromptMessage = "Collect the boon to receive a blessing from the gods";
+    //private string boonExplanationMessage = "Boons grant powerful blessings that aid your journey.";
     private float boonPromptDelay = 4f;
 
     [SerializeField] private GameObject tutorialMarker;
@@ -386,7 +386,8 @@ public class TutorialManager : MonoBehaviour
 
         yield return new WaitForSeconds(boonPromptDelay);
 
-        promptText.text = $"{boonCollectPromptMessage}\n\n<size=85%>{boonExplanationMessage}</size>";
+        //promptText.text = $"{boonCollectPromptMessage}\n\n<size=85%>{boonExplanationMessage}</size>";
+        promptText.text = $"{boonCollectPromptMessage}";
     }
 
     private void HideGameplayUIAtStart()
