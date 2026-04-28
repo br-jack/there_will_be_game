@@ -310,6 +310,11 @@ namespace Hammer
 
         public void Update()
         {
+            if (_stream == null)
+            {
+                Debug.Log("no stream...");
+                return;
+            }
             if (!_stream.IsOpen)
             {
                 Debug.LogWarning("Port is not open for reading.");
