@@ -5,7 +5,7 @@ using Score;
 
 public class BodyHit : MonoBehaviour
 {
-    public hitSound hitSounds;
+    public hitSounds hitSounds;
 
     private ScoreSettings scoreSettings;
 
@@ -35,7 +35,7 @@ public class BodyHit : MonoBehaviour
             return;
         }
 
-        hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
+        hitSounds = GameObject.Find("KillSound").GetComponent<hitSounds>();
         hitSounds.PlaySFX();
 
         AwardScore(enemy.WasShielded);
