@@ -19,6 +19,11 @@ public class GoalTrigger : MonoBehaviour
                 confetti.Play();
             }
 
+            if (fireworks != null)
+            {
+                fireworks.Play();
+            }
+
             if (fireworks != null && fireworksSFX != null)
             {
                 source.PlayOneShot(fireworksSFX);
