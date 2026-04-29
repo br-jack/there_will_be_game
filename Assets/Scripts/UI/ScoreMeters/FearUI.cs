@@ -11,6 +11,8 @@ public class FearUI : MonoBehaviour
     [SerializeField] private Transform popupContainer;
     [SerializeField] private Vector2 popupStartOffset = new Vector2(150f, 0f);
     [SerializeField] private float popupSpacing = 30f;
+    [SerializeField] public float xScorePositionNoise;
+    [SerializeField] public float yScorePositionNoise;
     
     private void Start()
     {
@@ -55,7 +57,10 @@ public class FearUI : MonoBehaviour
             
             if (popupRect != null)
             {
-                Vector2 position = popupStartOffset + new Vector2(0f, -i * popupSpacing);
+                float randomXOffset = Random.value * xScorePositionNoise;
+                float randomYOffset = Random.value * yScorePositionNoise;
+                Vector2 position = popupStartOffset + new Vector2(0f, -i * popupSpacing) 
+                    + new Vector2(randomXOffset,randomYOffset);
                 popupRect.anchoredPosition = position;
             }
             
