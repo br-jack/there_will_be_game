@@ -3,7 +3,6 @@ using UnityEngine;
 public class TutorialReachPointTask : BaseTask
 {
     [SerializeField] private string tutorialTaskName = "Approach the marked area";
-    [SerializeField] private string tutorialTaskDescription = "Walk to the glowing marker";
 
     private bool playerReachedGoal = false;
 
@@ -13,7 +12,6 @@ public class TutorialReachPointTask : BaseTask
         isComplete = false;
 
         taskName = tutorialTaskName;
-        taskDescription = tutorialTaskDescription;
 
         base.StartTask();
         TaskHUD.Instance.RefreshUI();
@@ -27,7 +25,6 @@ public class TutorialReachPointTask : BaseTask
         }
 
         playerReachedGoal = true;
-        taskDescription = "Completed";
         TaskHUD.Instance.RefreshUI();
         CheckCompletion();
     }

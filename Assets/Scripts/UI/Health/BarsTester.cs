@@ -10,7 +10,7 @@ When changing the design of either, this will let you see what it looks like at 
 public class BarsTester : MonoBehaviour
 {
     [Header("References")]
-    public ContinuousBar continuousHealthBar;
+    public HealthMeterUI healthBar;
 
     [Header("Toggle to True to Cycle Through The Bars' States (TEST PURPOSES)")]
     public bool runContinuousTest = true;
@@ -21,12 +21,12 @@ public class BarsTester : MonoBehaviour
 
     private void Update()
     {
-        if (runContinuousTest && continuousHealthBar != null)
+        if (runContinuousTest && healthBar != null)
         {
             // Ping-pong between full and empty over the cycle time.
             float t = Mathf.PingPong(Time.time, continuousCycleSeconds) / continuousCycleSeconds;
             float fraction = 1f - t;
-            continuousHealthBar.DisplayFractionalBar(fraction);
+            healthBar.DisplayFractionalBar(fraction);
         }
 
 

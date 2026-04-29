@@ -12,7 +12,7 @@ public class PlayerLives : MonoBehaviour
     [SerializeField] private int maxLives = 1;
 
     [Header("UI")]
-    [SerializeField] private ContinuousBar healthBar;
+    [SerializeField] private HealthMeterUI healthBar;
 
     [Header("Dependencies")]
     [SerializeField] private PlayerHealth playerHealth;
@@ -37,7 +37,7 @@ public class PlayerLives : MonoBehaviour
     private void Awake()
     {
         if (playerHealth == null) playerHealth = GetComponent<PlayerHealth>();
-        if (healthBar == null) healthBar = FindFirstObjectByType<ContinuousBar>();
+        if (healthBar == null) healthBar = FindFirstObjectByType<HealthMeterUI>();
     }
 
     private void Start()

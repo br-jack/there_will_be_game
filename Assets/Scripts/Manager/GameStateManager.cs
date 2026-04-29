@@ -93,6 +93,7 @@ public class GameStateManager : MonoBehaviour
             case "MainScene":
                 ScoreManager.Instance?.ResetFear();
                 ScoreManager.Instance?.ResetAwe();
+                CurState = GameState.Playing;
                 ApplyState(GameState.Playing);
                 
                 break;
@@ -101,6 +102,12 @@ public class GameStateManager : MonoBehaviour
                 break;
             case "hammerTest":
                 CurState = GameState.Calibration;
+                break;
+            case "TutorialScene":
+                ScoreManager.Instance?.ResetFear();
+                ScoreManager.Instance?.ResetAwe();
+                CurState = GameState.Playing;
+                ApplyState(GameState.Playing);
                 break;
         }
     }
@@ -127,7 +134,6 @@ public class GameStateManager : MonoBehaviour
     private void ApplyState(GameState next)
     {
         musicManager = GameObject.Find("MusicManager").GetComponent<musicManager>();
-        CurState = next;
         switch (next)
         {
             case GameState.Playing:
