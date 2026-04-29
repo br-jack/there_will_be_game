@@ -17,26 +17,26 @@ namespace Hammer
         private volatile bool _running;
         private readonly ConcurrentQueue<string> sendQueue = new ConcurrentQueue<string>();
         private readonly ConcurrentQueue<string> recvQueue = new ConcurrentQueue<string>();
-        
+
         private IMUConfig configSO;
 
         private const int TimeoutMs = 50;
         private const int MaxIOExceptionCount = 5;
 
         private int currentIOExceptionCount = 0;
-        
+
         public IMUController(IMUConfig config)
         {
             configSO = config;
         }
-        
+
         private string SearchPorts()
         {
             if (!String.IsNullOrEmpty(configSO.portOverride))
             {
                 return configSO.portOverride;
             }
-            
+
             try
             {
                 if (Application.platform.Equals(RuntimePlatform.OSXEditor) || Application.platform.Equals(RuntimePlatform.OSXPlayer))
@@ -51,7 +51,6 @@ namespace Hammer
 
                 if (Application.platform.Equals(RuntimePlatform.WindowsEditor) || Application.platform.Equals(RuntimePlatform.WindowsPlayer))
                 {
-
                     try
                     {
                         string[] availablePorts = SerialPort.GetPortNames();
@@ -65,7 +64,7 @@ namespace Hammer
                         foreach (string possiblePort in availablePorts)
                         {
                             // Debug.Log("Trying port " + possiblePort);
-                            
+
                             SerialPort testSerial = new SerialPort(possiblePort, 115200)
                             {
                                 DtrEnable = true,
@@ -73,13 +72,13 @@ namespace Hammer
                                 ReadTimeout = configSO.readTimeout * 2
                             };
                             testSerial.Open();
-                            
+
                             //wait to ensure IMU data gets received
                             Thread.Sleep(100);
-                            
+
                             String output = testSerial.ReadExisting();
                             testSerial.Close();
-                            
+
                             if (output.Contains("q:") || output.Contains("a:") || output.Contains("info:"))
                             {
                                 //(hub sending) IMU data found
@@ -110,7 +109,7 @@ namespace Hammer
             {
                 return false;
             }
-            
+
             try
             {
                 _stream = new SerialPort(port, 115200)
@@ -129,7 +128,7 @@ namespace Hammer
                     {
                         // if youre connected but not getting any data you may have another serial monitor open for this port
                         // Debug.Log("Connected (allegedly)");
-                        
+
                         return true;
                     }
                 }
@@ -146,7 +145,7 @@ namespace Hammer
         public void Connect()
         {
             currentIOExceptionCount = 0;
-            
+
             _running = true;
 
             // Start the background I/O thread
@@ -164,7 +163,7 @@ namespace Hammer
         {
             string port = null;
             bool portOpen = false;
-            
+
             try
             {
                 while (_running && !portOpen)
@@ -182,7 +181,7 @@ namespace Hammer
                 }
 
                 Debug.Assert(!String.IsNullOrEmpty(port));
-                
+
                 while (_running)
                 {
                     try
@@ -211,7 +210,7 @@ namespace Hammer
                     catch (TimeoutException) //ex)
                     {
                         //"The operation has timed out."
-                        
+
                         //These are recoverable and can occur due to data not being sent fast enough
                         // so can just be ignored
                     }
@@ -219,7 +218,7 @@ namespace Hammer
                     {
                         //"The I/O operation has been aborted because of either a thread exit or an application request."
                         //"System.IO.IOException: The device does not recognize the command"
-                        
+
                         //The latter occurs when you restart the IMU (e.g. to fix IMU after a short), and is likely not recoverable.
                         //Need to reset the stream
 
@@ -235,10 +234,10 @@ namespace Hammer
                             Debug.Assert(!String.IsNullOrEmpty(port));
                         }
                     }
-                    catch(Exception) //ex)
+                    catch (Exception) //ex)
                     {
                         //Other exception
-                        
+
                         //Outputting in I/O thread Seems to cause a memory leak, so only enable this when debugging Bluetooth
                         //Debug.LogWarning($"Error reading data: {ex.Message}");
                     }
@@ -255,7 +254,7 @@ namespace Hammer
         {
             while (recvQueue.TryDequeue(out string data))
             {
-                Debug.Log($"[Main Thread] Received: {data}");
+                //Debug.Log($"[Main Thread] Received: {data}");
                 string[] parsedData = data.Trim().Split(':');
 
 
@@ -311,6 +310,11 @@ namespace Hammer
 
         public void Update()
         {
+            if (_stream == null)
+            {
+                Debug.Log("no stream...");
+                return;
+            }
             if (!_stream.IsOpen)
             {
                 Debug.LogWarning("Port is not open for reading.");
@@ -350,7 +354,7 @@ namespace Hammer
             _stream = null;
 
             currentIOExceptionCount = 0;
-            
+
             Debug.Log("Port closed");
         }
 
@@ -390,13 +394,13 @@ namespace Hammer
         )
         {
             if (!configSO.enableRumble) return;
-            
+
             Debug.Assert(msDuration > 0);
             Debug.Assert(startStrength > 0);
             Debug.Assert(endStrength > 0);
             Debug.Assert(fadeRate > 0);
             Debug.Assert(fadeInterval > 0);
-            
+
             Debug.Log("Sending Rumble Request");
             sendQueue.Enqueue(
                 $"R{GetRumbleModeByte(mode)}{Convert.ToInt32(flipMotorDirection)}{msDuration};{startStrength};{endStrength};{fadeRate};{fadeInterval}"
@@ -415,7 +419,7 @@ namespace Hammer
                 ConstantRumble(totalDuration, endStrength);
                 return;
             }
-            
+
             RumbleMode mode = (startStrength <= endStrength) ? RumbleMode.RampUp : RumbleMode.RampDown;
 
             int strengthDifference = Math.Abs(endStrength - startStrength);
