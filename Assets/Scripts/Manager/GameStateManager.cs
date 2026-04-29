@@ -137,7 +137,8 @@ public class GameStateManager : MonoBehaviour
     // Applies the state's effects unconditionally. Used by SetState and by scene-load to re-configure freshly-loaded references.
     private void ApplyState(GameState next)
     {
-        musicManager = GameObject.Find("MusicManager").GetComponent<musicManager>();
+        GameObject mmObject = GameObject.Find("MusicManager");
+        musicManager = mmObject != null ? mmObject.GetComponent<musicManager>() : null;
         CurState = next;
         switch (next)
         {
@@ -145,14 +146,14 @@ public class GameStateManager : MonoBehaviour
                 Time.timeScale = 1f;
                 ignoreGameplayInputUntil = Time.unscaledTime + 0.2f;
                 SetSpawning(true);
-                musicManager.PlayMusic();
+                if (musicManager != null) musicManager.PlayMusic();
                 if (_horseMovement != null) _horseMovement.enabled = true;
                 if (_pauseMenuSelection != null) _pauseMenuSelection.ClearSelection();
                 if (_pausePanel != null) _pausePanel.SetActive(false);
                 break;
             case GameState.Paused:
                 Time.timeScale = 0f;
-                musicManager.PauseMusic();
+                if (musicManager != null) musicManager.PauseMusic();
                 SetSpawning(false);
                 if (_horseMovement != null) _horseMovement.enabled = false;
                 if (_pausePanel != null) _pausePanel.SetActive(true);
