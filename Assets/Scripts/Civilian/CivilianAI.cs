@@ -221,7 +221,7 @@ public class CivilianAI : MonoBehaviour
 
     private void UpdateAnim()
     {
-        if (anim == null || string.IsNullOrEmpty(speedParam)) return;
+        if (anim == null || anim.runtimeAnimatorController == null || string.IsNullOrEmpty(speedParam)) return;
         Vector3 v = rb.linearVelocity;
         anim.SetFloat(speedParam, new Vector2(v.x, v.z).magnitude);
     }

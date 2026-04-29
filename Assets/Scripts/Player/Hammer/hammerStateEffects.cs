@@ -22,6 +22,7 @@ public class hammerStateEffects : MonoBehaviour
     private ParticleSystem.MainModule _ghostsMain;
     public ParticleSystem flash;
     private ParticleSystem.MainModule _flashMain;
+    public ParticleSystem explosion;
 
     public Color _stillAndWalkColor;
     public Color _trotColor;
@@ -39,6 +40,16 @@ public class hammerStateEffects : MonoBehaviour
         gait = newGait;
     }
 
+    public void updateChargeState(hammerChargeState newHCS)
+    {
+        hammerChargeState = newHCS;
+    }
+
+    public void doSlamEffects()
+    {
+        explosion.Play();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -54,40 +65,39 @@ public class hammerStateEffects : MonoBehaviour
         if (_hammerMaterials[headMaterialIndex].name != "hammer_metal (Instance)")
         {
             Debug.LogWarning("ohno it is not called hammer_metal (Instance), instead is is called: "
-                +_hammerMaterials[headMaterialIndex].name);
+                + _hammerMaterials[headMaterialIndex].name);
         }
 
-        
         _hammerMaterials[headMaterialIndex] = new Material(_hammerMaterials[headMaterialIndex]);
     }
 
     // Update is called once per frame
     void Update()
-    {   
-
+    {
         switch (hammerChargeState)
         {
-            
+
             case hammerChargeState.uncharged:
-                embers.Play();
+                embers.Stop();
                 chargeLines.Stop();
                 glow.Stop();
                 break;
-            case hammerChargeState.charging: 
-                embers.Stop();
+            case hammerChargeState.charging:
+                embers.Play();
                 chargeLines.Play();
                 glow.Stop();
                 break;
-            case hammerChargeState.charged: 
+            case hammerChargeState.charged:
                 embers.Play();
-                chargeLines.Play();
+                chargeLines.Stop();
                 glow.Play();
                 break;
         }
-        
-        switch (gait) {
-            case gait.still: 
-                _chargeLinesMain.startColor = _stillAndWalkColor; 
+
+        switch (gait)
+        {
+            case gait.still:
+                _chargeLinesMain.startColor = _stillAndWalkColor;
                 _embersMain.startColor = _stillAndWalkColor;
                 _glowMain.startColor = _stillAndWalkColor;
                 _ghostsMain.startColor = _stillAndWalkColor;
@@ -95,8 +105,8 @@ public class hammerStateEffects : MonoBehaviour
                 _flashMain.startColor = _stillAndWalkColor;
                 _hammerMaterials[headMaterialIndex].color = _stillAndWalkColor;
                 break;
-            case gait.walking: 
-                _chargeLinesMain.startColor = _stillAndWalkColor; 
+            case gait.walking:
+                _chargeLinesMain.startColor = _stillAndWalkColor;
                 _embersMain.startColor = _stillAndWalkColor;
                 _glowMain.startColor = _stillAndWalkColor;
                 _ghostsMain.startColor = _stillAndWalkColor;
@@ -104,7 +114,7 @@ public class hammerStateEffects : MonoBehaviour
                 _flashMain.startColor = _stillAndWalkColor;
                 _hammerMaterials[headMaterialIndex].color = _stillAndWalkColor;
                 break;
-            case gait.trotting: 
+            case gait.trotting:
                 _chargeLinesMain.startColor = _trotColor;
                 _embersMain.startColor = _trotColor;
                 _glowMain.startColor = _trotColor;
@@ -113,7 +123,7 @@ public class hammerStateEffects : MonoBehaviour
                 _flashMain.startColor = _trotColor;
                 _hammerMaterials[headMaterialIndex].color = _trotColor;
                 break;
-            case gait.cantering: 
+            case gait.cantering:
                 _chargeLinesMain.startColor = _canterColor;
                 _embersMain.startColor = _canterColor;
                 _glowMain.startColor = _canterColor;
@@ -122,7 +132,7 @@ public class hammerStateEffects : MonoBehaviour
                 _flashMain.startColor = _canterColor;
                 _hammerMaterials[headMaterialIndex].color = _canterColor;
                 break;
-            case gait.galloping: 
+            case gait.galloping:
                 _chargeLinesMain.startColor = _gallopColor;
                 _embersMain.startColor = _gallopColor;
                 _glowMain.startColor = _gallopColor;
@@ -131,8 +141,8 @@ public class hammerStateEffects : MonoBehaviour
                 _flashMain.startColor = _gallopColor;
                 _hammerMaterials[headMaterialIndex].color = _gallopColor;
                 break;
-            case gait.ultraGalloping: 
-                _chargeLinesMain.startColor =  _ultraGallopColor;
+            case gait.ultraGalloping:
+                _chargeLinesMain.startColor = _ultraGallopColor;
                 _embersMain.startColor = _ultraGallopColor;
                 _glowMain.startColor = _ultraGallopColor;
                 _ghostsMain.startColor = _ultraGallopColor;
@@ -140,8 +150,8 @@ public class hammerStateEffects : MonoBehaviour
                 _flashMain.startColor = _ultraGallopColor;
                 _hammerMaterials[headMaterialIndex].color = _ultraGallopColor;
                 break;
-            case gait.vulcan: 
-                _chargeLinesMain.startColor = Color.black; 
+            case gait.vulcan:
+                _chargeLinesMain.startColor = Color.black;
                 _embersMain.startColor = Color.black;
                 _glowMain.startColor = Color.black;
                 _ghostsMain.startColor = Color.black;
@@ -149,9 +159,9 @@ public class hammerStateEffects : MonoBehaviour
                 _flashMain.startColor = Color.black;
                 _hammerMaterials[headMaterialIndex].color = Color.black;
                 break;
-            default: 
+            default:
                 break;
-            
+
         }
 
         //NOTE: this may not be performant

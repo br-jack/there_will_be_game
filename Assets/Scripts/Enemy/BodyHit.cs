@@ -14,6 +14,11 @@ public class BodyHit : MonoBehaviour
         scoreSettings = Resources.Load<ScoreSettings>("ScoreSettings");
     }
 
+    public void hitBySlamAttack()
+    {
+        
+    }
+    
     void OnTriggerEnter(Collider other)
     {
         AttackHitbox attack = other.GetComponent<AttackHitbox>();

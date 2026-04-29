@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Hammer
 {
-/*
-DebugHammer:
-Shows some data about hammer (kinda outdated) and calls calibration function.
-Basically all the DebugHammer scene functions.
-*/
+    /*
+    DebugHammer:
+    Shows some data about hammer (kinda outdated) and calls calibration function.
+    Basically all the DebugHammer scene functions.
+    */
     public class DebugHammer : MonoBehaviour
     {
         [SerializeField] private TMP_Text pitchSpeedText;
@@ -33,11 +33,10 @@ Basically all the DebugHammer scene functions.
             xAccelText.text = $"X Accel: {hammerBehaviour.Acceleration.x.ToString(CultureInfo.CurrentCulture)}";
             yAccelText.text = $"Y Accel: {hammerBehaviour.Acceleration.y.ToString(CultureInfo.CurrentCulture)}";
             zAccelText.text = $"Z Accel: {hammerBehaviour.Acceleration.z.ToString(CultureInfo.CurrentCulture)}";
-            
+
             pitchSpeedText.text = $"X Rotation: {hammerBehaviour.transform.eulerAngles.x.ToString(CultureInfo.CurrentCulture)}";
             rollSpeedText.text = $"Y Rotation: {hammerBehaviour.transform.eulerAngles.y.ToString(CultureInfo.CurrentCulture)}";
             yawSpeedText.text = $"Z Rotation: {hammerBehaviour.transform.transform.eulerAngles.z.ToString(CultureInfo.CurrentCulture)}";
         }
     }
 }
-
