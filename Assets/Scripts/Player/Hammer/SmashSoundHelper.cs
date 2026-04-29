@@ -13,7 +13,7 @@ public class SmashSoundHelper : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
-    void PlaySound()
+    public void PlaySound()
     {
         if (smashClip != null)
         {
