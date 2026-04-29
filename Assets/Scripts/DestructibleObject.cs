@@ -74,6 +74,11 @@ public class DestructibleObject : MonoBehaviour
         if (impactSpeed < breakForceThreshold) return;
 
         Break(collision.contacts[0].point, 300);
+
+        var hitbox = collision.gameObject.GetComponent<AttackHitbox>();
+        if (hitbox == null) return;
+        
+        hitbox.DestroyedBuilding();
     }
 
     public void Break(Vector3 impactPoint, float explosionForce)

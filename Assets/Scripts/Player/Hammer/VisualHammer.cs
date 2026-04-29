@@ -87,12 +87,18 @@ namespace Hammer
                 if (angleToUp < chargingZoneSize && angleToUp > 0.0f)
                 {
                     if (timeHeldUp > timeToChargeSlam) changeHammerChargeState(hammerChargeState.charged);
-                    else if (timeHeldUp > 0.05) changeHammerChargeState(hammerChargeState.charging);
+                    else if (timeHeldUp > 0.05 && hammerChargeState != hammerChargeState.charging)
+                    {
+                        changeHammerChargeState(hammerChargeState.charging);
+                    }
                     timeHeldUp += Time.deltaTime;
                 }
                 else
                 {
-                    changeHammerChargeState(hammerChargeState.uncharged);
+                    if (hammerChargeState != hammerChargeState.uncharged)
+                    {
+                        changeHammerChargeState(hammerChargeState.uncharged);
+                    }
                     timeHeldUp = 0;
                 }
             }
@@ -162,7 +168,7 @@ namespace Hammer
 
             
             slam.Invoke(); //fling player + other effects
-
+            
             Instantiate(slamEffectsPrefab,slamCenter,Quaternion.identity);
 
             Collider[] colliders = Physics.OverlapSphere(slamCenter, slamRadius);

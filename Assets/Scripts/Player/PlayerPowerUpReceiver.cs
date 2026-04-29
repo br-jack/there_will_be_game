@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class PlayerPowerUpReceiver : MonoBehaviour
 {
@@ -35,6 +36,13 @@ public class PlayerPowerUpReceiver : MonoBehaviour
     private Coroutine jumpBoostCoroutine;
 
     public bool canRamBuildings = false;
+
+    [Header("Horse Ram Message")]
+    [SerializeField] private TextMeshProUGUI horseRamMessageText;
+    [SerializeField] private string horseRamMessage = "RAM THROUGH EVERYTHING!";
+    [SerializeField] private float horseRamMessageDuration = 3f;
+
+    private Coroutine horseRamMessageCoroutine;
     private void Start()
     {
         
@@ -85,8 +93,35 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         }
         else if (powerUpType == PowerUpType.HorseRam)
         {
-            canRamBuildings = true;
+            ApplyHorseRam();
         }
+    }
+
+    private void ApplyHorseRam()
+    {
+        canRamBuildings = true;
+        ShowHorseRamMessage();
+    }
+
+    private void ShowHorseRamMessage()
+    {
+        if (horseRamMessageCoroutine != null)
+        {
+            StopCoroutine(horseRamMessageCoroutine);
+        }
+
+        horseRamMessageCoroutine = StartCoroutine(HorseRamMessageRoutine());
+    }
+
+    private IEnumerator HorseRamMessageRoutine()
+    {
+        horseRamMessageText.text = horseRamMessage;
+        horseRamMessageText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(horseRamMessageDuration);
+
+        horseRamMessageText.gameObject.SetActive(false);
+        horseRamMessageCoroutine = null;
     }
 
     private void StartSpeedBoostEffects(float multiplier)

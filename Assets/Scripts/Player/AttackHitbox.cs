@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.TextCore.Text;
 
 public class AttackHitbox : MonoBehaviour
@@ -10,6 +11,10 @@ public class AttackHitbox : MonoBehaviour
     //private HorseMovement _horseMovement;
     private CharacterController _cc;
     private horseMovementGaits _horseMovementGaits;
+    
+    public UnityEvent killEvent;
+    public UnityEvent breakShieldEvent;
+    public UnityEvent destroyBuildingEvent;
 
     private void Awake()
     {
@@ -18,6 +23,21 @@ public class AttackHitbox : MonoBehaviour
         _cc = GetComponentInParent<CharacterController>();
         _horseMovementGaits = GetComponentInParent<horseMovementGaits>();
 
+    }
+
+    public void KilledEnemy()
+    {
+        killEvent.Invoke();
+    }
+
+    public void BrokeShield()
+    {
+        breakShieldEvent.Invoke();
+    }
+
+    public void DestroyedBuilding()
+    {
+        destroyBuildingEvent.Invoke();
     }
 
     public float GetKnockbackForce()
