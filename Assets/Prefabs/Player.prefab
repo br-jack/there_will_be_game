@@ -220,7 +220,7 @@ BoxCollider:
     m_Bits: 8192
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 197632
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -7624,16 +7624,24 @@ PrefabInstance:
       objectReference: {fileID: 5198885869196984512}
     - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: slamForce
-      value: 200
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: slamRadius
-      value: 25
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: aweSlamForce
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: _targetHammer
       value: 
       objectReference: {fileID: 4632399603067790969}
+    - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: aweSlamRadius
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: pivotTransform
       value: 
@@ -7646,6 +7654,10 @@ PrefabInstance:
       propertyPath: slamEffectsPrefab
       value: 
       objectReference: {fileID: 9200296299433467226, guid: 6188e861a58428a4aa778eb55558b432, type: 3}
+    - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: aweSlamEffectsPrefab
+      value: 
+      objectReference: {fileID: 9200296299433467226, guid: d68ce08072472ec42b47f12b10cf46c9, type: 3}
     - target: {fileID: 6360334775068351510, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: slam.m_PersistentCalls.m_Calls.Array.size
       value: 2
