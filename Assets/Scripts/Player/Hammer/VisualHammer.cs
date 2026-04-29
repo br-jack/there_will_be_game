@@ -176,8 +176,9 @@ namespace Hammer
             foreach (Collider c in colliders)
             {
                 if (c.GetComponentInParent<DestructibleObject>())
-                {
-                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 300);
+                {   
+                    //closest point would be cool but doesn't work with concave mesh colliders
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPointOnBounds(transform.position), 300);
                 }
                 // TODO particles
                 // TODO use aarons ragdolls
