@@ -395,11 +395,11 @@ namespace Hammer
         {
             if (!configSO.enableRumble) return;
 
-            Debug.Assert(msDuration > 0);
-            Debug.Assert(startStrength > 0);
-            Debug.Assert(endStrength > 0);
-            Debug.Assert(fadeRate > 0);
-            Debug.Assert(fadeInterval > 0);
+            Debug.Assert(msDuration >= 0);
+            Debug.Assert(startStrength >= 0);
+            Debug.Assert(endStrength >= 0);
+            Debug.Assert(fadeRate >= 0);
+            Debug.Assert(fadeInterval >= 0);
 
             Debug.Log("Sending Rumble Request");
             sendQueue.Enqueue(
