@@ -1,4 +1,10 @@
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem; //temp
+using Score;
+using Enemy;
+using UnityEngine.UIElements;
 
 namespace Hammer
 {
@@ -12,30 +18,23 @@ namespace Hammer
     public class VisualHammer : MonoBehaviour
     {
         // [SerializeField] private CharacterController _horseCC;
-        public hammerHead head;
-        
-        // [SerializeField] private Transform pivotTransform;
+        [Tooltip("Seconds")]
+        [SerializeField] private float timeToChargeSlam = 3;
+        [SerializeField] private float chargingZoneSize = 20;
+
+        [SerializeField] private float slamAccelThreshold;
+
+        private ScoreSettings scoreSettings;
+        [SerializeField] private float timeHeldUp;
+
+        [SerializeField] private GameObject slamEffectsPrefab; 
+        [SerializeField] private GameObject aweSlamEffectsPrefab; 
+
+        [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
-        
+
         [Tooltip("This should be from a TargetHammer prefab")]
         [SerializeField] private TargetHammer _targetHammer;
-        
-        /*
-         [Header("Spring Settings")] 
-        [SerializeField] private bool useSpring = true;
-        [SerializeField] private float positionSpringStrength = 2000f;
-        [SerializeField] private float positionDamping = 240f;
-        [SerializeField] private float rotationSpringStrength = 2000f;
-        [SerializeField] private float rotationDamping = 240f;
-        */
-
-        /*
-        [Header("Collision Distance Settings")]
-        [Tooltip("Beyond this distance, collisions are disabled so the hammer can snap back freely")]
-        [SerializeField] private float collisionDisableDistance = 2.5f;
-        [Tooltip("Must get this close to re-enable collisions")]
-        [SerializeField] private float collisionReenableDistance = 0.3f;
-        */
 
         [Header("Dynamic Hitbox")]
         [SerializeField] private bool useDynamicHitbox = true;
@@ -49,91 +48,92 @@ namespace Hammer
         [SerializeField] private Vector3 largeHitboxCenter;
 
         //private bool _collisionsEnabled = true;
-        
-        private BoxCollider _hitbox;
+        [SerializeField] private BoxCollider _hitbox;
+        public hammerChargeState hammerChargeState { get; private set; }
+        public UnityEvent<hammerChargeState> chargeStateChange;
+        public UnityEvent slam;
+        //InputAction temporarySlamActivate;
 
+
+        public float slamRadius;
+        public float slamForce;
+        public float aweSlamRadius;
+        public float aweSlamForce;
+
+
+        private void changeHammerChargeState(hammerChargeState newState)
+        {
+            if (hammerChargeState != newState) {
+                hammerChargeState = newState;
+                chargeStateChange.Invoke(hammerChargeState);
+            } else Debug.Log("hammer state change event despite state remaining the same");
+        }
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
             _hitbox = GetComponent<BoxCollider>();
             Debug.Assert(_hitbox != null);
+            scoreSettings = Resources.Load<ScoreSettings>("ScoreSettings");
+            timeHeldUp = 0;
         }
 
-        /*private void MoveToTargetPosition()
-        {
-            if (!useSpring)
-            {
-                transform.position = _targetHammer.transform.position;
-                return;
-            }
-            Vector3 toTarget = _targetHammer.transform.position - transform.position;
-            float distance = toTarget.magnitude;
-
-            Vector3 springForce = toTarget * positionSpringStrength;
-
-            //// horses are much faster than hammers
-            // Vector3 dampingForce = -(_rb.linearVelocity - _horseCC.velocity) * positionDamping;
-            Vector3 dampingForce = -_rb.linearVelocity * positionDamping;
-
-            //_rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
-
-            //if (_collisionsEnabled && distance > collisionDisableDistance)
-            //{
-            //    _collisionsEnabled = false;
-            //    if (_hitbox != null) _hitbox.enabled = false;
-            //}
-            //else if (!_collisionsEnabled && distance < collisionReenableDistance)
-            //{
-            //    _collisionsEnabled = true;
-            //    if (_hitbox != null) _hitbox.enabled = true;
-            //}
-            
-            _rb.AddForce(springForce + dampingForce, ForceMode.Acceleration);
-        }
-
-        private void MoveToTargetRotation()
-        {
-            if (!useSpring)
-            {
-                transform.rotation = _targetHammer.transform.rotation;
-                return;
-            }
-            Quaternion rotationDiff = _targetHammer.transform.rotation * Quaternion.Inverse(transform.rotation);
-            rotationDiff.normalized.ToAngleAxis(out float angle, out Vector3 rotationAxis);
-
-            //map range from [0, 360] to [-180, 180]
-            if (angle > 180f) angle -= 360f;
-
-            //prevent infinity vectors
-            if (rotationAxis.sqrMagnitude > 0.001f)
-            {
-                Vector3 springTorque = rotationAxis.normalized * ((angle * Mathf.Deg2Rad) * rotationSpringStrength);
-                Vector3 dampingTorque = -_rb.angularVelocity * rotationDamping;
-                _rb.AddTorque(springTorque + dampingTorque, ForceMode.Acceleration);
-            }
-        }*/
 
         void FixedUpdate()
         {
-            
+            //if not already charged, check if the player is holding the hammer above their head
+            if (hammerChargeState != hammerChargeState.charged) {
+                float angleToUp = Vector3.Angle(Vector3.up, transform.up); //gives signed angle          
+                if (angleToUp < chargingZoneSize && angleToUp > 0.0f)
+                {
+
+                    if (timeHeldUp > timeToChargeSlam) changeHammerChargeState(hammerChargeState.charged);
+                    else if (timeHeldUp > 0.05) changeHammerChargeState(hammerChargeState.charging);
+                    timeHeldUp += Time.deltaTime;
+                }
+                else
+                {
+                    changeHammerChargeState(hammerChargeState.uncharged);
+                    timeHeldUp = 0;
+                }
+            }
+
             //Debug.Log($"Tensor position: {_rb.inertiaTensor}, Tensor rotation: {_rb.inertiaTensorRotation}");
             if (useDynamicHitbox)
             {
-                if (head.forwardSpeed < mediumHitboxThreshold)
+                if (_targetHammer.radialAcceleration < mediumHitboxThreshold)
                 {
                     _hitbox.size = smallHitboxSize;
                     _hitbox.center = smallHitboxCenter;
-                } else if (head.forwardSpeed < largeHitboxThreshold)
+                }
+                else if (_targetHammer.radialAcceleration < largeHitboxThreshold)
                 {
                     _hitbox.size = mediumHitboxSize;
                     _hitbox.center = mediumHitboxCenter;
-                } else
+                }
+                else
                 {
                     _hitbox.size = largeHitboxSize;
                     _hitbox.center = largeHitboxCenter;
                 }
             }
-            
+
+            // TODO this should probably be continuous
+            if (_targetHammer.radialAcceleration < mediumHitboxThreshold)
+            {
+                _hitbox.size = smallHitboxSize;
+                _hitbox.center = smallHitboxCenter;
+            }
+            else if (_targetHammer.radialAcceleration < largeHitboxThreshold)
+            {
+                _hitbox.size = mediumHitboxSize;
+                _hitbox.center = mediumHitboxCenter;
+            }
+            else
+            {
+                _hitbox.size = largeHitboxSize;
+                _hitbox.center = largeHitboxCenter;
+            }
+
             // maybe horse acceleration?
             //_rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, horseRigidBody.linearVelocity, 0.8f);
 
@@ -141,9 +141,77 @@ namespace Hammer
             // MoveToTargetRotation();
         }
 
-        public void OnCollisionEnter(Collision collision)
+        public void onSlamHitboxTrigger(Vector3 slamCenter)
         {
-            _targetHammer.Rumble();
+            if (_targetHammer.radialAcceleration <= slamAccelThreshold)
+            {
+                if (ScoreManager.Instance.AweScore >= ScoreManager.Instance.MaxAweScore) {
+                    doAweSlam(slamCenter);
+                    ScoreManager.Instance.ResetAwe();
+
+                } else doSlam(slamCenter);
+            }
+            //_targetHammer.Rumble();
+        }
+        
+
+
+        void doSlam(Vector3 slamCenter)
+        {
+            //Debug.Log("boom")
+
+            
+            slam.Invoke(); //fling player + other effects
+
+            Instantiate(slamEffectsPrefab,slamCenter,Quaternion.identity);
+
+            Collider[] colliders = Physics.OverlapSphere(slamCenter, slamRadius);
+            foreach (Collider c in colliders)
+            {
+                if (c.GetComponentInParent<DestructibleObject>())
+                {
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 300);
+                }
+                // TODO particles
+                // TODO use aarons ragdolls
+                if (c.GetComponentInParent<RagdollDeathHandler>())
+                {
+                    c.GetComponentInParent<RagdollDeathHandler>().KilledBy(slamCenter,slamForce);
+                }
+
+            }
+            changeHammerChargeState(hammerChargeState.uncharged);
+            timeHeldUp = 0;
+
+        }
+        void doAweSlam(Vector3 slamCenter)
+        {
+            //Debug.Log("boom")
+
+            
+            slam.Invoke(); //fling player + other effects
+
+            Instantiate(aweSlamEffectsPrefab,slamCenter,Quaternion.identity);
+
+            Collider[] colliders = Physics.OverlapSphere(slamCenter, aweSlamRadius);
+            foreach (Collider c in colliders)
+            {
+                if (c.GetComponentInParent<DestructibleObject>())
+                {
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 500);
+                }
+                // TODO particles
+                // TODO use aarons ragdolls
+                if (c.GetComponentInParent<RagdollDeathHandler>())
+                {
+                    c.GetComponentInParent<RagdollDeathHandler>().KilledBy(slamCenter,aweSlamForce);
+                }
+
+            }
+            changeHammerChargeState(hammerChargeState.uncharged);
+            timeHeldUp = 0;
+            ScoreManager.Instance.ResetAwe();
+
         }
     }
-}
+}// TODO make big swing also push horse

@@ -33,6 +33,7 @@ namespace Hammer
         [SerializeField] private float maxLength = 20;
         private float extensionVelocity;
         private float momentum = 0;
+        public float radialAcceleration { get; set; } = 0;
 
         public bool canControl { get; set; } = true;
 
@@ -43,8 +44,6 @@ namespace Hammer
         [SerializeField] private float swingCooldown = 0.6f;
 
         private float lastSwingTime = -999f;
-
-        private Rigidbody _rb;
 
         private Quaternion attitude;
         private Vector3 frameAcceleration;
@@ -76,7 +75,7 @@ namespace Hammer
             _controllerRef.Update();
             attitude = _controllerRef.GetAttitude();
             HammerManager.Instance.SaveCalibration(Quaternion.Inverse(attitude));
-            
+
         }
 
         void UpdateRotation()
@@ -87,7 +86,7 @@ namespace Hammer
         void UpdatePosition()
         {
             Vector3 worldForward = transform.rotation * Vector3.forward;
-            float radialAcceleration = Vector3.Dot(frameAcceleration, worldForward);
+            radialAcceleration = Vector3.Dot(frameAcceleration, worldForward);
             float force = Mathf.Abs(radialAcceleration) < 0.1f ? 0f : radialAcceleration;
 
             momentum += force * Time.deltaTime;
@@ -129,7 +128,7 @@ namespace Hammer
         void CheckForSwing()
         {
             Vector3 worldForward = transform.rotation * Vector3.forward;
-            float radialAcceleration = Vector3.Dot(frameAcceleration, worldForward);
+            radialAcceleration = Vector3.Dot(frameAcceleration, worldForward);
 
             if (Mathf.Abs(radialAcceleration) >= swingAccelerationThreshold && Time.time >= lastSwingTime + swingCooldown)
             {

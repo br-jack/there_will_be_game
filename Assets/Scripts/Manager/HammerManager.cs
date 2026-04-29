@@ -4,6 +4,7 @@ public class HammerManager : MonoBehaviour
 {
     public static HammerManager Instance { get; private set; }
 
+    public static bool awesome {get; set;}
     [SerializeField] private IMUConfig imuConfigSO;
     
     public Hammer.IController hammerController;
