@@ -20,6 +20,9 @@ public class hammerParticleSystemBehaviour : MonoBehaviour
     private uint framesUntilTrailsDisabled;
     private uint framesUntilGhostsDisabled;
 
+    private bool _ghostsOn;
+    private bool _trailsOn;
+
     [SerializeField] private TargetHammer _targetHammer;
 
 
