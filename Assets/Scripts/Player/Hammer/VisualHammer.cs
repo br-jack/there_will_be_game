@@ -28,6 +28,7 @@ namespace Hammer
         [SerializeField] private float timeHeldUp;
 
         [SerializeField] private GameObject slamEffectsPrefab; 
+        [SerializeField] private GameObject aweSlamEffectsPrefab; 
 
         [SerializeField] private Transform pivotTransform;
         private Rigidbody _rb;
@@ -56,6 +57,8 @@ namespace Hammer
 
         public float slamRadius;
         public float slamForce;
+        public float aweSlamRadius;
+        public float aweSlamForce;
 
 
         private void changeHammerChargeState(hammerChargeState newState)
@@ -80,7 +83,7 @@ namespace Hammer
             //if not already charged, check if the player is holding the hammer above their head
             if (hammerChargeState != hammerChargeState.charged) {
                 float angleToUp = Vector3.Angle(Vector3.up, transform.up); //gives signed angle          
-                if (angleToUp < chargingZoneSize && angleToUp > 0.0f && ScoreManager.Instance.AweScore >= ScoreManager.Instance.MaxAweScore)
+                if (angleToUp < chargingZoneSize && angleToUp > 0.0f)
                 {
 
                     if (timeHeldUp > timeToChargeSlam) changeHammerChargeState(hammerChargeState.charged);
@@ -142,7 +145,11 @@ namespace Hammer
         {
             if (_targetHammer.radialAcceleration <= slamAccelThreshold)
             {
-                doSlam(slamCenter);
+                if (ScoreManager.Instance.AweScore >= ScoreManager.Instance.MaxAweScore) {
+                    doAweSlam(slamCenter);
+                    ScoreManager.Instance.ResetAwe();
+
+                } else doSlam(slamCenter);
             }
             //_targetHammer.Rumble();
         }
@@ -153,7 +160,7 @@ namespace Hammer
         {
             //Debug.Log("boom")
 
-             
+            
             slam.Invoke(); //fling player + other effects
 
             Instantiate(slamEffectsPrefab,slamCenter,Quaternion.identity);
@@ -170,6 +177,34 @@ namespace Hammer
                 if (c.GetComponentInParent<RagdollDeathHandler>())
                 {
                     c.GetComponentInParent<RagdollDeathHandler>().KilledBy(slamCenter,slamForce);
+                }
+
+            }
+            changeHammerChargeState(hammerChargeState.uncharged);
+            timeHeldUp = 0;
+
+        }
+        void doAweSlam(Vector3 slamCenter)
+        {
+            //Debug.Log("boom")
+
+            
+            slam.Invoke(); //fling player + other effects
+
+            Instantiate(aweSlamEffectsPrefab,slamCenter,Quaternion.identity);
+
+            Collider[] colliders = Physics.OverlapSphere(slamCenter, aweSlamRadius);
+            foreach (Collider c in colliders)
+            {
+                if (c.GetComponentInParent<DestructibleObject>())
+                {
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 3000);
+                }
+                // TODO particles
+                // TODO use aarons ragdolls
+                if (c.GetComponentInParent<RagdollDeathHandler>())
+                {
+                    c.GetComponentInParent<RagdollDeathHandler>().KilledBy(slamCenter,aweSlamForce);
                 }
 
             }
