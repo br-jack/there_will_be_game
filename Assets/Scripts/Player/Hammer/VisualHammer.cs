@@ -68,6 +68,7 @@ namespace Hammer
                 chargeStateChange.Invoke(hammerChargeState);
             } else Debug.Log("hammer state change event despite state remaining the same");
         }
+        
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
