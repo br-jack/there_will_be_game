@@ -80,7 +80,6 @@ namespace Enemy
 
             foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>()) 
             {
-                Debug.Log(rb.mass);
                 rb.AddForce(force, ForceMode.Impulse);
             }
 
