@@ -103,17 +103,21 @@ public class GameStateManager : MonoBehaviour
             case "MainScene":
                 ScoreManager.Instance?.ResetFear();
                 ScoreManager.Instance?.ResetAwe();
+                CurState = GameState.Playing;
                 ApplyState(GameState.Playing);
                 
-                break;
-            case "TutorialScene":
-                ApplyState(GameState.Playing);
                 break;
             case "MainMenu":
                 CurState = GameState.Menu;
                 break;
             case "hammerTest":
                 CurState = GameState.Calibration;
+                break;
+            case "TutorialScene":
+                ScoreManager.Instance?.ResetFear();
+                ScoreManager.Instance?.ResetAwe();
+                CurState = GameState.Playing;
+                ApplyState(GameState.Playing);
                 break;
         }
     }

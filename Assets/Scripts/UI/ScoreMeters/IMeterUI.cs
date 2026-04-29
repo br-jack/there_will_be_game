@@ -7,7 +7,6 @@ namespace Score
 {
     public abstract class IMeterUI : MonoBehaviour
     {
-        [SerializeField] protected RectTransform barFillTransform;
         [SerializeField] protected Image barFillImage;
         [SerializeField] protected TextMeshProUGUI scoreText;
         [SerializeField] protected TextMeshProUGUI titleText;
@@ -15,17 +14,17 @@ namespace Score
         [SerializeField] protected RectTransform panelTransform;
 
         [SerializeField] protected int max = 2000;
-        [SerializeField] protected float fullBarWidth = 280.0f;
 
         [SerializeField] protected Color lowScoreColor = new Color(1.0f, 0.72f, 0.15f, 1.0f);
         [SerializeField] protected Color midScoreColor = new Color(1.0f, 0.45f, 0.10f, 1.0f);
         [SerializeField] protected Color highScoreColor = new Color(0.90f, 0.15f, 0.15f, 1.0f);
 
+        [Header("Pulse Settings")]
         [SerializeField] protected float pulseScale = 1.06f;
         [SerializeField] protected float pulseUpTime = 0.08f;
         [SerializeField] protected float pulseDownTime = 0.12f;
 
-        [SerializeField] protected Coroutine pulseCoroutine;
+        protected Coroutine pulseCoroutine;
 
         protected abstract void Start();
 
@@ -46,32 +45,16 @@ namespace Score
                 normalizedScore = Mathf.Clamp01((float)currentScore / (float)max);
             }
 
-            float newWidth = fullBarWidth * normalizedScore;
             Color currentColor = GetScoreColor(normalizedScore);
-
-            if (barFillTransform != null)
-            {
-                barFillTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, newWidth);
-            }
 
             if (barFillImage != null)
             {
-                barFillImage.color = currentColor;
+                barFillImage.fillAmount = normalizedScore;
             }
 
             if (scoreText != null)
             {
                 scoreText.text = currentScore.ToString();
-            }
-
-            if (titleText != null)
-            {
-                titleText.color = currentColor;
-            }
-
-            if (statusIcon != null)
-            {
-                statusIcon.color = currentColor;
             }
         }
 
@@ -81,14 +64,13 @@ namespace Score
             {
                 return lowScoreColor;
             }
-            else if (normalizedScore < 0.75f)
+
+            if (normalizedScore < 0.75f)
             {
                 return midScoreColor;
             }
-            else
-            {
-                return highScoreColor;
-            }
+
+            return highScoreColor;
         }
 
         protected void PlayPulse()
@@ -112,6 +94,7 @@ namespace Score
             Vector3 enlargedScale = new Vector3(pulseScale, pulseScale, 1.0f);
 
             float elapsedTime = 0.0f;
+
             while (elapsedTime < pulseUpTime)
             {
                 elapsedTime += Time.deltaTime;
@@ -121,6 +104,7 @@ namespace Score
             }
 
             elapsedTime = 0.0f;
+
             while (elapsedTime < pulseDownTime)
             {
                 elapsedTime += Time.deltaTime;

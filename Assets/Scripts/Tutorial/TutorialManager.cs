@@ -10,10 +10,15 @@ public class TutorialManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject introOverlay;
     [SerializeField] private Image dimBackground;
-    [SerializeField] private TextMeshProUGUI introText;
+    [SerializeField] private CanvasGroup CardCanvasGroup;
+
+    [Header("Lore Card Intro")]
+    [SerializeField] private float CardFadeInTime = 0.6f;
+    [SerializeField] private float CardHoldTime = 5f;
+    [SerializeField] private float CardFadeOutTime = 0.6f;
 
     [Header("Message")]
-    [SerializeField] private string message = "A god is helping you achieve your task";
+    [SerializeField] private string message = "A divine force guides your first steps. \n Learn to move, fight and shape Fear and Awe.";
     [SerializeField] private float letterDelay = 0.07f;
     [SerializeField] private float holdTime = 2f;
 
@@ -28,7 +33,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private GameObject healthBarUI;
     [SerializeField] private GameObject boonTextUI;
     [SerializeField] private GameObject taskPanelUI;
-    [SerializeField] private GameObject waveAnnouncerUI;
 
     [Header("Tutorial Prompt UI")]
     [SerializeField] private GameObject tutorialPromptUI;
@@ -45,7 +49,11 @@ public class TutorialManager : MonoBehaviour
     [Header("Reward")]
     [SerializeField] private PowerUpSpawner powerUpSpawner;
     [SerializeField] private GameObject tutorialRewardPrefab;
-    [SerializeField] private string rewardMessage = "A boon has been granted";
+    private string rewardMessage = "A boon has been granted";
+    private string boonSpawnPromptMessage = "Task complete. A boon has appeared.";
+    private string boonCollectPromptMessage = "Collect the boon to receive a blessing from the gods";
+    //private string boonExplanationMessage = "Boons grant powerful blessings that aid your journey.";
+    private float boonPromptDelay = 4f;
 
     [SerializeField] private GameObject tutorialMarker;
 
@@ -63,7 +71,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TargetHammer targetHammer;
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private float enemyKillUnlockDelay = 1f;
-    [SerializeField] private float forcedSlowMoveMultiplier = 0.1f;
+    [SerializeField] private float forcedSlowMoveMultiplier = 0.05f;
     [SerializeField] private AttackHitbox hammerHitbox;
 
     [Header("Enemy Facing")]
@@ -74,8 +82,28 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private string enemyIntroPromptMessage = "An enemy approaches. Watch your health.";
     [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
 
-    
-    //TODO should ideally use IDeathState abstraction instead
+    [Header("Task Panel Intro")]
+    private string taskPanelIntroMessage = "Tasks appear on this panel. Complete them to earn rewards.";
+    private float taskPanelIntroDelay = 4.5f;
+    private float taskPanelPulseDuration = 4f;
+    private float taskPanelPulseScale = 1.03f;
+    private float taskPanelPulseSpeed = 1f;
+
+    [Header("Arrow Intro")]
+    private string arrowIntroMessage = "Sometimes an arrow will guide you to completion";
+    private float arrowIntroDelay = 4.5f;
+    private float arrowPulseDuration = 4f;
+    private float arrowPulseScale = 1.15f;
+    private float arrowPulseSpeed = 1f;
+
+    [Header("Fear and Awe Tutorial")]
+    [SerializeField] private string fearIntroPromptMessage = "This is Fear. Violence and chaos increase it.";
+    [SerializeField] private string aweIntroPromptMessage = "This is Awe. Great power and impressive acts increase it.";
+    [SerializeField] private string fearAweCombinedPromptMessage = "Your actions shape both Fear and Awe.";
+    [SerializeField] private string fearAweFinalPromptMessage = "Defeat the enemy and watch the bars change.";
+
+    private bool fearAweExplanationStarted = false;
+
     private StandardEnemyAI currentTutorialEnemy;
     private bool enemyPhaseStarted = false;
     private bool enemyHasHitPlayer = false;
@@ -95,6 +123,8 @@ public class TutorialManager : MonoBehaviour
 
     private int currentSwings = 0;
     private int currentJumps = 0;
+
+    private bool taskIntroSequenceStarted = false;
 
     private void OnEnable()
     {
@@ -121,33 +151,40 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator PlayIntroSequence()
     {
-        // At the start of the intro hide the gameplay UI and tutorial prompts
         HideGameplayUIAtStart();
         tutorialPromptUI.SetActive(false);
 
         introOverlay.SetActive(true);
 
-        // Start with invisible background and empty text
         Color background = dimBackground.color;
         background.a = 0f;
         dimBackground.color = background;
 
-        introText.text = "";
-        Color textColour = introText.color;
-        textColour.a = 1f;
-        introText.color = textColour;
+        if (CardCanvasGroup != null)
+        {
+            CardCanvasGroup.alpha = 0f;
+            CardCanvasGroup.gameObject.SetActive(true);
+        }
 
-        // Fade in dark background
+        // Fade in background first
         yield return StartCoroutine(FadeBackground(0f, maxBackgroundAlpha, fadeInTime));
 
-        // Type text letter by letter
-        yield return StartCoroutine(TypeText(message));
+        // Fade in the lore card
+        yield return StartCoroutine(FadeCanvasGroup(CardCanvasGroup, 0f, 1f, CardFadeInTime));
 
-        // Hold for a moment
-        yield return new WaitForSeconds(holdTime);
+        // Keep it on screen
+        yield return new WaitForSeconds(CardHoldTime);
 
-        // Fade everything back out
-        yield return StartCoroutine(FadeOutOverlay());
+        // Fade card out
+        yield return StartCoroutine(FadeCanvasGroup(CardCanvasGroup, 1f, 0f, CardFadeOutTime));
+
+        // Fade background out
+        yield return StartCoroutine(FadeBackground(maxBackgroundAlpha, 0f, fadeOutTime));
+
+        if (CardCanvasGroup != null)
+        {
+            CardCanvasGroup.gameObject.SetActive(false);
+        }
 
         introOverlay.SetActive(false);
 
@@ -156,15 +193,25 @@ public class TutorialManager : MonoBehaviour
         promptText.text = $"{firstPromptMessage} ({currentSwings}/{swingsRequired})";
     }
 
-    private IEnumerator TypeText(string fullMessage)
+    private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
     {
-        introText.text = "";
-
-        for (int i = 0; i < fullMessage.Length; i++)
+        if (canvasGroup == null)
         {
-            introText.text += fullMessage[i];
-            yield return new WaitForSeconds(letterDelay);
+            yield break;
         }
+
+        float elapsed = 0f;
+        canvasGroup.alpha = startAlpha;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
+            yield return null;
+        }
+
+        canvasGroup.alpha = endAlpha;
     }
 
     private IEnumerator FadeBackground(float startAlpha, float endAlpha, float duration)
@@ -188,38 +235,6 @@ public class TutorialManager : MonoBehaviour
         dimBackground.color = background;
     }
 
-    private IEnumerator FadeOutOverlay()
-    {
-        float elapsed = 0f;
-
-        Color startBackground = dimBackground.color;
-        Color startText = introText.color;
-
-        while (elapsed < fadeOutTime)
-        {
-            elapsed += Time.deltaTime;
-            float percent = Mathf.Clamp01(elapsed / fadeOutTime);
-
-            Color background = startBackground;
-            background.a = Mathf.Lerp(startBackground.a, 0f, percent);
-            dimBackground.color = background;
-
-            Color textColour = startText;
-            textColour.a = Mathf.Lerp(startText.a, 0f, percent);
-            introText.color = textColour;
-
-            yield return null;
-        }
-
-        Color finalBackground = dimBackground.color;
-        finalBackground.a = 0f;
-        dimBackground.color = finalBackground;
-
-        Color finalTextColour = introText.color;
-        finalTextColour.a = 0f;
-        introText.color = finalTextColour;
-    }
-
     private void HandleHammerSwing()
     {
         if (introFinished && !firstPromptCompleted)
@@ -231,7 +246,7 @@ public class TutorialManager : MonoBehaviour
             {
                 firstPromptCompleted = true;
                 currentJumps = 0;
-                promptText.text = $"{secondPromptMessage} ({currentJumps}/{jumpsRequired})";
+                promptText.text = $"Jump using A <sprite=0> ({currentJumps}/{jumpsRequired})";
             }
         }
     }
@@ -242,13 +257,94 @@ public class TutorialManager : MonoBehaviour
         {
             currentJumps++;
             currentJumps = Mathf.Min(currentJumps, jumpsRequired);
-            promptText.text = $"{secondPromptMessage} ({currentJumps}/{jumpsRequired})";
+            promptText.text = $"Jump using A <sprite=0> ({currentJumps}/{jumpsRequired})";
             if (currentJumps >= jumpsRequired)
             {
                 secondPromptCompleted = true;
-                StartTutorialTask();
+                if (!taskIntroSequenceStarted)
+                {
+                    StartCoroutine(ShowTaskPanelIntroSequence());
+                }
             }
         }
+    }
+
+    private IEnumerator ShowTaskPanelIntroSequence()
+    {
+        if (taskIntroSequenceStarted)
+        {
+            yield break;
+        }
+
+        taskIntroSequenceStarted = true;
+        taskPanelUI.SetActive(true);
+        StartCoroutine(PulseTaskPanel());
+        promptText.text = taskPanelIntroMessage;
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+        taskArrow.Show(true);
+        StartCoroutine(PulseArrow());
+        promptText.text = arrowIntroMessage;
+        yield return new WaitForSeconds(arrowIntroDelay);
+        promptText.text = thirdPromptMessage;
+        StartTutorialTask();
+    }
+
+    private IEnumerator PulseArrow()
+    {
+        if (taskArrow == null)
+        {
+            yield break;
+        }
+
+        Transform arrowTransform = taskArrow.transform;
+        Vector3 originalScale = arrowTransform.localScale;
+        float elapsed = 0f;
+
+        while (elapsed < arrowPulseDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float pulse = 1f + Mathf.Sin(elapsed * arrowPulseSpeed * Mathf.PI * 2f) * (arrowPulseScale - 1f);
+            arrowTransform.localScale = originalScale * pulse;
+
+            yield return null;
+        }
+
+        arrowTransform.localScale = originalScale;
+    }
+
+    private IEnumerator PulseTaskPanel()
+    {
+        yield return StartCoroutine(PulseUIObject(taskPanelUI, taskPanelPulseDuration, taskPanelPulseScale, taskPanelPulseSpeed));
+    }
+
+    private IEnumerator PulseUIObject(GameObject uiObject, float duration, float pulseScale, float pulseSpeed)
+    {
+        if (uiObject == null)
+        {
+            yield break;
+        }
+
+        RectTransform rectTransform = uiObject.GetComponent<RectTransform>();
+        if (rectTransform == null)
+        {
+            yield break;
+        }
+
+        Vector3 originalScale = rectTransform.localScale;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            float pulse = 1f + Mathf.Sin(elapsed * pulseSpeed * Mathf.PI * 2f) * (pulseScale - 1f);
+            rectTransform.localScale = originalScale * pulse;
+
+            yield return null;
+        }
+
+        rectTransform.localScale = originalScale;
     }
 
     private void StartTutorialTask()
@@ -259,15 +355,9 @@ public class TutorialManager : MonoBehaviour
         }
 
         taskStarted = true;
-
-        taskPanelUI.SetActive(true);
-
-        tutorialMarker.SetActive(true);
         tutorialTask.StartTask();
+        tutorialMarker.SetActive(true);
         taskArrow.SetTarget(tutorialMarker.transform);
-        taskArrow.Show(true);
-
-        promptText.text = thirdPromptMessage;
     }
 
     private void HandleTaskCompleted(BaseTask completedTask)
@@ -285,10 +375,22 @@ public class TutorialManager : MonoBehaviour
 
         rewardSpawned = true;
         tutorialMarker.SetActive(false);
+        StartCoroutine(SpawnBoonSequence());
+    }
+
+    private IEnumerator SpawnBoonSequence()
+    {
+        SetPlayerControl(false);
 
         spawnedTutorialReward = powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
 
-        promptText.text = "Collect your reward";
+        promptText.text = boonSpawnPromptMessage;
+
+        yield return new WaitForSeconds(boonPromptDelay);
+
+        promptText.text = boonCollectPromptMessage;
+
+        SetPlayerControl(true);
     }
 
     private void HideGameplayUIAtStart()
@@ -300,7 +402,6 @@ public class TutorialManager : MonoBehaviour
         healthBarUI.SetActive(false);
         boonTextUI.SetActive(false);
         taskPanelUI.SetActive(false);
-        waveAnnouncerUI.SetActive(false);
     }
 
     private void HandlePowerUpCollected(PowerUpPickup collectedPowerUp)
@@ -405,19 +506,47 @@ public class TutorialManager : MonoBehaviour
             fearBarUI.SetActive(true);
             aweBarUI.SetActive(true);
 
-            // Point the arrow at the enemy now
-            taskArrow.SetTarget(currentTutorialEnemy.transform);
-            taskArrow.Show(true);
-
-            promptText.text = enemyKillPromptMessage;
-            currentTutorialEnemy.DeathHandler.SetCanBeKilled(false);
-            StartCoroutine(EnableEnemyKillAfterDelay(enemyKillUnlockDelay));
+            if (!fearAweExplanationStarted)
+            {
+                StartCoroutine(PlayFearAndAweTutorialSequence());
+            }
         }
     }
 
-    private IEnumerator EnableEnemyKillAfterDelay(float delay)
+    private IEnumerator PlayFearAndAweTutorialSequence()
     {
-        yield return new WaitForSeconds(delay);
+        if (fearAweExplanationStarted)
+        {
+            yield break;
+        }
+
+        fearAweExplanationStarted = true;
+
+        if (currentTutorialEnemy != null)
+        {
+            currentTutorialEnemy.DeathHandler.SetCanBeKilled(false);
+        }
+
+        // all the values for the timings are the same so im just gonna reuse the values from the task bar
+
+        fearBarUI.SetActive(true);
+        aweBarUI.SetActive(true);
+
+        promptText.text = fearIntroPromptMessage;
+        StartCoroutine(PulseUIObject(fearBarUI, taskPanelPulseDuration, taskPanelPulseScale, taskPanelPulseSpeed));
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+
+        promptText.text = aweIntroPromptMessage;
+        StartCoroutine(PulseUIObject(aweBarUI, taskPanelPulseDuration, taskPanelPulseScale, taskPanelPulseSpeed));
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+
+        promptText.text = fearAweCombinedPromptMessage;
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+
+        promptText.text = fearAweFinalPromptMessage;
+
+
+        yield return new WaitForSeconds(enemyKillUnlockDelay);
 
         if (currentTutorialEnemy != null)
         {
