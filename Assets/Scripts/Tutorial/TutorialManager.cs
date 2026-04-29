@@ -1,4 +1,5 @@
 using System.Collections;
+using Enemy;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -450,8 +451,8 @@ public class TutorialManager : MonoBehaviour
         taskArrow.Show(false);
 
         currentTutorialEnemy = tutorialEnemySpawner.SpawnTutorialEnemy();
-        currentTutorialEnemy.EnableTutorialKillLockMode();
-        currentTutorialEnemy.OnDied += HandleTutorialEnemyDied;
+        currentTutorialEnemy.DeathHandler.EnableTutorialKillLockMode();
+        currentTutorialEnemy.DeathHandler.OnDied += HandleTutorialEnemyDied;
         SnapFaceTarget(currentTutorialEnemy.transform);
         SnapCameraToTarget(currentTutorialEnemy.transform);
 
@@ -521,7 +522,7 @@ public class TutorialManager : MonoBehaviour
 
         if (currentTutorialEnemy != null)
         {
-            currentTutorialEnemy.SetCanBeKilled(false);
+            currentTutorialEnemy.DeathHandler.SetCanBeKilled(false);
         }
 
         // all the values for the timings are the same so im just gonna reuse the values from the task bar
@@ -547,7 +548,7 @@ public class TutorialManager : MonoBehaviour
 
         if (currentTutorialEnemy != null)
         {
-            currentTutorialEnemy.SetCanBeKilled(true);
+            currentTutorialEnemy.DeathHandler.SetCanBeKilled(true);
         }
     }
 
@@ -560,7 +561,7 @@ public class TutorialManager : MonoBehaviour
 
         enemyDefeated = true;
 
-        currentTutorialEnemy.OnDied -= HandleTutorialEnemyDied;
+        currentTutorialEnemy.DeathHandler.OnDied -= HandleTutorialEnemyDied;
         tutorialDoor.EnableDoor();
         taskArrow.SetTarget(tutorialDoorTarget);
         taskArrow.Show(true);

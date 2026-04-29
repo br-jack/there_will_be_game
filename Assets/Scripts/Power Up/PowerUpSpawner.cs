@@ -35,6 +35,7 @@ public class PowerUpSpawner : MonoBehaviour
     {
         if (boonText != null)
         {
+            audioSource  = GetComponent<AudioSource>();
             boonText.gameObject.SetActive(false);
             cutsceneCamera.gameObject.SetActive(false);
             mainCamera.gameObject.SetActive(true);
@@ -59,9 +60,9 @@ public class PowerUpSpawner : MonoBehaviour
             pickup.OnLanded += HandlePowerUpLanded;
         }
 
-        if (audioSource != null && boonFanfare != null)
+        if (audioSource != null)
         {
-            audioSource.PlayOneShot(boonFanfare);
+            audioSource.Play();
         }
 
         StartCoroutine(ShowBoonMessage(customMessage));

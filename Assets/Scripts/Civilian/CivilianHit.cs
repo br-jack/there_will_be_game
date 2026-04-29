@@ -4,7 +4,7 @@ using Score;
 
 public class CivilianHit : MonoBehaviour
 {
-    public hitSound hitSounds;
+    public hitSounds hitSounds;
 
     private ScoreSettings scoreSettings;
     [SerializeField] private float scoreMultiplier = 0.8f;
@@ -22,11 +22,11 @@ public class CivilianHit : MonoBehaviour
         CivilianAI civilian = GetComponentInParent<CivilianAI>();
         if (civilian == null) return;
 
-        hitSounds = GameObject.Find("KillSound").GetComponent<hitSound>();
+        hitSounds = GameObject.Find("KillSound").GetComponent<hitSounds>();
         hitSounds.PlaySFX();
 
         AwardScore();
-        Destroy(civilian.gameObject);
+        civilian.DeathHandler.KilledBy(other, attack);
     }
 
     private int Scaled(int value) => Mathf.RoundToInt(value * scoreMultiplier);

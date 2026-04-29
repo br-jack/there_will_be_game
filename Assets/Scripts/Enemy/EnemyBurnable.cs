@@ -1,10 +1,11 @@
 using System.Collections;
+using Enemy;
 using UnityEngine;
 using Score;
 
 public class EnemyBurnable : MonoBehaviour
 {
-    [SerializeField] private StandardEnemyAI enemyAI;
+    private IDeathState enemyAI;
 
     [Header("Burn Settings")]
     [SerializeField] private float burnDuration = 2.5f;
@@ -20,8 +21,8 @@ public class EnemyBurnable : MonoBehaviour
 
     private void Awake()
     {
-        if (enemyAI == null)
-            enemyAI = GetComponent<StandardEnemyAI>();
+        enemyAI = GetComponent<RagdollDeathHandler>();
+        Debug.Assert(enemyAI != null);
 
         burnVisual.SetActive(false);
         burnParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
