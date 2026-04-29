@@ -6367,8 +6367,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1353318980872493698}
   - {fileID: 4439342053926158621}
@@ -6615,7 +6615,6 @@ MonoBehaviour:
   hitTrigger: Hit
   deadTrigger: Die
   useDamageAnimEvent: 0
-  useTutorialKillLock: 0
 --- !u!95 &8617838431146807415
 Animator:
   serializedVersion: 7
@@ -6650,7 +6649,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fca2399daa769c46ae4b445de19fd4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyAI: {fileID: -8550110256333393937}
   burnDuration: 2.5
   fireballKillAwardsScore: 1
   fireballKillScore: 60
