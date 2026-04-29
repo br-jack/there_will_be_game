@@ -7,7 +7,6 @@ public class DestructibleObject : MonoBehaviour
 {
     public GameObject fragmentsPrefab;
     public float breakForceThreshold = 15f;
-    public float explosionForce = 300f;
     public float explosionRadius = 3f;
     private bool broken = false;
     private MeshRenderer myRenderer;
@@ -51,7 +50,7 @@ public class DestructibleObject : MonoBehaviour
             return;
         }
 
-        Break(impactPoint);
+        Break(impactPoint, 300);
     }
 
     void Start() {
@@ -67,10 +66,10 @@ public class DestructibleObject : MonoBehaviour
         float impactSpeed = collision.relativeVelocity.magnitude;
         if (impactSpeed < breakForceThreshold) return;
 
-        Break(collision.contacts[0].point);
+        Break(collision.contacts[0].point, 300);
     }
 
-    void Break(Vector3 impactPoint)
+    public void Break(Vector3 impactPoint, float explosionForce)
     {
         broken = true;
 
