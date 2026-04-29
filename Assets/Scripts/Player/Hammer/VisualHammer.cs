@@ -177,7 +177,6 @@ namespace Hammer
             {
                 if (c.GetComponentInParent<DestructibleObject>())
                 {   
-                    //closest point would be cool but doesn't work with concave mesh colliders
                     c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPointOnBounds(transform.position), 300);
                 }
                 // TODO particles
@@ -206,7 +205,7 @@ namespace Hammer
             {
                 if (c.GetComponentInParent<DestructibleObject>())
                 {
-                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 500);
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPointOnBounds(transform.position), 500);
                 }
                 // TODO particles
                 // TODO use aarons ragdolls
