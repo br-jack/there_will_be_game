@@ -102,7 +102,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private string fearIntroPromptMessage = "This is Fear. Violence and chaos increase it.";
     [SerializeField] private string aweIntroPromptMessage = "This is Awe. Great power and impressive acts increase it.";
     [SerializeField] private string fearAweCombinedPromptMessage = "Your actions shape both Fear and Awe.";
-    [SerializeField] private string fearAweFinalPromptMessage = "Defeat the enemy and watch the bars change.";
+    [SerializeField] private string fearAweFinalPromptMessage = "Defeat the enemy to progress.";
 
     private bool fearAweExplanationStarted = false;
 
