@@ -7,7 +7,7 @@ public class FootballPlayer : MonoBehaviour
     public Collider pitchCollider;
     public Transform targetGoal;
 
-    private StandardEnemyAI enemyAI;
+    private CivilianAI civilianAI;
     private Rigidbody rb;
     private Vector3 homeAnchor;
     private bool isFootballActive = false;
@@ -23,17 +23,17 @@ public class FootballPlayer : MonoBehaviour
 
     void Start()
     {
-        enemyAI = GetComponent<StandardEnemyAI>();
+        civilianAI = GetComponent<CivilianAI>();
         rb = GetComponent<Rigidbody>();
         homeAnchor = transform.position;
     }
 
     public void SwitchToNormalAI()
     {
-        Debug.Log("footballPlayer switched to enemy");
+        Debug.Log("footballPlayer switched to civilian");
         isFootballActive = false;
 
-        if (enemyAI != null) enemyAI.enabled = true;
+        if (civilianAI != null) civilianAI.enabled = true;
 
         this.enabled = false;
     }
@@ -89,7 +89,7 @@ public class FootballPlayer : MonoBehaviour
     public void SetPitchActivity(bool status)
     {
         isFootballActive = status;
-        if (status && enemyAI != null) enemyAI.enabled = false;
+        if (status && civilianAI != null) civilianAI.enabled = false;
     }
 
     private void MoveToward(Vector3 target)

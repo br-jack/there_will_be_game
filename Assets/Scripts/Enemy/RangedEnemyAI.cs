@@ -5,7 +5,7 @@ namespace Enemy
     public class RangedEnemyAI : StandardEnemyAI
     {
         [SerializeField] private Projectile projectile;
-        [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 0.25f, 0.8f);
+        [SerializeField] private Vector3 spawnOffset = new Vector3(0f, 1.5f, 1.2f);
         protected override void DoDamage()
         {
             if (DeathHandler.IsDying || _playerTransformRef == null) return;

@@ -7,7 +7,7 @@ public class CivilianHit : MonoBehaviour
     public hitSounds hitSounds;
 
     private ScoreSettings scoreSettings;
-    [SerializeField] private float scoreMultiplier = 0.8f;
+    [SerializeField] private float scoreMultiplier = 0.5f;
 
     void Awake()
     {

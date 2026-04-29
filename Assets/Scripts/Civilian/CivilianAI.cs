@@ -27,16 +27,16 @@ public class CivilianAI : MonoBehaviour
     [SerializeField] private RandomMovementSettings randomMovement = new RandomMovementSettings
     {
         radius = 8f,
-        minIdleDuration = 1.5f,
-        maxIdleDuration = 4f,
-        speed = 2f
+        minIdleDuration = 3f,
+        maxIdleDuration = 6f,
+        speed = 10f
     };
 
     [SerializeField] private RunAwaySettings runAway = new RunAwaySettings
     {
-        startRunningRadius = 10f,
-        stopRunningRadius = 18f,
-        speed = 6f
+        startRunningRadius = 20f,
+        stopRunningRadius = 35f,
+        speed = 10f
     };
 
     [Header("Movement")]

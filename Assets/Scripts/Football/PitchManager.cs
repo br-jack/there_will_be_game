@@ -25,7 +25,7 @@ public class PitchManager : MonoBehaviour
     {
         foreach (var enemy in footballEnemies)
         {   
-            enemy.tag = "Enemy";
+            enemy.tag = "Untagged";
             enemy.SwitchToNormalAI();
         }
     }
