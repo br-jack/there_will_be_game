@@ -151,6 +151,11 @@ namespace Hammer
         {
             _controllerRef.SlamRumble();
         }
+        
+        public void BreakShieldRumble()
+        {
+            _controllerRef.BreakShieldRumble();
+        }
 
         public void DragRumble()
         {

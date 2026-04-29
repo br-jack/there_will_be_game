@@ -13,6 +13,7 @@ public class IMUConfig : ScriptableObject
 
     public RumbleInstance defaultRumbleInstance;
     public RumbleInstance slamRumbleInstance;
+    public RumbleInstance breakShieldRumbleInstance;
     public RumbleInstance dragRumbleInstance;
     public RumbleInstance hitRumbleInstance;
     public RumbleInstance destroyRumbleInstance;

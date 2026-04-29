@@ -23,6 +23,11 @@ namespace Hammer
             
         }
 
+        public void BreakShieldRumble()
+        {
+            
+        }
+
         public void DragRumble()
         {
             

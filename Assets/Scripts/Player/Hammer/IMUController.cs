@@ -457,6 +457,11 @@ namespace Hammer
         {
             Rumble(configSO.slamRumbleInstance);
         }
+        
+        public void BreakShieldRumble()
+        {
+            Rumble(configSO.breakShieldRumbleInstance);
+        }
 
         public void DragRumble()
         {
