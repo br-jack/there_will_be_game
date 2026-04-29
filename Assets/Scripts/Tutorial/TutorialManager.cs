@@ -375,9 +375,9 @@ public class TutorialManager : MonoBehaviour
 
         rewardSpawned = true;
         tutorialMarker.SetActive(false);
-
+        SetPlayerControl(false);
         spawnedTutorialReward = powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
-
+        SetPlayerControl(true);
         StartCoroutine(PlayBoonTutorialSequence());
     }
 
