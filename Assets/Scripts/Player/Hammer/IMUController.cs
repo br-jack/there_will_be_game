@@ -450,31 +450,37 @@ namespace Hammer
         
         public void Rumble()
         {
+            Debug.Log("Default Rumble Triggered", configSO.defaultRumbleInstance);
             Rumble(configSO.defaultRumbleInstance);
         }
         
         public void SlamRumble()
         {
+            Debug.Log("Slam Rumble Triggered", configSO.slamRumbleInstance);
             Rumble(configSO.slamRumbleInstance);
         }
         
         public void BreakShieldRumble()
         {
+            Debug.Log("Break Shield Rumble Triggered", configSO.breakShieldRumbleInstance);
             Rumble(configSO.breakShieldRumbleInstance);
         }
 
         public void DragRumble()
         {
+            Debug.Log("Drag Rumble Triggered", configSO.dragRumbleInstance);
             Rumble(configSO.dragRumbleInstance);
         }
 
         public void HitRumble()
         {
+            Debug.Log("Hit Rumble Triggered", configSO.hitRumbleInstance);
             Rumble(configSO.hitRumbleInstance);
         }
 
         public void DestroyRumble()
         {
+            Debug.Log("Destroy Rumble Triggered", configSO.destroyRumbleInstance);
             Rumble(configSO.destroyRumbleInstance);
         }
     }
