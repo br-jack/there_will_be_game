@@ -66,7 +66,7 @@ namespace Hammer
             if (hammerChargeState != newState) {
                 hammerChargeState = newState;
                 chargeStateChange.Invoke(hammerChargeState);
-            } else Debug.Log("hammer state change event despite state remaining the same as: "+newState);
+            } // else Debug.Log("hammer state change event despite state remaining the same as: "+newState);
         }
         
         void Awake()
@@ -86,7 +86,6 @@ namespace Hammer
                 float angleToUp = Vector3.Angle(Vector3.up, transform.up); //gives signed angle          
                 if (angleToUp < chargingZoneSize && angleToUp > 0.0f)
                 {
-
                     if (timeHeldUp > timeToChargeSlam) changeHammerChargeState(hammerChargeState.charged);
                     else if (timeHeldUp > 0.05) changeHammerChargeState(hammerChargeState.charging);
                     timeHeldUp += Time.deltaTime;
