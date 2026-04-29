@@ -73,6 +73,12 @@ public class ScorePopup : MonoBehaviour
                 return new Color(1f, 1f, 1f); // White
             //case ScoreType.Speed:
                 //return new Color(1f, 0.5f, 0f); // Orange
+            case ScoreType.atATrot:
+                return Color.green; 
+            case ScoreType.atACanter:
+                return Color.yellow; 
+            case ScoreType.atAGallop:
+                return new Color(1f, 0.5f, 0f); // Orange; 
             case ScoreType.LowHealth:
                 return new Color(1f, 0f, 0f); // Red
             case ScoreType.Air:

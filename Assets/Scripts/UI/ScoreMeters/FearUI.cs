@@ -57,10 +57,8 @@ public class FearUI : MonoBehaviour
             
             if (popupRect != null)
             {
-                float randomXOffset = Random.value * xScorePositionNoise;
-                float randomYOffset = Random.value * yScorePositionNoise;
                 Vector2 position = popupStartOffset + new Vector2(0f, -i * popupSpacing) 
-                    + new Vector2(randomXOffset,randomYOffset);
+                    + new Vector2((Random.value * xScorePositionNoise),(Random.value * yScorePositionNoise));
                 popupRect.anchoredPosition = position;
             }
             
