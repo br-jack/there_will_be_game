@@ -224,7 +224,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.5, y: 0.5, z: 0.25}
   m_Center: {x: 0, y: 0, z: 0.8}
@@ -7690,6 +7690,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _trotColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _trotColor.g
+      value: 0.95856124
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _trotColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _canterColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _canterColor.g
+      value: 0.95856124
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _canterColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _gallopColor.g
+      value: 0.95856124
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _gallopColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _ultraGallopColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _ultraGallopColor.g
+      value: 0.95856124
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _stillAndWalkColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _stillAndWalkColor.g
+      value: 0.95856124
+      objectReference: {fileID: 0}
+    - target: {fileID: 5108536424463998545, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: _stillAndWalkColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6211702859106016224, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 15
@@ -7866,6 +7918,22 @@ PrefabInstance:
       propertyPath: moveWithCustomTransform
       value: 
       objectReference: {fileID: 7672999536482783943}
+    - target: {fileID: 8232399675555418615, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.65917397
+      objectReference: {fileID: 0}
+    - target: {fileID: 8232399675555418615, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8232399675555418615, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.g
+      value: 0.65917397
+      objectReference: {fileID: 0}
+    - target: {fileID: 8232399675555418615, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8479068076154358140, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
       propertyPath: getSpeedRelativeTo
       value: 
@@ -7874,6 +7942,14 @@ PrefabInstance:
       propertyPath: _targetHammer
       value: 
       objectReference: {fileID: 4632399603067790969}
+    - target: {fileID: 8892384873263243920, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: ghostSpeedThreshold
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892384873263243920, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+      propertyPath: trailSpeedThreshold
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 872883434975298054, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
