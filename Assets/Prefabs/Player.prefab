@@ -837,6 +837,9 @@ MonoBehaviour:
   jumpBoostTrail: {fileID: 4307735588763940856}
   speedBoostParticles: {fileID: 1760775016109340485}
   canRamBuildings: 0
+  horseRamMessageText: {fileID: 0}
+  horseRamMessage: RAM THROUGH EVERYTHING!
+  horseRamMessageDuration: 3
 --- !u!114 &8421909672179317857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7953,7 +7956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hammerFireController: {fileID: 3949864244404710962}
-  fireballSpawnPoint: {fileID: 0}
+  fireballSpawnPoint: {fileID: 5496355663994616816}
   fireballPrefab: {fileID: 2972392977303283589, guid: 11c9a5d587e034e43a68d4ebfb901206, type: 3}
   targetSearchRadius: 100
   enemyLayerMask:
@@ -8014,6 +8017,11 @@ Transform:
 --- !u!4 &4655221760443036183 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7773187203068221852, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
+  m_PrefabInstance: {fileID: 3117972076353186699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5496355663994616816 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7422980362223259771, guid: e647f99c86f94c54c8660f0dc489a6d8, type: 3}
   m_PrefabInstance: {fileID: 3117972076353186699}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7375919086776572427 stripped
