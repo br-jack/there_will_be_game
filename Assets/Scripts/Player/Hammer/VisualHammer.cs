@@ -149,14 +149,15 @@ namespace Hammer
 
         public void onSlamHitboxTrigger(Vector3 slamCenter)
         {
-            if (_targetHammer.radialAcceleration <= slamAccelThreshold)
-            {
+            //if (_targetHammer.radialAcceleration <= slamAccelThreshold)
+            //{
                 if (ScoreManager.Instance.AweScore >= ScoreManager.Instance.MaxAweScore) {
                     doAweSlam(slamCenter);
                     ScoreManager.Instance.ResetAwe();
 
                 } else doSlam(slamCenter);
-            }
+            
+            //}
             //_targetHammer.Rumble();
         }
         
