@@ -34,7 +34,7 @@ public class ScorePopup : MonoBehaviour
         }
         
         string popupExplanation = GetExplanationForType(type);
-        popupText.text = $"+{amount}+popupExplanation";
+        popupText.text = $"+{amount} {popupExplanation}";
         popupText.color = GetColorForType(type);
         
         StartCoroutine(AnimatePopup());
