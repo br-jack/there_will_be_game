@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7422980362223259771}
-  - component: {fileID: 8479068076154358140}
   - component: {fileID: 2927142761733409131}
   - component: {fileID: 7275895675421595124}
   m_Layer: 12
@@ -34,20 +33,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3090912974106212065}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8479068076154358140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872883434975298054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76a65b67cf38ee7478330a8c73cbcd62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forwardSpeed: 0
-  getSpeedRelativeTo: {fileID: 0}
 --- !u!65 &2927142761733409131
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19541,7 +19526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c26f8eee71dcd34c89e2471cc55c7e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 8479068076154358140}
   trailSpeedThreshold: 40
   ghostSpeedThreshold: 80
   trailLingerFrames: 30
@@ -19549,6 +19533,7 @@ MonoBehaviour:
   trailsSystem: {fileID: 6278026725617630600}
   ghostsSystem: {fileID: 8232399675555418615}
   ghostsRenderer: {fileID: 8061637968058501050}
+  _targetHammer: {fileID: 0}
 --- !u!114 &5108536424463998545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19569,6 +19554,7 @@ MonoBehaviour:
   trails: {fileID: 6278026725617630600}
   ghosts: {fileID: 8232399675555418615}
   flash: {fileID: 5469538521649242149}
+  explosion: {fileID: 0}
   _stillAndWalkColor: {r: 0.4627451, g: 0.4627451, b: 0.4627451, a: 1}
   _trotColor: {r: 0.64705884, g: 0.43529412, b: 0.10980392, a: 1}
   _canterColor: {r: 0.7647059, g: 0.81960785, b: 0.8156863, a: 1}
@@ -34386,7 +34372,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470dec3b8051d194a98d0bcdbfd45145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 8479068076154358140}
+  timeToChargeSlam: 3
+  chargingZoneSize: 20
+  slamAccelThreshold: 0
+  timeHeldUp: 0
+  slamEffectsPrefab: {fileID: 0}
+  aweSlamEffectsPrefab: {fileID: 0}
+  pivotTransform: {fileID: 0}
   _targetHammer: {fileID: 0}
   useDynamicHitbox: 0
   smallHitboxSize: {x: 1.5, y: 4.5, z: 1.5}
@@ -34397,6 +34389,17 @@ MonoBehaviour:
   largeHitboxThreshold: 12
   largeHitboxSize: {x: 2, y: 6, z: 6.5}
   largeHitboxCenter: {x: 0, y: 3, z: -2.5}
+  _hitbox: {fileID: 0}
+  chargeStateChange:
+    m_PersistentCalls:
+      m_Calls: []
+  slam:
+    m_PersistentCalls:
+      m_Calls: []
+  slamRadius: 0
+  slamForce: 0
+  aweSlamRadius: 0
+  aweSlamForce: 0
 --- !u!114 &2131890989086541241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34413,8 +34416,10 @@ MonoBehaviour:
   fireDuration: 60
   infiniteFireUnlocked: 0
   useInfiniteFire: 0
-  fireVisual: {fileID: 0}
-  fireParticles: {fileID: 0}
+  fireVisualParent: {fileID: 0}
+  fireParticleSystems: []
+  loopSource: {fileID: 0}
+  fireClip: {fileID: 0}
 --- !u!153 &2007879889780083079
 ConfigurableJoint:
   m_ObjectHideFlags: 0
