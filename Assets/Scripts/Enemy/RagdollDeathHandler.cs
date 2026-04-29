@@ -10,10 +10,13 @@ namespace Enemy
         
         [SerializeField] private float maxAbsoluteDeathTime = 20f;
         [SerializeField] private float maxGroundedDeathTime = 10f;
+        [SerializeField] private float maxFireDeathTime = 3f;
         
         public bool IsDying { get; private set; }
         
         public event Action OnDied;
+
+        private bool isOnFire = false;
         
         private float _deathAbsoluteTimer;
         private float _deathAbsoluteEndTime;
@@ -106,8 +109,11 @@ namespace Enemy
                 //FIXME this may not properly tint the whole enemy grey
                 r.material.color = Color.gray;
             }
-            
-            _ragdollToggler.UseRagdoll();
+
+            if (!isOnFire)
+            {
+                _ragdollToggler.UseRagdoll();
+            }
             
             _knockbackState.ApplyKnockbackToAll(_knockbackState.CalcKnockbackForce(other, force));
 
@@ -120,12 +126,13 @@ namespace Enemy
             if (IsDying) return;
             if (!CanBeKilled) return;
 
-            StartDeathTimer();
+            isOnFire = true;
             
             Renderer r = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
             if (r != null) r.material.color = new Color(0.2f, 0.2f, 0.2f);
             
-            _ragdollToggler.UseRagdoll();
+            //NOTE: ragdoll disabled for fire kills because the fire particles don't stay with the ragdoll
+            //_ragdollToggler.UseRagdoll();
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();
@@ -135,7 +142,14 @@ namespace Enemy
         {
             IsDying = true;
             _deathAbsoluteTimer = Time.time;
-            _deathAbsoluteEndTime = _deathAbsoluteTimer + maxAbsoluteDeathTime;
+            if (isOnFire)
+            {
+                _deathAbsoluteEndTime = _deathAbsoluteTimer + maxFireDeathTime;
+            }
+            else
+            {
+                _deathAbsoluteEndTime = _deathAbsoluteTimer + maxAbsoluteDeathTime;
+            }
         }
 
         private void TickDeathTimer()
