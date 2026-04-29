@@ -60,6 +60,8 @@ public class ScorePopup : MonoBehaviour
                 return "Past a shield"; // Gold
             case ScoreType.OnFire:
                 return "Enflamed!"; // Bright red
+            case ScoreType.Building: 
+                return "Renovation"; //brown
             default:
                 return "Misc. Bonus";
         }
@@ -87,7 +89,9 @@ public class ScorePopup : MonoBehaviour
                 return new Color(1f, 0.84f, 0f); // Gold
             case ScoreType.OnFire:
                 return new Color(1f, 0.2f, 0.2f); // Bright red
-                default:
+            case ScoreType.Building: 
+                return new Color(137,87,41); //brown
+            default:
                 return Color.white;
         }
     }
