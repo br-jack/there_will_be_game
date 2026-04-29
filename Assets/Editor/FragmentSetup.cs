@@ -43,15 +43,64 @@ public class FragmentSetup : EditorWindow
             }
 
             int count = 0;
+            int count1 = 0;
+            int count2 = 0;
             foreach (Transform child in fragmentParent.transform)
             {
-                // Fix MeshCollider convex first
+                BoxCollider bc = child.GetComponent<BoxCollider>();
+                if (bc != null)
+                    DestroyImmediate(bc);
+                    count1++;
+
                 MeshCollider mc = child.GetComponent<MeshCollider>();
                 if (mc == null)
                 {
                     mc = child.gameObject.AddComponent<MeshCollider>();
+                    count2++;
                 }
                 mc.convex = true;
+
+                if (child.GetComponent<Rigidbody>() == null)
+                {
+                    Rigidbody rb = child.gameObject.AddComponent<Rigidbody>();
+                    rb.mass = mass;
+                    rb.linearDamping = drag;
+                    rb.angularDamping = angularDrag;
+                    count++;
+                }
+            }
+
+            EditorUtility.DisplayDialog("Done",
+                $"Added Rigidbodies to {count} fragments with convex colliders. \n added {count1} meshcolldiers from fragments. \n removed {count2} box colliders to fragments.", "OK");
+
+            EditorUtility.SetDirty(fragmentParent);
+        }
+
+        GUILayout.Space(4);
+
+        if (GUILayout.Button("Add Rigidbodies to all children Box colldier instead (swap if have mesh)"))
+        {
+            if (fragmentParent == null)
+            {
+                EditorUtility.DisplayDialog("No object selected",
+                    "Please assign a Fragment Parent Object first.", "OK");
+                return;
+            }
+
+            int count = 0;
+            int count1 = 0;
+            int count2 = 0;
+            foreach (Transform child in fragmentParent.transform)
+            {
+                // Fix MeshCollider convex first
+                MeshCollider mc = child.GetComponent<MeshCollider>();
+                if (mc != null)
+                    DestroyImmediate(mc);
+                    count1++;
+
+                if (child.GetComponent<BoxCollider>() == null)
+                    child.gameObject.AddComponent<BoxCollider>();
+                    count2++;
 
                 // Add Rigidbody if missing
                 if (child.GetComponent<Rigidbody>() == null)
@@ -65,12 +114,10 @@ public class FragmentSetup : EditorWindow
             }
 
             EditorUtility.DisplayDialog("Done",
-                $"Added Rigidbodies to {count} fragments with convex colliders.", "OK");
+                $"Added Rigidbodies to {count} fragments. \n removed {count1} meshcolldiers from fragments. \n Added {count2} box colliders to fragments.", "OK");
 
             EditorUtility.SetDirty(fragmentParent);
         }
-
-        GUILayout.Space(4);
 
         if (GUILayout.Button("Fix convex on existing colliders"))
         {

@@ -10,7 +10,7 @@ public class SceneController : MonoBehaviour
     {
         restartAction.action.performed += context => ReloadScene();
     }
-    
+
     public static void ExitGame()
     {
 #if UNITY_EDITOR
@@ -19,26 +19,40 @@ public class SceneController : MonoBehaviour
         Application.Quit();
 #endif
     }
-    
+
     public static void LoadMenu()
     {
         SceneManager.LoadScene("MainMenu");
     }
+    public static void LoadEnd1()
+    {
+        SceneManager.LoadScene("EndScene 1");
+    }
+    public static void LoadEnd2()
+    {
+        SceneManager.LoadScene("EndScene 2");
+    }
+    public static void LoadEnd3()
+    {
+        SceneManager.LoadScene("EndScene 3");
+    }
+
+
 
     public static void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    
+
     public static void LoadGame()
     {
         SceneManager.LoadScene("MainScene");
     }
-        public static void LoadIntro()
+    public static void LoadIntro()
     {
         SceneManager.LoadScene("TutorialScene");
     }
-    
+
     public static void LoadCalibration()
     {
         SceneManager.LoadScene("hammerTest");

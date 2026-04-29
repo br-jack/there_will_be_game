@@ -190,7 +190,7 @@ namespace Hammer
                         if (_stream == null)
                         {
                             //TODO make more efficient
-                            while (!ConnectToPort(port))
+                            while (_running && !ConnectToPort(port))
                             {
                                 Thread.Sleep(50);
                             }

@@ -34279,7 +34279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2289d23dd62f52479e1042c72e3c1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseKnockbackForce: 12
+  baseKnockbackForce: 40
   velocityKnockbackMultiplier: 1
 --- !u!114 &6360334775068351510
 MonoBehaviour:
@@ -34293,15 +34293,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470dec3b8051d194a98d0bcdbfd45145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _horseCC: {fileID: 0}
   head: {fileID: 8479068076154358140}
-  pivotTransform: {fileID: 0}
   _targetHammer: {fileID: 0}
-  useSpring: 0
-  positionSpringStrength: 2000
-  positionDamping: 240
-  rotationSpringStrength: 2000
-  rotationDamping: 240
   useDynamicHitbox: 0
   smallHitboxSize: {x: 1.5, y: 4.5, z: 1.5}
   smallHitboxCenter: {x: 0, y: 3, z: 0.4}
