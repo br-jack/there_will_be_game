@@ -170,7 +170,7 @@ namespace Hammer
             {
                 if (c.GetComponentInParent<DestructibleObject>())
                 {
-                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 3000);
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 300);
                 }
                 // TODO particles
                 // TODO use aarons ragdolls
@@ -198,7 +198,7 @@ namespace Hammer
             {
                 if (c.GetComponentInParent<DestructibleObject>())
                 {
-                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 3000);
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 500);
                 }
                 // TODO particles
                 // TODO use aarons ragdolls
