@@ -37,7 +37,9 @@ public class TutorialManager : MonoBehaviour
     [Header("Tutorial Prompt UI")]
     [SerializeField] private GameObject tutorialPromptUI;
     [SerializeField] private TextMeshProUGUI promptText;
-    [SerializeField] private string firstPromptMessage = "Swing your hammer";
+    [SerializeField] private string firstSwingPromptMessage = "Swing the hammer";
+    [SerializeField] private string secondSwingPromptMessage = "Swing the hammer harder";
+    [SerializeField] private string thirdSwingPromptMessage = "SWING THE HAMMER HARDER!";
     [SerializeField] private string secondPromptMessage = "Jump using the A button";
     [SerializeField] private string thirdPromptMessage = "Complete the task shown on the panel";
     [SerializeField] private int swingsRequired = 3;
@@ -190,7 +192,7 @@ public class TutorialManager : MonoBehaviour
 
         tutorialPromptUI.SetActive(true);
         introFinished = true;
-        promptText.text = $"{firstPromptMessage} ({currentSwings}/{swingsRequired})";
+        promptText.text = firstSwingPromptMessage;
     }
 
     private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
@@ -240,13 +242,19 @@ public class TutorialManager : MonoBehaviour
         if (introFinished && !firstPromptCompleted)
         {
             currentSwings++;
-            currentSwings = Mathf.Min(currentSwings, swingsRequired);
-            promptText.text = $"{firstPromptMessage} ({currentSwings}/{swingsRequired})";
-            if (currentSwings >= swingsRequired)
+            if (currentSwings == 1)
+            {
+                promptText.text = secondSwingPromptMessage;
+            }
+            else if (currentSwings == 2)
+            {
+                promptText.text = thirdSwingPromptMessage;
+            }
+            else if (currentSwings >= swingsRequired)
             {
                 firstPromptCompleted = true;
                 currentJumps = 0;
-                promptText.text = $"Jump using A <sprite=0> ({currentJumps}/{jumpsRequired})";
+                promptText.text = $"Jump using A <sprite=0>";
             }
         }
     }
@@ -257,7 +265,7 @@ public class TutorialManager : MonoBehaviour
         {
             currentJumps++;
             currentJumps = Mathf.Min(currentJumps, jumpsRequired);
-            promptText.text = $"Jump using A <sprite=0> ({currentJumps}/{jumpsRequired})";
+            promptText.text = $"Jump using A <sprite=0>";
             if (currentJumps >= jumpsRequired)
             {
                 secondPromptCompleted = true;
