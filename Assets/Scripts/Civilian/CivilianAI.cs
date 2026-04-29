@@ -57,7 +57,7 @@ public class CivilianAI : MonoBehaviour
     // Stuck-escape: if commanded velocity is non-trivial but the civilian hasn't
     // actually translated for StuckTimeThreshold, sidestep for UnstuckDuration
     // perpendicular to the intended move direction to break free.
-    private const float StuckTimeThreshold = 0.4f;
+    private const float StuckTimeThreshold = 0.9f;
     private const float StuckMovedSqr = 0.04f;
     private const float StuckCommandedSqr = 1f;
     private const float UnstuckDuration = 0.3f;
@@ -65,6 +65,21 @@ public class CivilianAI : MonoBehaviour
     private float _stuckCheckTime;
     private float _unstuckUntil;
     private Vector3 _unstuckDir;
+
+    // Deadzone for facing direction — only retarget rotation when desiredVelocity differs
+    // from the last committed direction by more than this many degrees. Stops the civilian
+    // chasing micro-swings caused by NavMesh obstacle-avoidance churn.
+    private const float FacingRetargetAngle = 10f;
+    private Vector3 _stableFacingDir;
+
+    // Stall detection: if the civilian thinks it has a valid path but hasn't actually
+    // translated in StallTime, abandon the destination so they don't lean into a fence
+    // forever. The brief stuck-escape sidestep isn't enough on its own — it nudges, but
+    // the path is still pointing into the wall, so they immediately resume pressing.
+    private const float StallTime = 1.5f;
+    private const float StallProgressDist = 0.5f;
+    private Vector3 _progressPos;
+    private float _progressTime;
 
     public IDeathState DeathHandler { get; private set; }
     public IKnockbackState KnockbackHandler { get; private set; }
@@ -127,7 +142,11 @@ public class CivilianAI : MonoBehaviour
             case MovementState.RandomMovement:
                 // Arrived, or the pathfinder gave up — either way, pause and pick again later.
                 if (!agent.pathPending && (!agent.hasPath || agent.remainingDistance < 0.5f))
+                {
                     EnterIdling();
+                    break;
+                }
+                if (IsStalled()) EnterIdling();
                 break;
 
             case MovementState.Idling:
@@ -139,7 +158,16 @@ public class CivilianAI : MonoBehaviour
                 // on a timer caused visible direction churn — the civilian commits to a
                 // direction now and only re-evaluates once they've used the current one.
                 if (!agent.pathPending && (!agent.hasPath || agent.remainingDistance < 0.5f))
+                {
                     PickNewRunAwayPoint();
+                    ResetProgressTracking();
+                    break;
+                }
+                if (IsStalled())
+                {
+                    PickNewRunAwayPoint();
+                    ResetProgressTracking();
+                }
                 break;
         }
 
@@ -149,16 +177,35 @@ public class CivilianAI : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 moveDir = Vector3.zero;
+        Vector3 facingDir = Vector3.zero;
         if (agent.isOnNavMesh)
         {
+            // Movement reads desiredVelocity (includes avoidance, so we physically swerve
+            // around other civilians).
             Vector3 desiredVel = agent.desiredVelocity;
             desiredVel.y = 0f;
             if (desiredVel.sqrMagnitude > 0.0001f) moveDir = desiredVel.normalized;
+
+            // Rotation reads the steering target (next path corner) instead — desiredVelocity
+            // flips left/right as the avoidance solver picks vectors when civilians cluster,
+            // and that flipping shows up as visible rotation spasm. Path corners are stable
+            // until reached, the same way the enemy's toPlayerDir is stable.
+            if (agent.hasPath)
+            {
+                Vector3 toCorner = agent.steeringTarget - transform.position;
+                toCorner.y = 0f;
+                if (toCorner.sqrMagnitude > 0.04f) facingDir = toCorner.normalized;
+            }
         }
 
-        if (moveDir.sqrMagnitude > 0.0001f)
+        if (facingDir.sqrMagnitude > 0.0001f)
         {
-            Quaternion targetRot = Quaternion.LookRotation(moveDir);
+            if (_stableFacingDir.sqrMagnitude < 0.0001f
+                || Vector3.Angle(_stableFacingDir, facingDir) > FacingRetargetAngle)
+            {
+                _stableFacingDir = facingDir;
+            }
+            Quaternion targetRot = Quaternion.LookRotation(_stableFacingDir);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.fixedDeltaTime * rotationSpeed);
         }
 
@@ -231,6 +278,7 @@ public class CivilianAI : MonoBehaviour
         state = MovementState.RandomMovement;
         currentSpeed = randomMovement.speed;
         agent.speed = currentSpeed;
+        ResetProgressTracking();
         PickNewRandomPoint();
     }
 
@@ -247,17 +295,43 @@ public class CivilianAI : MonoBehaviour
         state = MovementState.RunAway;
         currentSpeed = runAway.speed;
         agent.speed = currentSpeed;
+        ResetProgressTracking();
         PickNewRunAwayPoint();
+    }
+
+    private void ResetProgressTracking()
+    {
+        _progressPos = transform.position;
+        _progressTime = Time.time;
+    }
+
+    private bool IsStalled()
+    {
+        if ((transform.position - _progressPos).sqrMagnitude > StallProgressDist * StallProgressDist)
+        {
+            _progressPos = transform.position;
+            _progressTime = Time.time;
+            return false;
+        }
+        return Time.time - _progressTime > StallTime;
     }
 
     private void PickNewRandomPoint()
     {
         if (!agent.isOnNavMesh) return;
 
-        Vector3 candidate = transform.position + Random.insideUnitSphere * randomMovement.radius;
-        if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, randomMovement.radius, NavMesh.AllAreas))
+        // Small sample radius + path validation prevents picking a candidate inside a building
+        // that snaps onto the navmesh right up against an outside wall — the civilian would
+        // then walk straight at the wall instead of routing around the building.
+        NavMeshPath path = new NavMeshPath();
+        for (int attempt = 0; attempt < 8; attempt++)
         {
+            Vector3 candidate = transform.position + Random.insideUnitSphere * randomMovement.radius;
+            if (!NavMesh.SamplePosition(candidate, out NavMeshHit hit, 2f, NavMesh.AllAreas)) continue;
+            if (!agent.CalculatePath(hit.position, path) || path.status != NavMeshPathStatus.PathComplete) continue;
+
             agent.SetDestination(hit.position);
+            return;
         }
     }
 

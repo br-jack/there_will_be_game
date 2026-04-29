@@ -2842,7 +2842,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 3
 --- !u!114 &-8550110256333393937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2875,7 +2875,7 @@ MonoBehaviour:
   retreatSpeedMultiplier: 1.25
   strikeStopRatio: 0.7
   stopFromPlayerDistance: -1
-  sightRange: 25
+  sightRange: 50
   randomMovement:
     radius: 20
     minIdleDuration: 2
