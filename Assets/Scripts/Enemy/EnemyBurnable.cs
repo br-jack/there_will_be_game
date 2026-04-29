@@ -39,7 +39,7 @@ public class EnemyBurnable : MonoBehaviour
         if (burnParticles != null && !burnParticles.isPlaying)
             burnParticles.Play();
 
-        if (burnRoutine != null)
+        if (burnRoutine != null || isBurning)
             StopCoroutine(burnRoutine);
 
         burnRoutine = StartCoroutine(BurnThenKill(fireballSourcePosition));
