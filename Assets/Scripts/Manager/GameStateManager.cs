@@ -41,9 +41,11 @@ public class GameStateManager : MonoBehaviour
     private void OnEnable()
     {
         if (Instance != this) return;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
         if (_pauseAction?.action != null)
         {
+            _pauseAction.action.performed -= OnPausePerformed;
             _pauseAction.action.performed += OnPausePerformed;
             _pauseAction.action.Enable();
         }
@@ -118,8 +120,6 @@ public class GameStateManager : MonoBehaviour
 
     private void OnPausePerformed(InputAction.CallbackContext _)
     {
-
-        Debug.Log("Pause action fired");
         TogglePause();
     }
 
