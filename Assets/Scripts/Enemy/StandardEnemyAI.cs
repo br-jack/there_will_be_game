@@ -109,6 +109,12 @@ namespace Enemy
         private float _stuckCheckTime;
         private float _unstuckUntil;
         private Vector3 _unstuckDir;
+        private AudioSource audioSource;
+
+        public AudioClip swordClip;
+        public AudioClip swordClip1;
+        public AudioClip swordClip2;
+        private AudioClip[] swordSounds;
 
         void Awake()
         {
@@ -157,6 +163,18 @@ namespace Enemy
             }
 
             Debug.Assert(DeathHandler != null);
+
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.spatialBlend = 0f;
+            audioSource.volume = 1f;
+            audioSource.playOnAwake = false;
+
+            swordSounds = new AudioClip[]
+            {
+                swordClip,
+                swordClip1,
+                swordClip2
+            };
         }
 
         void Start() => ResolvePlayerRefs();
@@ -591,6 +609,12 @@ namespace Enemy
 
         protected virtual void DoDamage()
         {
+            AudioClip clip = swordSounds[UnityEngine.Random.Range(0, swordSounds.Length)];
+            if (clip != null)
+            {
+                audioSource.PlayOneShot(clip, 1f);
+            }
+
             if (DeathHandler.IsDying || _playerHealthRef == null) return;
 
             if (HorizontalDistanceToPlayerBody() <= attack.range)

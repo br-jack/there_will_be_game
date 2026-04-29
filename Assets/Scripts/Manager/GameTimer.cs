@@ -8,13 +8,17 @@ public class GameTimer : MonoBehaviour
 {
     [SerializeField] private float duration = 300f;
     [SerializeField] private TMP_Text timerText;
+    [SerializeField] private float bellTime;
+    AudioSource audioSource;
 
     private float _timeRemaining;
     private bool _finished;
+    private bool _bellNotRung = true;
 
     private void Awake()
     {
         _timeRemaining = duration;
+        audioSource = GetComponent<AudioSource>();
         UpdateText();
     }
 
@@ -32,8 +36,14 @@ public class GameTimer : MonoBehaviour
             _timeRemaining = 0f;
             _finished = true;
             UpdateText();
+            audioSource.Stop();
             gsm.SetState(GameState.GameOver);
             return;
+        }
+        else if (_timeRemaining <= bellTime && _bellNotRung)
+        {
+            audioSource.Play();
+            _bellNotRung = false;
         }
 
         UpdateText();

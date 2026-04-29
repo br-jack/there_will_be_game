@@ -7,6 +7,8 @@ public class BurnableBuilding : MonoBehaviour
     [SerializeField] private ParticleSystem buildingFireParticles;
     [SerializeField] private float burnDuration = 5f;
     [SerializeField] private FireTask fireTask;
+    [SerializeField] private AudioSource loopSource;
+    [SerializeField] private AudioClip burningClip;
 
     private bool isBurning = false;
     public bool IsBurning => isBurning;
@@ -18,6 +20,21 @@ public class BurnableBuilding : MonoBehaviour
 
         if (buildingFireParticles != null)
             buildingFireParticles.Stop();
+
+        if (loopSource != null)
+        {
+            loopSource.clip = burningClip;
+            loopSource.loop = true;
+            loopSource.playOnAwake = false;
+        }
+    }
+
+    private void Update()
+    {
+        if (GameStateManager.Instance.CurState == GameState.GameOver && loopSource.isPlaying)
+        {
+            loopSource.Stop();
+        }
     }
 
     public void IgniteBuilding()
@@ -32,6 +49,11 @@ public class BurnableBuilding : MonoBehaviour
         if (buildingFireParticles != null)
             buildingFireParticles.Play();
 
+        if (loopSource != null && burningClip != null)
+        {
+            loopSource.Play();
+        }
+
         if (fireTask != null)
         {
             fireTask.BuildingBurned();
@@ -43,5 +65,10 @@ public class BurnableBuilding : MonoBehaviour
     private IEnumerator BurnDown()
     {
         yield return new WaitForSeconds(burnDuration);
+
+        if (loopSource != null)
+        {
+            loopSource.Stop();
+        }
     }
 }
