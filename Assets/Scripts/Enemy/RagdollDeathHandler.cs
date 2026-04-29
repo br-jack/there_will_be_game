@@ -82,6 +82,8 @@ namespace Enemy
 
             //TryTrigger(deadTrigger);
             OnDied?.Invoke();
+            
+            hitBox.KilledEnemy();
         }
 
         public void KilledBy(Vector3 other, float force)

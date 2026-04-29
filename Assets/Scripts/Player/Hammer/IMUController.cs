@@ -336,19 +336,7 @@ namespace Hammer
         {
             return _frameAcceleration;
         }
-
-        public void Rumble(int msDuration)
-        {
-            if (msDuration < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(msDuration), "Rumble duration must be non-negative");
-            }
-
-            Debug.Log("Sending Rumble Request");
-            sendQueue.Enqueue($"RD{msDuration}");
-        }
-
-
+        
         public void Cleanup()
         {
             _running = false;
@@ -407,11 +395,11 @@ namespace Hammer
         {
             if (!configSO.enableRumble) return;
 
-            Debug.Assert(msDuration > 0);
-            Debug.Assert(startStrength > 0);
-            Debug.Assert(endStrength > 0);
-            Debug.Assert(fadeRate > 0);
-            Debug.Assert(fadeInterval > 0);
+            Debug.Assert(msDuration >= 0);
+            Debug.Assert(startStrength >= 0);
+            Debug.Assert(endStrength >= 0);
+            Debug.Assert(fadeRate >= 0);
+            Debug.Assert(fadeInterval >= 0);
 
             Debug.Log("Sending Rumble Request");
             sendQueue.Enqueue(
@@ -419,16 +407,16 @@ namespace Hammer
             );
         }
 
-        public void ConstantRumble(int msDuration, int strength)
+        private void ConstantRumble(int msDuration, bool flipMotorDirection, int strength)
         {
-            SendRumbleRequest(RumbleMode.Constant, configSO.flipDefaultRumbleDirection, msDuration, strength, strength, 0, 30);
+            SendRumbleRequest(RumbleMode.Constant, flipMotorDirection, msDuration, strength, strength, 0, 30);
         }
 
-        public void GradientRumble(int totalDuration, int startStrength, int endStrength, int fadeDuration)
+        private void GradientRumble(int totalDuration, bool flipMotorDirection, int startStrength, int endStrength, int fadeDuration, int fadeInterval)
         {
             if (fadeDuration <= 0)
             {
-                ConstantRumble(totalDuration, endStrength);
+                ConstantRumble(totalDuration, flipMotorDirection, endStrength);
                 return;
             }
 
@@ -437,16 +425,63 @@ namespace Hammer
             int strengthDifference = Math.Abs(endStrength - startStrength);
 
             //TODO integer division here could be better handled, not perfectly accurate
-            int numSteps = fadeDuration / configSO.rumbleFadeInterval;
-
+            int numSteps = fadeDuration / fadeInterval;
+            
             int fadeRate = strengthDifference / numSteps;
-
-            SendRumbleRequest(mode, configSO.flipDefaultRumbleDirection, totalDuration, startStrength, endStrength, fadeRate, configSO.rumbleFadeInterval);
+            
+            SendRumbleRequest(mode, flipMotorDirection, totalDuration, startStrength, endStrength, fadeRate, fadeInterval);
         }
 
+        public void Rumble(int msDuration)
+        {
+            if (msDuration < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(msDuration), "Rumble duration must be non-negative");
+            }
+            
+            Debug.Log("Sending Rumble Request");
+            GradientRumble(msDuration, configSO.defaultRumbleInstance.flipMotorDirection, configSO.defaultRumbleInstance.startStrength, configSO.defaultRumbleInstance.endStrength, configSO.defaultRumbleInstance.fadeDuration, configSO.defaultRumbleInstance.fadeInterval);
+        }
+
+        private void Rumble(RumbleInstance instance)
+        {
+            GradientRumble(instance.duration, instance.flipMotorDirection, instance.startStrength, instance.endStrength, instance.fadeDuration, instance.fadeInterval);
+        }
+        
         public void Rumble()
         {
-            Rumble(configSO.defaultRumbleDuration);
+            Debug.Log("Default Rumble Triggered", configSO.defaultRumbleInstance);
+            Rumble(configSO.defaultRumbleInstance);
+        }
+        
+        public void SlamRumble()
+        {
+            Debug.Log("Slam Rumble Triggered", configSO.slamRumbleInstance);
+            Rumble(configSO.slamRumbleInstance);
+        }
+        
+        public void BreakShieldRumble()
+        {
+            Debug.Log("Break Shield Rumble Triggered", configSO.breakShieldRumbleInstance);
+            Rumble(configSO.breakShieldRumbleInstance);
+        }
+
+        public void DragRumble()
+        {
+            Debug.Log("Drag Rumble Triggered", configSO.dragRumbleInstance);
+            Rumble(configSO.dragRumbleInstance);
+        }
+
+        public void HitRumble()
+        {
+            Debug.Log("Hit Rumble Triggered", configSO.hitRumbleInstance);
+            Rumble(configSO.hitRumbleInstance);
+        }
+
+        public void DestroyRumble()
+        {
+            Debug.Log("Destroy Rumble Triggered", configSO.destroyRumbleInstance);
+            Rumble(configSO.destroyRumbleInstance);
         }
     }
 }
