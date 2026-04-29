@@ -66,7 +66,7 @@ namespace Hammer
             if (hammerChargeState != newState) {
                 hammerChargeState = newState;
                 chargeStateChange.Invoke(hammerChargeState);
-            } else Debug.Log("hammer state change event despite state remaining the same");
+            } else Debug.Log("hammer state change event despite state remaining the same as: "+newState);
         }
         
         void Awake()

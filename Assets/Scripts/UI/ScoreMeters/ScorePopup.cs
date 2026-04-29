@@ -61,7 +61,7 @@ public class ScorePopup : MonoBehaviour
             case ScoreType.OnFire:
                 return "Enflamed!"; // Bright red
             case ScoreType.Building: 
-                return "Renovation"; //brown
+                return "Renovation"; 
             default:
                 return "Misc. Bonus";
         }

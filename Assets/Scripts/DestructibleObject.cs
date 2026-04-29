@@ -41,6 +41,10 @@ public class DestructibleObject : MonoBehaviour
         audioSource.spatialBlend = 0f;
         audioSource.volume = 0.75f;
         audioSource.playOnAwake = false;
+
+        
+        myRenderer = GetComponent<MeshRenderer>();
+        myCollider = GetComponent<Collider>();
     }
 
     public void BreakFromHorseRam(Vector3 impactPoint)
@@ -54,9 +58,12 @@ public class DestructibleObject : MonoBehaviour
     }
 
     void Start() {
-        myRenderer = GetComponent<MeshRenderer>();
-        myCollider = GetComponent<Collider>();
+        //moved to awake, seems to fix a null reference exception when destroying respawned buildings
+        //myRenderer = GetComponent<MeshRenderer>();
+        //myCollider = GetComponent<Collider>();
     }
+
+    
 
     void OnCollisionEnter(Collision collision)
     {
