@@ -23,7 +23,7 @@ public class endAnimator : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         timer++;
         if (timer > timeBetween)
