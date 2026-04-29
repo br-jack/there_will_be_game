@@ -421,7 +421,7 @@ namespace Hammer
             int strengthDifference = Math.Abs(endStrength - startStrength);
 
             //TODO integer division here could be better handled, not perfectly accurate
-            int numSteps = fadeDuration / configSO.defaultRumbleInstance.fadeInterval;
+            int numSteps = fadeDuration / fadeInterval;
             
             int fadeRate = strengthDifference / numSteps;
             
@@ -438,10 +438,15 @@ namespace Hammer
             Debug.Log("Sending Rumble Request");
             GradientRumble(msDuration, configSO.defaultRumbleInstance.flipMotorDirection, configSO.defaultRumbleInstance.startStrength, configSO.defaultRumbleInstance.endStrength, configSO.defaultRumbleInstance.fadeDuration, configSO.defaultRumbleInstance.fadeInterval);
         }
+
+        private void Rumble(RumbleInstance instance)
+        {
+            GradientRumble(instance.duration, instance.flipMotorDirection, instance.startStrength, instance.endStrength, instance.fadeDuration, instance.fadeInterval);
+        }
         
         public void Rumble()
         {
-            Rumble(configSO.defaultRumbleInstance.duration);
+            Rumble(configSO.defaultRumbleInstance);
         }
     }
 }
