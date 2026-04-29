@@ -1,5 +1,7 @@
+using Hammer;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class FireTask : BaseTask
 {
@@ -18,6 +20,11 @@ public class FireTask : BaseTask
     [SerializeField] private BurnableBuilding[] burnableBuildings;
 
     [SerializeField] private Transform fireBoonSpawnPoint;
+
+    [SerializeField] private horseMovementGaits horseMovement;
+    [SerializeField] private TargetHammer targetHammer;
+    [SerializeField] private AttackHitbox hammerHitbox;
+    [SerializeField] private float boonSpawnFreezeTime = 4f;
 
     void Start()
     {
@@ -81,12 +88,23 @@ public class FireTask : BaseTask
         { 
             if (!rewardSpawned && powerUpSpawner != null && infiniteFirePowerUpPrefab != null)
             {
-                powerUpSpawner.SpawnSpecificPowerUp(infiniteFirePowerUpPrefab, rewardMessage, fireBoonSpawnPoint);
+                StartCoroutine(SpawnFireBoonSequence());
                 rewardSpawned = true;
                 TaskArrowManager.Instance.HideArrow();
             }
             CompleteTask();
         }
+    }
+
+    private IEnumerator SpawnFireBoonSequence()
+    {
+        SetPlayerControl(false);
+
+        powerUpSpawner.SpawnSpecificPowerUp(infiniteFirePowerUpPrefab, rewardMessage, fireBoonSpawnPoint);
+
+        yield return new WaitForSeconds(boonSpawnFreezeTime);
+
+        SetPlayerControl(true);
     }
 
     private Transform GetNearestUnburnedBuilding()
@@ -123,5 +141,13 @@ public class FireTask : BaseTask
         }
 
         return nearestBuilding != null ? nearestBuilding.transform : null;
+    }
+
+    private void SetPlayerControl(bool enabled)
+    {
+        horseMovement.canControl = enabled;
+        targetHammer.canControl = enabled;
+        Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
+        hitboxCollider.enabled = enabled;
     }
 }

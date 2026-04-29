@@ -1,5 +1,7 @@
+using Hammer;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class FootballTask : BaseTask
 {
@@ -11,6 +13,10 @@ public class FootballTask : BaseTask
     [SerializeField] private string rewardMessage = "A divine boon has been granted";
     [SerializeField] private Transform footballBoonSpawnPoint;
 
+    [SerializeField] private horseMovementGaits horseMovement;
+    [SerializeField] private TargetHammer targetHammer;
+    [SerializeField] private AttackHitbox hammerHitbox;
+    [SerializeField] private float boonSpawnFreezeTime = 4f;
     public int goals = 0;
 
     void Start()
@@ -48,7 +54,7 @@ public class FootballTask : BaseTask
 
         if (!rewardSpawned && powerUpSpawner != null && rewardPowerUpPrefab != null)
         {
-            powerUpSpawner.SpawnSpecificPowerUp(rewardPowerUpPrefab, rewardMessage, footballBoonSpawnPoint);
+            StartCoroutine(SpawnFootballBoonSequence());
             rewardSpawned = true;
         }
 
@@ -60,5 +66,24 @@ public class FootballTask : BaseTask
         }
 
         CompleteTask();
+    }
+
+    private IEnumerator SpawnFootballBoonSequence()
+    {
+        SetPlayerControl(false);
+
+        powerUpSpawner.SpawnSpecificPowerUp(rewardPowerUpPrefab, rewardMessage, footballBoonSpawnPoint);
+
+        yield return new WaitForSeconds(boonSpawnFreezeTime);
+
+        SetPlayerControl(true);
+    }
+
+    private void SetPlayerControl(bool enabled)
+    {
+        horseMovement.canControl = enabled;
+        targetHammer.canControl = enabled;
+        Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
+        hitboxCollider.enabled = enabled;
     }
 }
