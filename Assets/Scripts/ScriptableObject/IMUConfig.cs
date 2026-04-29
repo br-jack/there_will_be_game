@@ -12,4 +12,8 @@ public class IMUConfig : ScriptableObject
     public int writeTimeout = 100;
 
     public RumbleInstance defaultRumbleInstance;
+    public RumbleInstance slamRumbleInstance;
+    public RumbleInstance dragRumbleInstance;
+    public RumbleInstance hitRumbleInstance;
+    public RumbleInstance destroyRumbleInstance;
 }

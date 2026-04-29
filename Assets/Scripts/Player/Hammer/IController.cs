@@ -24,6 +24,26 @@ namespace Hammer
             
         }
 
+        public void SlamRumble()
+        {
+            
+        }
+
+        public void DragRumble()
+        {
+            
+        }
+
+        public void HitRumble()
+        {
+            
+        }
+
+        public void DestroyRumble()
+        {
+            
+        }
+
         public void Cleanup();
     }
 }
