@@ -5,8 +5,7 @@ public class musicManager : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private int startTime;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -17,8 +16,8 @@ public class musicManager : MonoBehaviour
         {
             audioSource.time = startTime;
         }
-        
     }
+
     public void PauseMusic()
     {
         if (audioSource != null)
@@ -30,14 +29,15 @@ public class musicManager : MonoBehaviour
     {
         if (audioSource != null)
         {
-        audioSource.Play();
+            audioSource.Play();
         }
     }
     public void PlaySFX()
     {
-        
-        audioSource.PlayOneShot(audioSource.clip);
-
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(audioSource.clip);
+        }
     }
 
     // Update is called once per frame
