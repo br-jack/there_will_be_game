@@ -403,12 +403,12 @@ namespace Hammer
             );
         }
 
-        public void ConstantRumble(int msDuration, int strength)
+        private void ConstantRumble(int msDuration, int strength)
         {
             SendRumbleRequest(RumbleMode.Constant, configSO.defaultRumbleInstance.flipMotorDirection, msDuration, strength, strength, 0, 30);
         }
 
-        public void GradientRumble(int totalDuration, int startStrength, int endStrength, int fadeDuration)
+        private void GradientRumble(int totalDuration, bool flipMotorDirection, int startStrength, int endStrength, int fadeDuration, int fadeInterval)
         {
             if (fadeDuration <= 0)
             {
@@ -425,7 +425,7 @@ namespace Hammer
             
             int fadeRate = strengthDifference / numSteps;
             
-            SendRumbleRequest(mode, configSO.defaultRumbleInstance.flipMotorDirection, totalDuration, startStrength, endStrength, fadeRate, configSO.defaultRumbleInstance.fadeInterval);
+            SendRumbleRequest(mode, flipMotorDirection, totalDuration, startStrength, endStrength, fadeRate, fadeInterval);
         }
 
         public void Rumble(int msDuration)
@@ -436,7 +436,7 @@ namespace Hammer
             }
             
             Debug.Log("Sending Rumble Request");
-            GradientRumble(msDuration, configSO.defaultRumbleInstance.startStrength, configSO.defaultRumbleInstance.endStrength, configSO.defaultRumbleInstance.fadeDuration);
+            GradientRumble(msDuration, configSO.defaultRumbleInstance.flipMotorDirection, configSO.defaultRumbleInstance.startStrength, configSO.defaultRumbleInstance.endStrength, configSO.defaultRumbleInstance.fadeDuration, configSO.defaultRumbleInstance.fadeInterval);
         }
         
         public void Rumble()

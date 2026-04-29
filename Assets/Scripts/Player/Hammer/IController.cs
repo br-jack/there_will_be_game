@@ -18,16 +18,6 @@ namespace Hammer
         {
             
         }
-        
-        public void ConstantRumble(int msDuration, int strength)
-        {
-            
-        }
-
-        public void GradientRumble(int totalDuration, int startStrength, int endStrength, int fadeDuration)
-        {
-            
-        }
 
         public void Rumble()
         {
