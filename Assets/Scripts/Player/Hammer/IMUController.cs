@@ -407,16 +407,16 @@ namespace Hammer
             );
         }
 
-        private void ConstantRumble(int msDuration, int strength)
+        private void ConstantRumble(int msDuration, bool flipMotorDirection, int strength)
         {
-            SendRumbleRequest(RumbleMode.Constant, configSO.defaultRumbleInstance.flipMotorDirection, msDuration, strength, strength, 0, 30);
+            SendRumbleRequest(RumbleMode.Constant, flipMotorDirection, msDuration, strength, strength, 0, 30);
         }
 
         private void GradientRumble(int totalDuration, bool flipMotorDirection, int startStrength, int endStrength, int fadeDuration, int fadeInterval)
         {
             if (fadeDuration <= 0)
             {
-                ConstantRumble(totalDuration, endStrength);
+                ConstantRumble(totalDuration, flipMotorDirection, endStrength);
                 return;
             }
 
