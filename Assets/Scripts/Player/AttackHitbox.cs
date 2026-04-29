@@ -14,6 +14,7 @@ public class AttackHitbox : MonoBehaviour
     
     public UnityEvent killEvent;
     public UnityEvent breakShieldEvent;
+    public UnityEvent destroyBuildingEvent;
 
     private void Awake()
     {
@@ -32,6 +33,11 @@ public class AttackHitbox : MonoBehaviour
     public void BrokeShield()
     {
         breakShieldEvent.Invoke();
+    }
+
+    public void DestroyedBuilding()
+    {
+        destroyBuildingEvent.Invoke();
     }
 
     public float GetKnockbackForce()
