@@ -163,8 +163,6 @@ namespace Hammer
             
             slam.Invoke(); //fling player + other effects
             
-            _targetHammer.SlamRumble();
-
             Instantiate(slamEffectsPrefab,slamCenter,Quaternion.identity);
 
             Collider[] colliders = Physics.OverlapSphere(slamCenter, slamRadius);
