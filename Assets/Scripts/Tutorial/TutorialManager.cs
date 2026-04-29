@@ -375,20 +375,22 @@ public class TutorialManager : MonoBehaviour
 
         rewardSpawned = true;
         tutorialMarker.SetActive(false);
-        SetPlayerControl(false);
-        spawnedTutorialReward = powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
-        SetPlayerControl(true);
-        StartCoroutine(PlayBoonTutorialSequence());
+        StartCoroutine(SpawnBoonSequence());
     }
 
-    private IEnumerator PlayBoonTutorialSequence()
+    private IEnumerator SpawnBoonSequence()
     {
+        SetPlayerControl(false);
+
+        spawnedTutorialReward = powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
+
         promptText.text = boonSpawnPromptMessage;
 
         yield return new WaitForSeconds(boonPromptDelay);
 
-        //promptText.text = $"{boonCollectPromptMessage}\n\n<size=85%>{boonExplanationMessage}</size>";
-        promptText.text = $"{boonCollectPromptMessage}";
+        promptText.text = boonCollectPromptMessage;
+
+        SetPlayerControl(true);
     }
 
     private void HideGameplayUIAtStart()
