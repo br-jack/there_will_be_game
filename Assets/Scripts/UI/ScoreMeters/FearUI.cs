@@ -38,7 +38,7 @@ public class FearUI : MonoBehaviour
     
     private void UpdateScoreDisplay(int score)
     {
-        scoreText.text = $"{score}";
+        scoreText.text = $"";
     }
     
     private void SpawnScorePopups(List<ScoreComponent> components)
