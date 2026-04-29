@@ -11,14 +11,10 @@ public class IMUConfig : ScriptableObject
 
     public int writeTimeout = 100;
 
-    public int rumbleFadeInterval = 30;
-
-    public bool flipDefaultRumbleDirection = false;
-
-    public int defaultRumbleDuration = 5000;
-
-    [Range(0, 255)] public int defaultRumbleStartStrength = 255;
-    [Range(0, 255)] public int defaultRumbleEndStrength = 255;
-
-    public int defaultRumbleFadeDuration = 150;
+    public RumbleInstance defaultRumbleInstance;
+    public RumbleInstance slamRumbleInstance;
+    public RumbleInstance breakShieldRumbleInstance;
+    public RumbleInstance dragRumbleInstance;
+    public RumbleInstance hitRumbleInstance;
+    public RumbleInstance destroyRumbleInstance;
 }

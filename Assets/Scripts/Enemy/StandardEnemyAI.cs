@@ -599,6 +599,8 @@ namespace Enemy
             //TryTrigger(hitTrigger);
             
             BreakShield();
+            
+            attack.BrokeShield();
         }
 
         private IEnumerator ChargeUpThenDamage()

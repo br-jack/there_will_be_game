@@ -68,6 +68,7 @@ namespace Hammer
                 chargeStateChange.Invoke(hammerChargeState);
             } else Debug.Log("hammer state change event despite state remaining the same");
         }
+        
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
@@ -87,12 +88,18 @@ namespace Hammer
                 {
 
                     if (timeHeldUp > timeToChargeSlam) changeHammerChargeState(hammerChargeState.charged);
-                    else if (timeHeldUp > 0.05) changeHammerChargeState(hammerChargeState.charging);
+                    else if (timeHeldUp > 0.05 && hammerChargeState != hammerChargeState.charging)
+                    {
+                        changeHammerChargeState(hammerChargeState.charging);
+                    }
                     timeHeldUp += Time.deltaTime;
                 }
                 else
                 {
-                    changeHammerChargeState(hammerChargeState.uncharged);
+                    if (hammerChargeState != hammerChargeState.uncharged)
+                    {
+                        changeHammerChargeState(hammerChargeState.uncharged);
+                    }
                     timeHeldUp = 0;
                 }
             }
@@ -162,7 +169,7 @@ namespace Hammer
 
             
             slam.Invoke(); //fling player + other effects
-
+            
             Instantiate(slamEffectsPrefab,slamCenter,Quaternion.identity);
 
             Collider[] colliders = Physics.OverlapSphere(slamCenter, slamRadius);
