@@ -1405,6 +1405,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &618904579 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 470dec3b8051d194a98d0bcdbfd45145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &634612024 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7549535118096911905, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
@@ -2067,6 +2078,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1119196674 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2480934246154321539, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8f343ebb8a33c8429ce18e8451044f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1123631783
 GameObject:
   m_ObjectHideFlags: 0
@@ -3063,6 +3085,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8345642027356060840, guid: 6fb4616e23e584b18a46752edfa63e5d, type: 3}
   m_PrefabInstance: {fileID: 1486947145}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &1493511655 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 6428374830327964106, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1532313228
 GameObject:
   m_ObjectHideFlags: 0
@@ -3673,6 +3700,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30254a7b45748a54c8371548628a6c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowSlams:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1119196674}
+        m_TargetAssemblyTypeName: slamHitbox, Assembly-CSharp
+        m_MethodName: set_enabled
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 618904579}
+        m_TargetAssemblyTypeName: Hammer.VisualHammer, Assembly-CSharp
+        m_MethodName: setSlamAllowedStatus
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  allowAttacking:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5061453144199501984}
+        m_TargetAssemblyTypeName: UnityEngine.BoxCollider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1493511655}
+        m_TargetAssemblyTypeName: UnityEngine.BoxCollider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  allowCivilianMovement:
+    m_PersistentCalls:
+      m_Calls: []
   introOverlay: {fileID: 1927686302}
   dimBackground: {fileID: 776700385}
   CardCanvasGroup: {fileID: 62476898}
@@ -3722,8 +3806,13 @@ MonoBehaviour:
   enemyKillPromptMessage: Now defeat the enemy to gain Fear and Awe.
   fearIntroPromptMessage: This is Fear. Violence and chaos increase it.
   aweIntroPromptMessage: This is Awe. Great power and impressive acts increase it.
-  fearAweCombinedPromptMessage: Your actions shape both Fear and Awe.
-  fearAweFinalPromptMessage: Defeat the enemy to progress.
+  fearFurtherMessage: Earn Fear for killing enemies, destroying buildings and completing
+    tasks.
+  aweFurtherMessage: 'Earn both Awe and fear for hitting enemies or buildings at
+    high speeds, while you''re mid-air, while your hammer''s on fire, etc. '
+  slamsIntroPromptMessage: Hold the hammer directly upright to charge up a slam attack....
+  slamsFurtherPromptMessage: ...and swing to silence many of your noisy citizens
+    in one go.
 --- !u!1 &1817797211
 GameObject:
   m_ObjectHideFlags: 0
@@ -4276,6 +4365,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gladiator Low Poly Arena
       objectReference: {fileID: 0}
+    - target: {fileID: 3201316790093378712, guid: 4a769d0345654f345be733003b50a3e2, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3201316790093378712, guid: 4a769d0345654f345be733003b50a3e2, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 3201316790093605036, guid: 4a769d0345654f345be733003b50a3e2, type: 3}
       propertyPath: m_LocalScale.x
       value: 10
@@ -4376,7 +4473,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 354646526967688736, guid: e8e0021c26150a140b8cbb8107611ae9, type: 3}
+  civilianPrefab: {fileID: 0}
   spawnPoint: {fileID: 474253707}
+  civilianSpawnPoint: []
   spawnSound: {fileID: 0}
   audioSource: {fileID: 0}
   mainCamera: {fileID: 139368896}
@@ -4747,6 +4846,10 @@ PrefabInstance:
     - target: {fileID: 261574173433507408, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: _stillAndWalkColor.r
       value: 0.4641509
+      objectReference: {fileID: 0}
+    - target: {fileID: 277551645039502048, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 329778441844909046, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -5844,6 +5947,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4187240822355016155, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4204736914026204513, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -6492,6 +6599,34 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: slam.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 1802088974}
+    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: handlePlayerSlam
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: TutorialManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8292041277322501903, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -6659,6 +6794,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2289d23dd62f52479e1042c72e3c1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &5061453144199501984 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 277551645039502048, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

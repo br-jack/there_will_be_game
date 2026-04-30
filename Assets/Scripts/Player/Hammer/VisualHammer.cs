@@ -53,7 +53,7 @@ namespace Hammer
         public UnityEvent<hammerChargeState> chargeStateChange;
         public UnityEvent slam;
         //InputAction temporarySlamActivate;
-        private bool slamsBanned = false; 
+        private bool slamsAllowed; 
 
         public float slamRadius;
         public float slamForce;
@@ -77,9 +77,9 @@ namespace Hammer
             timeHeldUp = 0;
         }
 
-        public void setSlamBanStatus(bool newBanStatus)
+        public void setSlamAllowedStatus(bool newSlamAllowedStatus)
         {
-            slamsBanned = newBanStatus;
+            slamsAllowed = newSlamAllowedStatus;
         }
 
 
@@ -87,7 +87,7 @@ namespace Hammer
         {
             
             //if not already charged, check if the player is holding the hammer above their head
-            if (!slamsBanned && hammerChargeState != hammerChargeState.charged ) {
+            if (slamsAllowed && hammerChargeState != hammerChargeState.charged ) {
                 float angleToUp = Vector3.Angle(Vector3.up, transform.up); //gives signed angle          
                 if (angleToUp < chargingZoneSize && angleToUp > 0.0f)
                 {
