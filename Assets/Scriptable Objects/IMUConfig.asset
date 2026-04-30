@@ -16,9 +16,9 @@ MonoBehaviour:
   enableRumble: 1
   readTimeout: 50
   writeTimeout: 100
-  rumbleFadeInterval: 30
-  flipDefaultRumbleDirection: 0
-  defaultRumbleDuration: 100
-  defaultRumbleStartStrength: 255
-  defaultRumbleEndStrength: 255
-  defaultRumbleFadeDuration: 0
+  defaultRumbleInstance: {fileID: 11400000, guid: b16a7978c6ec41c4381a88d599dea333, type: 2}
+  slamRumbleInstance: {fileID: 11400000, guid: e1a420e28297d154baef162165bc6715, type: 2}
+  breakShieldRumbleInstance: {fileID: 11400000, guid: 3ec84972b1f7a474889395a1d09abd29, type: 2}
+  dragRumbleInstance: {fileID: 11400000, guid: 64d034f98ea23b5459cd89368522b4b4, type: 2}
+  hitRumbleInstance: {fileID: 11400000, guid: 8163e49cedca00448ab425dfa8b9aa31, type: 2}
+  destroyRumbleInstance: {fileID: 11400000, guid: ae239d56352ad024bb31c8089d4c990f, type: 2}

@@ -41,6 +41,10 @@ public class DestructibleObject : MonoBehaviour
         audioSource.spatialBlend = 0f;
         audioSource.volume = 0.75f;
         audioSource.playOnAwake = false;
+
+        
+        myRenderer = GetComponent<MeshRenderer>();
+        myCollider = GetComponent<Collider>();
     }
 
     public void BreakFromHorseRam(Vector3 impactPoint)
@@ -54,9 +58,12 @@ public class DestructibleObject : MonoBehaviour
     }
 
     void Start() {
-        myRenderer = GetComponent<MeshRenderer>();
-        myCollider = GetComponent<Collider>();
+        //moved to awake, seems to fix a null reference exception when destroying respawned buildings
+        //myRenderer = GetComponent<MeshRenderer>();
+        //myCollider = GetComponent<Collider>();
     }
+
+    
 
     void OnCollisionEnter(Collision collision)
     {
@@ -67,6 +74,11 @@ public class DestructibleObject : MonoBehaviour
         if (impactSpeed < breakForceThreshold) return;
 
         Break(collision.contacts[0].point, 300);
+
+        var hitbox = collision.gameObject.GetComponent<AttackHitbox>();
+        if (hitbox == null) return;
+        
+        hitbox.DestroyedBuilding();
     }
 
     public void Break(Vector3 impactPoint, float explosionForce)
