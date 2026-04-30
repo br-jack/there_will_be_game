@@ -171,12 +171,12 @@ namespace Hammer
             
             Instantiate(slamEffectsPrefab,slamCenter,Quaternion.identity);
 
-            Collider[] colliders = Physics.OverlapSphere(slamCenter, slamRadius);
+            Collider[] colliders = Physics.OverlapSphere(slamCenter, slamRadius,LayerMask.GetMask("Enemy", "Buildings", "normalEnemy"));
             foreach (Collider c in colliders)
             {
                 if (c.GetComponentInParent<DestructibleObject>())
                 {   
-                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPointOnBounds(transform.position), 300);
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPointOnBounds(transform.position), 100);
                 }
                 // TODO particles
                 // TODO use aarons ragdolls
@@ -203,12 +203,12 @@ namespace Hammer
 
             Instantiate(aweSlamEffectsPrefab,slamCenter,Quaternion.identity);
 
-            Collider[] colliders = Physics.OverlapSphere(slamCenter, aweSlamRadius);
+            Collider[] colliders = Physics.OverlapSphere(slamCenter, aweSlamRadius, LayerMask.GetMask("Enemy", "Buildings", "normalEnemy"));
             foreach (Collider c in colliders)
             {
                 if (c.GetComponentInParent<DestructibleObject>())
                 {
-                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPointOnBounds(transform.position), 500);
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPointOnBounds(transform.position), 200);
                 }
                 // TODO particles
                 // TODO use aarons ragdolls
