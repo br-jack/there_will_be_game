@@ -11,7 +11,7 @@ public class TutorialManager : MonoBehaviour
 {
     public UnityEvent<bool> allowSlams;
     public UnityEvent<bool> allowAttacking;
-    public UnityEvent<bool> allowCivilianMovement;
+    public UnityEvent summonCivilians;
     private bool slamGoesToFearAndAwe = false;
     
     [Header("UI References")]
@@ -551,9 +551,11 @@ public class TutorialManager : MonoBehaviour
     
     public IEnumerator PlaySlamsTutorialSequence()
     {
-        Debug.Log("time for the slams tutorial sequence");
+        //Debug.Log("time for the slams tutorial sequence");
         promptText.text = slamsIntroPromptMessage;
         yield return new WaitForSeconds(taskPanelIntroDelay);
+        
+        summonCivilians.Invoke();
 
         slamGoesToFearAndAwe = true;
         allowSlams.Invoke(true);
@@ -603,9 +605,7 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(taskPanelIntroDelay);
 
         promptText.text = aweFurtherMessage;
-
-
-        yield return new WaitForSeconds(enemyKillUnlockDelay);
+        yield return new WaitForSeconds(taskPanelIntroDelay);
 
         if (currentTutorialEnemy != null)
         {

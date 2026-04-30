@@ -10,7 +10,7 @@ public class TutorialEnemySpawner : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject civilianPrefab;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private Transform[] civilianSpawnPoint;
+    [SerializeField] private Transform[] civilianSpawnPoints;
     
 
 
@@ -46,15 +46,15 @@ public class TutorialEnemySpawner : MonoBehaviour
         return currentSpawnedEnemy.GetComponent<StandardEnemyAI>();
     }
 
-    public List<CivilianAI> SpawnTutorialCivilians()
+    public void SpawnTutorialCivilians()
     {
+        Debug.Log("spawning civilians!");
         List<CivilianAI> civilians = new List<CivilianAI>();
-        for (int i = 0; i < civilianSpawnPoint.Length; i++)
+        foreach (Transform t in civilianSpawnPoints)
         {
-            GameObject civilianObj = Instantiate(civilianPrefab,civilianSpawnPoint[i].position,civilianSpawnPoint[i].rotation);
-            civilians[i] = civilianObj.GetComponent<CivilianAI>();
+            GameObject civilianObj = Instantiate(civilianPrefab,t);
         }
-        return civilians;
+        //return civilians;
     }
 
     private void StartCutscene()
