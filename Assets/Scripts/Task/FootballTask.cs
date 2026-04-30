@@ -37,20 +37,12 @@ public class FootballTask : BaseTask
         CheckCompletion();
     }
 
-    private void Update()
-    {
-        if (Keyboard.current.kKey.wasPressedThisFrame)
-        {
-            CheckCompletion();
-        }
-    }
-
     public override void CheckCompletion()
     {
-        /*if (!scored)
+        if (!Scored)
         {
             return;
-        }*/
+        }
 
         if (!rewardSpawned && powerUpSpawner != null && rewardPowerUpPrefab != null)
         {

@@ -1,4 +1,3 @@
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem; //temp
@@ -72,7 +71,6 @@ namespace Hammer
         void Awake()
         {
             _rb = GetComponent<Rigidbody>();
-            _hitbox = GetComponent<BoxCollider>();
             Debug.Assert(_hitbox != null);
             scoreSettings = Resources.Load<ScoreSettings>("ScoreSettings");
             timeHeldUp = 0;

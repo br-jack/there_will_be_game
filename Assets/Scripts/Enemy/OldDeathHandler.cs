@@ -9,10 +9,13 @@ namespace Enemy
         public bool CanBeKilled { get; private set; } = true;
         
         [SerializeField] private float maxDeathTime = 4f;
+        [SerializeField] private float maxFireDeathTime = 3f;
         
         public bool IsDying { get; private set; }
         
         public event Action OnDied;
+        
+        private bool isOnFire = false;
         
         private float _deathTimer;
         private float _deathEndTime;
@@ -91,6 +94,8 @@ namespace Enemy
             {
                 return;
             }
+            
+            isOnFire = true;
 
             StartDeathTimer();
 
@@ -127,7 +132,14 @@ namespace Enemy
         {
             IsDying = true;
             _deathTimer = Time.time;
-            _deathEndTime = _deathTimer + maxDeathTime;
+            if (isOnFire)
+            {
+                _deathEndTime = _deathTimer + maxFireDeathTime;
+            }
+            else
+            {
+                _deathEndTime = _deathTimer + maxDeathTime;
+            }
         }
 
         private void TickDeathTimer()

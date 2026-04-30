@@ -706,17 +706,6 @@ MonoBehaviour:
   maxFOV: 75
   speedForMaxFOV: 35
   fovSmoothSpeed: 5
---- !u!114 &139781251 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3899397982394933326, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-  m_PrefabInstance: {fileID: 5061453144199501980}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2289d23dd62f52479e1042c72e3c1b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &161789089 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3724703206710352185, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
@@ -3725,7 +3714,7 @@ MonoBehaviour:
   playerHealth: {fileID: 1702517269}
   enemyKillUnlockDelay: 1
   forcedSlowMoveMultiplier: 0.05
-  hammerHitbox: {fileID: 139781251}
+  hammerHitbox: {fileID: 5061453144199501981}
   playerTransform: {fileID: 743921864}
   autoFaceTurnSpeed: 5
   cameraTransform: {fileID: 139368893}
@@ -6659,6 +6648,17 @@ PrefabInstance:
       addedObject: {fileID: 2059702811}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+--- !u!114 &5061453144199501981 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5745589838062583423, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+  m_PrefabInstance: {fileID: 5061453144199501980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2289d23dd62f52479e1042c72e3c1b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
