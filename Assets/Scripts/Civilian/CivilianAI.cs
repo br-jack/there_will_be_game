@@ -81,6 +81,11 @@ public class CivilianAI : MonoBehaviour
     private Vector3 _progressPos;
     private float _progressTime;
 
+    // When picking a flee destination, a candidate point inside a building gets snapped to
+    // the nearest navmesh — usually right against the building's wall. Reject candidates
+    // whose horizontal snap distance exceeds this, since they end up wall-adjacent.
+    private const float RunAwayMaxHorizontalSnap = 1.5f;
+
     public IDeathState DeathHandler { get; private set; }
     public IKnockbackState KnockbackHandler { get; private set; }
     
@@ -344,12 +349,15 @@ public class CivilianAI : MonoBehaviour
         if (awayDir.sqrMagnitude < 0.0001f) return;
         awayDir.Normalize();
 
-        // Try straight-away first, then widen the angle. Without this, a civilian picks a point behind a
-        // wall, snaps onto the navmesh right up against the wall, and presses into it instead of routing
-        // through a nearby door.
-        float[] angleOffsets = { 0f, 45f, -45f, 90f, -90f, 135f, -135f };
+        // 11 angles spanning ±150° around the away vector — smaller offsets first so the
+        // civilian prefers the most direct flee direction when one is available.
+        float[] angleOffsets = { 0f, 30f, -30f, 60f, -60f, 90f, -90f, 120f, -120f, 150f, -150f };
         NavMeshPath path = new NavMeshPath();
         float currentDist = HorizontalDistance(transform.position, playerRef.position);
+        float maxSnapSqr = RunAwayMaxHorizontalSnap * RunAwayMaxHorizontalSnap;
+
+        Vector3 fallbackDest = Vector3.zero;
+        bool hasFallback = false;
 
         foreach (float angle in angleOffsets)
         {
@@ -360,9 +368,31 @@ public class CivilianAI : MonoBehaviour
             if (!agent.CalculatePath(hit.position, path) || path.status != NavMeshPathStatus.PathComplete) continue;
             if (HorizontalDistance(hit.position, playerRef.position) <= currentDist) continue;
 
-            agent.SetDestination(hit.position);
-            return;
+            // Strict criteria: SamplePosition didn't have to snap far horizontally (i.e., the
+            // candidate wasn't inside a building), AND a navmesh-raycast from civilian to the
+            // destination is unobstructed (so the first leg of the path won't visibly head at
+            // a wall before routing around it).
+            Vector3 horizSnap = candidate - hit.position;
+            horizSnap.y = 0f;
+            bool snappedClose = horizSnap.sqrMagnitude < maxSnapSqr;
+            bool clearLineOfSight = !NavMesh.Raycast(transform.position, hit.position, out _, NavMesh.AllAreas);
+
+            if (snappedClose && clearLineOfSight)
+            {
+                agent.SetDestination(hit.position);
+                return;
+            }
+
+            // Otherwise stash as fallback so a cornered civilian still commits to a routed flee
+            // rather than standing still next to the player.
+            if (!hasFallback)
+            {
+                fallbackDest = hit.position;
+                hasFallback = true;
+            }
         }
+
+        if (hasFallback) agent.SetDestination(fallbackDest);
     }
 
     private void EnsureOnNavMesh()
