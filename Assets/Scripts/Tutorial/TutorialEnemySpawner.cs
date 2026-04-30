@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Enemy;
 using TMPro;
 using UnityEngine;
@@ -7,7 +8,11 @@ public class TutorialEnemySpawner : MonoBehaviour
 {
     [Header("Spawn")]
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject civilianPrefab;
     [SerializeField] private Transform spawnPoint;
+    [SerializeField] private Transform[] civilianSpawnPoint;
+    
+
 
     // Just here in case Jack wants to add SFX
     [Header("Audio")]
@@ -39,6 +44,17 @@ public class TutorialEnemySpawner : MonoBehaviour
         StartCutscene();
 
         return currentSpawnedEnemy.GetComponent<StandardEnemyAI>();
+    }
+
+    public List<CivilianAI> SpawnTutorialCivilians()
+    {
+        List<CivilianAI> civilians = new List<CivilianAI>();
+        for (int i = 0; i < civilianSpawnPoint.Length; i++)
+        {
+            GameObject civilianObj = Instantiate(civilianPrefab,civilianSpawnPoint[i].position,civilianSpawnPoint[i].rotation);
+            civilians[i] = civilianObj.GetComponent<CivilianAI>();
+        }
+        return civilians;
     }
 
     private void StartCutscene()

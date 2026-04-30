@@ -4,9 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Hammer;
+using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class TutorialManager : MonoBehaviour
 {
+    public UnityEvent<bool> banSlams;
+    private bool slamEndsTutorial = false;
+    
     [Header("UI References")]
     [SerializeField] private GameObject introOverlay;
     [SerializeField] private Image dimBackground;
@@ -107,6 +112,13 @@ public class TutorialManager : MonoBehaviour
     private bool fearAweExplanationStarted = false;
 
     private StandardEnemyAI currentTutorialEnemy;
+    //private List<CivilianAI> currentTutorialCivilians;
+
+    [Header("SlamsTutorial")]
+    [SerializeField] private string slamsIntroPromptMessage = "slam is slam. Violence and chaos increase it.";
+    [SerializeField] private string civiliansIntroPromptMessage = "civilians....";
+    [SerializeField] private string slamFinalPromptMessage = "gtfo.";
+
     private bool enemyPhaseStarted = false;
     private bool enemyHasHitPlayer = false;
     private bool enemyDefeated = false;
@@ -167,6 +179,8 @@ public class TutorialManager : MonoBehaviour
             CardCanvasGroup.alpha = 0f;
             CardCanvasGroup.gameObject.SetActive(true);
         }
+
+        banSlams.Invoke(true);
 
         // Fade in background first
         yield return StartCoroutine(FadeBackground(0f, maxBackgroundAlpha, fadeInTime));
@@ -469,6 +483,41 @@ public class TutorialManager : MonoBehaviour
         StartCoroutine(BeginForcedSlowMovementAfterEnemyCutscene());
     }
 
+    /*
+    private void StartTutorialCivilianPhase()
+    {
+        if (civilianPhaseStarted)
+        {
+            return;
+        }
+
+        civilianPhaseStarted = true;
+        civilianCutsceneFinished = false;
+
+        // Show health now so the player can see it drop
+        //healthBarUI.SetActive(true);
+
+        // Lock player while the enemy spawns in
+        SetPlayerControl(false);
+        SetPlayerForcedSlowMovement(false);
+
+        // Update prompt
+        promptText.text = civilianIntroPromptMessage;
+
+        // The door should still remain disabled here
+        taskArrow.Show(false);
+
+        currentTutorialCivilians = tutorialEnemySpawner.SpawnTutorialCivilians();
+        for (int i = 0; i < )
+        currentTutorial.DeathHandler.EnableTutorialKillLockMode();
+        currentTutorialEnemy.DeathHandler.OnDied += HandleTutorialEnemyDied;
+        SnapFaceTarget(currentTutorialEnemy.transform);
+        SnapCameraToTarget(currentTutorialEnemy.transform);
+
+        StartCoroutine(BeginForcedSlowMovementAfterEnemyCutscene());
+    }
+    */
+
     private IEnumerator BeginForcedSlowMovementAfterEnemyCutscene()
     {
         if (tutorialEnemySpawner != null)
@@ -520,6 +569,27 @@ public class TutorialManager : MonoBehaviour
             }
         }
     }
+    
+    private IEnumerator PlaySlamsTutorialSequence()
+    {
+        promptText.text = slamsIntroPromptMessage;
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+
+        slamEndsTutorial = true;
+        banSlams.Invoke(false);
+
+        promptText.text = civiliansIntroPromptMessage;
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+        /*
+        currentTutorialCivilians = tutorialEnemySpawner.SpawnTutorialCivilians();
+        foreach (CivilianAI civ in currentTutorialCivilians)
+        {
+            civ.DeathHandler.OnDied += HandleTutorialCivilianDied;
+            civ.DeathHandler.EnableTutorialKillOnlyBySlamMode();
+            civ.
+        }
+        */
+    }
 
     private IEnumerator PlayFearAndAweTutorialSequence()
     {
@@ -562,6 +632,20 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
+    /*
+    private void HandleTutorialCivilianDied()
+    {
+        if (slamsTutorialSequenceEnded)
+        {
+            return;
+        }
+        else
+        {
+            civiliansKilled++;
+            if civiliansKilled > p
+        }
+    }
+    */
     private void HandleTutorialEnemyDied()
     {
         if (enemyDefeated)
@@ -572,10 +656,21 @@ public class TutorialManager : MonoBehaviour
         enemyDefeated = true;
 
         currentTutorialEnemy.DeathHandler.OnDied -= HandleTutorialEnemyDied;
-        tutorialDoor.EnableDoor();
-        taskArrow.SetTarget(tutorialDoorTarget);
-        taskArrow.Show(true);
-        promptText.text = exitPromptMessage;
+        PlaySlamsTutorialSequence();
+    }
+
+    public void handlePlayerSlam()
+    {
+        if (slamEndsTutorial) {
+            //foreach(CivilianAI civ in currentTutorialCivilians)
+            //{
+                //civ.DeathHandler.KilledBy()
+            //}
+            tutorialDoor.EnableDoor();
+            taskArrow.SetTarget(tutorialDoorTarget);
+            taskArrow.Show(true);
+            promptText.text = exitPromptMessage;
+        }
     }
 
     private void SnapFaceTarget(Transform target)

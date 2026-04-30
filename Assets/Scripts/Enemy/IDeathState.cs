@@ -12,6 +12,7 @@ namespace Enemy
         public event Action OnDied;
 
         public void EnableTutorialKillLockMode();
+        public void EnableTutorialKillOnlyBySlamMode();
         public void SetCanBeKilled(bool canBeKilled);
         public void KilledBy(Collider other, AttackHitbox hitBox);
         public void KilledBy(Vector3 location, float force);

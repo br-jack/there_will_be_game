@@ -33,40 +33,10 @@ public class ScorePopup : MonoBehaviour
             popupText = GetComponent<TextMeshProUGUI>();
         }
         
-        string popupExplanation = GetExplanationForType(type);
-        popupText.text = $"+{amount} {popupExplanation}";
+        popupText.text = $"+{amount}";
         popupText.color = GetColorForType(type);
         
         StartCoroutine(AnimatePopup());
-    }
-    
-    private string GetExplanationForType(ScoreType type) {
-        switch (type) {
-            case ScoreType.Base:
-                return "Silenced!"; // White
-            //case ScoreType.Speed:
-                //return ""; // Orange
-            case ScoreType.atATrot:
-                return "At a Trot"; 
-            case ScoreType.atACanter:
-                return "At a Canter"; 
-            case ScoreType.atAGallop:
-                return "At a Gallop"; 
-            case ScoreType.LowHealth:
-                return "Against all odds";
-            case ScoreType.Air:
-                return "#airtime";
-            case ScoreType.ShieldBypass:
-                return "Past a shield"; // Gold
-            case ScoreType.OnFire:
-                return "Enflamed!"; // Bright red
-            case ScoreType.Building: 
-                return "Renovation"; 
-            case ScoreType.Slam: 
-                return "Slammed!";
-            default:
-                return "Misc. Bonus";
-        }
     }
     
     private Color GetColorForType(ScoreType type)
@@ -75,14 +45,8 @@ public class ScorePopup : MonoBehaviour
         {
             case ScoreType.Base:
                 return new Color(1f, 1f, 1f); // White
-            //case ScoreType.Speed:
-                //return new Color(1f, 0.5f, 0f); // Orange
-            case ScoreType.atATrot:
-                return Color.green; 
-            case ScoreType.atACanter:
-                return Color.yellow; 
-            case ScoreType.atAGallop:
-                return new Color(1f, 0.5f, 0f); // Orange; 
+            case ScoreType.Speed:
+                return new Color(1f, 0.5f, 0f); // Orange
             case ScoreType.LowHealth:
                 return new Color(1f, 0f, 0f); // Red
             case ScoreType.Air:
@@ -91,11 +55,7 @@ public class ScorePopup : MonoBehaviour
                 return new Color(1f, 0.84f, 0f); // Gold
             case ScoreType.OnFire:
                 return new Color(1f, 0.2f, 0.2f); // Bright red
-            case ScoreType.Building: 
-                return new Color(137,87,41); //brown
-            case ScoreType.Slam: 
-                return Color.black;
-            default:
+                default:
                 return Color.white;
         }
     }
