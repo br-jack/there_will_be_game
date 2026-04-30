@@ -83,6 +83,13 @@ public class TutorialManager : MonoBehaviour
 
     [SerializeField] private string enemyIntroPromptMessage = "An enemy approaches. Watch your health.";
     [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
+    
+    [SerializeField] private string slamIntroPromptMessage = "Your citizens are numerous. Hold the hammer directly upright to charge up a slam attack.";
+    [SerializeField] private string slamPerformPromptMessage = "What a racket they all make! Swing the hammer downwards to silence them.";
+    [SerializeField] private string aweSlamPromptMessage = "Your awe bar is full. Your next slam attack will be much more powerful.";
+
+
+    
 
     [Header("Task Panel Intro")]
     private string taskPanelIntroMessage = "Tasks appear on this panel. Complete them to earn rewards.";
@@ -99,9 +106,9 @@ public class TutorialManager : MonoBehaviour
     private float arrowPulseSpeed = 1f;
 
     [Header("Fear and Awe Tutorial")]
-    [SerializeField] private string fearIntroPromptMessage = "This is Fear. Violence and chaos increase it.";
-    [SerializeField] private string aweIntroPromptMessage = "This is Awe. Great power and impressive acts increase it.";
-    [SerializeField] private string fearAweCombinedPromptMessage = "Your actions shape both Fear and Awe.";
+    [SerializeField] private string fearIntroPromptMessage = "This is Fear. It's the goal of the game. The more of it you instill in your citizens, the better Incitatus will sleep tonight.";
+    [SerializeField] private string aweIntroPromptMessage = "This is Awe. Great power and impressive acts increase it. When the bar is full, your slam attacks become much more powerful.";
+    //[SerializeField] private string fearAweCombinedPromptMessage = "Your actions shape both Fear and Awe.";
     [SerializeField] private string fearAweFinalPromptMessage = "Defeat the enemy to progress.";
 
     private bool fearAweExplanationStarted = false;
@@ -548,9 +555,11 @@ public class TutorialManager : MonoBehaviour
         StartCoroutine(PulseUIObject(aweBarUI, taskPanelPulseDuration, taskPanelPulseScale, taskPanelPulseSpeed));
         yield return new WaitForSeconds(taskPanelIntroDelay);
 
+        /*
         promptText.text = fearAweCombinedPromptMessage;
         yield return new WaitForSeconds(taskPanelIntroDelay);
-
+        */
+        
         promptText.text = fearAweFinalPromptMessage;
 
 
