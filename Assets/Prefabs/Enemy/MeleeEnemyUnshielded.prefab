@@ -2842,7 +2842,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 3
 --- !u!114 &-8550110256333393937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2859,12 +2859,12 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   _playerBodyCollider: {fileID: 0}
-  speed: 10
+  speed: 11
   speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
-    damage: 7
+    damage: 12
     range: 2.5
     cooldown: 2
     chargeTime: 1
@@ -2875,7 +2875,7 @@ MonoBehaviour:
   retreatSpeedMultiplier: 1.25
   strikeStopRatio: 0.7
   stopFromPlayerDistance: -1
-  sightRange: 25
+  sightRange: 50
   randomMovement:
     radius: 20
     minIdleDuration: 2

@@ -51,36 +51,37 @@ MonoBehaviour:
   rangedEnemyPrefab: {fileID: 4937528112206273530, guid: 525c1ca2571d54d5380ac4f07f2d7659, type: 3}
   civilianPrefab: {fileID: 1517552264688272, guid: aa0684218d12c45d5adb940a06244028, type: 3}
   minDistanceFromPlayer: 50
-  maxDistanceFromPlayer: 250
+  maxDistanceFromPlayer: 550
   waves:
   - duration: 30
     clearRemainingOnEnd: 0
     spawnInterval: 0.1
-    meleeShielded: 0
-    meleeUnshielded: 100
-    ranged: 10
-    rapid: 0
+    meleeShielded: 60
+    meleeUnshielded: 144
+    ranged: 144
+    rapid: 60
+    civilians: 300
   - duration: 30
     clearRemainingOnEnd: 0
-    spawnInterval: 0.45
-    meleeShielded: 15
-    meleeUnshielded: 25
-    ranged: 15
-    rapid: 15
-    civilians: 15
+    spawnInterval: 0.5
+    meleeShielded: 60
+    meleeUnshielded: 144
+    ranged: 144
+    rapid: 60
+    civilians: 300
   - duration: 120
     clearRemainingOnEnd: 0
-    spawnInterval: 5
-    meleeShielded: 15
-    meleeUnshielded: 25
-    ranged: 15
-    rapid: 15
-    civilians: 15
-  - duration: 120
+    spawnInterval: 3
+    meleeShielded: 60
+    meleeUnshielded: 144
+    ranged: 144
+    rapid: 60
+    civilians: 300
+  - duration: 140
     clearRemainingOnEnd: 0
-    spawnInterval: 8
-    meleeShielded: 15
-    meleeUnshielded: 25
-    ranged: 15
-    rapid: 15
-    civilians: 15
+    spawnInterval: 3
+    meleeShielded: 60
+    meleeUnshielded: 144
+    ranged: 144
+    rapid: 60
+    civilians: 300

@@ -178,8 +178,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Divine Decree
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 035457d987f1ad049916f2221eaf71a0, type: 2}
-  m_sharedMaterial: {fileID: -9144486691531927670, guid: 035457d987f1ad049916f2221eaf71a0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1860,8 +1860,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 035457d987f1ad049916f2221eaf71a0, type: 2}
-  m_sharedMaterial: {fileID: -9144486691531927670, guid: 035457d987f1ad049916f2221eaf71a0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2319,8 +2319,8 @@ MonoBehaviour:
   m_text: Inspired by the tale of Caligula and his beloved horse, Incitatus. As evening
     approaches, the town must fall silent so Incitatus may sleep.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 035457d987f1ad049916f2221eaf71a0, type: 2}
-  m_sharedMaterial: {fileID: -9144486691531927670, guid: 035457d987f1ad049916f2221eaf71a0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3475,8 +3475,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Before the bell tolls, spread enough Fear to quiet the streets
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 035457d987f1ad049916f2221eaf71a0, type: 2}
-  m_sharedMaterial: {fileID: -9144486691531927670, guid: 035457d987f1ad049916f2221eaf71a0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4004,7 +4004,19 @@ MonoBehaviour:
         m_CallState: 2
   summonCivilians:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1988149511}
+        m_TargetAssemblyTypeName: TutorialEnemySpawner, Assembly-CSharp
+        m_MethodName: SpawnTutorialCivilians
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   introOverlay: {fileID: 1927686302}
   dimBackground: {fileID: 776700385}
   CardCanvasGroup: {fileID: 62476898}
@@ -4297,8 +4309,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: YOU DIED
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 035457d987f1ad049916f2221eaf71a0, type: 2}
-  m_sharedMaterial: {fileID: -9144486691531927670, guid: 035457d987f1ad049916f2221eaf71a0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

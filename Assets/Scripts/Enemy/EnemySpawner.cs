@@ -36,6 +36,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float maxDistanceFromPlayer = 100f;
     private float navMeshSearchRadius = 2.5f;
 
+    private bool mapBoundsValid;
+    private float mapMinX, mapMaxX, mapMinZ, mapMaxZ;
+
     [Header("Waves")]
     // Spawner stays on the last wave once the waves have ran out.
     [SerializeField] private Wave[] waves;
@@ -65,7 +68,32 @@ public class EnemySpawner : MonoBehaviour
         {
             player = playerObject.transform;
         }
+        ComputeMapBounds();
         OnWaveStarted?.Invoke(1);
+    }
+
+    private void ComputeMapBounds()
+    {
+        NavMeshTriangulation tri = NavMesh.CalculateTriangulation();
+        if (tri.vertices == null || tri.vertices.Length == 0)
+        {
+            mapBoundsValid = false;
+            return;
+        }
+
+        mapMinX = float.PositiveInfinity;
+        mapMaxX = float.NegativeInfinity;
+        mapMinZ = float.PositiveInfinity;
+        mapMaxZ = float.NegativeInfinity;
+        for (int i = 0; i < tri.vertices.Length; i++)
+        {
+            Vector3 v = tri.vertices[i];
+            if (v.x < mapMinX) mapMinX = v.x;
+            if (v.x > mapMaxX) mapMaxX = v.x;
+            if (v.z < mapMinZ) mapMinZ = v.z;
+            if (v.z > mapMaxZ) mapMaxZ = v.z;
+        }
+        mapBoundsValid = true;
     }
 
     private void Update()
@@ -193,12 +221,21 @@ public class EnemySpawner : MonoBehaviour
         if (prefab == null) return;
 
         // Try to find a valid NavMesh position near the player.
-        for (int attempt = 0; attempt < 10; attempt++)
+        for (int attempt = 0; attempt < 50; attempt++)
         {
             float angle = Random.Range(0f, Mathf.PI * 2f);
             float distance = Random.Range(minDistanceFromPlayer, maxDistanceFromPlayer);
             Vector3 offset = new Vector3(Mathf.Cos(angle) * distance, 0f, Mathf.Sin(angle) * distance);
             Vector3 candidate = player.position + offset;
+
+            // Free off-map reject so we don't waste a NavMesh.SamplePosition
+            // call on a candidate that's obviously outside the playable area.
+            if (mapBoundsValid &&
+                (candidate.x < mapMinX || candidate.x > mapMaxX ||
+                 candidate.z < mapMinZ || candidate.z > mapMaxZ))
+            {
+                continue;
+            }
 
             if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
             {
