@@ -82,20 +82,20 @@ namespace Hammer
                             if (output.Contains("q:") || output.Contains("a:") || output.Contains("info:"))
                             {
                                 //(hub sending) IMU data found
-                                // Debug.Log("Hub found on port " + possiblePort);
+                                //Debug.Log("Hub found on port " + possiblePort);
                                 return possiblePort;
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        Debug.LogError($"Error scanning COM ports: {ex.Message}");
+                        //Debug.LogError($"Error scanning COM ports: {ex.Message}");
                     }
                 }
             }
             catch (Exception) //e)
             {
-                // Debug.LogWarning("Failed to find port: ");
+                //Debug.LogWarning("Failed to find port: ");
                 // Debug.LogWarning(e);
             }
 

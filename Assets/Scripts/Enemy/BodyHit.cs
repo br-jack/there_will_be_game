@@ -14,9 +14,10 @@ public class BodyHit : MonoBehaviour
         scoreSettings = Resources.Load<ScoreSettings>("ScoreSettings");
     }
 
-    public void hitBySlamAttack()
+    public void awardScoreForSlamAttack()
     {
-        
+        StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
+        AwardScore(enemy.HasShield(),true);
     }
     
     void OnTriggerEnter(Collider other)
@@ -38,11 +39,11 @@ public class BodyHit : MonoBehaviour
         hitSounds = GameObject.Find("KillSound").GetComponent<hitSounds>();
         hitSounds.PlaySFX();
 
-        AwardScore(enemy.WasShielded);
+        AwardScore(enemy.WasShielded,false);
         enemy.DeathHandler.KilledBy(other, attack);
     }
 
-    private void AwardScore(bool hasShield)
+    private void AwardScore(bool hasShield, bool slammed)
     {
         //could perhaps be done with events, with enemies broadcasting when they're hit,
         //and a script on the player awarding the score.
@@ -115,6 +116,12 @@ public class BodyHit : MonoBehaviour
         if (!characterController.isGrounded)
         {
             scoreComponents.Add(new ScoreComponent(scoreSettings.airBonusScore, ScoreType.Air));
+        }
+
+        //slam bonus
+        if(slammed)
+        {
+            scoreComponents.Add(new ScoreComponent(scoreSettings.slamBonusScore, ScoreType.Slam));
         }
 
         // Shield bypass bonus

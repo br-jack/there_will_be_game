@@ -66,7 +66,7 @@ namespace Hammer
             if (hammerChargeState != newState) {
                 hammerChargeState = newState;
                 chargeStateChange.Invoke(hammerChargeState);
-            } else Debug.Log("hammer state change event despite state remaining the same");
+            } // else Debug.Log("hammer state change event despite state remaining the same as: "+newState);
         }
         
         void Awake()
@@ -85,7 +85,6 @@ namespace Hammer
                 float angleToUp = Vector3.Angle(Vector3.up, transform.up); //gives signed angle          
                 if (angleToUp < chargingZoneSize && angleToUp > 0.0f)
                 {
-
                     if (timeHeldUp > timeToChargeSlam) changeHammerChargeState(hammerChargeState.charged);
                     else if (timeHeldUp > 0.05 && hammerChargeState != hammerChargeState.charging)
                     {
@@ -149,14 +148,15 @@ namespace Hammer
 
         public void onSlamHitboxTrigger(Vector3 slamCenter)
         {
-            if (_targetHammer.radialAcceleration <= slamAccelThreshold)
-            {
+            //if (_targetHammer.radialAcceleration <= slamAccelThreshold)
+            //{
                 if (ScoreManager.Instance.AweScore >= ScoreManager.Instance.MaxAweScore) {
                     doAweSlam(slamCenter);
                     ScoreManager.Instance.ResetAwe();
 
                 } else doSlam(slamCenter);
-            }
+            
+            //}
             //_targetHammer.Rumble();
         }
         
@@ -175,14 +175,18 @@ namespace Hammer
             foreach (Collider c in colliders)
             {
                 if (c.GetComponentInParent<DestructibleObject>())
-                {
-                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 300);
+                {   
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPointOnBounds(transform.position), 300);
                 }
                 // TODO particles
                 // TODO use aarons ragdolls
                 if (c.GetComponentInParent<RagdollDeathHandler>())
                 {
                     c.GetComponentInParent<RagdollDeathHandler>().KilledBy(slamCenter,slamForce);
+                    if (c.GetComponentInParent<BodyHit>() != null) 
+                    {
+                        c.GetComponentInParent<BodyHit>().awardScoreForSlamAttack(); //they better have a body hit
+                    }
                 }
 
             }
@@ -204,13 +208,17 @@ namespace Hammer
             {
                 if (c.GetComponentInParent<DestructibleObject>())
                 {
-                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPoint(transform.position), 500);
+                    c.GetComponentInParent<DestructibleObject>().Break(c.ClosestPointOnBounds(transform.position), 500);
                 }
                 // TODO particles
                 // TODO use aarons ragdolls
                 if (c.GetComponentInParent<RagdollDeathHandler>())
                 {
                     c.GetComponentInParent<RagdollDeathHandler>().KilledBy(slamCenter,aweSlamForce);
+                    if (c.GetComponentInParent<BodyHit>() != null) 
+                    {
+                        c.GetComponentInParent<BodyHit>().awardScoreForSlamAttack(); //they better have a body hit
+                    }
                 }
 
             }

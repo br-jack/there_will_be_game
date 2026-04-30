@@ -30,9 +30,9 @@ public class hammerStateEffects : MonoBehaviour
     public Color _gallopColor;
     public Color _ultraGallopColor;
 
-    [SerializeField] private Renderer hammerMesh;
-    [SerializeField] private int headMaterialIndex = 2;
-    private Material[] _hammerMaterials;
+    //[SerializeField] private Renderer hammerMesh;
+    //[SerializeField] private int headMaterialIndex = 2;
+    //private Material[] _hammerMaterials;
 
     /*
     public void updateGait(gait newGait)

@@ -16,6 +16,7 @@ namespace Score
         atAGallop,
         OnFire,
         Building,
+        Slam
     }
 
     public enum ReportCard
