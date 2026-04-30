@@ -15,6 +15,6 @@ namespace Score
         public int atAGallopBonusScore = 50;
         public int fireBonusScore = 50;
         public int buildingDestructionScore = 10;
-        public int slamBaseScore = 25;
+        public int slamBonusScore = 10;
     }
 }

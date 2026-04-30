@@ -62,6 +62,8 @@ public class ScorePopup : MonoBehaviour
                 return "Enflamed!"; // Bright red
             case ScoreType.Building: 
                 return "Renovation"; 
+            case ScoreType.Slam: 
+                return "Slammed!";
             default:
                 return "Misc. Bonus";
         }
@@ -91,6 +93,8 @@ public class ScorePopup : MonoBehaviour
                 return new Color(1f, 0.2f, 0.2f); // Bright red
             case ScoreType.Building: 
                 return new Color(137,87,41); //brown
+            case ScoreType.Slam: 
+                return Color.black;
             default:
                 return Color.white;
         }

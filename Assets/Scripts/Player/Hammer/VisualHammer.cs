@@ -184,6 +184,10 @@ namespace Hammer
                 if (c.GetComponentInParent<RagdollDeathHandler>())
                 {
                     c.GetComponentInParent<RagdollDeathHandler>().KilledBy(slamCenter,slamForce);
+                    if (c.GetComponentInParent<BodyHit>() != null) 
+                    {
+                        c.GetComponentInParent<BodyHit>().awardScoreForSlamAttack(); //they better have a body hit
+                    }
                 }
 
             }
@@ -212,6 +216,10 @@ namespace Hammer
                 if (c.GetComponentInParent<RagdollDeathHandler>())
                 {
                     c.GetComponentInParent<RagdollDeathHandler>().KilledBy(slamCenter,aweSlamForce);
+                    if (c.GetComponentInParent<BodyHit>() != null) 
+                    {
+                        c.GetComponentInParent<BodyHit>().awardScoreForSlamAttack(); //they better have a body hit
+                    }
                 }
 
             }
