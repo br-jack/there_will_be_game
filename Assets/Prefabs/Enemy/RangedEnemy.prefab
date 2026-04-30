@@ -2388,7 +2388,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 3
 --- !u!114 &7777645992290478274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2405,14 +2405,14 @@ MonoBehaviour:
   _playerHealthRef: {fileID: 0}
   _playerTransformRef: {fileID: 0}
   _playerBodyCollider: {fileID: 0}
-  speed: 8
+  speed: 10
   speedVariance: 0.15
   smoothVelocity: 0.35
   rotationSpeed: 8
   attack:
-    damage: 6
-    range: 10
-    cooldown: 4
+    damage: 8
+    range: 14
+    cooldown: 3
     chargeTime: 1.5
   useStrike: 0
   holdDistance: 6
@@ -2420,8 +2420,8 @@ MonoBehaviour:
   strikeSpeedMultiplier: 2.5
   retreatSpeedMultiplier: 1.5
   strikeStopRatio: 0.7
-  stopFromPlayerDistance: 15
-  sightRange: 25
+  stopFromPlayerDistance: 20
+  sightRange: 70
   randomMovement:
     radius: 20
     minIdleDuration: 2
@@ -2436,6 +2436,9 @@ MonoBehaviour:
   hitTrigger: Hit
   deadTrigger: Die
   useDamageAnimEvent: 0
+  swordClip: {fileID: 0}
+  swordClip1: {fileID: 0}
+  swordClip2: {fileID: 0}
   projectile: {fileID: -3951855776858207511, guid: a29a84e2afeaffc4fa32f6b98dd5ff4b, type: 3}
   spawnOffset: {x: 0, y: 1.5, z: 1.2}
 --- !u!95 &3937732561661069261

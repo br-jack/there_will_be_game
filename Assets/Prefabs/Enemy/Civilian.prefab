@@ -57,7 +57,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: c370a77db0e086b4887ca06fc364c92b, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -137,7 +137,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 3
 --- !u!114 &9006935523512060209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,8 +156,8 @@ MonoBehaviour:
     maxIdleDuration: 6
     speed: 10
   runAway:
-    startRunningRadius: 20
-    stopRunningRadius: 35
+    startRunningRadius: 40
+    stopRunningRadius: 55
     speed: 10
   smoothVelocity: 0.7
   rotationSpeed: 16

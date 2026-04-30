@@ -101,7 +101,7 @@ namespace Enemy
 
         // Stuck-escape: if we've been commanding movement for StuckTimeThreshold but
         // haven't actually translated, sidestep for UnstuckDuration to break free.
-        private const float StuckTimeThreshold = 0.4f;
+        private const float StuckTimeThreshold = 0.9f;
         private const float StuckMovedSqr = 0.04f;
         private const float StuckCommandedSqr = 1f;
         private const float UnstuckDuration = 0.3f;
@@ -109,6 +109,15 @@ namespace Enemy
         private float _stuckCheckTime;
         private float _unstuckUntil;
         private Vector3 _unstuckDir;
+
+        // Repathing every FixedUpdate amplifies avoidance churn — 5Hz is plenty for chasing
+        // a moving player and the agent's auto-repath fills any gaps.
+        private const float DestinationUpdateInterval = 0.2f;
+        private float _nextDestinationTime;
+
+        // When the enemy is right on top of the player, toPlayerDir swings wildly with tiny
+        // position changes. Freeze rotation in this zone instead of chasing the noise.
+        private const float CloseFacingFreezeDistance = 1.0f;
         private AudioSource audioSource;
 
         public AudioClip swordClip;
@@ -332,10 +341,19 @@ namespace Enemy
         private void PickNewWanderPoint()
         {
             if (agent == null || !agent.isOnNavMesh) return;
-            Vector3 candidate = transform.position + UnityEngine.Random.insideUnitSphere * randomMovement.radius;
-            if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, randomMovement.radius, NavMesh.AllAreas))
+
+            // Small sample radius + path validation prevents picking a candidate inside a building
+            // that snaps onto the navmesh right up against an outside wall — the enemy would then
+            // press into the wall instead of routing around the building.
+            NavMeshPath path = new NavMeshPath();
+            for (int attempt = 0; attempt < 8; attempt++)
             {
+                Vector3 candidate = transform.position + UnityEngine.Random.insideUnitSphere * randomMovement.radius;
+                if (!NavMesh.SamplePosition(candidate, out NavMeshHit hit, 2f, NavMesh.AllAreas)) continue;
+                if (!agent.CalculatePath(hit.position, path) || path.status != NavMeshPathStatus.PathComplete) continue;
+
                 agent.SetDestination(hit.position);
+                return;
             }
         }
 
@@ -414,18 +432,32 @@ namespace Enemy
 
             // NavMesh pathfinding direction. While wandering, the destination was already set when the
             // state was entered — don't overwrite it with the player's position.
-            Vector3 moveDir = isWandering ? Vector3.zero : toPlayerDir;
+            // moveDir defaults to zero (not toPlayerDir) so when the path is blocked or the agent has
+            // given up, we stop instead of pressing through walls and triggering the stuck-escape jitter.
+            Vector3 moveDir = Vector3.zero;
             if (agent != null && agent.enabled && agent.isOnNavMesh)
             {
-                if (!isWandering) agent.SetDestination(_playerTransformRef.position);
+                if (!isWandering && Time.time >= _nextDestinationTime)
+                {
+                    agent.SetDestination(_playerTransformRef.position);
+                    _nextDestinationTime = Time.time + DestinationUpdateInterval;
+                }
                 Vector3 desiredVel = agent.desiredVelocity;
                 desiredVel.y = 0f;
                 if (desiredVel.sqrMagnitude > 0.0001f) moveDir = desiredVel.normalized;
             }
+            else if (!isWandering)
+            {
+                // No NavMesh available — fall back to direct line so combat still works.
+                moveDir = toPlayerDir;
+            }
 
             // Face the player when engaged; face the move direction while wandering.
+            // In melee range, freeze facing — toPlayerDir swings wildly when enemies are this
+            // close (collision shoves cause it), and we'd rather look committed than spin.
             Vector3 faceDir = isWandering ? moveDir : toPlayerDir;
-            if (faceDir.sqrMagnitude > 0.0001f)
+            bool freezeFacing = !isWandering && pivotDist < CloseFacingFreezeDistance;
+            if (!freezeFacing && faceDir.sqrMagnitude > 0.0001f)
             {
                 Quaternion finalRotation = Quaternion.LookRotation(faceDir);
                 transform.rotation = Quaternion.Slerp(transform.rotation, finalRotation, Time.fixedDeltaTime * rotationSpeed);
