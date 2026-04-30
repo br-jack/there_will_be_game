@@ -4002,7 +4002,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  allowCivilianMovement:
+  summonCivilians:
     m_PersistentCalls:
       m_Calls: []
   introOverlay: {fileID: 1927686302}
@@ -4723,16 +4723,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 354646526967688736, guid: e8e0021c26150a140b8cbb8107611ae9, type: 3}
   civilianPrefab: {fileID: 1517552264688272, guid: aa0684218d12c45d5adb940a06244028, type: 3}
   spawnPoint: {fileID: 474253707}
-  civilianSpawnPoint:
-  - {fileID: 817017940}
-  - {fileID: 1328878442}
-  - {fileID: 2038324002}
-  - {fileID: 1446458437}
-  - {fileID: 458004123}
-  - {fileID: 1282359886}
-  - {fileID: 1409254177}
-  - {fileID: 831493921}
-  - {fileID: 251343348}
+  civilianSpawnPoints: []
   spawnSound: {fileID: 0}
   audioSource: {fileID: 0}
   mainCamera: {fileID: 139368896}
@@ -6886,6 +6877,10 @@ PrefabInstance:
     - target: {fileID: 8273656261551645314, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: slamsAllowed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: slam.m_PersistentCalls.m_Calls.Array.size

@@ -53,7 +53,7 @@ namespace Hammer
         public UnityEvent<hammerChargeState> chargeStateChange;
         public UnityEvent slam;
         //InputAction temporarySlamActivate;
-        private bool slamsAllowed; 
+        [SerializeField] private bool slamsAllowed; 
 
         public float slamRadius;
         public float slamForce;
