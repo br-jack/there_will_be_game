@@ -108,6 +108,8 @@ public class CivilianAI : MonoBehaviour
 
     void Update()
     {
+        if (DeathHandler.IsDying) return;
+        
         if (playerRef == null) { ResolvePlayerRef(); return; }
 
         float distToPlayer = HorizontalDistance(transform.position, playerRef.position);
@@ -148,6 +150,8 @@ public class CivilianAI : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (DeathHandler.IsDying) return;
+
         Vector3 moveDir = Vector3.zero;
         if (agent.isOnNavMesh)
         {
