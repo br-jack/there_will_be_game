@@ -6,7 +6,6 @@ namespace Enemy
     public class OldDeathHandler : MonoBehaviour, IDeathState
     {
         [SerializeField] private bool useTutorialKillLock = false;
-        [SerializeField] private bool useTutorialSlamLock = false;
         public bool CanBeKilled { get; private set; } = true;
         public bool CanBeKilledByNonSlam {get; private set; } = true;
         [SerializeField] private float maxDeathTime = 4f;
@@ -40,7 +39,6 @@ namespace Enemy
         }
         public void EnableTutorialKillOnlyBySlamMode()
         {
-            useTutorialSlamLock = true;
             CanBeKilledByNonSlam = true;
             CanBeKilled = true;
         }

@@ -315,11 +315,6 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator PulseArrow()
     {
-        if (taskArrow == null)
-        {
-            yield break;
-        }
-
         Transform arrowTransform = taskArrow.transform;
         Vector3 originalScale = arrowTransform.localScale;
         float elapsed = 0f;
@@ -344,11 +339,6 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator PulseUIObject(GameObject uiObject, float duration, float pulseScale, float pulseSpeed)
     {
-        if (uiObject == null)
-        {
-            yield break;
-        }
-
         RectTransform rectTransform = uiObject.GetComponent<RectTransform>();
         if (rectTransform == null)
         {
@@ -647,11 +637,6 @@ public class TutorialManager : MonoBehaviour
 
     private void SnapFaceTarget(Transform target)
     {
-        if (playerTransform == null || target == null)
-        {
-            return;
-        }
-
         Vector3 direction = target.position - playerTransform.position;
         direction.y = 0f;
 
@@ -666,11 +651,6 @@ public class TutorialManager : MonoBehaviour
 
     private void SnapCameraToTarget(Transform target)
     {
-        if (cameraTransform == null || target == null)
-        {
-            return;
-        }
-
         Vector3 direction = target.position - cameraTransform.position;
 
         if (direction.sqrMagnitude < 0.001f)

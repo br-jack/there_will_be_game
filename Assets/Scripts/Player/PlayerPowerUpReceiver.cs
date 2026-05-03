@@ -239,6 +239,7 @@ public class PlayerPowerUpReceiver : MonoBehaviour
         EndJumpBoostEffects();
     }
 
+    // this aint actually used anymore imma just keep it here tho
     private void ApplyHeal(float amount)
     {
         if (playerHealth != null){

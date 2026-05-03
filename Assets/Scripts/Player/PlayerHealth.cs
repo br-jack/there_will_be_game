@@ -184,10 +184,7 @@ public class PlayerHealth : MonoBehaviour
         playerParticles.StopAllMovementParticles();
         ScoreManager.Instance.RemoveFear(fearPenaltyOnRespawn);
         ScoreManager.Instance.ResetAwe();
-        if (deathTextUI != null)
-        {
-            deathTextUI.ShowDeathText();
-        }
+        deathTextUI.ShowDeathText();
         yield return new WaitForSeconds(respawnDelay);
         RespawnPlayer();
         yield return null;

@@ -103,9 +103,6 @@ public class FireballProjectile : MonoBehaviour
 
     private void SpawnFlamePillarAtGround(Vector3 targetPosition)
     {
-        if (flamePillarPrefab == null)
-            return;
-
         Vector3 rayStart = targetPosition + Vector3.up * groundCheckHeight;
 
         if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayerMask))

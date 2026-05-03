@@ -38,6 +38,7 @@ public class FearUI : MonoBehaviour
         }
     }
     
+    // don't actually want it to display the score just want the popups
     private void UpdateScoreDisplay(int score)
     {
         scoreText.text = $"";

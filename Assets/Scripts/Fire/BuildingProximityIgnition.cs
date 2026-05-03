@@ -13,9 +13,6 @@ public class BuildingProximityIgnition : MonoBehaviour
 
     private void Update()
     {
-        if (hammerFireController == null)
-            return;
-
         // all the different checks to make sure igniting is possible
 
         // if hammer not on fire, reset target and timer

@@ -3,7 +3,6 @@ using UnityEngine;
 public class TutorialReachPointTask : BaseTask
 {
     [SerializeField] private string tutorialTaskName = "Approach the marked area";
-
     private bool playerReachedGoal = false;
 
     public override void StartTask()

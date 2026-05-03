@@ -45,7 +45,8 @@ public class FireTask : BaseTask
 
     public void HammerIgnited()
     {
-        if (hammerIgnited || isComplete) return;
+        if (hammerIgnited || isComplete) 
+            return;
 
         hammerIgnited = true;
         Transform nearestBuilding = GetNearestUnburnedBuilding();
@@ -58,7 +59,8 @@ public class FireTask : BaseTask
 
     public void BuildingBurned()
     {
-        if (isComplete) return;
+        if (isComplete) 
+            return;
 
         buildingsBurned++;
 

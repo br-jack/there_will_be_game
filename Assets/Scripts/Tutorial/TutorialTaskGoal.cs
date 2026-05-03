@@ -39,40 +39,4 @@ public class TutorialTaskGoal : MonoBehaviour
         Vector2 offset = new Vector2(point.x - centre.x, point.z - centre.z);
         return offset.sqrMagnitude <= allowedRadiusSqr;
     }
-
-    /* just used for debugging the valid area and foot points
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        DrawFlatCircle(transform.position, validRadius - extraPadding);
-
-        Gizmos.color = Color.yellow;
-        if (frontLeftFootPoint != null) Gizmos.DrawSphere(frontLeftFootPoint.position, 0.05f);
-        if (frontRightFootPoint != null) Gizmos.DrawSphere(frontRightFootPoint.position, 0.05f);
-        if (backLeftFootPoint != null) Gizmos.DrawSphere(backLeftFootPoint.position, 0.05f);
-        if (backRightFootPoint != null) Gizmos.DrawSphere(backRightFootPoint.position, 0.05f);
-    }
-
-    private void DrawFlatCircle(Vector3 centre, float radius)
-    {
-        int segments = 40;
-        float angleStep = 360f / segments;
-
-        Vector3 prevPoint = centre + new Vector3(radius, 0f, 0f);
-
-        for (int i = 1; i <= segments; i++)
-        {
-            float angle = angleStep * i * Mathf.Deg2Rad;
-
-            Vector3 nextPoint = centre + new Vector3(
-                Mathf.Cos(angle) * radius,
-                0f,
-                Mathf.Sin(angle) * radius
-            );
-
-            Gizmos.DrawLine(prevPoint, nextPoint);
-            prevPoint = nextPoint;
-        }
-    }*/
 }

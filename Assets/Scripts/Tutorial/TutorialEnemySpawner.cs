@@ -90,13 +90,8 @@ public class TutorialEnemySpawner : MonoBehaviour
         }
 
         cutsceneCamera.transform.position = fixedCutscenePosition;
-
         Vector3 lookTarget = currentSpawnedEnemy.transform.position + Vector3.up * 1.5f;
         Quaternion targetRotation = Quaternion.LookRotation(lookTarget - cutsceneCamera.transform.position);
-        cutsceneCamera.transform.rotation = Quaternion.Slerp(
-            cutsceneCamera.transform.rotation,
-            targetRotation,
-            Time.deltaTime * cutsceneLookSmooth
-        );
+        cutsceneCamera.transform.rotation = Quaternion.Slerp(cutsceneCamera.transform.rotation, targetRotation, Time.deltaTime * cutsceneLookSmooth);
     }
 }

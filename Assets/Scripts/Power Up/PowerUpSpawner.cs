@@ -134,11 +134,6 @@ public class PowerUpSpawner : MonoBehaviour
 
     private IEnumerator ShowBoonMessage(string message)
     {
-        if (boonText == null)
-        {
-            yield break;
-        }
-
         boonText.text = message;
         boonText.gameObject.SetActive(true);
 
