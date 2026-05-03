@@ -305,7 +305,7 @@ public class TutorialManager : MonoBehaviour
         StartCoroutine(PulseTaskPanel());
         promptText.text = taskPanelIntroMessage;
         yield return new WaitForSeconds(taskPanelIntroDelay);
-        taskArrow.Show(true);
+        taskArrow.gameObject.SetActive(true);
         StartCoroutine(PulseArrow());
         promptText.text = arrowIntroMessage;
         yield return new WaitForSeconds(arrowIntroDelay);
@@ -395,7 +395,7 @@ public class TutorialManager : MonoBehaviour
         {
             return;
         }
-        taskArrow.Show(false);
+        taskArrow.gameObject.SetActive(false);
 
         rewardSpawned = true;
         tutorialMarker.SetActive(false);
@@ -419,7 +419,7 @@ public class TutorialManager : MonoBehaviour
 
     private void HideGameplayUIAtStart()
     {
-        taskArrow.Show(false);
+        taskArrow.gameObject.SetActive(false);
         tutorialMarker.SetActive(false);
         fearBarUI.SetActive(false);
         aweBarUI.SetActive(false);
@@ -475,7 +475,7 @@ public class TutorialManager : MonoBehaviour
         promptText.text = enemyIntroPromptMessage;
 
         // The door should still remain disabled here
-        taskArrow.Show(false);
+        taskArrow.gameObject.SetActive(false);
 
         allowAttacking.Invoke(false); //should already be done
 
@@ -614,7 +614,7 @@ public class TutorialManager : MonoBehaviour
         tutorialDoor.EnableDoor();
 
         taskArrow.SetTarget(tutorialDoorTarget);
-        taskArrow.Show(true);
+        taskArrow.gameObject.SetActive(true);
         promptText.text = exitPromptMessage;
 
     }

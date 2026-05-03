@@ -12,17 +12,8 @@ public class TaskArrow3D : MonoBehaviour
 
     private void Update()
     {
-        UpdatePosition();
-        UpdateRotation();
-    }
-
-    private void UpdatePosition()
-    {
         transform.position = player.position + Vector3.up * heightAbovePlayer;
-    }
 
-    private void UpdateRotation()
-    {
         Vector3 direction = target.position - player.position;
 
         if (direction.sqrMagnitude < 0.001f)
@@ -39,10 +30,5 @@ public class TaskArrow3D : MonoBehaviour
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;
-    }
-
-    public void Show(bool show)
-    {
-        gameObject.SetActive(show);
     }
 }

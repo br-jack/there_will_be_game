@@ -19,11 +19,7 @@ public class ScorePopup : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
-        
-        if (canvasGroup == null)
-        {
-            canvasGroup = gameObject.AddComponent<CanvasGroup>();
-        }
+        canvasGroup = gameObject.AddComponent<CanvasGroup>();
     }
     
     public void Initialize(int amount, ScoreType type)

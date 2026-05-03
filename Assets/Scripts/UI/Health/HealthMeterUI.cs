@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class HealthMeterUI : MonoBehaviour
 {
-    [Header("References")]
     [SerializeField] private Image healthFillImage;
     [SerializeField] private RectTransform panelTransform;
 
@@ -47,19 +47,10 @@ public class HealthMeterUI : MonoBehaviour
         SetHealthFraction((float)currentLives / (float)maxLives);
     }
 
-    public void ShowBar(bool show)
-    {
-        gameObject.SetActive(show);
-    }
-
     private void SetHealthFraction(float fraction)
     {
         float clampedFraction = Mathf.Clamp01(fraction);
-
-        if (healthFillImage != null)
-        {
-            healthFillImage.fillAmount = clampedFraction;
-        }
+        healthFillImage.fillAmount = clampedFraction;
 
         if (pulseOnChange)
         {
@@ -69,10 +60,6 @@ public class HealthMeterUI : MonoBehaviour
 
     private void PlayPulse()
     {
-        if (panelTransform == null)
-        {
-            return;
-        }
 
         if (pulseCoroutine != null)
         {
@@ -82,7 +69,7 @@ public class HealthMeterUI : MonoBehaviour
         pulseCoroutine = StartCoroutine(PulseRoutine());
     }
 
-    private System.Collections.IEnumerator PulseRoutine()
+    private IEnumerator PulseRoutine()
     {
         Vector3 normalScale = Vector3.one;
         Vector3 enlargedScale = new Vector3(pulseScale, pulseScale, 1.0f);
