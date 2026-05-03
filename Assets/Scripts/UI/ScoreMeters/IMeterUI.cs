@@ -47,7 +47,10 @@ namespace Score
 
             Color currentColor = GetScoreColor(normalizedScore);
             barFillImage.fillAmount = normalizedScore;
-            scoreText.text = currentScore.ToString();
+            if (scoreText != null)
+            {
+                scoreText.text = currentScore.ToString();
+            }
         }
 
         protected Color GetScoreColor(float normalizedScore)
