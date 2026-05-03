@@ -40,6 +40,8 @@ public class AttackHitbox : MonoBehaviour
         destroyBuildingEvent.Invoke();
     }
 
+    
+
     public float GetKnockbackForce()
     {
         float speed = 0f;

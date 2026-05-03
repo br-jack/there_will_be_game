@@ -125,11 +125,11 @@ namespace Score
 
             ReportCard reportCard;
 
-            if (fearProportion >= 0.75f)
+            if (fearProportion >= 1.0f)
             {
                 reportCard = ReportCard.ThreeStars;
             }
-            else if (fearProportion >= 0.4f)
+            else if (fearProportion >= 0.5f)
             {
                 reportCard = ReportCard.TwoStars;
             }

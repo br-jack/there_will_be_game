@@ -6,7 +6,9 @@ namespace Enemy
     public class RagdollDeathHandler : MonoBehaviour, IDeathState
     {
         [SerializeField] private bool useTutorialKillLock = false;
+        [SerializeField] private bool useTutorialSlamLock = false;
         public bool CanBeKilled { get; private set; } = true;
+        public bool CanBeKilledByNonSlam {get; private set; } = true;
         
         [SerializeField] private float maxAbsoluteDeathTime = 20f;
         [SerializeField] private float maxGroundedDeathTime = 10f;
@@ -40,6 +42,13 @@ namespace Enemy
         public void EnableTutorialKillLockMode()
         {
             useTutorialKillLock = true;
+            CanBeKilled = true;
+        }
+
+        public void EnableTutorialKillOnlyBySlamMode()
+        {
+            useTutorialSlamLock = true;
+            CanBeKilledByNonSlam = true;
             CanBeKilled = true;
         }
 

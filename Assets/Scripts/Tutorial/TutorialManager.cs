@@ -4,9 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Hammer;
+using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class TutorialManager : MonoBehaviour
 {
+    public UnityEvent<bool> allowSlams;
+    public UnityEvent<bool> allowAttacking;
+    public UnityEvent summonCivilians;
+    private bool slamGoesToFearAndAwe = false;
+    
     [Header("UI References")]
     [SerializeField] private GameObject introOverlay;
     [SerializeField] private Image dimBackground;
@@ -64,7 +71,7 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Tutorial Exit")]
     [SerializeField] private Transform tutorialDoorTarget;
-    [SerializeField] private string exitPromptMessage = "Congratulations, continue to the door to exit the tutorial";
+    [SerializeField] private string exitPromptMessage = "Go to the door to proceed. Good luck, Emperor!";
     [SerializeField] private TransitionToMain tutorialDoor;
 
     [Header("Tutorial Enemy")]
@@ -99,14 +106,21 @@ public class TutorialManager : MonoBehaviour
     private float arrowPulseSpeed = 1f;
 
     [Header("Fear and Awe Tutorial")]
-    [SerializeField] private string fearIntroPromptMessage = "This is Fear. Violence and chaos increase it.";
-    [SerializeField] private string aweIntroPromptMessage = "This is Awe. Great power and impressive acts increase it.";
-    [SerializeField] private string fearAweCombinedPromptMessage = "Your actions shape both Fear and Awe.";
-    [SerializeField] private string fearAweFinalPromptMessage = "Defeat the enemy to progress.";
+    [SerializeField] private string fearIntroPromptMessage = "This is Fear. Getting this is the aim of the game. ";  
+    [SerializeField] private string aweIntroPromptMessage = "This is Awe. When the bar is full, your slam attack is much stronger.";
+    [SerializeField] private string fearFurtherMessage = "Earn fear by silencing enemies and completing tasks.";
+    [SerializeField] private string aweFurtherMessage = "Hit enemies/buildings at high speeds, in midair, or with slam attacks to earn awe.";
 
     private bool fearAweExplanationStarted = false;
 
     private StandardEnemyAI currentTutorialEnemy;
+    //private List<CivilianAI> currentTutorialCivilians;
+
+    [Header("SlamsTutorial")]
+    [SerializeField] private string slamsIntroPromptMessage = "Hold the hammer directly upright to charge up a slam attack...";
+    [SerializeField] private string slamsFurtherPromptMessage = "...and swing to silence many of your noisy citizens in one go.";
+    //[SerializeField] private string slamFinalPromptMessage = "Go to the door to proceed. Good luck, Emperor!";
+
     private bool enemyPhaseStarted = false;
     private bool enemyHasHitPlayer = false;
     private bool enemyDefeated = false;
@@ -167,6 +181,8 @@ public class TutorialManager : MonoBehaviour
             CardCanvasGroup.alpha = 0f;
             CardCanvasGroup.gameObject.SetActive(true);
         }
+
+        allowSlams.Invoke(false);
 
         // Fade in background first
         yield return StartCoroutine(FadeBackground(0f, maxBackgroundAlpha, fadeInTime));
@@ -433,8 +449,9 @@ public class TutorialManager : MonoBehaviour
     {
         horseMovement.canControl = enabled;
         targetHammer.canControl = enabled;
-        Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
-        hitboxCollider.enabled = enabled;
+        //Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
+        //hitboxCollider.enabled = enabled;
+        allowAttacking.Invoke(enabled);
     }
 
     private void StartTutorialEnemyPhase()
@@ -460,6 +477,8 @@ public class TutorialManager : MonoBehaviour
         // The door should still remain disabled here
         taskArrow.Show(false);
 
+        allowAttacking.Invoke(false); //should already be done
+
         currentTutorialEnemy = tutorialEnemySpawner.SpawnTutorialEnemy();
         currentTutorialEnemy.DeathHandler.EnableTutorialKillLockMode();
         currentTutorialEnemy.DeathHandler.OnDied += HandleTutorialEnemyDied;
@@ -468,6 +487,7 @@ public class TutorialManager : MonoBehaviour
 
         StartCoroutine(BeginForcedSlowMovementAfterEnemyCutscene());
     }
+
 
     private IEnumerator BeginForcedSlowMovementAfterEnemyCutscene()
     {
@@ -482,6 +502,8 @@ public class TutorialManager : MonoBehaviour
         SetPlayerForcedSlowMovement(true);
 
         // Keep the hammer from killing the enemy before the demonstration hit
+        allowAttacking.Invoke(false);
+        /*
         if (hammerHitbox != null)
         {
             Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
@@ -490,6 +512,7 @@ public class TutorialManager : MonoBehaviour
                 hitboxCollider.enabled = false;
             }
         }
+        */
     }
 
     private void HandlePlayerHealthChanged(int current, int max)
@@ -507,18 +530,47 @@ public class TutorialManager : MonoBehaviour
             SetPlayerControl(true);
             SetPlayerForcedSlowMovement(false);
 
+            allowAttacking.Invoke(true);
+            /*
             Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
             hitboxCollider.enabled = true;
+            */
 
             // Show score + awe so the player can see them update after the kill
             fearBarUI.SetActive(true);
             aweBarUI.SetActive(true);
 
+            /*
             if (!fearAweExplanationStarted)
             {
                 StartCoroutine(PlayFearAndAweTutorialSequence());
             }
+            */
         }
+    }
+    
+    public IEnumerator PlaySlamsTutorialSequence()
+    {
+        //Debug.Log("time for the slams tutorial sequence");
+        promptText.text = slamsIntroPromptMessage;
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+        
+        summonCivilians.Invoke();
+
+        slamGoesToFearAndAwe = true;
+        allowSlams.Invoke(true);
+
+        promptText.text = slamsFurtherPromptMessage;
+        yield return new WaitForSeconds(taskPanelIntroDelay);
+        /*
+        currentTutorialCivilians = tutorialEnemySpawner.SpawnTutorialCivilians();
+        foreach (CivilianAI civ in currentTutorialCivilians)
+        {
+            civ.DeathHandler.OnDied += HandleTutorialCivilianDied;
+            civ.DeathHandler.EnableTutorialKillOnlyBySlamMode();
+            civ.
+        }
+        */
     }
 
     private IEnumerator PlayFearAndAweTutorialSequence()
@@ -529,12 +581,13 @@ public class TutorialManager : MonoBehaviour
         }
 
         fearAweExplanationStarted = true;
-
+        
+        /* this seeems to be broken, hitboxes should be disabled anyways
         if (currentTutorialEnemy != null)
         {
             currentTutorialEnemy.DeathHandler.SetCanBeKilled(false);
         }
-
+        */
         // all the values for the timings are the same so im just gonna reuse the values from the task bar
 
         fearBarUI.SetActive(true);
@@ -548,34 +601,48 @@ public class TutorialManager : MonoBehaviour
         StartCoroutine(PulseUIObject(aweBarUI, taskPanelPulseDuration, taskPanelPulseScale, taskPanelPulseSpeed));
         yield return new WaitForSeconds(taskPanelIntroDelay);
 
-        promptText.text = fearAweCombinedPromptMessage;
+        promptText.text = fearFurtherMessage;
         yield return new WaitForSeconds(taskPanelIntroDelay);
 
-        promptText.text = fearAweFinalPromptMessage;
-
-
-        yield return new WaitForSeconds(enemyKillUnlockDelay);
+        promptText.text = aweFurtherMessage;
+        yield return new WaitForSeconds(taskPanelIntroDelay);
 
         if (currentTutorialEnemy != null)
         {
             currentTutorialEnemy.DeathHandler.SetCanBeKilled(true);
         }
+        tutorialDoor.EnableDoor();
+
+        taskArrow.SetTarget(tutorialDoorTarget);
+        taskArrow.Show(true);
+        promptText.text = exitPromptMessage;
+
     }
+
 
     private void HandleTutorialEnemyDied()
     {
+        Debug.Log("yo the enemy died, time for the slams tutorial");
         if (enemyDefeated)
         {
             return;
         }
-
         enemyDefeated = true;
 
         currentTutorialEnemy.DeathHandler.OnDied -= HandleTutorialEnemyDied;
-        tutorialDoor.EnableDoor();
-        taskArrow.SetTarget(tutorialDoorTarget);
-        taskArrow.Show(true);
-        promptText.text = exitPromptMessage;
+        StartCoroutine(PlaySlamsTutorialSequence());
+    }
+
+    public void handlePlayerSlam()
+    {
+        if (slamGoesToFearAndAwe) {
+            StartCoroutine(PlayFearAndAweTutorialSequence());
+            //foreach(CivilianAI civ in currentTutorialCivilians)
+            //{
+                //civ.DeathHandler.KilledBy()
+            //}
+            
+        }
     }
 
     private void SnapFaceTarget(Transform target)

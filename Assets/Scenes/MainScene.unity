@@ -5018,11 +5018,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 145240877}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &20169548 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1316801848569499879, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-  m_PrefabInstance: {fileID: 5061453144199501980}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &27137349 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6168184190451578026, guid: 952b3b2d104ddfd47ba6d824d0c79475, type: 3}
@@ -91924,8 +91919,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baea54cf32d07214da549597797cfb6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFearScore: 8000
-  maxAweScore: 100
+  maxFearScore: 20000
+  maxAweScore: 400
 --- !u!4 &1360215374
 Transform:
   m_ObjectHideFlags: 0
@@ -155049,30 +155044,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4187240822355016155, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: m_Size.z
-      value: 1.2774099
-      objectReference: {fileID: 0}
-    - target: {fileID: 4187240822355016155, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4187240822355016155, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: m_Center.z
-      value: 1.3850124
-      objectReference: {fileID: 0}
-    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4326658757732828232, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1486947147}
-    - target: {fileID: 4768003233324626996, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: landingClip
-      value: 
-      objectReference: {fileID: 8300000, guid: f268ba0bb4ad9a547a7fb9a2828a7eb5, type: 3}
     - target: {fileID: 5431525345374756737, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: fireTask
       value: 
@@ -155133,86 +155104,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _trotColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _trotColor.g
-      value: 0.95856124
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _trotColor.r
+    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: slamsAllowed
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _canterColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _canterColor.g
-      value: 0.95856124
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _canterColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _gallopColor.g
-      value: 0.95856124
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _gallopColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _ultraGallopColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _ultraGallopColor.g
-      value: 0.95856124
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _stillAndWalkColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _stillAndWalkColor.g
-      value: 0.95856124
-      objectReference: {fileID: 0}
-    - target: {fileID: 7899430134532044250, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: _stillAndWalkColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_Target
-      value: 
-      objectReference: {fileID: 20169548}
-    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
-      value: Hammer.TargetHammer, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8286959571211990941, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: slam.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 8410834556999118810, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
-      propertyPath: fireTask
-      value: 
-      objectReference: {fileID: 1422696283}
     - target: {fileID: 9012345678901234567, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: damageFlash
       value: 
