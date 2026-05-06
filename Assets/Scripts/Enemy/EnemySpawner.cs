@@ -43,12 +43,11 @@ public class EnemySpawner : MonoBehaviour
     // Spawner stays on the last wave once the waves have ran out.
     [SerializeField] private Wave[] waves;
 
-    // Fires when a new wave begins. The int is the 1-based wave number.
     public event System.Action<int> OnWaveStarted;
 
     private Transform player;
 
-    // Keep track of alive instances of each type.
+    // these keep track of the currently active enemies of each type
     private readonly List<StandardEnemyAI> aliveMeleeShielded = new List<StandardEnemyAI>();
     private readonly List<StandardEnemyAI> aliveMeleeUnshielded = new List<StandardEnemyAI>();
     private readonly List<StandardEnemyAI> aliveRanged = new List<StandardEnemyAI>();
@@ -98,14 +97,14 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
-        // Prune dead entries.
+        // remove all dead enemies immediately from the active lists
         aliveMeleeShielded.RemoveAll(e => e == null);
         aliveMeleeUnshielded.RemoveAll(e => e == null);
         aliveRanged.RemoveAll(e => e == null);
         aliveRapid.RemoveAll(e => e == null);
         aliveCivilians.RemoveAll(c => c == null);
 
-        // Halt wave/break/spawn timers while disabled (paused or game over).
+        // when its paused (usually for hammer calibration) or game over, pause the waves
         if (!spawningEnabled) return;
 
         if (player == null || waves == null || waves.Length == 0)
@@ -136,7 +135,11 @@ public class EnemySpawner : MonoBehaviour
         {
             if (currentWave.clearRemainingOnEnd)
             {
-                ClearAllSpawned();
+                ClearList(aliveMeleeShielded);
+                ClearList(aliveMeleeUnshielded);
+                ClearList(aliveRanged);
+                ClearList(aliveRapid);
+                ClearList(aliveCivilians);
             }
             onBreak = true;
             breakTimer = 0f;
@@ -251,34 +254,24 @@ public class EnemySpawner : MonoBehaviour
                     StandardEnemyAI ai = spawned.GetComponent<StandardEnemyAI>();
                     if (ai != null)
                     {
-                        // Strip shield if this type shouldn't have one.
+                        // I don't think we need this anymore because it's seperated into 2 different prefabs but kept just in case
                         if (!keepShield && ai.shield != null)
                         {
                             ai.shield = null;
                         }
 
-                        // Track in the correct list.
                         switch (type)
                         {
-                            case EnemyType.MeleeShielded:   aliveMeleeShielded.Add(ai); break;
+                            case EnemyType.MeleeShielded: aliveMeleeShielded.Add(ai); break;
                             case EnemyType.MeleeUnshielded: aliveMeleeUnshielded.Add(ai); break;
-                            case EnemyType.Ranged:          aliveRanged.Add(ai); break;
-                            case EnemyType.Rapid:           aliveRapid.Add(ai); break;
+                            case EnemyType.Ranged: aliveRanged.Add(ai); break;
+                            case EnemyType.Rapid: aliveRapid.Add(ai); break;
                         }
                     }
                 }
                 return;
             }
         }
-    }
-
-    private void ClearAllSpawned()
-    {
-        ClearList(aliveMeleeShielded);
-        ClearList(aliveMeleeUnshielded);
-        ClearList(aliveRanged);
-        ClearList(aliveRapid);
-        ClearList(aliveCivilians);
     }
 
     private void ClearList<T>(List<T> list) where T : Component

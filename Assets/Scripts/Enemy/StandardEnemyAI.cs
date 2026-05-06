@@ -40,20 +40,23 @@ namespace Enemy
             chargeTime = 0.25f
         };
 
+        /* variables related to striking are here (used for melee and shielded but not ranged or rapid)
+        if you're making a new enemy, you don't need to tune these unless you tick the use strike behaviour checkbox
+        and you want it to do the retreating back to the set distance from the player */
         [Header("Strike Behavior")]
         [SerializeField] protected bool useStrike = true;
         [SerializeField] private float holdDistance = 6f;
         [SerializeField, UnityEngine.Range(0f, 0.5f)] private float holdDistanceVariance = 0.3f;
         [SerializeField] private float strikeSpeedMultiplier = 2.5f;
         [SerializeField] private float retreatSpeedMultiplier = 1.5f;
-        // Proportion of attack.range where strike enemies stop charging and commit the attack.
-        // Clamped below 1 so stop distance is always strictly less than attack.range.
+        // proportion of attack.range where strike enemies stop charging and commit the attack
+        // it's clamped below 1 so stop distance is always strictly less than attack.range because this was leading to bugs earlier
         [SerializeField, UnityEngine.Range(0f, 1f)] private float strikeStopRatio = 0.7f;
 
-        [Header("Ranged Behavior (used when !useStrike)")]
+        [Header("Ranged Behavior (used INSTEAD of striking)")]
         [SerializeField] private float stopFromPlayerDistance = 1.5f;
 
-        [Header("Wandering (when player is out of sight)")]
+        [Header("ambient behaviour)")]
         [SerializeField] private float sightRange = 25f;
         [SerializeField] private RandomMovementSettings randomMovement = new RandomMovementSettings
         {
@@ -99,8 +102,7 @@ namespace Enemy
         private Vector3 _animCurSamplePos;
         private float _animCurSampleTime;
 
-        // Stuck-escape: if we've been commanding movement for StuckTimeThreshold but
-        // haven't actually translated, sidestep for UnstuckDuration to break free.
+        // do a step to the side if enemy is supposed to move but has stalled (doesn't move)
         private const float StuckTimeThreshold = 0.9f;
         private const float StuckMovedSqr = 0.04f;
         private const float StuckCommandedSqr = 1f;
@@ -110,15 +112,11 @@ namespace Enemy
         private float _unstuckUntil;
         private Vector3 _unstuckDir;
 
-        // Repathing every FixedUpdate amplifies avoidance churn — 5Hz is plenty for chasing
-        // a moving player and the agent's auto-repath fills any gaps.
+        // interval because it doesn't need to calculate each path every frame (initial implementation - too slow)
         private const float DestinationUpdateInterval = 0.2f;
         private float _nextDestinationTime;
-
-        // When the enemy is right on top of the player, toPlayerDir swings wildly with tiny
-        // position changes. Freeze rotation in this zone instead of chasing the noise.
         private const float CloseFacingFreezeDistance = 1.0f;
-        private AudioSource audioSource;
+        private AudioSource audioSource; // audios start here
 
         public AudioClip swordClip;
         public AudioClip swordClip1;
@@ -134,7 +132,8 @@ namespace Enemy
             if (shieldHit != null) shield = shieldHit.gameObject;
             WasShielded = shield != null;
 
-            // Each enemy gets a slightly different hold distance (Stalk distance should ALWAYS be further than attack range).
+            // each enemy gets a slightly different hold distance, added a little randomness (Stalk distance should ALWAYS be further than attack range).
+            // the randomness was a good idea but doesn't seem to make a playable difference, may remove later
             actualHoldDistance = holdDistance * (1f + UnityEngine.Random.Range(-holdDistanceVariance, holdDistanceVariance));
             actualHoldDistance = Mathf.Max(actualHoldDistance, attack.range + 0.5f);
 
@@ -186,10 +185,14 @@ namespace Enemy
             };
         }
 
-        void Start() => ResolvePlayerRefs();
+        void Start()
+        {
+            ResolvePlayerRefs();
+        }
 
         private void ResolvePlayerRefs()
         {
+            // basic reference checks, add more here if you see a player ref bug
             if (_playerHealthRef != null && _playerTransformRef != null) return;
 
             var player = GameObject.FindGameObjectWithTag("Player");
@@ -197,14 +200,9 @@ namespace Enemy
 
             if (_playerTransformRef == null) _playerTransformRef = player.transform;
             if (_playerHealthRef == null) _playerHealthRef = player.GetComponent<PlayerHealth>();
-            // CharacterController is the player body collider (not the hammer).
-            // Range checks use this so a blocked enemy — hemmed in by the horse's collider
-            // or a slope edge — still registers as "in range" once it's touching the body.
             if (_playerBodyCollider == null) _playerBodyCollider = player.GetComponent<CharacterController>();
         }
 
-        // Horizontal distance from our pivot to the nearest point on the player's body collider.
-        // Falls back to pivot-to-pivot distance if the collider isn't resolved yet.
         private float HorizontalDistanceToPlayerBody()
         {
             Vector3 target = _playerBodyCollider != null
@@ -218,9 +216,9 @@ namespace Enemy
         private void SetupNavMesh()
         {
             agent = GetComponent<NavMeshAgent>();
+
             if (agent == null)
             {
-                Debug.Log("No NavMesh agent found for the StandardEnemyAI");
                 return;
             }
 
@@ -255,8 +253,6 @@ namespace Enemy
                 return;
             }
 
-            // Awareness gating: when the player is out of sight, fall back to NPC-style wandering.
-            // Hysteresis (+2) prevents flapping if the player hovers right at the boundary.
             float distToPlayer = HorizontalDistanceToPlayerBody();
             bool isWandering = combatState == CombatState.Wandering || combatState == CombatState.Idling;
 
@@ -298,15 +294,12 @@ namespace Enemy
             switch (combatState)
             {
                 case CombatState.Wandering:
-                    // Arrived, or the pathfinder gave up — either way, pause and pick again later.
                     if (agent != null && !agent.pathPending && (!agent.hasPath || agent.remainingDistance < 0.5f))
                     {
                         EnterWanderIdle();
                         break;
                     }
-                // Stalled (e.g. walking into an unbaked obstacle): give up the current target,
-                // briefly idle, then pick a new one in EnterWandering. Otherwise the agent thinks
-                // its path is still valid and the script keeps pushing into the wall forever.
+
                 if ((transform.position - _wanderProgressPos).sqrMagnitude > WanderProgressDist * WanderProgressDist)
                 {
                     _wanderProgressPos = transform.position;
@@ -342,9 +335,6 @@ namespace Enemy
         {
             if (agent == null || !agent.isOnNavMesh) return;
 
-            // Small sample radius + path validation prevents picking a candidate inside a building
-            // that snaps onto the navmesh right up against an outside wall — the enemy would then
-            // press into the wall instead of routing around the building.
             NavMeshPath path = new NavMeshPath();
             for (int attempt = 0; attempt < 8; attempt++)
             {
@@ -357,7 +347,7 @@ namespace Enemy
             }
         }
 
-        // Stalk, Strike and Retreat state system
+        // attack cycle state system
         private void StrikeUpdate()
         {
             if (_playerHealthRef.IsDead) return;
@@ -365,7 +355,7 @@ namespace Enemy
             switch (combatState)
             {
                 case CombatState.Holding:
-                    // Wait for cooldown, then start striking.
+                    // wait for cooldown, then start striking
                     if (Time.time >= timeOfNextAttack)
                     {
                         combatState = CombatState.Striking;
@@ -383,13 +373,14 @@ namespace Enemy
                         StartCoroutine(StrikeDamageThenRetreat());
                     }
                     break;
-
+                // note to understand logic for the different prefabs:
+                // these are the changes now the prefabs have diff behaviour:
                 // StrikeMovement() in FixedUpdate() does Approaching and Retreating
                 // If there's no approach and retreat (e.g. for ranged enemies) then ClassicMovement().
             }
         }
 
-        // The classic system (system without the lunging forwards and retreating). Ranged enemies use this.
+        // The classic system, currently used by ranged and rapid enemies
         private void ClassicAttackUpdate()
         {
             if (_playerHealthRef.IsDead) return;
@@ -422,18 +413,12 @@ namespace Enemy
 
             bool isWandering = combatState == CombatState.Wandering || combatState == CombatState.Idling;
 
-            // Direction is taken to the pivot (stable) — distance is taken to the body collider
-            // (so movement/attack thresholds aren't fooled by the horse's collider extent).
             Vector3 toPivot = _playerTransformRef.position - transform.position;
             toPivot.y = 0f;
             float pivotDist = toPivot.magnitude;
             Vector3 toPlayerDir = pivotDist > 0.01f ? toPivot / pivotDist : Vector3.zero;
             float distToPlayer = HorizontalDistanceToPlayerBody();
 
-            // NavMesh pathfinding direction. While wandering, the destination was already set when the
-            // state was entered — don't overwrite it with the player's position.
-            // moveDir defaults to zero (not toPlayerDir) so when the path is blocked or the agent has
-            // given up, we stop instead of pressing through walls and triggering the stuck-escape jitter.
             Vector3 moveDir = Vector3.zero;
             if (agent != null && agent.enabled && agent.isOnNavMesh)
             {
@@ -452,9 +437,7 @@ namespace Enemy
                 moveDir = toPlayerDir;
             }
 
-            // Face the player when engaged; face the move direction while wandering.
-            // In melee range, freeze facing — toPlayerDir swings wildly when enemies are this
-            // close (collision shoves cause it), and we'd rather look committed than spin.
+            // makes it look to the player when engaged but look at the direction it's moving at otherwise
             Vector3 faceDir = isWandering ? moveDir : toPlayerDir;
             bool freezeFacing = !isWandering && pivotDist < CloseFacingFreezeDistance;
             if (!freezeFacing && faceDir.sqrMagnitude > 0.0001f)
@@ -484,7 +467,7 @@ namespace Enemy
         private void UpdateStuckEscape(Vector3 toPlayerDir)
         {
             if (rb == null) return;
-            if (Time.time < _unstuckUntil) return; // already escaping; don't update detection
+            if (Time.time < _unstuckUntil) return; 
 
             Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             bool commandingMovement = horizontalVel.sqrMagnitude > StuckCommandedSqr;
@@ -499,8 +482,6 @@ namespace Enemy
 
             if (Time.time - _stuckCheckTime <= StuckTimeThreshold) return;
 
-            // Stuck — pick a perpendicular direction and sidestep briefly. Random side
-            // so two enemies wedged against each other don't both pick the same way.
             Vector3 right = Vector3.Cross(Vector3.up, toPlayerDir);
             if (right.sqrMagnitude < 0.0001f) right = Vector3.right;
             right.Normalize();
@@ -516,8 +497,8 @@ namespace Enemy
 
             switch (combatState)
             {
+                // for the approaching state, the enemy move toward its position.
                 case CombatState.Approaching:
-                    // Move toward hold distance.
                     if (distToPlayer > actualHoldDistance)
                     {
                         velocity = moveDir * actualSpeed;
@@ -528,8 +509,8 @@ namespace Enemy
                     }
                     break;
 
+                // enemy should be standing still at a set distance from the player here
                 case CombatState.Holding:
-                    // Stand still at hold distance, but re-approach if player moves away.
                     if (distToPlayer > actualHoldDistance + 1f)
                     {
                         velocity = moveDir * actualSpeed;
@@ -539,9 +520,9 @@ namespace Enemy
                         velocity = Vector3.zero;
                     }
                     break;
-
+                // charge at the player from the set position but stop when its weapon feels like it could touch the player
+                // adjust this depending on the weapon model if it changes later
                 case CombatState.Striking:
-                    // Charge toward player, but stop at the commit distance.
                     if (distToPlayer > StrikeStopDistance)
                     {
                         velocity = moveDir * actualSpeed * strikeSpeedMultiplier;
@@ -551,14 +532,12 @@ namespace Enemy
                         velocity = Vector3.zero;
                     }
                     break;
-
+                // stand stationary when the attacking animation plays - could change depending on attack length
                 case CombatState.Attacking:
-                    // Stand still while the attack animation plays.
                     velocity = Vector3.zero;
                     break;
-
+                // go back to the target set position so the hammer can attack more easily  
                 case CombatState.Retreating:
-                    // Move away from player.
                     if (distToPlayer < actualHoldDistance)
                     {
                         velocity = -toPlayerDir * actualSpeed * retreatSpeedMultiplier;
@@ -574,7 +553,6 @@ namespace Enemy
 
         private void ClassicMovement(float distToPlayer, Vector3 moveDir)
         {
-            // Slow down as we approach stop distance.
             float currentSpeed = actualSpeed;
             float stopDist = attack.range * 0.7f;
             float arriveDist = attack.range + stopFromPlayerDistance;
@@ -592,8 +570,8 @@ namespace Enemy
 
         private void ApplyVelocity(Vector3 desired)
         {
-            // While escaping a stuck position, override whatever the AI wanted with a
-            // sideways push at normal speed.
+            // To escape STUCK, overwrite whatever the NavMesh agent wants with just a sideways push.
+            // Ignore NavMesh agent completely
             if (Time.time < _unstuckUntil)
             {
                 desired = _unstuckDir * actualSpeed;
@@ -666,10 +644,6 @@ namespace Enemy
         {
             if (anim == null || string.IsNullOrEmpty(speedParam)) return;
 
-            // Drive the animator from net translation over a ~0.15-0.3s window, not
-            // per-frame delta. When the rigidbody is jammed against geometry, physics
-            // depenetration jitters it each frame — per-frame |delta| is non-zero but
-            // net displacement over the window cancels out, so the legs correctly idle.
             Vector3 currentPos = transform.position;
 
             if (Time.time - _animCurSampleTime >= AnimSampleInterval)
