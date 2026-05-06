@@ -101,7 +101,6 @@ public class FireTask : BaseTask
     private IEnumerator SpawnFireBoonSequence()
     {
         SetPlayerControl(false);
-
         powerUpSpawner.SpawnSpecificPowerUp(infiniteFirePowerUpPrefab, rewardMessage, fireBoonSpawnPoint);
 
         yield return new WaitForSeconds(boonSpawnFreezeTime);

@@ -20,9 +20,9 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private CanvasGroup CardCanvasGroup;
 
     [Header("Lore Card Intro")]
-    [SerializeField] private float CardFadeInTime = 0.6f;
+    [SerializeField] private float CardFadeInTime = 1f;
     [SerializeField] private float CardHoldTime = 5f;
-    [SerializeField] private float CardFadeOutTime = 0.6f;
+    [SerializeField] private float CardFadeOutTime = 1f;
 
     [Header("Fade Settings")]
     [SerializeField] private float fadeInTime = 1.5f;
@@ -159,7 +159,6 @@ public class TutorialManager : MonoBehaviour
     {
         HideGameplayUIAtStart();
         tutorialPromptUI.SetActive(false);
-
         introOverlay.SetActive(true);
 
         Color background = dimBackground.color;
@@ -195,7 +194,6 @@ public class TutorialManager : MonoBehaviour
         }
 
         introOverlay.SetActive(false);
-
         tutorialPromptUI.SetActive(true);
         introFinished = true;
         promptText.text = firstSwingPromptMessage;
@@ -208,14 +206,14 @@ public class TutorialManager : MonoBehaviour
             yield break;
         }
 
-        float elapsed = 0f;
+        float passedTime = 0f;
         canvasGroup.alpha = startAlpha;
 
-        while (elapsed < duration)
+        while (passedTime < duration)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
+            passedTime += Time.deltaTime;
+            float time = Mathf.Clamp01(passedTime / duration);
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, time);
             yield return null;
         }
 
@@ -225,15 +223,15 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator FadeBackground(float startAlpha, float endAlpha, float duration)
     {
 
-        float elapsed = 0f;
+        float passedTime = 0f;
         Color background = dimBackground.color;
 
-        while (elapsed < duration)
+        while (passedTime < duration)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
+            passedTime += Time.deltaTime;
+            float time = Mathf.Clamp01(passedTime / duration);
 
-            background.a = Mathf.Lerp(startAlpha, endAlpha, t);
+            background.a = Mathf.Lerp(startAlpha, endAlpha, time);
             dimBackground.color = background;
 
             yield return null;
@@ -307,13 +305,12 @@ public class TutorialManager : MonoBehaviour
     {
         Transform arrowTransform = taskArrow.transform;
         Vector3 originalScale = arrowTransform.localScale;
-        float elapsed = 0f;
+        float passedTime = 0f;
 
-        while (elapsed < arrowPulseDuration)
+        while (passedTime < arrowPulseDuration)
         {
-            elapsed += Time.deltaTime;
-
-            float pulse = 1f + Mathf.Sin(elapsed * arrowPulseSpeed * Mathf.PI * 2f) * (arrowPulseScale - 1f);
+            passedTime += Time.deltaTime;
+            float pulse = 1f + Mathf.Sin(passedTime * arrowPulseSpeed * Mathf.PI * 2f) * (arrowPulseScale - 1f);
             arrowTransform.localScale = originalScale * pulse;
 
             yield return null;
@@ -336,13 +333,13 @@ public class TutorialManager : MonoBehaviour
         }
 
         Vector3 originalScale = rectTransform.localScale;
-        float elapsed = 0f;
+        float passedTime = 0f;
 
-        while (elapsed < duration)
+        while (passedTime < duration)
         {
-            elapsed += Time.deltaTime;
+            passedTime += Time.deltaTime;
 
-            float pulse = 1f + Mathf.Sin(elapsed * pulseSpeed * Mathf.PI * 2f) * (pulseScale - 1f);
+            float pulse = 1f + Mathf.Sin(passedTime * pulseSpeed * Mathf.PI * 2f) * (pulseScale - 1f);
             rectTransform.localScale = originalScale * pulse;
 
             yield return null;
@@ -376,7 +373,6 @@ public class TutorialManager : MonoBehaviour
             return;
         }
         taskArrow.gameObject.SetActive(false);
-
         rewardSpawned = true;
         tutorialMarker.SetActive(false);
         StartCoroutine(SpawnBoonSequence());
@@ -385,15 +381,12 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator SpawnBoonSequence()
     {
         SetPlayerControl(false);
-
         spawnedTutorialReward = powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
-
         promptText.text = boonSpawnPromptMessage;
 
         yield return new WaitForSeconds(boonPromptDelay);
 
         promptText.text = boonCollectPromptMessage;
-
         SetPlayerControl(true);
     }
 
@@ -421,7 +414,6 @@ public class TutorialManager : MonoBehaviour
         }
 
         rewardCollected = true;
-
         StartTutorialEnemyPhase();
     }
 
@@ -429,8 +421,6 @@ public class TutorialManager : MonoBehaviour
     {
         horseMovement.canControl = enabled;
         targetHammer.canControl = enabled;
-        //Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
-        //hitboxCollider.enabled = enabled;
         allowAttacking.Invoke(enabled);
     }
 
@@ -506,7 +496,7 @@ public class TutorialManager : MonoBehaviour
         {
             enemyHasHitPlayer = true;
 
-            // Give controls back now that the player has seen damage
+            // Give controls back now that the player has been damaged
             SetPlayerControl(true);
             SetPlayerForcedSlowMovement(false);
 

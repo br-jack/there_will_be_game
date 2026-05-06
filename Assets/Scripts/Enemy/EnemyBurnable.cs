@@ -9,7 +9,6 @@ public class EnemyBurnable : MonoBehaviour
 
     [Header("Burn Settings")]
     [SerializeField] private float burnDuration = 2f;
-    [SerializeField] private bool fireballKillAwardsScore = true;
     [SerializeField] private int fireballKillScore = 60;
 
     [SerializeField] private GameObject burnVisual;
@@ -53,7 +52,7 @@ public class EnemyBurnable : MonoBehaviour
 
         if (enemyAI != null && !enemyAI.IsDying && enemyAI.CanBeKilled)
         {
-            if (fireballKillAwardsScore && ScoreManager.Instance != null)
+            if (ScoreManager.Instance != null)
             {
                 ScoreManager.Instance.AddScore(new System.Collections.Generic.List<ScoreComponent>
                 {

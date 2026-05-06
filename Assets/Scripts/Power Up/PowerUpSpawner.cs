@@ -50,9 +50,7 @@ public class PowerUpSpawner : MonoBehaviour
     public GameObject SpawnSpecificPowerUp(GameObject powerUpPrefab, string customMessage, Transform chosenSpawnPoint)
     {
         Vector3 spawnPosition = chosenSpawnPoint.position + Vector3.up * spawnHeightOffset;
-
         currentSpawnedPowerUp = Instantiate(powerUpPrefab, spawnPosition, Quaternion.identity);
-
         PowerUpPickup pickup = currentSpawnedPowerUp.GetComponent<PowerUpPickup>();
 
         if (pickup != null)
@@ -79,13 +77,10 @@ public class PowerUpSpawner : MonoBehaviour
         }
 
         Vector3 directionFromPlayer = (chosenSpawnPoint.position - player.position).normalized;
-
         fixedCutscenePosition = chosenSpawnPoint.position + directionFromPlayer * 12f + Vector3.up * 6f; // pull back and raise camera
-
         cutsceneCamera.fieldOfView = 75f;
         cutsceneCamera.transform.position = fixedCutscenePosition;
         cutsceneCamera.gameObject.SetActive(true);
-
         watchingFall = true;
     }
 
@@ -104,7 +99,6 @@ public class PowerUpSpawner : MonoBehaviour
         }
 
         cutsceneCamera.transform.position = fixedCutscenePosition;
-
         Vector3 lookTarget = currentSpawnedPowerUp.transform.position + Vector3.up * 1.5f; // adjust the height as needed
         Quaternion targetRotation = Quaternion.LookRotation(lookTarget - cutsceneCamera.transform.position);
         cutsceneCamera.transform.rotation = Quaternion.Slerp(cutsceneCamera.transform.rotation, targetRotation, Time.deltaTime * cutsceneLookSmooth);

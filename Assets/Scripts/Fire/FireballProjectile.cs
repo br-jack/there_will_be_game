@@ -57,7 +57,7 @@ public class FireballProjectile : MonoBehaviour
             
             if (deathState != null)
             {
-                Debug.Assert(deathState.KnockbackState != null);
+                //Debug.Assert(deathState.KnockbackState != null);
                 if (deathState.KnockbackState != null && deathState.IsDying)
                 {
                     ApplyImpactKnockback(deathState.KnockbackState, other.transform.position);

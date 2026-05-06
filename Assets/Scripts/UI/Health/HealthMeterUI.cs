@@ -8,32 +8,15 @@ public class HealthMeterUI : MonoBehaviour
     [SerializeField] private RectTransform panelTransform;
 
     [Header("Pulse Settings")]
-    [SerializeField] private bool pulseOnChange = true;
     [SerializeField] private float pulseScale = 1f;
     [SerializeField] private float pulseUpTime = 0.1f;
     [SerializeField] private float pulseDownTime = 0.1f;
 
     private Coroutine pulseCoroutine;
 
-    public void DisplayFullBar()
-    {
-        SetHealthFraction(1.0f);
-    }
-
     public void DisplayFractionalBar(float healthFraction)
     {
         SetHealthFraction(healthFraction);
-    }
-
-    public void DisplayBarCurMax(float currentHealth, float maxHealth)
-    {
-        if (maxHealth <= 0.0f)
-        {
-            SetHealthFraction(0.0f);
-            return;
-        }
-
-        SetHealthFraction(currentHealth / maxHealth);
     }
 
     public void DisplayHealth(int currentLives, int maxLives)
@@ -51,11 +34,7 @@ public class HealthMeterUI : MonoBehaviour
     {
         float clampedFraction = Mathf.Clamp01(fraction);
         healthFillImage.fillAmount = clampedFraction;
-
-        if (pulseOnChange)
-        {
-            PlayPulse();
-        }
+        PlayPulse();
     }
 
     private void PlayPulse()
@@ -74,23 +53,23 @@ public class HealthMeterUI : MonoBehaviour
         Vector3 normalScale = Vector3.one;
         Vector3 enlargedScale = new Vector3(pulseScale, pulseScale, 1.0f);
 
-        float elapsedTime = 0.0f;
+        float passedTime = 0.0f;
 
-        while (elapsedTime < pulseUpTime)
+        while (passedTime < pulseUpTime)
         {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / pulseUpTime;
-            panelTransform.localScale = Vector3.Lerp(normalScale, enlargedScale, t);
+            passedTime += Time.deltaTime;
+            float time = passedTime / pulseUpTime;
+            panelTransform.localScale = Vector3.Lerp(normalScale, enlargedScale, time);
             yield return null;
         }
 
-        elapsedTime = 0.0f;
+        passedTime = 0.0f;
 
-        while (elapsedTime < pulseDownTime)
+        while (passedTime < pulseDownTime)
         {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / pulseDownTime;
-            panelTransform.localScale = Vector3.Lerp(enlargedScale, normalScale, t);
+            passedTime += Time.deltaTime;
+            float time = passedTime / pulseDownTime;
+            panelTransform.localScale = Vector3.Lerp(enlargedScale, normalScale, time);
             yield return null;
         }
 
