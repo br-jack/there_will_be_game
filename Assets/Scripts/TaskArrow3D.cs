@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class TaskArrow3D : MonoBehaviour
 {
-    [Header("References")]
     [SerializeField] private Transform player;
     [SerializeField] private Transform target;
 

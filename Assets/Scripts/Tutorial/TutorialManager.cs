@@ -24,11 +24,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private float CardHoldTime = 5f;
     [SerializeField] private float CardFadeOutTime = 0.6f;
 
-    [Header("Message")]
-    [SerializeField] private string message = "A divine force guides your first steps. \n Learn to move, fight and shape Fear and Awe.";
-    [SerializeField] private float letterDelay = 0.07f;
-    [SerializeField] private float holdTime = 2f;
-
     [Header("Fade Settings")]
     [SerializeField] private float fadeInTime = 1.5f;
     [SerializeField] private float fadeOutTime = 1.5f;
@@ -47,7 +42,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private string firstSwingPromptMessage = "Swing the hammer";
     [SerializeField] private string secondSwingPromptMessage = "Swing the hammer harder";
     [SerializeField] private string thirdSwingPromptMessage = "SWING THE HAMMER HARDER!";
-    [SerializeField] private string secondPromptMessage = "Jump using the A button";
     [SerializeField] private string thirdPromptMessage = "Complete the task shown on the panel";
     [SerializeField] private int swingsRequired = 3;
     [SerializeField] private int jumpsRequired = 1;
@@ -61,7 +55,6 @@ public class TutorialManager : MonoBehaviour
     private string rewardMessage = "A boon has been granted";
     private string boonSpawnPromptMessage = "Task complete. A boon has appeared.";
     private string boonCollectPromptMessage = "Collect the boon to receive a blessing from the gods";
-    //private string boonExplanationMessage = "Boons grant powerful blessings that aid your journey.";
     private float boonPromptDelay = 4f;
 
     [SerializeField] private GameObject tutorialMarker;
@@ -79,17 +72,14 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private horseMovementGaits horseMovement;
     [SerializeField] private TargetHammer targetHammer;
     [SerializeField] private PlayerHealth playerHealth;
-    [SerializeField] private float enemyKillUnlockDelay = 1f;
     [SerializeField] private float forcedSlowMoveMultiplier = 0.05f;
     [SerializeField] private AttackHitbox hammerHitbox;
 
     [Header("Enemy Facing")]
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private float autoFaceTurnSpeed = 5f;
     [SerializeField] private Transform cameraTransform;
 
     [SerializeField] private string enemyIntroPromptMessage = "An enemy approaches. Watch your health.";
-    [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
 
     [Header("Task Panel Intro")]
     private string taskPanelIntroMessage = "Tasks appear on this panel. Complete them to earn rewards.";
