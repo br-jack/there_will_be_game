@@ -19,6 +19,6 @@ public abstract class BaseTask : MonoBehaviour
         TaskManager.Instance.OnTaskCompleted(this);
     }
 
-    // Each task type overrides this to define its own completion logic
+    // each task type overrides this to define its own completion logic
     public abstract void CheckCompletion();
 }

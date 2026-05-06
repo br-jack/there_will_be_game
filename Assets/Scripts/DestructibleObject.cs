@@ -56,15 +56,6 @@ public class DestructibleObject : MonoBehaviour
 
         Break(impactPoint, 300);
     }
-
-    void Start() {
-        //moved to awake, seems to fix a null reference exception when destroying respawned buildings
-        //myRenderer = GetComponent<MeshRenderer>();
-        //myCollider = GetComponent<Collider>();
-    }
-
-    
-
     void OnCollisionEnter(Collision collision)
     {
         if (broken) return;
