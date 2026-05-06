@@ -40,7 +40,9 @@ namespace Enemy
             chargeTime = 0.25f
         };
 
-        /* variables related to striking are here (used for melee and shielded but not ranged or rapid)
+        /* 
+        note about tuning new enemies:
+        variables related to striking are here (used for melee and shielded but not ranged or rapid)
         if you're making a new enemy, you don't need to tune these unless you tick the use strike behaviour checkbox
         and you want it to do the retreating back to the set distance from the player */
         [Header("Strike Behavior")]

@@ -12,7 +12,7 @@ public class Projectile : MonoBehaviour
     public float Speed => speed;
     [SerializeField] private float lifetime = 5f;
 
-    // Change this variable depending on if you want the hammer to deflect or destroy the projectile.
+    // note for tuning: change this variable depending on if you want the hammer to deflect or destroy the projectile.
     [SerializeField] private bool deflectUponHammerHit = true;
     [SerializeField] private float gravityScale = 0f;
     private bool hasHitHammer = false;
@@ -61,26 +61,23 @@ public class Projectile : MonoBehaviour
         if (owner != null && other.transform.IsChildOf(owner.transform)) return;
         if (other == null) return;
 
-        // Projectile-on-projectile contacts are ignored so they don't delete each other mid-flight.
+        // collisions between projectiles are ignored (caused bugs earlier with projectiles dissapearing and stuff...)
         Projectile otherProjectile = other.GetComponentInParent<Projectile>();
         if (otherProjectile != null && otherProjectile != this)
         {
-            // Force the pair to ignore each other so no physical bounce can occur.
             Physics.IgnoreCollision(collider, other, true);
             return;
         }
 
-        // This comes before the player health so calls destroy() before harming the player if the projectile hits the hammer.
+        // note: PlEASE make sure this stays below the hammer check because otherwise it will deal player damage when it hits the hammer
         VisualHammer hammer = other.GetComponentInParent<VisualHammer>();
         if (hammer != null)
         {
-            // Don't handle again if already hit hammer.
             if (hasHitHammer) return;
             HandleProjectileHitsHammer(hammer);
             return;
         }
 
-        // Hits player.
         PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
         if (playerHealth != null && hasHitHammer == false){
             playerHealth.TakeDamage(damage);
@@ -88,7 +85,6 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        // If it hits the enemy.
         StandardEnemyAI enemy = other.GetComponentInParent<StandardEnemyAI>();
         if (enemy != null)
         {
@@ -104,28 +100,25 @@ public class Projectile : MonoBehaviour
                 }
                 DestroyWrapper();
             }
-            // Undeflected projectiles should pass through enemies.
+            // undeflected projectiles should pass through enemies (not having this also caused issues with enemies looking like they're randomly dying in crowds)
             return;
         }
         
-        // Hits something that's not the player.
+        // get rid of projectile if it hits anything that's not the player or the hammer (performance optimisation and aesthetic choice)
         if (!other.isTrigger)
         {
             DestroyWrapper();
         }
     }
 
-    // Called when the projectile is blocked by the player's hammer
     private void HandleProjectileHitsHammer(VisualHammer hammer)
     {
         hasHitHammer = true;
-        // If deflection setting is off, the object is destroyed.
         if (!deflectUponHammerHit)
         {
             DestroyWrapper();
             return;
         }
-        // DEFLECT
         Vector3 normal = transform.position - hammer.transform.position;
         if (normal.sqrMagnitude < 0.001f)
         {
@@ -139,17 +132,18 @@ public class Projectile : MonoBehaviour
             AlignToDirection(rb.linearVelocity);
         }
 
-        // Reset the lifetime of the projectile upon deflection.
+        // reset the lifetime of the projectile after being deflected
         CancelInvoke(nameof(DestroyWrapper));
         Invoke(nameof(DestroyWrapper), lifetime);
     }
     private void DestroyWrapper()
     {
-        // When we add particle effects upon destruction, we can add it here!
+        // When we add particle effects upon destruction, we can add it here!!!
+        // If we don't, it's still easier than the other way of tracking time to automatically delete it after a set period
         Destroy(gameObject);
     }
 
-    // Keep both Transform and Rigidbody rotations in sync to avoid a one-frame visual snap on spawn.
+    // fix for the 1-frame snap that happens immediately after the arrow spawns in that Shay pointed out
     private void AlignToDirection(Vector3 direction)
     {
         if (direction.sqrMagnitude <= DirectionEpsilonSqr) return;

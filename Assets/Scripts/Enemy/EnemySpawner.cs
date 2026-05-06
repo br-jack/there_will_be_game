@@ -129,7 +129,6 @@ public class EnemySpawner : MonoBehaviour
 
         Wave currentWave = waves[currentWaveIndex];
 
-        // Advance to the next wave.
         waveTimer += Time.deltaTime;
         if (waveTimer >= currentWave.duration && currentWaveIndex < waves.Length - 1)
         {
@@ -159,7 +158,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void TrySpawnWeighted(Wave wave)
     {
-        // Calculate remaining capacity for each type.
+        // calculate remaining enemies that we can possibly have left to spawn for each type before max cap is reached
         int remainMeleeShielded = Mathf.Max(0, wave.meleeShielded - aliveMeleeShielded.Count);
         int remainMeleeUnshielded = Mathf.Max(0, wave.meleeUnshielded - aliveMeleeUnshielded.Count);
         int remainRanged = Mathf.Max(0, wave.ranged - aliveRanged.Count);
@@ -169,7 +168,6 @@ public class EnemySpawner : MonoBehaviour
         int total = remainMeleeShielded + remainMeleeUnshielded + remainRanged + remainRapid + remainCivilians;
         if (total <= 0) return;
 
-        // Weighted random pick.
         int roll = Random.Range(0, total);
 
         if (roll < remainMeleeShielded)
@@ -192,6 +190,7 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnOne(EnemyType.Civilian);
         }
+        // if we add more to spawner, add them here
     }
 
     private void SpawnOne(EnemyType type)
@@ -233,12 +232,7 @@ public class EnemySpawner : MonoBehaviour
 
             // Free off-map reject so we don't waste a NavMesh.SamplePosition
             // call on a candidate that's obviously outside the playable area.
-            if (mapBoundsValid &&
-                (candidate.x < mapMinX || candidate.x > mapMaxX ||
-                 candidate.z < mapMinZ || candidate.z > mapMaxZ))
-            {
-                continue;
-            }
+            if (mapBoundsValid && (candidate.x < mapMinX || candidate.x > mapMaxX || candidate.z < mapMinZ || candidate.z > mapMaxZ)) continue;
 
             if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
             {
