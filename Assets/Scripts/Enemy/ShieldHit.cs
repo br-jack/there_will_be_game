@@ -7,7 +7,6 @@ public class ShieldHit : MonoBehaviour
     {
         AttackHitbox attack = other.GetComponent<AttackHitbox>();
         if (attack == null) return;
-
         StandardEnemyAI enemy = GetComponentInParent<StandardEnemyAI>();
         if (enemy == null) return;
         if (enemy.KnockbackHandler.IsKnockedBack) return;

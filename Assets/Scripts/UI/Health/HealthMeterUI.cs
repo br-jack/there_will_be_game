@@ -9,9 +9,9 @@ public class HealthMeterUI : MonoBehaviour
 
     [Header("Pulse Settings")]
     [SerializeField] private bool pulseOnChange = true;
-    [SerializeField] private float pulseScale = 1.06f;
-    [SerializeField] private float pulseUpTime = 0.08f;
-    [SerializeField] private float pulseDownTime = 0.12f;
+    [SerializeField] private float pulseScale = 1f;
+    [SerializeField] private float pulseUpTime = 0.1f;
+    [SerializeField] private float pulseDownTime = 0.1f;
 
     private Coroutine pulseCoroutine;
 

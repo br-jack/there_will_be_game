@@ -25,13 +25,11 @@ public class TutorialTaskGoal : MonoBehaviour
     private bool AreAllFeetInsideValidArea()
     {
         Vector3 centre = transform.position;
-        float allowedRadius = validRadius;
-        float allowedRadiusSqr = allowedRadius * allowedRadius;
 
-        return IsPointInsideCircle(frontLeftFootPoint.position, centre, allowedRadiusSqr) &&
-               IsPointInsideCircle(frontRightFootPoint.position, centre, allowedRadiusSqr) &&
-               IsPointInsideCircle(backLeftFootPoint.position, centre, allowedRadiusSqr) &&
-               IsPointInsideCircle(backRightFootPoint.position, centre, allowedRadiusSqr);
+        return IsPointInsideCircle(frontLeftFootPoint.position, centre, validRadius * validRadius) &&
+               IsPointInsideCircle(frontRightFootPoint.position, centre, validRadius * validRadius) &&
+               IsPointInsideCircle(backLeftFootPoint.position, centre, validRadius * validRadius) &&
+               IsPointInsideCircle(backRightFootPoint.position, centre, validRadius * validRadius);
     }
 
     private bool IsPointInsideCircle(Vector3 point, Vector3 centre, float allowedRadiusSqr)

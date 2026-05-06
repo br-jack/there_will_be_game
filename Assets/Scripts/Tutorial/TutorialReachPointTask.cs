@@ -9,9 +9,7 @@ public class TutorialReachPointTask : BaseTask
     {
         playerReachedGoal = false;
         isComplete = false;
-
         taskName = tutorialTaskName;
-
         base.StartTask();
         TaskHUD.Instance.RefreshUI();
     }

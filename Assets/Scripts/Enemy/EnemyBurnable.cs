@@ -8,7 +8,7 @@ public class EnemyBurnable : MonoBehaviour
     private IDeathState enemyAI;
 
     [Header("Burn Settings")]
-    [SerializeField] private float burnDuration = 2.5f;
+    [SerializeField] private float burnDuration = 2f;
     [SerializeField] private bool fireballKillAwardsScore = true;
     [SerializeField] private int fireballKillScore = 60;
 

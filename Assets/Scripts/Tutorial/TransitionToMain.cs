@@ -3,8 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class TransitionToMain : MonoBehaviour
 {
-    [SerializeField] private string playerTag = "Player";
-    [SerializeField] private string sceneToLoad = "MainScene";
     private Collider triggerCollider;
 
     private void Awake()
@@ -16,9 +14,9 @@ public class TransitionToMain : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         
-        if (other.CompareTag(playerTag) && triggerCollider.enabled)
+        if (other.CompareTag("Player") && triggerCollider.enabled)
         {
-            SceneManager.LoadScene(sceneToLoad);
+            SceneManager.LoadScene("MainScene");
         }
     }
 

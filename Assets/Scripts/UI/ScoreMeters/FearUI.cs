@@ -9,10 +9,10 @@ public class FearUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private GameObject scorePopupPrefab;
     [SerializeField] private Transform popupContainer;
-    [SerializeField] private Vector2 popupStartOffset = new Vector2(150f, 0f);
-    [SerializeField] private float popupSpacing = 30f;
-    [SerializeField] public float xScorePositionNoise;
-    [SerializeField] public float yScorePositionNoise;
+    [SerializeField] private Vector2 popupStartOffset = new Vector2(160f, 0f);
+    [SerializeField] private float popupSpacing = 35f;
+    [SerializeField] public float xScorePositionVariation;
+    [SerializeField] public float yScorePositionVariation;
     
     private void Start()
     {
@@ -45,25 +45,19 @@ public class FearUI : MonoBehaviour
     }
     
     private void SpawnScorePopups(List<ScoreComponent> components)
-    {
-        if (scorePopupPrefab == null)
-        {
-            return;
-        }
-        
+    {   
         for (int i = 0; i < components.Count; i++)
         {
-            GameObject popupObj = Instantiate(scorePopupPrefab, popupContainer);
-            RectTransform popupRect = popupObj.GetComponent<RectTransform>();
+            GameObject popupObject = Instantiate(scorePopupPrefab, popupContainer);
+            RectTransform popupRect = popupObject.GetComponent<RectTransform>();
             
             if (popupRect != null)
             {
-                Vector2 position = popupStartOffset + new Vector2(0f, -i * popupSpacing) 
-                    + new Vector2((Random.value * xScorePositionNoise),(Random.value * yScorePositionNoise));
+                Vector2 position = popupStartOffset + new Vector2(0f, -i * popupSpacing) + new Vector2((Random.value * xScorePositionVariation),(Random.value * yScorePositionVariation));
                 popupRect.anchoredPosition = position;
             }
             
-            ScorePopup popup = popupObj.GetComponent<ScorePopup>();
+            ScorePopup popup = popupObject.GetComponent<ScorePopup>();
             if (popup != null)
             {
                 popup.Initialize(components[i].amount, components[i].type);

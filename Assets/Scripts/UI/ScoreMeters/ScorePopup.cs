@@ -106,8 +106,7 @@ public class ScorePopup : MonoBehaviour
         // Makes the numbers float up and fade away after a bit
         while (timer < lifetime)
         {
-            timer += Time.deltaTime;
-            
+            timer += Time.deltaTime;           
             rectTransform.anchoredPosition = startPos + Vector3.up * (floatSpeed * timer);
             
             if (timer > fadeStartTime)
@@ -118,8 +117,7 @@ public class ScorePopup : MonoBehaviour
             
             // Using yield forces the loop to only run once per frame
             yield return null;
-        }
-        
+        }       
         Destroy(gameObject);
     }
 }

@@ -12,7 +12,6 @@ public class TaskArrow3D : MonoBehaviour
     private void Update()
     {
         transform.position = player.position + Vector3.up * heightAbovePlayer;
-
         Vector3 direction = target.position - player.position;
 
         if (direction.sqrMagnitude < 0.001f)
@@ -21,7 +20,6 @@ public class TaskArrow3D : MonoBehaviour
         }
 
         Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
-
         transform.rotation = targetRotation * Quaternion.Euler(modelRotationOffset);
     }
 

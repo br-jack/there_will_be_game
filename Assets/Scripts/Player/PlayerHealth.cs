@@ -98,7 +98,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         //Debug.Log($"TakeDamage activated.");
-        if (playerLives.IsInvincible) return; // Don't let player take damage while invisible.
+        if (playerLives.IsInvincible) return; // Don't let player take damage while invincible.
        
         if (damage <= 0)
         {
