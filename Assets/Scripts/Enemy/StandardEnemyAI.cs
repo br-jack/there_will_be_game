@@ -269,14 +269,16 @@ namespace Enemy
                     return;
                 }
             }
-            else if ((combatState == CombatState.Approaching || combatState == CombatState.Holding)
-                     && distToPlayer > sightRange + 2f)
+            else if ((combatState == CombatState.Approaching || combatState == CombatState.Holding) && distToPlayer > sightRange + 2f)
             {
                 EnterWandering();
                 UpdateAnim();
                 return;
             }
+            
 
+            /* this decides which system to use. melee and ranged do classicattackupdate(), aka the old system that we had
+            and the melee and unshielded ones do strikeupdate() (aka the new system)*/  
             if (useStrike)
             {
                 StrikeUpdate();
@@ -363,8 +365,8 @@ namespace Enemy
                     break;
 
                 case CombatState.Striking:
-                    // Commit the attack once we're inside the stop ratio — gives a buffer so a slow-drifting
-                    // player doesn't slip outside attack.range during chargeTime.
+                    // charge at the player from the set position but stop when its weapon feels like it could touch the player
+                    // adjust this depending on the weapon model if it changes later
                     if (HorizontalDistanceToPlayerBody() <= StrikeStopDistance)
                     {
                         combatState = CombatState.Attacking;
@@ -433,7 +435,7 @@ namespace Enemy
             }
             else if (!isWandering)
             {
-                // No NavMesh available — fall back to direct line so combat still works.
+                // fallback for when enemies enter places without a baked NavMesh surface (often because the hammer swings them there)
                 moveDir = toPlayerDir;
             }
 
@@ -654,11 +656,12 @@ namespace Enemy
                 _animCurSampleTime = Time.time;
             }
 
-            float dt = Time.time - _animPrevSampleTime;float animSpeed = 0f;
-                if (dt > 0.05f)
-                {
-                    Vector3 delta = currentPos - _animPrevSamplePos;
-                    animSpeed = new Vector2(delta.x, delta.z).magnitude / dt;
+            float dt = Time.time - _animPrevSampleTime;
+            float animSpeed = 0f;
+            if (dt > 0.05f)
+            {
+                Vector3 delta = currentPos - _animPrevSamplePos;
+                animSpeed = new Vector2(delta.x, delta.z).magnitude / dt;
             }
             
             if (animSpeed < idleSpeedThreshold) animSpeed = 0f;
@@ -667,7 +670,7 @@ namespace Enemy
 
         private void SetApproachState()
         {
-            // After knockback, re-approach from wherever we ended up.
+            // after knockback, the enemy should reset its attack cycle and go to approaching (aka the very start)
             if (useStrike)
             {
                 combatState = CombatState.Approaching;
