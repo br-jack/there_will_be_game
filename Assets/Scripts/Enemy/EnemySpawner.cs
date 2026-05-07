@@ -36,7 +36,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float maxDistanceFromPlayer = 100f;
     private float navMeshSearchRadius = 2.5f;
 
-    private bool mapBoundsValid;
     private float mapMinX, mapMaxX, mapMinZ, mapMaxZ;
 
     [Header("waves")]
@@ -76,7 +75,6 @@ public class EnemySpawner : MonoBehaviour
         mapMaxX = 1000f;
         mapMinZ = -1000f;
         mapMaxZ = 1000f;
-        mapBoundsValid = true;
     }
 
     private void Update()
@@ -180,13 +178,11 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnOne(EnemyType type)
     {
         GameObject prefab;
-        bool keepShield = false;
 
         switch (type)
         {
             case EnemyType.MeleeShielded:
                 prefab = meleeShieldedEnemyPrefab;
-                keepShield = true;
                 break;
             case EnemyType.MeleeUnshielded:
                 prefab = meleeUnshieldedEnemyPrefab;
@@ -214,7 +210,7 @@ public class EnemySpawner : MonoBehaviour
             Vector3 offset = new Vector3(Mathf.Cos(angle) * distance, 0f, Mathf.Sin(angle) * distance);
             Vector3 candidate = player.position + offset;
 
-            if (mapBoundsValid && (candidate.x < mapMinX || candidate.x > mapMaxX || candidate.z < mapMinZ || candidate.z > mapMaxZ)) continue;
+            if ((candidate.x < mapMinX || candidate.x > mapMaxX || candidate.z < mapMinZ || candidate.z > mapMaxZ)) continue;
 
             if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
             {
@@ -231,11 +227,6 @@ public class EnemySpawner : MonoBehaviour
                     if (ai != null)
                     {
                         // I don't think we need this anymore because it's seperated into 2 different prefabs but kept just in case
-                        if (!keepShield && ai.shield != null)
-                        {
-                            ai.shield = null;
-                        }
-
                         switch (type)
                         {
                             case EnemyType.MeleeShielded: aliveMeleeShielded.Add(ai); break;

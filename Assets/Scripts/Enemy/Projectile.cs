@@ -9,7 +9,6 @@ public class Projectile : MonoBehaviour
     private static readonly List<Collider> ActiveProjectileColliders = new List<Collider>();
 
     [SerializeField] private float speed = 20.0f;
-    public float Speed => speed;
     [SerializeField] private float lifetime = 5f;
 
     // note for tuning: change this variable depending on if you want the hammer to deflect or destroy the projectile.
@@ -59,7 +58,6 @@ public class Projectile : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (owner != null && other.transform.IsChildOf(owner.transform)) return;
-        if (other == null) return;
 
         // collisions between projectiles are ignored (caused bugs earlier with projectiles dissapearing and stuff...)
         Projectile otherProjectile = other.GetComponentInParent<Projectile>();
@@ -151,16 +149,11 @@ public class Projectile : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(direction.normalized);
         transform.rotation = targetRotation;
 
-        if (rb != null)
-        {
-            rb.rotation = targetRotation;
-        }
+        rb.rotation = targetRotation;
     }
 
     private void RegisterProjectileCollisionIgnores()
     {
-        if (collider == null) return;
-
         for (int i = ActiveProjectileColliders.Count - 1; i >= 0; i--)
         {
             Collider otherCollider = ActiveProjectileColliders[i];
@@ -182,7 +175,6 @@ public class Projectile : MonoBehaviour
 
     private void UnregisterProjectileCollider()
     {
-        if (collider == null) return;
         ActiveProjectileColliders.Remove(collider);
     }
 }

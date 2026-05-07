@@ -89,8 +89,6 @@ namespace Enemy
         [SerializeField] private float idleSpeedThreshold = 0.1f;
         [SerializeField] private string attackTrigger = "Attack";
         [SerializeField] private string shieldBreakTrigger = "ShieldBreak";
-        [SerializeField] private string hitTrigger = "Hit";
-        [SerializeField] private string deadTrigger = "Die";
         [SerializeField] private bool useDamageAnimEvent = false;
 
         public bool HasShield() => shield != null;
