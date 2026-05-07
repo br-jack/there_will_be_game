@@ -25,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
     // Toggled by GameStateManager so spawning halts on pause / game over.
     [HideInInspector] public bool spawningEnabled = true;
 
-    [Header("Enemy Prefabs")]
+    [Header("all Enemy Prefabs")]
     [SerializeField] private GameObject meleeUnshieldedEnemyPrefab;
     [SerializeField] private GameObject meleeShieldedEnemyPrefab;
     [SerializeField] private GameObject rapidEnemyPrefab;
@@ -39,7 +39,7 @@ public class EnemySpawner : MonoBehaviour
     private bool mapBoundsValid;
     private float mapMinX, mapMaxX, mapMinZ, mapMaxZ;
 
-    [Header("Waves")]
+    [Header("waves")]
     [SerializeField] private Wave[] waves; // keep in mind the spawner stays on the last wave forever but this won't matter if we end up capping the game time to 5 mins
 
     public event System.Action<int> OnWaveStarted;
@@ -72,25 +72,10 @@ public class EnemySpawner : MonoBehaviour
 
     private void ComputeMapBounds()
     {
-        NavMeshTriangulation tri = NavMesh.CalculateTriangulation();
-        if (tri.vertices == null || tri.vertices.Length == 0)
-        {
-            mapBoundsValid = false;
-            return;
-        }
-
-        mapMinX = float.PositiveInfinity;
-        mapMaxX = float.NegativeInfinity;
-        mapMinZ = float.PositiveInfinity;
-        mapMaxZ = float.NegativeInfinity;
-        for (int i = 0; i < tri.vertices.Length; i++)
-        {
-            Vector3 v = tri.vertices[i];
-            if (v.x < mapMinX) mapMinX = v.x;
-            if (v.x > mapMaxX) mapMaxX = v.x;
-            if (v.z < mapMinZ) mapMinZ = v.z;
-            if (v.z > mapMaxZ) mapMaxZ = v.z;
-        }
+        mapMinX = -1000f; // it's actually closer to 800x800 but always keep this slightly larger than the map to be safe
+        mapMaxX = 1000f;
+        mapMinZ = -1000f;
+        mapMaxZ = 1000f;
         mapBoundsValid = true;
     }
 
