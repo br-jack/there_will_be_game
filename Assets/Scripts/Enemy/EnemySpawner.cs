@@ -30,7 +30,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject meleeShieldedEnemyPrefab;
     [SerializeField] private GameObject rapidEnemyPrefab;
     [SerializeField] private GameObject rangedEnemyPrefab;
-    [SerializeField] private GameObject civilianPrefab;
+    [SerializeField] private GameObject civilianPrefab; // if you make a new enemy, integrate it with the spawner here
 
     [SerializeField] private float minDistanceFromPlayer = 15f;
     [SerializeField] private float maxDistanceFromPlayer = 100f;
@@ -40,8 +40,7 @@ public class EnemySpawner : MonoBehaviour
     private float mapMinX, mapMaxX, mapMinZ, mapMaxZ;
 
     [Header("Waves")]
-    // Spawner stays on the last wave once the waves have ran out.
-    [SerializeField] private Wave[] waves;
+    [SerializeField] private Wave[] waves; // keep in mind the spawner stays on the last wave forever but this won't matter if we end up capping the game time to 5 mins
 
     public event System.Action<int> OnWaveStarted;
 
@@ -230,8 +229,6 @@ public class EnemySpawner : MonoBehaviour
             Vector3 offset = new Vector3(Mathf.Cos(angle) * distance, 0f, Mathf.Sin(angle) * distance);
             Vector3 candidate = player.position + offset;
 
-            // Free off-map reject so we don't waste a NavMesh.SamplePosition
-            // call on a candidate that's obviously outside the playable area.
             if (mapBoundsValid && (candidate.x < mapMinX || candidate.x > mapMaxX || candidate.z < mapMinZ || candidate.z > mapMaxZ)) continue;
 
             if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
