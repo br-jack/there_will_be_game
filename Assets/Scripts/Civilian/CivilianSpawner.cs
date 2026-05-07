@@ -1,24 +1,21 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+// old implementation we tried but then realised integrating into main spawner is much better
+// NOT IN USE - feel free to remove after removing dependencies
+
 public class CivilianSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject civilianPrefab;
-
-    // Search distance when snapping a spawn point onto the NavMesh.
-    // Keep this generous — a spawner placed slightly above the terrain
-    // should still resolve down to valid ground.
     [SerializeField] private float navMeshSearchRadius = 50f;
 
     void Awake()
     {
         if (civilianPrefab == null)
         {
-            Debug.LogWarning("CivilianSpawner has no civilianPrefab assigned.", this);
             return;
         }
 
-        // If no child spawn points are configured, fall back to spawning at our own position.
         if (transform.childCount == 0)
         {
             SpawnOne(transform.position, transform.rotation);

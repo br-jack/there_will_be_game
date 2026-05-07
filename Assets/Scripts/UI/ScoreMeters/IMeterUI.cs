@@ -46,12 +46,10 @@ namespace Score
             }
 
             Color currentColor = GetScoreColor(normalizedScore);
-
             if (barFillImage != null)
             {
                 barFillImage.fillAmount = normalizedScore;
             }
-
             if (scoreText != null)
             {
                 scoreText.text = currentScore.ToString();
@@ -75,11 +73,6 @@ namespace Score
 
         protected void PlayPulse()
         {
-            if (panelTransform == null)
-            {
-                return;
-            }
-
             if (pulseCoroutine != null)
             {
                 StopCoroutine(pulseCoroutine);

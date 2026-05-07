@@ -3,10 +3,7 @@ using UnityEngine;
 public class TaskArrowManager : MonoBehaviour
 {
     public static TaskArrowManager Instance { get; private set; }
-
     [SerializeField] private TaskArrow3D taskArrow;
-
-    private Transform currentTarget;
 
     private void Awake()
     {
@@ -31,23 +28,15 @@ public class TaskArrowManager : MonoBehaviour
             return;
         }
 
-        currentTarget = target;
         taskArrow.SetTarget(target);
-        taskArrow.Show(true);
+        taskArrow.gameObject.SetActive(true);
     }
 
     public void HideArrow()
     {
-        currentTarget = null;
-
         if (taskArrow != null)
         {
-            taskArrow.Show(false);
+            taskArrow.gameObject.SetActive(false);
         }
-    }
-
-    public Transform GetCurrentTarget()
-    {
-        return currentTarget;
     }
 }

@@ -10,7 +10,7 @@ public class PowerUpPickup : MonoBehaviour
     public float effectDuration = 10f;
 
     public float fallSpeed = 1.5f;
-    public float horizontalDriftAmount = 0.3f;
+    public float horizontalDriftAmount = 0.5f;
     public float horizontalDriftSpeed = 2f;
 
     public float hoverHeight = 0.2f;

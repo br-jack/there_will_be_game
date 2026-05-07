@@ -6,18 +6,9 @@ namespace Score
     {
         override protected void Start()
         {
-            
-            if (ScoreManager.Instance != null)
-            {
-                max = ScoreManager.Instance.MaxFearScore;
-                ScoreManager.Instance.OnFearChanged += HandleScoreChanged;
-                UpdateScoreUI(ScoreManager.Instance.FearScore);
-            }
-            else
-            {
-                Debug.LogWarning("FearMeterUI: No ScoreManager instance found in scene.");
-                UpdateScoreUI(0);
-            }
+            max = ScoreManager.Instance.MaxFearScore;
+            ScoreManager.Instance.OnFearChanged += HandleScoreChanged;
+            UpdateScoreUI(ScoreManager.Instance.FearScore);
         }
 
         override protected void OnDestroy()

@@ -25,30 +25,27 @@ public class EnemySpawner : MonoBehaviour
     // Toggled by GameStateManager so spawning halts on pause / game over.
     [HideInInspector] public bool spawningEnabled = true;
 
-    [Header("Enemy Prefabs")]
+    [Header("all Enemy Prefabs")]
     [SerializeField] private GameObject meleeUnshieldedEnemyPrefab;
     [SerializeField] private GameObject meleeShieldedEnemyPrefab;
     [SerializeField] private GameObject rapidEnemyPrefab;
     [SerializeField] private GameObject rangedEnemyPrefab;
-    [SerializeField] private GameObject civilianPrefab;
+    [SerializeField] private GameObject civilianPrefab; // if you make a new enemy, integrate it with the spawner here
 
     [SerializeField] private float minDistanceFromPlayer = 15f;
     [SerializeField] private float maxDistanceFromPlayer = 100f;
     private float navMeshSearchRadius = 2.5f;
 
-    private bool mapBoundsValid;
     private float mapMinX, mapMaxX, mapMinZ, mapMaxZ;
 
-    [Header("Waves")]
-    // Spawner stays on the last wave once the waves have ran out.
-    [SerializeField] private Wave[] waves;
+    [Header("waves")]
+    [SerializeField] private Wave[] waves; // keep in mind the spawner stays on the last wave forever but this won't matter if we end up capping the game time to 5 mins
 
-    // Fires when a new wave begins. The int is the 1-based wave number.
     public event System.Action<int> OnWaveStarted;
 
     private Transform player;
 
-    // Keep track of alive instances of each type.
+    // these keep track of the currently active enemies of each type
     private readonly List<StandardEnemyAI> aliveMeleeShielded = new List<StandardEnemyAI>();
     private readonly List<StandardEnemyAI> aliveMeleeUnshielded = new List<StandardEnemyAI>();
     private readonly List<StandardEnemyAI> aliveRanged = new List<StandardEnemyAI>();
@@ -74,38 +71,22 @@ public class EnemySpawner : MonoBehaviour
 
     private void ComputeMapBounds()
     {
-        NavMeshTriangulation tri = NavMesh.CalculateTriangulation();
-        if (tri.vertices == null || tri.vertices.Length == 0)
-        {
-            mapBoundsValid = false;
-            return;
-        }
-
-        mapMinX = float.PositiveInfinity;
-        mapMaxX = float.NegativeInfinity;
-        mapMinZ = float.PositiveInfinity;
-        mapMaxZ = float.NegativeInfinity;
-        for (int i = 0; i < tri.vertices.Length; i++)
-        {
-            Vector3 v = tri.vertices[i];
-            if (v.x < mapMinX) mapMinX = v.x;
-            if (v.x > mapMaxX) mapMaxX = v.x;
-            if (v.z < mapMinZ) mapMinZ = v.z;
-            if (v.z > mapMaxZ) mapMaxZ = v.z;
-        }
-        mapBoundsValid = true;
+        mapMinX = -1000f; // it's actually closer to 800x800 but always keep this slightly larger than the map to be safe
+        mapMaxX = 1000f;
+        mapMinZ = -1000f;
+        mapMaxZ = 1000f;
     }
 
     private void Update()
     {
-        // Prune dead entries.
+        // remove all dead enemies immediately from the active lists
         aliveMeleeShielded.RemoveAll(e => e == null);
         aliveMeleeUnshielded.RemoveAll(e => e == null);
         aliveRanged.RemoveAll(e => e == null);
         aliveRapid.RemoveAll(e => e == null);
         aliveCivilians.RemoveAll(c => c == null);
 
-        // Halt wave/break/spawn timers while disabled (paused or game over).
+        // when its paused (usually for hammer calibration) or game over, pause the waves
         if (!spawningEnabled) return;
 
         if (player == null || waves == null || waves.Length == 0)
@@ -130,13 +111,16 @@ public class EnemySpawner : MonoBehaviour
 
         Wave currentWave = waves[currentWaveIndex];
 
-        // Advance to the next wave.
         waveTimer += Time.deltaTime;
         if (waveTimer >= currentWave.duration && currentWaveIndex < waves.Length - 1)
         {
             if (currentWave.clearRemainingOnEnd)
             {
-                ClearAllSpawned();
+                ClearList(aliveMeleeShielded);
+                ClearList(aliveMeleeUnshielded);
+                ClearList(aliveRanged);
+                ClearList(aliveRapid);
+                ClearList(aliveCivilians);
             }
             onBreak = true;
             breakTimer = 0f;
@@ -156,7 +140,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void TrySpawnWeighted(Wave wave)
     {
-        // Calculate remaining capacity for each type.
+        // calculate remaining enemies that we can possibly have left to spawn for each type before max cap is reached
         int remainMeleeShielded = Mathf.Max(0, wave.meleeShielded - aliveMeleeShielded.Count);
         int remainMeleeUnshielded = Mathf.Max(0, wave.meleeUnshielded - aliveMeleeUnshielded.Count);
         int remainRanged = Mathf.Max(0, wave.ranged - aliveRanged.Count);
@@ -166,7 +150,6 @@ public class EnemySpawner : MonoBehaviour
         int total = remainMeleeShielded + remainMeleeUnshielded + remainRanged + remainRapid + remainCivilians;
         if (total <= 0) return;
 
-        // Weighted random pick.
         int roll = Random.Range(0, total);
 
         if (roll < remainMeleeShielded)
@@ -189,18 +172,17 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnOne(EnemyType.Civilian);
         }
+        // if we add more to spawner, add them here
     }
 
     private void SpawnOne(EnemyType type)
     {
         GameObject prefab;
-        bool keepShield = false;
 
         switch (type)
         {
             case EnemyType.MeleeShielded:
                 prefab = meleeShieldedEnemyPrefab;
-                keepShield = true;
                 break;
             case EnemyType.MeleeUnshielded:
                 prefab = meleeUnshieldedEnemyPrefab;
@@ -228,14 +210,7 @@ public class EnemySpawner : MonoBehaviour
             Vector3 offset = new Vector3(Mathf.Cos(angle) * distance, 0f, Mathf.Sin(angle) * distance);
             Vector3 candidate = player.position + offset;
 
-            // Free off-map reject so we don't waste a NavMesh.SamplePosition
-            // call on a candidate that's obviously outside the playable area.
-            if (mapBoundsValid &&
-                (candidate.x < mapMinX || candidate.x > mapMaxX ||
-                 candidate.z < mapMinZ || candidate.z > mapMaxZ))
-            {
-                continue;
-            }
+            if ((candidate.x < mapMinX || candidate.x > mapMaxX || candidate.z < mapMinZ || candidate.z > mapMaxZ)) continue;
 
             if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, navMeshSearchRadius, NavMesh.AllAreas))
             {
@@ -251,34 +226,19 @@ public class EnemySpawner : MonoBehaviour
                     StandardEnemyAI ai = spawned.GetComponent<StandardEnemyAI>();
                     if (ai != null)
                     {
-                        // Strip shield if this type shouldn't have one.
-                        if (!keepShield && ai.shield != null)
-                        {
-                            ai.shield = null;
-                        }
-
-                        // Track in the correct list.
+                        // I don't think we need this anymore because it's seperated into 2 different prefabs but kept just in case
                         switch (type)
                         {
-                            case EnemyType.MeleeShielded:   aliveMeleeShielded.Add(ai); break;
+                            case EnemyType.MeleeShielded: aliveMeleeShielded.Add(ai); break;
                             case EnemyType.MeleeUnshielded: aliveMeleeUnshielded.Add(ai); break;
-                            case EnemyType.Ranged:          aliveRanged.Add(ai); break;
-                            case EnemyType.Rapid:           aliveRapid.Add(ai); break;
+                            case EnemyType.Ranged: aliveRanged.Add(ai); break;
+                            case EnemyType.Rapid: aliveRapid.Add(ai); break;
                         }
                     }
                 }
                 return;
             }
         }
-    }
-
-    private void ClearAllSpawned()
-    {
-        ClearList(aliveMeleeShielded);
-        ClearList(aliveMeleeUnshielded);
-        ClearList(aliveRanged);
-        ClearList(aliveRapid);
-        ClearList(aliveCivilians);
     }
 
     private void ClearList<T>(List<T> list) where T : Component

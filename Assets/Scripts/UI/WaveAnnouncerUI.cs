@@ -8,20 +8,15 @@ public class WaveAnnouncerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI waveText;
     [SerializeField] private float messageDuration = 3f;
 
+    // subscribing and unsubscribing to the wave event in spawner
     private void OnEnable()
     {
-        if (spawner != null)
-        {
-            spawner.OnWaveStarted += ShowWave;
-        }
+        spawner.OnWaveStarted += ShowWave;
     }
 
     private void OnDisable()
     {
-        if (spawner != null)
-        {
-            spawner.OnWaveStarted -= ShowWave;
-        }
+        spawner.OnWaveStarted -= ShowWave;
     }
 
     private void ShowWave(int waveNumber)

@@ -10,17 +10,11 @@ namespace Enemy
         {
             if (DeathHandler.IsDying || _playerTransformRef == null) return;
 
-            if (projectile == null)
-            {
-                Debug.LogWarning("RangedEnemyAI: projectilePrefab is not assigned in the Inspector.", this);
-                return;
-            }
-
             Vector3 spawnPosition = transform.TransformPoint(spawnOffset);
             Vector3 playerCenter = _playerTransformRef.position + Vector3.up * 1.2f;
             Vector3 direction = (playerCenter - spawnPosition).normalized;
 
-            // Horizontal spread to simulate archers won't be completely accurate.
+            // horizontal random spread to simulate archers won't be completely accurate
             float spread = Random.Range(-3.0f, 3.0f);
             direction = Quaternion.AngleAxis(spread, Vector3.up) * direction;
 

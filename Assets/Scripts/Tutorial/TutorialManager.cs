@@ -20,14 +20,9 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private CanvasGroup CardCanvasGroup;
 
     [Header("Lore Card Intro")]
-    [SerializeField] private float CardFadeInTime = 0.6f;
+    [SerializeField] private float CardFadeInTime = 1f;
     [SerializeField] private float CardHoldTime = 5f;
-    [SerializeField] private float CardFadeOutTime = 0.6f;
-
-    [Header("Message")]
-    [SerializeField] private string message = "A divine force guides your first steps. \n Learn to move, fight and shape Fear and Awe.";
-    [SerializeField] private float letterDelay = 0.07f;
-    [SerializeField] private float holdTime = 2f;
+    [SerializeField] private float CardFadeOutTime = 1f;
 
     [Header("Fade Settings")]
     [SerializeField] private float fadeInTime = 1.5f;
@@ -47,7 +42,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private string firstSwingPromptMessage = "Swing the hammer";
     [SerializeField] private string secondSwingPromptMessage = "Swing the hammer harder";
     [SerializeField] private string thirdSwingPromptMessage = "SWING THE HAMMER HARDER!";
-    [SerializeField] private string secondPromptMessage = "Jump using the A button";
     [SerializeField] private string thirdPromptMessage = "Complete the task shown on the panel";
     [SerializeField] private int swingsRequired = 3;
     [SerializeField] private int jumpsRequired = 1;
@@ -61,7 +55,6 @@ public class TutorialManager : MonoBehaviour
     private string rewardMessage = "A boon has been granted";
     private string boonSpawnPromptMessage = "Task complete. A boon has appeared.";
     private string boonCollectPromptMessage = "Collect the boon to receive a blessing from the gods";
-    //private string boonExplanationMessage = "Boons grant powerful blessings that aid your journey.";
     private float boonPromptDelay = 4f;
 
     [SerializeField] private GameObject tutorialMarker;
@@ -79,17 +72,14 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private horseMovementGaits horseMovement;
     [SerializeField] private TargetHammer targetHammer;
     [SerializeField] private PlayerHealth playerHealth;
-    [SerializeField] private float enemyKillUnlockDelay = 1f;
     [SerializeField] private float forcedSlowMoveMultiplier = 0.05f;
     [SerializeField] private AttackHitbox hammerHitbox;
 
     [Header("Enemy Facing")]
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private float autoFaceTurnSpeed = 5f;
     [SerializeField] private Transform cameraTransform;
 
     [SerializeField] private string enemyIntroPromptMessage = "An enemy approaches. Watch your health.";
-    [SerializeField] private string enemyKillPromptMessage = "Now defeat the enemy to gain Fear and Awe.";
 
     [Header("Task Panel Intro")]
     private string taskPanelIntroMessage = "Tasks appear on this panel. Complete them to earn rewards.";
@@ -169,7 +159,6 @@ public class TutorialManager : MonoBehaviour
     {
         HideGameplayUIAtStart();
         tutorialPromptUI.SetActive(false);
-
         introOverlay.SetActive(true);
 
         Color background = dimBackground.color;
@@ -205,7 +194,6 @@ public class TutorialManager : MonoBehaviour
         }
 
         introOverlay.SetActive(false);
-
         tutorialPromptUI.SetActive(true);
         introFinished = true;
         promptText.text = firstSwingPromptMessage;
@@ -218,14 +206,14 @@ public class TutorialManager : MonoBehaviour
             yield break;
         }
 
-        float elapsed = 0f;
+        float passedTime = 0f;
         canvasGroup.alpha = startAlpha;
 
-        while (elapsed < duration)
+        while (passedTime < duration)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, t);
+            passedTime += Time.deltaTime;
+            float time = Mathf.Clamp01(passedTime / duration);
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, time);
             yield return null;
         }
 
@@ -235,15 +223,15 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator FadeBackground(float startAlpha, float endAlpha, float duration)
     {
 
-        float elapsed = 0f;
+        float passedTime = 0f;
         Color background = dimBackground.color;
 
-        while (elapsed < duration)
+        while (passedTime < duration)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
+            passedTime += Time.deltaTime;
+            float time = Mathf.Clamp01(passedTime / duration);
 
-            background.a = Mathf.Lerp(startAlpha, endAlpha, t);
+            background.a = Mathf.Lerp(startAlpha, endAlpha, time);
             dimBackground.color = background;
 
             yield return null;
@@ -305,7 +293,7 @@ public class TutorialManager : MonoBehaviour
         StartCoroutine(PulseTaskPanel());
         promptText.text = taskPanelIntroMessage;
         yield return new WaitForSeconds(taskPanelIntroDelay);
-        taskArrow.Show(true);
+        taskArrow.gameObject.SetActive(true);
         StartCoroutine(PulseArrow());
         promptText.text = arrowIntroMessage;
         yield return new WaitForSeconds(arrowIntroDelay);
@@ -315,20 +303,14 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator PulseArrow()
     {
-        if (taskArrow == null)
-        {
-            yield break;
-        }
-
         Transform arrowTransform = taskArrow.transform;
         Vector3 originalScale = arrowTransform.localScale;
-        float elapsed = 0f;
+        float passedTime = 0f;
 
-        while (elapsed < arrowPulseDuration)
+        while (passedTime < arrowPulseDuration)
         {
-            elapsed += Time.deltaTime;
-
-            float pulse = 1f + Mathf.Sin(elapsed * arrowPulseSpeed * Mathf.PI * 2f) * (arrowPulseScale - 1f);
+            passedTime += Time.deltaTime;
+            float pulse = 1f + Mathf.Sin(passedTime * arrowPulseSpeed * Mathf.PI * 2f) * (arrowPulseScale - 1f);
             arrowTransform.localScale = originalScale * pulse;
 
             yield return null;
@@ -344,11 +326,6 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator PulseUIObject(GameObject uiObject, float duration, float pulseScale, float pulseSpeed)
     {
-        if (uiObject == null)
-        {
-            yield break;
-        }
-
         RectTransform rectTransform = uiObject.GetComponent<RectTransform>();
         if (rectTransform == null)
         {
@@ -356,13 +333,13 @@ public class TutorialManager : MonoBehaviour
         }
 
         Vector3 originalScale = rectTransform.localScale;
-        float elapsed = 0f;
+        float passedTime = 0f;
 
-        while (elapsed < duration)
+        while (passedTime < duration)
         {
-            elapsed += Time.deltaTime;
+            passedTime += Time.deltaTime;
 
-            float pulse = 1f + Mathf.Sin(elapsed * pulseSpeed * Mathf.PI * 2f) * (pulseScale - 1f);
+            float pulse = 1f + Mathf.Sin(passedTime * pulseSpeed * Mathf.PI * 2f) * (pulseScale - 1f);
             rectTransform.localScale = originalScale * pulse;
 
             yield return null;
@@ -395,8 +372,7 @@ public class TutorialManager : MonoBehaviour
         {
             return;
         }
-        taskArrow.Show(false);
-
+        taskArrow.gameObject.SetActive(false);
         rewardSpawned = true;
         tutorialMarker.SetActive(false);
         StartCoroutine(SpawnBoonSequence());
@@ -405,21 +381,18 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator SpawnBoonSequence()
     {
         SetPlayerControl(false);
-
         spawnedTutorialReward = powerUpSpawner.SpawnSpecificPowerUp(tutorialRewardPrefab, rewardMessage);
-
         promptText.text = boonSpawnPromptMessage;
 
         yield return new WaitForSeconds(boonPromptDelay);
 
         promptText.text = boonCollectPromptMessage;
-
         SetPlayerControl(true);
     }
 
     private void HideGameplayUIAtStart()
     {
-        taskArrow.Show(false);
+        taskArrow.gameObject.SetActive(false);
         tutorialMarker.SetActive(false);
         fearBarUI.SetActive(false);
         aweBarUI.SetActive(false);
@@ -441,7 +414,6 @@ public class TutorialManager : MonoBehaviour
         }
 
         rewardCollected = true;
-
         StartTutorialEnemyPhase();
     }
 
@@ -449,8 +421,6 @@ public class TutorialManager : MonoBehaviour
     {
         horseMovement.canControl = enabled;
         targetHammer.canControl = enabled;
-        //Collider hitboxCollider = hammerHitbox.GetComponent<Collider>();
-        //hitboxCollider.enabled = enabled;
         allowAttacking.Invoke(enabled);
     }
 
@@ -475,7 +445,7 @@ public class TutorialManager : MonoBehaviour
         promptText.text = enemyIntroPromptMessage;
 
         // The door should still remain disabled here
-        taskArrow.Show(false);
+        taskArrow.gameObject.SetActive(false);
 
         allowAttacking.Invoke(false); //should already be done
 
@@ -526,7 +496,7 @@ public class TutorialManager : MonoBehaviour
         {
             enemyHasHitPlayer = true;
 
-            // Give controls back now that the player has seen damage
+            // Give controls back now that the player has been damaged
             SetPlayerControl(true);
             SetPlayerForcedSlowMovement(false);
 
@@ -614,7 +584,7 @@ public class TutorialManager : MonoBehaviour
         tutorialDoor.EnableDoor();
 
         taskArrow.SetTarget(tutorialDoorTarget);
-        taskArrow.Show(true);
+        taskArrow.gameObject.SetActive(true);
         promptText.text = exitPromptMessage;
 
     }
@@ -647,11 +617,6 @@ public class TutorialManager : MonoBehaviour
 
     private void SnapFaceTarget(Transform target)
     {
-        if (playerTransform == null || target == null)
-        {
-            return;
-        }
-
         Vector3 direction = target.position - playerTransform.position;
         direction.y = 0f;
 
@@ -666,11 +631,6 @@ public class TutorialManager : MonoBehaviour
 
     private void SnapCameraToTarget(Transform target)
     {
-        if (cameraTransform == null || target == null)
-        {
-            return;
-        }
-
         Vector3 direction = target.position - cameraTransform.position;
 
         if (direction.sqrMagnitude < 0.001f)

@@ -57,7 +57,7 @@ public class FireballProjectile : MonoBehaviour
             
             if (deathState != null)
             {
-                Debug.Assert(deathState.KnockbackState != null);
+                //Debug.Assert(deathState.KnockbackState != null);
                 if (deathState.KnockbackState != null && deathState.IsDying)
                 {
                     ApplyImpactKnockback(deathState.KnockbackState, other.transform.position);
@@ -103,9 +103,6 @@ public class FireballProjectile : MonoBehaviour
 
     private void SpawnFlamePillarAtGround(Vector3 targetPosition)
     {
-        if (flamePillarPrefab == null)
-            return;
-
         Vector3 rayStart = targetPosition + Vector3.up * groundCheckHeight;
 
         if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayerMask))

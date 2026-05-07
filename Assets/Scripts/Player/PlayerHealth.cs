@@ -98,7 +98,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         //Debug.Log($"TakeDamage activated.");
-        if (playerLives.IsInvincible) return; // Don't let player take damage while invisible.
+        if (playerLives.IsInvincible) return; // Don't let player take damage while invincible.
        
         if (damage <= 0)
         {
@@ -184,10 +184,7 @@ public class PlayerHealth : MonoBehaviour
         playerParticles.StopAllMovementParticles();
         ScoreManager.Instance.RemoveFear(fearPenaltyOnRespawn);
         ScoreManager.Instance.ResetAwe();
-        if (deathTextUI != null)
-        {
-            deathTextUI.ShowDeathText();
-        }
+        deathTextUI.ShowDeathText();
         yield return new WaitForSeconds(respawnDelay);
         RespawnPlayer();
         yield return null;

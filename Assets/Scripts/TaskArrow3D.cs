@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class TaskArrow3D : MonoBehaviour
 {
-    [Header("References")]
     [SerializeField] private Transform player;
     [SerializeField] private Transform target;
 
@@ -12,17 +11,7 @@ public class TaskArrow3D : MonoBehaviour
 
     private void Update()
     {
-        UpdatePosition();
-        UpdateRotation();
-    }
-
-    private void UpdatePosition()
-    {
         transform.position = player.position + Vector3.up * heightAbovePlayer;
-    }
-
-    private void UpdateRotation()
-    {
         Vector3 direction = target.position - player.position;
 
         if (direction.sqrMagnitude < 0.001f)
@@ -31,7 +20,6 @@ public class TaskArrow3D : MonoBehaviour
         }
 
         Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
-
         transform.rotation = targetRotation * Quaternion.Euler(modelRotationOffset);
     }
 
@@ -39,10 +27,5 @@ public class TaskArrow3D : MonoBehaviour
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;
-    }
-
-    public void Show(bool show)
-    {
-        gameObject.SetActive(show);
     }
 }

@@ -37,7 +37,6 @@ public class DamageVignetteFlash : MonoBehaviour
         color = damageVignette.color;
         color.a = 0f;
         damageVignette.color = color;
-
         flashRoutine = null;
     }
 }

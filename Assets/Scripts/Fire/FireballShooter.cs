@@ -4,7 +4,6 @@ using Hammer;
 
 public class FireballShooter : MonoBehaviour
 {
-    [Header("Dependencies")]
     [SerializeField] private HammerFireController hammerFireController;
     [SerializeField] private Transform fireballSpawnPoint;
     [SerializeField] private GameObject fireballPrefab;
@@ -48,7 +47,7 @@ public class FireballShooter : MonoBehaviour
         {
             return;
         }
-
+        // sticking with 1 for testing
         if (Random.value > fireballChance)
         {
             return;
@@ -60,7 +59,7 @@ public class FireballShooter : MonoBehaviour
             return;
         }
 
-        Vector3 targetPoint = nearestEnemy.Transform.position + Vector3.up * 1.0f;
+        Vector3 targetPoint = nearestEnemy.Transform.position + Vector3.up;
         Vector3 direction = targetPoint - fireballSpawnPoint.position;
 
         if (direction.sqrMagnitude < 0.0001f)
@@ -69,11 +68,8 @@ public class FireballShooter : MonoBehaviour
         }
 
         direction.Normalize();
-
         Vector3 spawnPosition = fireballSpawnPoint.position + direction * spawnForwardOffset;
-
         GameObject spawnedFireball = Instantiate(fireballPrefab, spawnPosition, Quaternion.LookRotation(direction));
-
         FireballProjectile projectile = spawnedFireball.GetComponent<FireballProjectile>();
         projectile.Initialise(direction);
         lastFireTime = Time.time;
@@ -123,32 +119,5 @@ public class FireballShooter : MonoBehaviour
         }
 
         return nearestEnemy;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (fireballSpawnPoint == null)
-            return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(fireballSpawnPoint.position, targetSearchRadius);
-
-        if (aimForwardSource == null)
-            return;
-
-        Vector3 origin = aimForwardSource.position;
-        Vector3 forward = aimForwardSource.forward;
-        forward.y = 0f;
-        forward.Normalize();
-
-        float halfConeAngle = targetConeAngle * 0.5f;
-
-        Vector3 leftBoundary = Quaternion.AngleAxis(-halfConeAngle, Vector3.up) * forward;
-        Vector3 rightBoundary = Quaternion.AngleAxis(halfConeAngle, Vector3.up) * forward;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(origin, leftBoundary * targetSearchRadius);
-        Gizmos.DrawRay(origin, rightBoundary * targetSearchRadius);
-        Gizmos.DrawRay(origin, forward * targetSearchRadius);
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FlamePillarArea : MonoBehaviour
 {
-    [SerializeField] private float lifetime = 2.5f;
+    [SerializeField] private float lifetime = 2f;
 
     private readonly HashSet<EnemyBurnable> burnedEnemies = new HashSet<EnemyBurnable>();
 
