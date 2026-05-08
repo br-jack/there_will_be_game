@@ -155048,6 +155048,22 @@ PrefabInstance:
       propertyPath: fireTask
       value: 
       objectReference: {fileID: 1422696283}
+    - target: {fileID: 5777375021025970459, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: trailLingerFrames
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5777375021025970459, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: ghostsLingerFrames
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5777375021025970459, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: ghostSpeedThreshold
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5777375021025970459, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
+      propertyPath: trailSpeedThreshold
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7672999536482783943, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.17
@@ -155104,7 +155120,8 @@ PrefabInstance:
       propertyPath: respawnPoint
       value: 
       objectReference: {fileID: 658775823}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6840669216427172599, guid: 0afecde7e8515a243a007cefeef8d35c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
