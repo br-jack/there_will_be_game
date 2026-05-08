@@ -8,6 +8,7 @@ using UnityEngine.Assertions;
 using WiimoteApi;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using AHRS;
 
 namespace Hammer
 {
@@ -38,6 +39,10 @@ namespace Hammer
         public Quaternion accelAttitude;
         public Quaternion gyroAttitude;
 
+        //not sure how this works
+        public float samplePeriod;
+        public float beta;
+        private MadgwickAHRS _filter;
 
         public void SceneSwitch()
         {
@@ -119,6 +124,7 @@ namespace Hammer
         {
             wiimoteAttitude = Vector3.zero; //have to set it to something! assume same as hammer
             ConnectWiimote();
+            _filter = new MadgwickAHRS(samplePeriod,beta);
         }
 
         // Update is called once per frame
@@ -143,7 +149,16 @@ namespace Hammer
                     wm.MotionPlus.YawSpeed,
                     -wm.MotionPlus.RollSpeed)/95f;
 
+
+
+
+                _filter.Update(gyro.x,gyro.y,gyro.z,accel.x,accel.y,accel.z);
                 
+                float[] filterRet =  _filter.Quaternion;
+                Quaternion newAttitude = new Quaternion(filterRet[0],filterRet[1],filterRet[2],filterRet[3]);
+                transform.rotation = newAttitude;
+
+                /*
                 if (gyroEnabled) transform.Rotate(gyro);
                 
                 wiimoteAttitude = transform.rotation.eulerAngles; //seems silly. remove wiimoteattitude i think
@@ -185,7 +200,7 @@ namespace Hammer
                     GameObject.Find("accelCombinedGhostHammer").transform.rotation = 
                         Quaternion.Slerp(agh.rotation,argh.rotation,reorderedProportion);
                 }
-                
+                */
             } while (ret > 0);
 
             
@@ -193,7 +208,7 @@ namespace Hammer
 
             //Unity Remote
             //transform.rotation = Quaternion.Inverse(Input.gyro.attitude * _startingRotation);
-
+            
         }
 
         public void OnCollisionEnter(Collision collision)
